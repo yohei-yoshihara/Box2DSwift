@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		47D743F61A8E17DD006235A6 /* Box2D.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 47F39B141A8E0D500011E2CB /* Box2D.framework */; };
+		47D743F71A8E17DD006235A6 /* Box2D.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 47F39B141A8E0D500011E2CB /* Box2D.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		47F39B1A1A8E0D500011E2CB /* Box2D.h in Headers */ = {isa = PBXBuildFile; fileRef = 47F39B191A8E0D500011E2CB /* Box2D.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		47F39B201A8E0D500011E2CB /* Box2D.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 47F39B141A8E0D500011E2CB /* Box2D.framework */; };
 		47F39B271A8E0D500011E2CB /* Box2DTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 47F39B261A8E0D500011E2CB /* Box2DTests.swift */; };
@@ -130,6 +132,13 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
+		47D743F81A8E17DD006235A6 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 47F39B0B1A8E0D500011E2CB /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 47F39B131A8E0D500011E2CB;
+			remoteInfo = Box2D;
+		};
 		47F39B211A8E0D500011E2CB /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = 47F39B0B1A8E0D500011E2CB /* Project object */;
@@ -145,6 +154,20 @@
 			remoteInfo = Testbed;
 		};
 /* End PBXContainerItemProxy section */
+
+/* Begin PBXCopyFilesBuildPhase section */
+		47D743FA1A8E17DD006235A6 /* Embed Frameworks */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 10;
+			files = (
+				47D743F71A8E17DD006235A6 /* Box2D.framework in Embed Frameworks */,
+			);
+			name = "Embed Frameworks";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
 		47F39B141A8E0D500011E2CB /* Box2D.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Box2D.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -296,6 +319,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				47D743F61A8E17DD006235A6 /* Box2D.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -635,10 +659,12 @@
 				47F39B301A8E0D7B0011E2CB /* Sources */,
 				47F39B311A8E0D7B0011E2CB /* Frameworks */,
 				47F39B321A8E0D7B0011E2CB /* Resources */,
+				47D743FA1A8E17DD006235A6 /* Embed Frameworks */,
 			);
 			buildRules = (
 			);
 			dependencies = (
+				47D743F91A8E17DD006235A6 /* PBXTargetDependency */,
 			);
 			name = Testbed;
 			productName = Testbed;
@@ -889,6 +915,11 @@
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXTargetDependency section */
+		47D743F91A8E17DD006235A6 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 47F39B131A8E0D500011E2CB /* Box2D */;
+			targetProxy = 47D743F81A8E17DD006235A6 /* PBXContainerItemProxy */;
+		};
 		47F39B221A8E0D500011E2CB /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
 			target = 47F39B131A8E0D500011E2CB /* Box2D */;
@@ -1053,6 +1084,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				EMBEDDED_CONTENT_CONTAINS_SWIFT = YES;
 				GCC_PREPROCESSOR_DEFINITIONS = (
 					"DEBUG=1",
 					"$(inherited)",
@@ -1067,6 +1099,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				EMBEDDED_CONTENT_CONTAINS_SWIFT = YES;
 				INFOPLIST_FILE = Testbed/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -1126,6 +1159,7 @@
 				47F39B2C1A8E0D500011E2CB /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		47F39B2D1A8E0D500011E2CB /* Build configuration list for PBXNativeTarget "Box2DTests" */ = {
 			isa = XCConfigurationList;
@@ -1134,6 +1168,7 @@
 				47F39B2F1A8E0D500011E2CB /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		47F39B501A8E0D7C0011E2CB /* Build configuration list for PBXNativeTarget "Testbed" */ = {
 			isa = XCConfigurationList;
@@ -1142,6 +1177,7 @@
 				47F39B521A8E0D7C0011E2CB /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		47F39B531A8E0D7C0011E2CB /* Build configuration list for PBXNativeTarget "TestbedTests" */ = {
 			isa = XCConfigurationList;
@@ -1150,6 +1186,7 @@
 				47F39B551A8E0D7C0011E2CB /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};
