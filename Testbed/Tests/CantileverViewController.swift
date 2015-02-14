@@ -61,7 +61,7 @@ class CantileverViewController: BaseViewController {
         body.createFixture(fd)
         
         let anchor = b2Vec2(-15.0 + 1.0 * b2Float(i), 5.0)
-        jd.initialize(prevBody, bodyB: body, anchor: anchor)
+        jd.initialize(bodyA: prevBody, bodyB: body, anchor: anchor)
         self.world.createJoint(jd)
         
         prevBody = body
@@ -89,7 +89,7 @@ class CantileverViewController: BaseViewController {
         body.createFixture(fd)
         
         let anchor = b2Vec2(-15.0 + 2.0 * b2Float(i), 15.0)
-        jd.initialize(prevBody, bodyB: body, anchor: anchor)
+        jd.initialize(bodyA: prevBody, bodyB: body, anchor: anchor)
         self.world.createJoint(jd)
         
         prevBody = body
@@ -116,7 +116,7 @@ class CantileverViewController: BaseViewController {
         
         if i > 0 {
           let anchor = b2Vec2(-5.0 + 1.0 * b2Float(i), 5.0)
-          jd.initialize(prevBody, bodyB: body, anchor: anchor)
+          jd.initialize(bodyA: prevBody, bodyB: body, anchor: anchor)
           self.world.createJoint(jd)
         }
         
@@ -146,7 +146,7 @@ class CantileverViewController: BaseViewController {
         
         if i > 0 {
           let anchor = b2Vec2(5.0 + 1.0 * b2Float(i), 10.0)
-          jd.initialize(prevBody, bodyB: body, anchor: anchor)
+          jd.initialize(bodyA: prevBody, bodyB: body, anchor: anchor)
           self.world.createJoint(jd)
         }
         

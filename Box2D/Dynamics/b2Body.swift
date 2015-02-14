@@ -153,13 +153,16 @@ public class b2Body : Printable {
     return fixture
   }
   
-  /// Creates a fixture from a shape and attach it to this body.
-  /// This is a convenience function. Use b2FixtureDef if you need to set parameters
-  /// like friction, restitution, user data, or filtering.
-  /// If the density is non-zero, this function automatically updates the mass of the body.
-  /// @param shape the shape to be cloned.
-  /// @param density the shape density (set to zero for static bodies).
-  /// @warning This function is locked during callbacks.
+  /**
+  Creates a fixture from a shape and attach it to this body.
+  This is a convenience function. Use b2FixtureDef if you need to set parameters
+  like friction, restitution, user data, or filtering.
+  If the density is non-zero, this function automatically updates the mass of the body.
+
+  :param: shape the shape to be cloned.
+  :param: density the shape density (set to zero for static bodies).
+  warning) This function is locked during callbacks.
+  */
   public func createFixture(#shape: b2Shape, density: b2Float) -> b2Fixture {
     var def = b2FixtureDef()
     def.shape = shape
@@ -167,13 +170,16 @@ public class b2Body : Printable {
     return createFixture(def)
   }
   
-  /// Destroy a fixture. This removes the fixture from the broad-phase and
-  /// destroys all contacts associated with this fixture. This will
-  /// automatically adjust the mass of the body if the body is dynamic and the
-  /// fixture has positive density.
-  /// All fixtures attached to a body are implicitly destroyed when the body is destroyed.
-  /// @param fixture the fixture to be removed.
-  /// @warning This function is locked during callbacks.
+  /**
+  Destroy a fixture. This removes the fixture from the broad-phase and
+  destroys all contacts associated with this fixture. This will
+  automatically adjust the mass of the body if the body is dynamic and the
+  fixture has positive density.
+  All fixtures attached to a body are implicitly destroyed when the body is destroyed.
+
+  :param: fixture the fixture to be removed.
+  warning) This function is locked during callbacks.
+  */
   public func destroyFixture(fixture: b2Fixture) {
     assert(m_world.isLocked == false)
     if m_world.isLocked == true {
@@ -1030,8 +1036,6 @@ public class b2Body : Printable {
     m_sweep.a = def.angle
     m_sweep.alpha0 = 0.0
       
-//    m_jointList = nil
-//    m_contactList = nil
     m_prev = nil
     m_next = nil
       

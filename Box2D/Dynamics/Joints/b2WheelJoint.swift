@@ -48,7 +48,14 @@ public class b2WheelJointDef : b2JointDef {
   
   /// Initialize the bodies, anchors, axis, and reference angle using the world
   /// anchor and world axis.
-  public func initialize(bodyA: b2Body, bodyB: b2Body, anchor: b2Vec2, axis: b2Vec2) {
+  public convenience init(bodyA: b2Body, bodyB: b2Body, anchor: b2Vec2, axis: b2Vec2) {
+    self.init()
+    initialize(bodyA: bodyA, bodyB: bodyB, anchor: anchor, axis: axis)
+  }
+  
+  /// Initialize the bodies, anchors, axis, and reference angle using the world
+  /// anchor and world axis.
+  public func initialize(#bodyA: b2Body, bodyB: b2Body, anchor: b2Vec2, axis: b2Vec2) {
     self.bodyA = bodyA
     self.bodyB = bodyB
     self.localAnchorA = bodyA.getLocalPoint(anchor)

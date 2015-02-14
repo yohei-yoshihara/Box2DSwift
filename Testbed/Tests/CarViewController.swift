@@ -258,7 +258,7 @@ class CarViewController: BaseViewController {
       let jd = b2WheelJointDef()
       let axis = b2Vec2(0.0, 1.0)
       
-      jd.initialize(self.car, bodyB: self.wheel1, anchor: self.wheel1.position, axis: axis)
+      jd.initialize(bodyA: self.car, bodyB: self.wheel1, anchor: self.wheel1.position, axis: axis)
       jd.motorSpeed = 0.0
       jd.maxMotorTorque = 20.0
       jd.enableMotor = true
@@ -266,7 +266,7 @@ class CarViewController: BaseViewController {
       jd.dampingRatio = self.zeta
       self.spring1 = self.world.createJoint(jd) as! b2WheelJoint
       
-      jd.initialize(self.car, bodyB: self.wheel2, anchor: self.wheel2.position, axis: axis)
+      jd.initialize(bodyA: self.car, bodyB: self.wheel2, anchor: self.wheel2.position, axis: axis)
       jd.motorSpeed = 0.0
       jd.maxMotorTorque = 10.0
       jd.enableMotor = false

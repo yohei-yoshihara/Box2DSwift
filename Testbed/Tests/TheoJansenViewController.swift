@@ -136,16 +136,16 @@ class TheoJansenViewController: BaseViewController {
 		djd.dampingRatio = 0.5
 		djd.frequencyHz = 10.0
   
-    djd.initialize(body1, bodyB: body2, anchorA: p2 + offset, anchorB: p5 + offset)
+    djd.initialize(bodyA: body1, bodyB: body2, anchorA: p2 + offset, anchorB: p5 + offset)
 		world.createJoint(djd)
   
-    djd.initialize(body1, bodyB: body2, anchorA: p3 + offset, anchorB: p4 + offset)
+    djd.initialize(bodyA: body1, bodyB: body2, anchorA: p3 + offset, anchorB: p4 + offset)
 		world.createJoint(djd)
   
-    djd.initialize(body1, bodyB: wheel, anchorA: p3 + offset, anchorB: wheelAnchor + offset)
+    djd.initialize(bodyA: body1, bodyB: wheel, anchorA: p3 + offset, anchorB: wheelAnchor + offset)
 		world.createJoint(djd)
   
-    djd.initialize(body2, bodyB: wheel, anchorA: p6 + offset, anchorB: wheelAnchor + offset)
+    djd.initialize(bodyA: body2, bodyB: wheel, anchorA: p6 + offset, anchorB: wheelAnchor + offset)
 		world.createJoint(djd)
   
 		let rjd = b2RevoluteJointDef()

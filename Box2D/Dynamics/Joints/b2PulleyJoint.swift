@@ -45,7 +45,13 @@ public class b2PulleyJointDef : b2JointDef {
   }
   
   /// Initialize the bodies, anchors, lengths, max lengths, and ratio using the world anchors.
-  public func initialize(bodyA: b2Body, _ bodyB: b2Body, _ groundAnchorA: b2Vec2, _ groundAnchorB: b2Vec2, _ anchorA: b2Vec2, _ anchorB: b2Vec2, _ ratio: b2Float) {
+  public convenience init(bodyA: b2Body, bodyB: b2Body, groundAnchorA: b2Vec2, groundAnchorB: b2Vec2, anchorA: b2Vec2, anchorB: b2Vec2, ratio: b2Float) {
+    self.init()
+    initialize(bodyA: bodyA, bodyB: bodyB, groundAnchorA: groundAnchorA, groundAnchorB: groundAnchorB, anchorA: anchorA, anchorB: anchorB, ratio: ratio)
+  }
+  
+  /// Initialize the bodies, anchors, lengths, max lengths, and ratio using the world anchors.
+  public func initialize(#bodyA: b2Body, bodyB: b2Body, groundAnchorA: b2Vec2, groundAnchorB: b2Vec2, anchorA: b2Vec2, anchorB: b2Vec2, ratio: b2Float) {
     self.bodyA = bodyA
     self.bodyB = bodyB
     self.groundAnchorA = groundAnchorA

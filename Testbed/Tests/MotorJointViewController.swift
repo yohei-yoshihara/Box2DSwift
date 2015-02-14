@@ -40,7 +40,7 @@ class MotorJointViewController: BaseViewController {
   }
   
   override func prepare() {
-    var ground: b2Body? = nil
+    var ground: b2Body! = nil
     b2Locally {
       var bd = b2BodyDef()
       ground = self.world.createBody(bd)
@@ -51,7 +51,7 @@ class MotorJointViewController: BaseViewController {
       var fd = b2FixtureDef()
       fd.shape = shape
       
-      ground!.createFixture(fd)
+      ground.createFixture(fd)
     }
     
     // Define motorized body
@@ -71,7 +71,7 @@ class MotorJointViewController: BaseViewController {
       body.createFixture(fd)
       
       var mjd = b2MotorJointDef()
-      mjd.initialize(ground!, bodyB: body)
+      mjd.initialize(bodyA: ground, bodyB: body)
       mjd.maxForce = 1000.0
       mjd.maxTorque = 1000.0
       self.joint = self.world.createJoint(mjd) as! b2MotorJoint

@@ -39,7 +39,13 @@ public class b2MotorJointDef : b2JointDef {
   }
   
   /// Initialize the bodies and offsets using the current transforms.
-  public func initialize(bodyA: b2Body, bodyB: b2Body) {
+  public convenience init(bodyA: b2Body, bodyB: b2Body) {
+    self.init()
+    initialize(bodyA: bodyA, bodyB: bodyB)
+  }
+  
+  /// Initialize the bodies and offsets using the current transforms.
+  public func initialize(#bodyA: b2Body, bodyB: b2Body) {
     self.bodyA = bodyA
     self.bodyB = bodyB
     let xB = bodyB.position

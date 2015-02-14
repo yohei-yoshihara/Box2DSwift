@@ -42,7 +42,14 @@ public class b2WeldJointDef : b2JointDef {
   
   /// Initialize the bodies, anchors, and reference angle using a world
   /// anchor point.
-  public func initialize(bodyA: b2Body, bodyB: b2Body, anchor: b2Vec2) {
+  public convenience init(bodyA: b2Body, bodyB: b2Body, anchor: b2Vec2) {
+    self.init()
+    initialize(bodyA: bodyA, bodyB: bodyB, anchor: anchor)
+  }
+  
+  /// Initialize the bodies, anchors, and reference angle using a world
+  /// anchor point.
+  public func initialize(#bodyA: b2Body, bodyB: b2Body, anchor: b2Vec2) {
     self.bodyA = bodyA
     self.bodyB = bodyB
     self.localAnchorA = bodyA.getLocalPoint(anchor)

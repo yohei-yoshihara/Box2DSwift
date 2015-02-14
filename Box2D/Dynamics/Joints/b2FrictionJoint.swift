@@ -39,7 +39,14 @@ public class b2FrictionJointDef : b2JointDef {
   
   /// Initialize the bodies, anchors, axis, and reference angle using the world
   /// anchor and world axis.
-  public func initialize(bodyA bA: b2Body, _ bB: b2Body, _ anchor: b2Vec2) {
+  public convenience init(bodyA: b2Body, bodyB: b2Body, anchor: b2Vec2) {
+    self.init()
+    initialize(bodyA: bodyA, bodyB: bodyB, anchor: anchor)
+  }
+  
+  /// Initialize the bodies, anchors, axis, and reference angle using the world
+  /// anchor and world axis.
+  public func initialize(bodyA bA: b2Body, bodyB bB: b2Body, anchor: b2Vec2) {
     bodyA = bA
     bodyB = bB
     localAnchorA = bodyA.getLocalPoint(anchor)

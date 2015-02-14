@@ -45,7 +45,14 @@ public class b2DistanceJointDef : b2JointDef {
   
   /// Initialize the bodies, anchors, and length using the world
   /// anchors.
-  public func initialize(bA: b2Body, bodyB bB: b2Body, anchorA: b2Vec2, anchorB: b2Vec2) {
+  public convenience init(bodyA: b2Body, bodyB: b2Body, anchorA: b2Vec2, anchorB: b2Vec2) {
+    self.init()
+    initialize(bodyA: bodyA, bodyB: bodyB, anchorA: anchorA, anchorB: anchorB)
+  }
+  
+  /// Initialize the bodies, anchors, and length using the world
+  /// anchors.
+  public func initialize(bodyA bA: b2Body, bodyB bB: b2Body, anchorA: b2Vec2, anchorB: b2Vec2) {
     bodyA = bA
     bodyB = bB
     localAnchorA = bodyA.getLocalPoint(anchorA)
