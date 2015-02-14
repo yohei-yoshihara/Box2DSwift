@@ -140,16 +140,16 @@ class Settings : Printable {
   var debugDrawFlag : UInt32 {
     var flags: UInt32 = 0
     if drawShapes {
-      flags |= b2DrawFlags.e_shapeBit
+      flags |= b2DrawFlags.shapeBit
     }
     if drawJoints {
-      flags |= b2DrawFlags.e_jointBit
+      flags |= b2DrawFlags.jointBit
     }
     if drawAABBs {
-      flags |= b2DrawFlags.e_aabbBit
+      flags |= b2DrawFlags.aabbBit
     }
     if drawCOMs {
-      flags |= b2DrawFlags.e_centerOfMassBit
+      flags |= b2DrawFlags.centerOfMassBit
     }
     return flags
   }

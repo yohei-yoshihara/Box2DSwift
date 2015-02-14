@@ -232,7 +232,7 @@ public class b2Island {
           continue
         }
         
-        if (b.m_flags & b2Body.Flags.e_autoSleepFlag) == 0 ||
+        if (b.m_flags & b2Body.Flags.autoSleepFlag) == 0 ||
           b.m_angularVelocity * b.m_angularVelocity > angTolSqr ||
           b2Dot(b.m_linearVelocity, b.m_linearVelocity) > linTolSqr {
             b.m_sleepTime = 0.0

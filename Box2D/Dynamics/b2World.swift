@@ -54,7 +54,7 @@ public class b2World {
     m_allowSleep = true
     m_gravity = gravity
     
-    m_flags = Flags.e_clearForces
+    m_flags = Flags.clearForces
     
     m_inv_dt0 = 0.0
     
@@ -340,12 +340,12 @@ public class b2World {
     let stepTimer = b2Timer()
     
     // If new fixtures were added, we need to find the new contacts.
-    if (m_flags & Flags.e_newFixture) != 0 {
+    if (m_flags & Flags.newFixture) != 0 {
       m_contactManager.findNewContacts()
-      m_flags &= ~Flags.e_newFixture
+      m_flags &= ~Flags.newFixture
     }
     
-    m_flags |= Flags.e_locked
+    m_flags |= Flags.locked
     
     var step = b2TimeStep()
     step.dt = dt
@@ -387,11 +387,11 @@ public class b2World {
       m_inv_dt0 = step.inv_dt
     }
     
-    if (m_flags & Flags.e_clearForces) != 0 {
+    if (m_flags & Flags.clearForces) != 0 {
       clearForces()
     }
     
-    m_flags &= ~Flags.e_locked
+    m_flags &= ~Flags.locked
     
     m_profile.step = stepTimer.milliseconds
   }
@@ -418,7 +418,7 @@ public class b2World {
     
     let flags = m_debugDraw!.flags
     
-    if (flags & b2DrawFlags.e_shapeBit) != 0 {
+    if (flags & b2DrawFlags.shapeBit) != 0 {
       for (var b = m_bodyList; b != nil; b = b!.getNext()) {
         let xf = b!.transform
         for (var f = b!.getFixtureList(); f != nil; f = f!.getNext()) {
@@ -442,13 +442,13 @@ public class b2World {
       }
     }
     
-    if (flags & b2DrawFlags.e_jointBit) != 0 {
+    if (flags & b2DrawFlags.jointBit) != 0 {
       for (var j = m_jointList; j != nil; j = j!.getNext()) {
         drawJoint(j!)
       }
     }
     
-    if (flags & b2DrawFlags.e_pairBit) != 0 {
+    if (flags & b2DrawFlags.pairBit) != 0 {
       let color = b2Color(0.3, 0.9, 0.9)
       for (var c = m_contactManager.m_contactList; c != nil; c = c!.getNext()) {
         //let fixtureA = c!.fixtureA
@@ -461,7 +461,7 @@ public class b2World {
       }
     }
     
-    if (flags & b2DrawFlags.e_aabbBit) != 0 {
+    if (flags & b2DrawFlags.aabbBit) != 0 {
       let color = b2Color(0.9, 0.3, 0.9)
       var bp = m_contactManager.m_broadPhase
       
@@ -486,7 +486,7 @@ public class b2World {
       }
     }
     
-    if (flags & b2DrawFlags.e_centerOfMassBit) != 0 {
+    if (flags & b2DrawFlags.centerOfMassBit) != 0 {
       for (var b = m_bodyList; b != nil; b = b!.getNext()) {
         var xf = b!.transform
         xf.p = b!.worldCenter
@@ -684,30 +684,30 @@ public class b2World {
   
   /// Is the world locked (in the middle of a time step).
   public var isLocked: Bool {
-    return (m_flags & Flags.e_locked) == Flags.e_locked
+    return (m_flags & Flags.locked) == Flags.locked
   }
   
   /// Set flag to control automatic clearing of forces after each time step.
   public func setAutoClearForces(flag: Bool) {
     if flag {
-      m_flags |= Flags.e_clearForces
+      m_flags |= Flags.clearForces
     }
     else {
-      m_flags &= ~Flags.e_clearForces
+      m_flags &= ~Flags.clearForces
     }
   }
   
   /// Get the flag that controls automatic clearing of forces after each time step.
   public var autoClearForces: Bool {
-    return (m_flags & Flags.e_clearForces) == Flags.e_clearForces
+    return (m_flags & Flags.clearForces) == Flags.clearForces
   }
   
   /// Shift the world origin. Useful for large worlds.
   /// The body shift formula is: position -= newOrigin
   /// @param newOrigin the new origin with respect to the old origin
   public func shiftOrigin(newOrigin: b2Vec2) {
-    assert((m_flags & Flags.e_locked) == 0)
-    if (m_flags & Flags.e_locked) == Flags.e_locked {
+    assert((m_flags & Flags.locked) == 0)
+    if (m_flags & Flags.locked) == Flags.locked {
       return
     }
     
@@ -736,7 +736,7 @@ public class b2World {
   /// Dump the world into the log file.
   /// @warning this should be called outside of a time step.
   public func dump() {
-    if (m_flags & Flags.e_locked) == Flags.e_locked {
+    if (m_flags & Flags.locked) == Flags.locked {
       return
     }
     
@@ -789,9 +789,9 @@ public class b2World {
   // MARK: - private methods
   
   struct Flags {
-    static let e_newFixture: UInt32	= 0x0001
-    static let e_locked: UInt32		= 0x0002
-    static let e_clearForces: UInt32	= 0x0004
+    static let newFixture: UInt32	= 0x0001
+    static let locked: UInt32		= 0x0002
+    static let clearForces: UInt32	= 0x0004
   }
   
   // Find islands, integrate and solve constraints, solve position constraints
@@ -817,10 +817,10 @@ public class b2World {
     
     // Clear all the island flags.
     for (var b = m_bodyList; b != nil; b = b!.m_next) {
-      b!.m_flags &= ~b2Body.Flags.e_islandFlag
+      b!.m_flags &= ~b2Body.Flags.islandFlag
     }
     for (var c = m_contactManager.m_contactList; c != nil; c = c!.m_next) {
-      c!.m_flags &= ~b2Contact.Flags.e_islandFlag
+      c!.m_flags &= ~b2Contact.Flags.islandFlag
     }
     for (var j = m_jointList; j != nil; j = j!.m_next) {
       j!.m_islandFlag = false
@@ -831,7 +831,7 @@ public class b2World {
     var stack = [b2Body]()
     stack.reserveCapacity(stackSize)
     for (var seed = m_bodyList; seed != nil; seed = seed!.m_next) {
-      if (seed!.m_flags & b2Body.Flags.e_islandFlag) != 0 {
+      if (seed!.m_flags & b2Body.Flags.islandFlag) != 0 {
         continue
       }
       
@@ -848,7 +848,7 @@ public class b2World {
       island.clear()
       //var stackCount: Int = 0
       stack.append(seed!)
-      seed!.m_flags |= b2Body.Flags.e_islandFlag
+      seed!.m_flags |= b2Body.Flags.islandFlag
       // Perform a depth first search (DFS) on the constraint graph.
       while stack.count > 0 {
         // Grab the next body off the stack and add it to the island.
@@ -870,7 +870,7 @@ public class b2World {
           let contact = ce!.contact
           
           // Has this contact already been added to an island?
-          if (contact.m_flags & b2Contact.Flags.e_islandFlag) != 0 {
+          if (contact.m_flags & b2Contact.Flags.islandFlag) != 0 {
             continue
           }
           
@@ -887,18 +887,18 @@ public class b2World {
           }
           
           island.add(contact)
-          contact.m_flags |= b2Contact.Flags.e_islandFlag
+          contact.m_flags |= b2Contact.Flags.islandFlag
           
           let other = ce!.other
           
           // Was the other body already added to this island?
-          if (other.m_flags & b2Body.Flags.e_islandFlag) != 0 {
+          if (other.m_flags & b2Body.Flags.islandFlag) != 0 {
             continue
           }
           
           assert(stack.count < stackSize)
           stack.append(other)
-          other.m_flags |= b2Body.Flags.e_islandFlag
+          other.m_flags |= b2Body.Flags.islandFlag
         }
         
         // Search all joints connect to this body.
@@ -917,13 +917,13 @@ public class b2World {
 				  island.add(je!.joint)
 				  je!.joint.m_islandFlag = true
 
-				  if (other.m_flags & b2Body.Flags.e_islandFlag) != 0 {
+				  if (other.m_flags & b2Body.Flags.islandFlag) != 0 {
 					  continue
 				  }
 
 				  assert(stack.count < stackSize)
 				  stack.append(other)
-				  other.m_flags |= b2Body.Flags.e_islandFlag
+				  other.m_flags |= b2Body.Flags.islandFlag
 			  }
 		  }
 
@@ -938,7 +938,7 @@ public class b2World {
 			  // Allow static bodies to participate in other islands.
 			  var b = island.m_bodies[i]
 			  if b.type == b2BodyType.staticBody {
-				  b.m_flags &= ~b2Body.Flags.e_islandFlag
+				  b.m_flags &= ~b2Body.Flags.islandFlag
 			  }
 		  }
 	  }
@@ -951,7 +951,7 @@ public class b2World {
 		  // Synchronize fixtures, check for out of range bodies.
 		  for (var b = self.m_bodyList; b != nil; b = b!.getNext()) {
 			  // If a body was not in an island then it did not move.
-			  if (b!.m_flags & b2Body.Flags.e_islandFlag) == 0 {
+			  if (b!.m_flags & b2Body.Flags.islandFlag) == 0 {
 				  continue
 			  }
 
@@ -982,13 +982,13 @@ public class b2World {
     
     if m_stepComplete {
       for (var b = m_bodyList; b != nil; b = b!.m_next) {
-        b!.m_flags &= ~b2Body.Flags.e_islandFlag
+        b!.m_flags &= ~b2Body.Flags.islandFlag
         b!.m_sweep.alpha0 = 0.0
       }
       
       for (var c = m_contactManager.m_contactList; c != nil; c = c!.m_next) {
         // Invalidate TOI
-        c!.m_flags &= ~(b2Contact.Flags.e_toiFlag | b2Contact.Flags.e_islandFlag)
+        c!.m_flags &= ~(b2Contact.Flags.toiFlag | b2Contact.Flags.islandFlag)
         c!.m_toiCount = 0
         c!.m_toi = 1.0
       }
@@ -1012,7 +1012,7 @@ public class b2World {
         }
         
         var alpha: b2Float = 1.0
-        if (c!.m_flags & b2Contact.Flags.e_toiFlag) != 0 {
+        if (c!.m_flags & b2Contact.Flags.toiFlag) != 0 {
           // This contact has a valid cached TOI.
           alpha = c!.m_toi
         }
@@ -1087,7 +1087,7 @@ public class b2World {
           }
           
           c!.m_toi = alpha
-          c!.m_flags |= b2Contact.Flags.e_toiFlag
+          c!.m_flags |= b2Contact.Flags.toiFlag
         }
         
         if alpha < minAlpha {
@@ -1117,7 +1117,7 @@ public class b2World {
       
       // The TOI contact likely has some new contact points.
       minContact!.update(m_contactManager.m_contactListener)
-      minContact!.m_flags &= ~b2Contact.Flags.e_toiFlag
+      minContact!.m_flags &= ~b2Contact.Flags.toiFlag
       ++minContact!.m_toiCount
       
       // Is the contact solid?
@@ -1140,9 +1140,9 @@ public class b2World {
       island.add(bB)
       island.add(minContact!)
       
-      bA.m_flags |= b2Body.Flags.e_islandFlag
-      bB.m_flags |= b2Body.Flags.e_islandFlag
-      minContact!.m_flags |= b2Contact.Flags.e_islandFlag
+      bA.m_flags |= b2Body.Flags.islandFlag
+      bB.m_flags |= b2Body.Flags.islandFlag
+      minContact!.m_flags |= b2Contact.Flags.islandFlag
       
       // Get contacts on bodyA and bodyB.
       var bodies = [bA, bB]
@@ -1161,7 +1161,7 @@ public class b2World {
             let contact = ce!.contact
             
             // Has this contact already been added to the island?
-            if (contact.m_flags & b2Contact.Flags.e_islandFlag) != 0 {
+            if (contact.m_flags & b2Contact.Flags.islandFlag) != 0 {
               continue
             }
             
@@ -1181,7 +1181,7 @@ public class b2World {
             
             // Tentatively advance the body to the TOI.
             let backup = other.m_sweep
-            if (other.m_flags & b2Body.Flags.e_islandFlag) == 0 {
+            if (other.m_flags & b2Body.Flags.islandFlag) == 0 {
               other.advance(minAlpha)
             }
             
@@ -1203,16 +1203,16 @@ public class b2World {
             }
             
             // Add the contact to the island
-            contact.m_flags |= b2Contact.Flags.e_islandFlag
+            contact.m_flags |= b2Contact.Flags.islandFlag
             island.add(contact)
             
             // Has the other body already been added to the island?
-            if (other.m_flags & b2Body.Flags.e_islandFlag) != 0 {
+            if (other.m_flags & b2Body.Flags.islandFlag) != 0 {
               continue
             }
             
             // Add the other body to the island.
-            other.m_flags |= b2Body.Flags.e_islandFlag
+            other.m_flags |= b2Body.Flags.islandFlag
             
             if other.m_type != b2BodyType.staticBody {
               other.setAwake(true)
@@ -1235,7 +1235,7 @@ public class b2World {
       // Reset island flags and synchronize broad-phase proxies.
       for i in 0 ..< island.m_bodyCount {
         var body = island.m_bodies[i]
-        body.m_flags &= ~b2Body.Flags.e_islandFlag
+        body.m_flags &= ~b2Body.Flags.islandFlag
         
         if body.m_type != b2BodyType.dynamicBody {
           continue
@@ -1245,7 +1245,7 @@ public class b2World {
         
         // Invalidate all contact TOIs on this displaced body.
         for (var ce = body.m_contactList; ce != nil; ce = ce!.next) {
-          ce!.contact.m_flags &= ~(b2Contact.Flags.e_toiFlag | b2Contact.Flags.e_islandFlag)
+          ce!.contact.m_flags &= ~(b2Contact.Flags.toiFlag | b2Contact.Flags.islandFlag)
         }
       }
       
@@ -1346,7 +1346,7 @@ public class b2World {
   var m_island: b2Island! = nil
   var m_TOIIsland: b2Island! = nil
   
-  var m_flags = Flags.e_clearForces
+  var m_flags = Flags.clearForces
   
   var m_contactManager = b2ContactManager()
   

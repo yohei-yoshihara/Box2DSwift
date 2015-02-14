@@ -221,7 +221,7 @@ public class b2ContactManager: b2BroadPhaseWrapper {
       let bodyB = fixtureB.body
       
       // Is this contact flagged for filtering?
-      if (c!.m_flags & b2Contact.Flags.e_filterFlag) != 0 {
+      if (c!.m_flags & b2Contact.Flags.filterFlag) != 0 {
         // Should these bodies collide?
         if bodyB.shouldCollide(bodyA) == false {
           let cNuke = c!
@@ -239,7 +239,7 @@ public class b2ContactManager: b2BroadPhaseWrapper {
         }
         
         // Clear the filtering flag.
-        c!.m_flags &= ~b2Contact.Flags.e_filterFlag
+        c!.m_flags &= ~b2Contact.Flags.filterFlag
       }
       
       let activeA = bodyA.isAwake && bodyA.m_type != b2BodyType.staticBody

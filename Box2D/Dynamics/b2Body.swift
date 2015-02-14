@@ -130,7 +130,7 @@ public class b2Body : Printable {
     var fixture = b2Fixture(body: self, def: def)
     //fixture.Create(self, def: def)
     
-    if (m_flags & Flags.e_activeFlag) != 0 {
+    if (m_flags & Flags.activeFlag) != 0 {
       let broadPhase = m_world.m_contactManager.m_broadPhase
       fixture.createProxies(broadPhase, xf: m_xf)
     }
@@ -148,7 +148,7 @@ public class b2Body : Printable {
     
     // Let the world know we have a new fixture. This will cause new contacts
     // to be created at the beginning of the next time step.
-    m_world.m_flags |= b2World.Flags.e_newFixture
+    m_world.m_flags |= b2World.Flags.newFixture
     
     return fixture
   }
@@ -224,7 +224,7 @@ public class b2Body : Printable {
       }
     }
     
-    if (m_flags & Flags.e_activeFlag) != 0 {
+    if (m_flags & Flags.activeFlag) != 0 {
       let broadPhase = m_world.m_contactManager.m_broadPhase
       fixture.destroyProxies(broadPhase)
     }
@@ -360,12 +360,12 @@ public class b2Body : Printable {
       return
     }
     
-    if wake && (m_flags & Flags.e_awakeFlag) == 0 {
+    if wake && (m_flags & Flags.awakeFlag) == 0 {
       setAwake(true)
     }
     
     // Don't accumulate a force if the body is sleeping.
-    if (m_flags & Flags.e_awakeFlag) != 0 {
+    if (m_flags & Flags.awakeFlag) != 0 {
       m_force += force
       m_torque += b2Cross(point - m_sweep.c, force)
     }
@@ -382,12 +382,12 @@ public class b2Body : Printable {
       return
     }
         
-    if wake && (m_flags & Flags.e_awakeFlag) == 0 {
+    if wake && (m_flags & Flags.awakeFlag) == 0 {
       setAwake(true)
     }
         
     // Don't accumulate a force if the body is sleeping
-    if (m_flags & Flags.e_awakeFlag) != 0 {
+    if (m_flags & Flags.awakeFlag) != 0 {
       m_force += force
     }
   }
@@ -405,12 +405,12 @@ public class b2Body : Printable {
       return
     }
       
-    if wake && (m_flags & Flags.e_awakeFlag) == 0 {
+    if wake && (m_flags & Flags.awakeFlag) == 0 {
       setAwake(true)
     }
       
     // Don't accumulate a force if the body is sleeping
-    if (m_flags & Flags.e_awakeFlag) != 0 {
+    if (m_flags & Flags.awakeFlag) != 0 {
       m_torque += torque
     }
   }
@@ -429,12 +429,12 @@ public class b2Body : Printable {
       return
     }
     
-    if wake && (m_flags & Flags.e_awakeFlag) == 0 {
+    if wake && (m_flags & Flags.awakeFlag) == 0 {
       setAwake(true)
     }
     
     // Don't accumulate velocity if the body is sleeping
-    if (m_flags & Flags.e_awakeFlag) != 0 {
+    if (m_flags & Flags.awakeFlag) != 0 {
       m_linearVelocity += m_invMass * impulse
       m_angularVelocity += m_invI * b2Cross(point - m_sweep.c, impulse)
     }
@@ -451,12 +451,12 @@ public class b2Body : Printable {
       return
     }
         
-    if wake && (m_flags & Flags.e_awakeFlag) == 0 {
+    if wake && (m_flags & Flags.awakeFlag) == 0 {
       setAwake(true)
     }
         
     // Don't accumulate velocity if the body is sleeping
-    if (m_flags & Flags.e_awakeFlag) != 0 {
+    if (m_flags & Flags.awakeFlag) != 0 {
       m_angularVelocity += m_invI * impulse
     }
   }
@@ -514,7 +514,7 @@ public class b2Body : Printable {
       
     m_invMass = 1.0 / m_mass
       
-    if massData.I > 0.0 && (m_flags & b2Body.Flags.e_fixedRotationFlag) == 0 {
+    if massData.I > 0.0 && (m_flags & b2Body.Flags.fixedRotationFlag) == 0 {
       m_I = massData.I - m_mass * b2Dot(massData.center, massData.center)
       assert(m_I > 0.0)
       m_invI = 1.0 / m_I
@@ -575,7 +575,7 @@ public class b2Body : Printable {
       m_invMass = 1.0
     }
         
-    if m_I > 0.0 && (m_flags & Flags.e_fixedRotationFlag) == 0 {
+    if m_I > 0.0 && (m_flags & Flags.fixedRotationFlag) == 0 {
       // Center the inertia about the center of mass.
       m_I -= m_mass * b2Dot(localCenter, localCenter)
       assert(m_I > 0.0)
@@ -761,17 +761,17 @@ public class b2Body : Printable {
   /// Should this body be treated like a bullet for continuous collision detection?
   public func setBullet(flag: Bool) {
     if flag {
-      m_flags |= Flags.e_bulletFlag
+      m_flags |= Flags.bulletFlag
     }
     else {
-      m_flags &= ~Flags.e_bulletFlag
+      m_flags &= ~Flags.bulletFlag
     }
   }
   
   /// Is this body treated like a bullet for continuous collision detection?
   public var isBullet: Bool {
     get {
-      return (m_flags & Flags.e_bulletFlag) == Flags.e_bulletFlag
+      return (m_flags & Flags.bulletFlag) == Flags.bulletFlag
     }
     set {
       setBullet(newValue)
@@ -782,10 +782,10 @@ public class b2Body : Printable {
   /// body will be woken.
   public func setSleepingAllowed(flag: Bool) {
     if flag {
-      m_flags |= Flags.e_autoSleepFlag
+      m_flags |= Flags.autoSleepFlag
     }
     else {
-      m_flags &= ~Flags.e_autoSleepFlag
+      m_flags &= ~Flags.autoSleepFlag
       setAwake(true)
     }
   }
@@ -793,7 +793,7 @@ public class b2Body : Printable {
   /// Is this body allowed to sleep
   public var isSleepingAllowed: Bool {
     get {
-      return (m_flags & Flags.e_autoSleepFlag) == Flags.e_autoSleepFlag
+      return (m_flags & Flags.autoSleepFlag) == Flags.autoSleepFlag
     }
     set {
       setSleepingAllowed(newValue)
@@ -808,13 +808,13 @@ public class b2Body : Printable {
   */
   public func setAwake(flag: Bool) {
     if flag {
-      if (m_flags & Flags.e_awakeFlag) == 0 {
-        m_flags |= Flags.e_awakeFlag
+      if (m_flags & Flags.awakeFlag) == 0 {
+        m_flags |= Flags.awakeFlag
         m_sleepTime = 0.0
       }
     }
     else {
-      m_flags &= ~Flags.e_awakeFlag
+      m_flags &= ~Flags.awakeFlag
       m_sleepTime = 0.0
       m_linearVelocity.setZero()
       m_angularVelocity = 0.0
@@ -826,7 +826,7 @@ public class b2Body : Printable {
   /// Get the sleeping state of this body.
   /// @return true if the body is awake.
   public var isAwake: Bool {
-    return (m_flags & Flags.e_awakeFlag) == Flags.e_awakeFlag
+    return (m_flags & Flags.awakeFlag) == Flags.awakeFlag
   }
   
   /// Set the active state of the body. An inactive body is not
@@ -850,7 +850,7 @@ public class b2Body : Printable {
     }
       
     if flag {
-      m_flags |= Flags.e_activeFlag
+      m_flags |= Flags.activeFlag
       
       // Create all proxies.
       let broadPhase = m_world.m_contactManager.m_broadPhase
@@ -861,7 +861,7 @@ public class b2Body : Printable {
       // Contacts are created the next time step.
     }
     else {
-      m_flags &= ~Flags.e_activeFlag
+      m_flags &= ~Flags.activeFlag
       
       // Destroy all proxies.
       let broadPhase = m_world.m_contactManager.m_broadPhase
@@ -882,22 +882,22 @@ public class b2Body : Printable {
   
   /// Get the active state of the body.
   public var isActive: Bool {
-    return (m_flags & Flags.e_activeFlag) == Flags.e_activeFlag
+    return (m_flags & Flags.activeFlag) == Flags.activeFlag
   }
   
   /// Set this body to have fixed rotation. This causes the mass
   /// to be reset.
   public func setFixedRotation(flag : Bool) {
-    let status = (m_flags & Flags.e_fixedRotationFlag) == Flags.e_fixedRotationFlag
+    let status = (m_flags & Flags.fixedRotationFlag) == Flags.fixedRotationFlag
     if status == flag {
       return
     }
         
     if flag {
-      m_flags |= Flags.e_fixedRotationFlag
+      m_flags |= Flags.fixedRotationFlag
     }
     else {
-      m_flags &= ~Flags.e_fixedRotationFlag
+      m_flags &= ~Flags.fixedRotationFlag
     }
         
     m_angularVelocity = 0.0
@@ -907,7 +907,7 @@ public class b2Body : Printable {
   
   /// Does this body have fixed rotation?
   public var isFixedRotation: Bool {
-    return (m_flags & Flags.e_fixedRotationFlag) == Flags.e_fixedRotationFlag
+    return (m_flags & Flags.fixedRotationFlag) == Flags.fixedRotationFlag
   }
   
   /// Get the list of all fixtures attached to this body.
@@ -965,11 +965,11 @@ public class b2Body : Printable {
     println("  bd.angularVelocity = \(m_angularVelocity);")
     println("  bd.linearDamping = \(m_linearDamping);")
     println("  bd.angularDamping = \(m_angularDamping);")
-    println("  bd.allowSleep = bool(\(m_flags & Flags.e_autoSleepFlag));")
-    println("  bd.awake = bool(\(m_flags & Flags.e_awakeFlag));")
-    println("  bd.fixedRotation = bool(\(m_flags & Flags.e_fixedRotationFlag));")
-    println("  bd.bullet = bool(\(m_flags & Flags.e_bulletFlag));")
-    println("  bd.active = bool(\(m_flags & Flags.e_activeFlag));")
+    println("  bd.allowSleep = bool(\(m_flags & Flags.autoSleepFlag));")
+    println("  bd.awake = bool(\(m_flags & Flags.awakeFlag));")
+    println("  bd.fixedRotation = bool(\(m_flags & Flags.fixedRotationFlag));")
+    println("  bd.bullet = bool(\(m_flags & Flags.bulletFlag));")
+    println("  bd.active = bool(\(m_flags & Flags.activeFlag));")
     println("  bd.gravityScale = \(m_gravityScale);")
     println("  bodies[\(m_islandIndex)] = m_world->createBody(&bd);")
     println("")
@@ -987,13 +987,13 @@ public class b2Body : Printable {
   
   // MARK: private methods
   struct Flags {
-    static let e_islandFlag		      = UInt16(0x0001)
-    static let e_awakeFlag			    = UInt16(0x0002)
-    static let e_autoSleepFlag		  = UInt16(0x0004)
-    static let e_bulletFlag		      = UInt16(0x0008)
-    static let e_fixedRotationFlag	= UInt16(0x0010)
-    static let e_activeFlag		      = UInt16(0x0020)
-    static let e_toiFlag			      = UInt16(0x0040)
+    static let islandFlag		      = UInt16(0x0001)
+    static let awakeFlag			    = UInt16(0x0002)
+    static let autoSleepFlag		  = UInt16(0x0004)
+    static let bulletFlag		      = UInt16(0x0008)
+    static let fixedRotationFlag	= UInt16(0x0010)
+    static let activeFlag		      = UInt16(0x0020)
+    static let toiFlag			      = UInt16(0x0040)
   }
   
   init(_ def: b2BodyDef, _ world: b2World) {
@@ -1007,19 +1007,19 @@ public class b2Body : Printable {
     m_flags = 0
       
     if def.bullet {
-      m_flags |= Flags.e_bulletFlag
+      m_flags |= Flags.bulletFlag
     }
     if def.fixedRotation {
-      m_flags |= Flags.e_fixedRotationFlag
+      m_flags |= Flags.fixedRotationFlag
     }
     if def.allowSleep {
-      m_flags |= Flags.e_autoSleepFlag
+      m_flags |= Flags.autoSleepFlag
     }
     if def.awake {
-      m_flags |= Flags.e_awakeFlag
+      m_flags |= Flags.awakeFlag
     }
     if def.active {
-      m_flags |= Flags.e_activeFlag
+      m_flags |= Flags.activeFlag
     }
       
     m_world = world

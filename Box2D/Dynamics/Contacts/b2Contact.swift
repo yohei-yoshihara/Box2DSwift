@@ -107,7 +107,7 @@ public class b2Contact {
   
   /// Is this contact touching?
   public var isTouching: Bool {
-    return (m_flags & Flags.e_touchingFlag) == Flags.e_touchingFlag
+    return (m_flags & Flags.touchingFlag) == Flags.touchingFlag
   }
   
   /// Enable/disable this contact. This can be used inside the pre-solve
@@ -115,16 +115,16 @@ public class b2Contact {
   /// time step (or sub-step in continuous collisions).
   public func setEnabled(flag: Bool) {
     if flag {
-      m_flags |= Flags.e_enabledFlag
+      m_flags |= Flags.enabledFlag
     }
     else {
-      m_flags &= ~Flags.e_enabledFlag
+      m_flags &= ~Flags.enabledFlag
     }
   }
   
   /// Has this contact been disabled?
   public var isEnabled: Bool {
-    return (m_flags & Flags.e_enabledFlag) == Flags.e_enabledFlag
+    return (m_flags & Flags.enabledFlag) == Flags.enabledFlag
   }
   
   /// Get the next contact in the world's contact list.
@@ -215,22 +215,22 @@ public class b2Contact {
   // Flags stored in m_flags
   // Used when crawling contact graph when forming islands.
   struct Flags {
-    static let e_islandFlag		= UInt32(0x0001)
+    static let islandFlag		= UInt32(0x0001)
     
     // Set when the shapes are touching.
-    static let e_touchingFlag		= UInt32(0x0002)
+    static let touchingFlag		= UInt32(0x0002)
     
     // This contact can be disabled (by user)
-    static let e_enabledFlag		= UInt32(0x0004)
+    static let enabledFlag		= UInt32(0x0004)
     
     // This contact needs filtering because a fixture filter was changed.
-    static let e_filterFlag		= UInt32(0x0008)
+    static let filterFlag		= UInt32(0x0008)
     
     // This bullet contact had a TOI event
-    static let e_bulletHitFlag		= UInt32(0x0010)
+    static let bulletHitFlag		= UInt32(0x0010)
     
     // This contact has a valid TOI in m_toi
-    static let e_toiFlag			= UInt32(0x0020)
+    static let toiFlag			= UInt32(0x0020)
   }
 
   /// Flag this contact for filtering. Filtering will occur the next time step.
@@ -308,7 +308,7 @@ public class b2Contact {
   }
   
   init(_ fixtureA: b2Fixture, _ indexA: Int, _ fixtureB: b2Fixture, _ indexB: Int) {
-    m_flags = Flags.e_enabledFlag
+    m_flags = Flags.enabledFlag
     
     m_fixtureA = fixtureA
     m_fixtureB = fixtureB
@@ -343,10 +343,10 @@ public class b2Contact {
     let oldManifold = b2Manifold(copyFrom: m_manifold)
     
     // Re-enable this contact.
-    m_flags |= Flags.e_enabledFlag
+    m_flags |= Flags.enabledFlag
     
     var touching = false
-    let wasTouching = (m_flags & Flags.e_touchingFlag) == Flags.e_touchingFlag
+    let wasTouching = (m_flags & Flags.touchingFlag) == Flags.touchingFlag
     
     let sensorA = m_fixtureA.isSensor
     let sensorB = m_fixtureB.isSensor
@@ -398,10 +398,10 @@ public class b2Contact {
     }
     
     if touching {
-      m_flags |= Flags.e_touchingFlag
+      m_flags |= Flags.touchingFlag
     }
     else {
-      m_flags &= ~Flags.e_touchingFlag
+      m_flags &= ~Flags.touchingFlag
     }
     
     if wasTouching == false && touching == true && listener != nil {

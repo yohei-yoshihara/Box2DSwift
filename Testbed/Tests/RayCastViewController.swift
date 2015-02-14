@@ -93,7 +93,7 @@ class RayCastAnyCallback : b2RayCastCallback {
 // The fixtures are not necessary reported in order, so we might not capture
 // the closest fixture.
 class RayCastMultipleCallback : b2RayCastCallback {
-  let e_maxCount = 3
+  let maxCount = 3
   
   func reportFixture(fixture: b2Fixture, point: b2Vec2, normal: b2Vec2, fraction: b2Float) -> b2Float {
     let body = fixture.body
@@ -107,13 +107,13 @@ class RayCastMultipleCallback : b2RayCastCallback {
       }
     }
     
-    assert(self.count < e_maxCount)
+    assert(self.count < maxCount)
     
     self.points.append(point)
     self.normals.append(normal)
     ++self.count;
     
-    if count == e_maxCount {
+    if count == maxCount {
       // At this point the buffer is full.
       // By returning 0, we instruct the calling code to terminate the ray-cast.
       return 0.0
@@ -137,11 +137,11 @@ class RayCastViewController: BaseViewController, TextListViewControllerDelegate 
   var edge: b2EdgeShape!
   var angle: b2Float = 0.0
   enum Mode {
-    case e_closest
-    case e_any
-    case e_multiple
+    case closest
+    case any
+    case multiple
   }
-  var mode: Mode = Mode.e_closest
+  var mode: Mode = Mode.closest
   
   override func viewDidLoad() {
     super.viewDidLoad()
@@ -227,7 +227,7 @@ class RayCastViewController: BaseViewController, TextListViewControllerDelegate 
     
     angle = 0.0
     
-    mode = Mode.e_closest
+    mode = Mode.closest
   }
   
   override func step() {
@@ -238,7 +238,7 @@ class RayCastViewController: BaseViewController, TextListViewControllerDelegate 
     let d = b2Vec2(L * cosf(angle), L * sinf(angle))
     let point2 = point1 + d
     
-    if mode == Mode.e_closest {
+    if mode == Mode.closest {
       var callback = RayCastClosestCallback()
       world.rayCast(callback: callback, point1: point1, point2: point2)
       if callback.hit {
@@ -251,7 +251,7 @@ class RayCastViewController: BaseViewController, TextListViewControllerDelegate 
         debugDraw.drawSegment(point1, point2, b2Color(0.8, 0.8, 0.8))
       }
     }
-    else if mode == Mode.e_any {
+    else if mode == Mode.any {
       var callback = RayCastAnyCallback()
       world.rayCast(callback: callback, point1: point1, point2: point2)
       
@@ -265,7 +265,7 @@ class RayCastViewController: BaseViewController, TextListViewControllerDelegate 
         debugDraw.drawSegment(point1, point2, b2Color(0.8, 0.8, 0.8))
       }
     }
-    else if mode == Mode.e_multiple {
+    else if mode == Mode.multiple {
       var callback = RayCastMultipleCallback()
       world.rayCast(callback: callback, point1: point1, point2: point2)
       debugDraw.drawSegment(point1, point2, b2Color(0.8, 0.8, 0.8))
@@ -352,13 +352,13 @@ class RayCastViewController: BaseViewController, TextListViewControllerDelegate 
     }
     else if name == "Mode" {
       if index == 0 {
-        mode = Mode.e_closest
+        mode = Mode.closest
       }
       else if index == 1 {
-        mode = Mode.e_any
+        mode = Mode.any
       }
       else if index == 2 {
-        mode = Mode.e_multiple
+        mode = Mode.multiple
       }
     }
   }
