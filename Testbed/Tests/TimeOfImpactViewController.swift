@@ -28,14 +28,14 @@ import UIKit
 import Box2D
 
 class TimeOfImpactViewController: BaseViewController {
-  var m_shapeA: b2PolygonShape!
-  var m_shapeB: b2PolygonShape!
+  var shapeA: b2PolygonShape!
+  var shapeB: b2PolygonShape!
 
   override func prepare() {
-    m_shapeA = b2PolygonShape()
-    m_shapeA.setAsBox(halfWidth: 25.0, halfHeight: 5.0)
-    m_shapeB = b2PolygonShape()
-    m_shapeB.setAsBox(halfWidth: 2.5, halfHeight: 2.5)
+    shapeA = b2PolygonShape()
+    shapeA.setAsBox(halfWidth: 25.0, halfHeight: 5.0)
+    shapeB = b2PolygonShape()
+    shapeB.setAsBox(halfWidth: 2.5, halfHeight: 2.5)
   }
 
   override func step() {
@@ -57,8 +57,8 @@ class TimeOfImpactViewController: BaseViewController {
     //sweepB.a -= 300.0f * b2_pi;
     
     var input = b2TOIInput()
-    input.proxyA.set(m_shapeA, 0)
-    input.proxyB.set(m_shapeB, 0)
+    input.proxyA.set(shapeA, 0)
+    input.proxyB.set(shapeB, 0)
     input.sweepA = sweepA
     input.sweepB = sweepB
     input.tMax = 1.0
@@ -67,19 +67,19 @@ class TimeOfImpactViewController: BaseViewController {
     
     b2TimeOfImpact(&output, input)
     /*
-    debugDraw.DrawString(5, m_textLine, "toi = %g", output.t);
-    m_textLine += DRAW_STRING_NEW_LINE;
+    debugDraw.DrawString(5, textLine, "toi = %g", output.t);
+    textLine += DRAW_STRING_NEW_LINE;
     
     extern int32 b2_toiMaxIters, b2_toiMaxRootIters;
-    debugDraw.DrawString(5, m_textLine, "max toi iters = %d, max root iters = %d", b2_toiMaxIters, b2_toiMaxRootIters);
-    m_textLine += DRAW_STRING_NEW_LINE;
+    debugDraw.DrawString(5, textLine, "max toi iters = %d, max root iters = %d", b2_toiMaxIters, b2_toiMaxRootIters);
+    textLine += DRAW_STRING_NEW_LINE;
     */
     var vertices = [b2Vec2]() // [b2_maxPolygonVertices];
     
     var transformA = sweepA.getTransform(beta: 0.0)
     
-    for i in 0 ..< m_shapeA.count {
-      vertices.append(b2Mul(transformA, m_shapeA.vertices[i]))
+    for i in 0 ..< shapeA.count {
+      vertices.append(b2Mul(transformA, shapeA.vertices[i]))
     }
     debugDraw.drawPolygon(vertices, b2Color(0.9, 0.9, 0.9))
     vertices.removeAll(keepCapacity: true)
@@ -87,22 +87,22 @@ class TimeOfImpactViewController: BaseViewController {
     var transformB = sweepB.getTransform(beta: 0.0)
     let localPoint = b2Vec2(2.0, -0.1)
     
-    for i in 0 ..< m_shapeB.count {
-      vertices.append(b2Mul(transformB, m_shapeB.vertices[i]))
+    for i in 0 ..< shapeB.count {
+      vertices.append(b2Mul(transformB, shapeB.vertices[i]))
     }
     debugDraw.drawPolygon(vertices, b2Color(0.5, 0.9, 0.5))
     vertices.removeAll(keepCapacity: true)
     
     transformB = sweepB.getTransform(beta: output.t)
-    for i in 0 ..< m_shapeB.count {
-      vertices.append(b2Mul(transformB, m_shapeB.vertices[i]))
+    for i in 0 ..< shapeB.count {
+      vertices.append(b2Mul(transformB, shapeB.vertices[i]))
     }
     debugDraw.drawPolygon(vertices, b2Color(0.5, 0.7, 0.9))
     vertices.removeAll(keepCapacity: true)
     
     transformB = sweepB.getTransform(beta: 1.0)
-    for i in 0 ..< m_shapeB.count {
-      vertices.append(b2Mul(transformB, m_shapeB.vertices[i]))
+    for i in 0 ..< shapeB.count {
+      vertices.append(b2Mul(transformB, shapeB.vertices[i]))
     }
     debugDraw.drawPolygon(vertices, b2Color(0.9, 0.5, 0.5))
     vertices.removeAll(keepCapacity: true)
@@ -111,11 +111,11 @@ class TimeOfImpactViewController: BaseViewController {
       for (float32 t = 0.0f; t < 1.0f; t += 0.1f)
       {
       sweepB.GetTransform(&transformB, t);
-      for (int32 i = 0; i < m_shapeB.m_count; ++i)
+      for (int32 i = 0; i < shapeB.count; ++i)
       {
-      vertices[i] = b2Mul(transformB, m_shapeB.m_vertices[i]);
+      vertices[i] = b2Mul(transformB, shapeB.vertices[i]);
       }
-      debugDraw.drawPolygon(vertices, m_shapeB.m_count, b2Color(0.9f, 0.5f, 0.5f));
+      debugDraw.drawPolygon(vertices, shapeB.count, b2Color(0.9f, 0.5f, 0.5f));
       }
     #endif
 */

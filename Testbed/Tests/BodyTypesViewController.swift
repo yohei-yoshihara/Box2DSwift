@@ -28,9 +28,9 @@ import UIKit
 import Box2D
 
 class BodyTypesViewController: BaseViewController {
-  var m_attachment: b2Body!
-  var m_platform: b2Body!
-  let m_speed: b2Float = 3.0
+  var attachment: b2Body!
+  var platform: b2Body!
+  let speed: b2Float = 3.0
   
   override func viewDidLoad() {
     super.viewDidLoad()
@@ -47,17 +47,17 @@ class BodyTypesViewController: BaseViewController {
   }
   
   func onDynamic(sender: UIBarButtonItem) {
-    m_platform.setType(b2BodyType.dynamicBody)
+    platform.setType(b2BodyType.dynamicBody)
   }
 
   func onStatic(sender: UIBarButtonItem) {
-    m_platform.setType(b2BodyType.staticBody)
+    platform.setType(b2BodyType.staticBody)
   }
 
   func onKinematic(sender: UIBarButtonItem) {
-    m_platform.setType(b2BodyType.kinematicBody)
-    m_platform.setLinearVelocity(b2Vec2(-m_speed, 0.0))
-    m_platform.setAngularVelocity(0.0)
+    platform.setType(b2BodyType.kinematicBody)
+    platform.setLinearVelocity(b2Vec2(-speed, 0.0))
+    platform.setAngularVelocity(0.0)
   }
 
   override func prepare() {
@@ -80,11 +80,11 @@ class BodyTypesViewController: BaseViewController {
       let bd = b2BodyDef()
       bd.type = b2BodyType.dynamicBody
       bd.position.set(0.0, 3.0)
-      self.m_attachment = self.world.createBody(bd)
+      self.attachment = self.world.createBody(bd)
       
       let shape = b2PolygonShape()
       shape.setAsBox(halfWidth: 0.5, halfHeight: 2.0)
-      self.m_attachment.createFixture(shape: shape, density: 2.0)
+      self.attachment.createFixture(shape: shape, density: 2.0)
     }
     
     // Define platform
@@ -92,7 +92,7 @@ class BodyTypesViewController: BaseViewController {
       let bd = b2BodyDef()
       bd.type = b2BodyType.dynamicBody
       bd.position.set(-4.0, 5.0)
-      self.m_platform = self.world.createBody(bd)
+      self.platform = self.world.createBody(bd)
       
       let shape = b2PolygonShape()
       shape.setAsBox(halfWidth: 0.5, halfHeight: 4.0, center: b2Vec2(4.0, 0.0), angle: 0.5 * b2_pi)
@@ -101,16 +101,16 @@ class BodyTypesViewController: BaseViewController {
       fd.shape = shape
       fd.friction = 0.6
       fd.density = 2.0
-      self.m_platform.createFixture(fd)
+      self.platform.createFixture(fd)
       
       let rjd = b2RevoluteJointDef()
-      rjd.initialize(self.m_attachment, bodyB: self.m_platform, anchor: b2Vec2(0.0, 5.0))
+      rjd.initialize(self.attachment, bodyB: self.platform, anchor: b2Vec2(0.0, 5.0))
       rjd.maxMotorTorque = 50.0
       rjd.enableMotor = true
       self.world.createJoint(rjd)
       
       let pjd = b2PrismaticJointDef()
-      pjd.initialize(bodyA: ground, bodyB: self.m_platform, anchor: b2Vec2(0.0, 5.0), axis: b2Vec2(1.0, 0.0))
+      pjd.initialize(bodyA: ground, bodyB: self.platform, anchor: b2Vec2(0.0, 5.0), axis: b2Vec2(1.0, 0.0))
       
       pjd.maxMotorForce = 1000.0
       pjd.enableMotor = true
@@ -142,13 +142,13 @@ class BodyTypesViewController: BaseViewController {
   
   override func step() {
     // Drive the kinematic body.
-    if m_platform.type == b2BodyType.kinematicBody {
-      let p = m_platform.transform.p
-      var v = m_platform.linearVelocity
+    if platform.type == b2BodyType.kinematicBody {
+      let p = platform.transform.p
+      var v = platform.linearVelocity
     
       if (p.x < -10.0 && v.x < 0.0) || (p.x > 10.0 && v.x > 0.0) {
         v.x = -v.x
-        m_platform.setLinearVelocity(v)
+        platform.setLinearVelocity(v)
       }
     }
   }

@@ -163,8 +163,3 @@ class b2RayCastCallbackProxy: b2RayCastCallback {
     return self.callback(fixture: fixture, point: point, normal: normal, fraction: fraction)
   }
 }
-
-
-
-
-

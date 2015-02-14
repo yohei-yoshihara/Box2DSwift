@@ -38,17 +38,16 @@ class DynamicTreeTestViewController: BaseViewController, b2QueryWrapper, b2RayCa
   let actorCount = 128
   
   var worldExtent: b2Float = 15.0
-  var m_proxyExtent: b2Float = 0.5
+  var proxyExtent: b2Float = 0.5
   
-  var m_tree = b2DynamicTree<Actor>()
-  var m_queryAABB = b2AABB()
-  var m_rayCastInput = b2RayCastInput()
-  var m_rayCastOutput = b2RayCastOutput()
-  var m_rayActor: Actor? = nil
-  var m_actors = [Actor]()
-  //  var stepCount = 0
-  var m_automated = false
-  var m_additionalInfoView: AdditionalInfoView!
+  var tree = b2DynamicTree<Actor>()
+  var queryAABB = b2AABB()
+  var rayCastInput = b2RayCastInput()
+  var rayCastOutput = b2RayCastOutput()
+  var rayActor: Actor? = nil
+  var actors = [Actor]()
+  var automated = false
+  var additionalInfoView: AdditionalInfoView!
   
   override func viewDidLoad() {
     super.viewDidLoad()
@@ -65,12 +64,12 @@ class DynamicTreeTestViewController: BaseViewController, b2QueryWrapper, b2RayCa
       moveButton, flexible,
       ])
     
-    m_additionalInfoView = AdditionalInfoView(frame: self.view.bounds)
-    self.view.addSubview(m_additionalInfoView)
+    additionalInfoView = AdditionalInfoView(frame: self.view.bounds)
+    self.view.addSubview(additionalInfoView)
   }
   
   func onAuto(sender: UIBarButtonItem) {
-    m_automated = !m_automated
+    automated = !automated
   }
   
   func onCreate(sender: UIBarButtonItem) {
@@ -89,33 +88,33 @@ class DynamicTreeTestViewController: BaseViewController, b2QueryWrapper, b2RayCa
     for i in 0 ..< self.actorCount {
       var actor = Actor()
       GetRandomAABB(&actor.aabb)
-      actor.proxyId = m_tree.createProxy(aabb: actor.aabb, userData: actor)
-      m_actors.append(actor)
+      actor.proxyId = tree.createProxy(aabb: actor.aabb, userData: actor)
+      actors.append(actor)
     }
     
     stepCount = 0
     
     let h = worldExtent
-    m_queryAABB.lowerBound.set(-3.0, -4.0 + h);
-    m_queryAABB.upperBound.set(5.0, 6.0 + h)
+    queryAABB.lowerBound.set(-3.0, -4.0 + h);
+    queryAABB.upperBound.set(5.0, 6.0 + h)
     
-    m_rayCastInput.p1.set(-5.0, 5.0 + h)
-    m_rayCastInput.p2.set(7.0, -4.0 + h)
-    //m_rayCastInput.p1.set(0.0f, 2.0f + h);
-    //m_rayCastInput.p2.set(0.0f, -2.0f + h);
-    m_rayCastInput.maxFraction = 1.0
+    rayCastInput.p1.set(-5.0, 5.0 + h)
+    rayCastInput.p2.set(7.0, -4.0 + h)
+    //rayCastInput.p1.set(0.0f, 2.0f + h);
+    //rayCastInput.p2.set(0.0f, -2.0f + h);
+    rayCastInput.maxFraction = 1.0
     
-    m_automated = false
+    automated = false
   }
   
   override func step() {
-    m_rayActor = nil
-    for actor in m_actors {
+    rayActor = nil
+    for actor in actors {
       actor.fraction = 1.0
       actor.overlap = false
     }
     
-    if m_automated {
+    if automated {
       let actionCount = max(1, self.actorCount >> 2)
       
       for i in 0 ..< actionCount {
@@ -126,16 +125,16 @@ class DynamicTreeTestViewController: BaseViewController, b2QueryWrapper, b2RayCa
     Query()
     RayCast()
     
-    for actor in m_actors {
+    for actor in actors {
       if actor.proxyId == b2_nullNode {
         continue
       }
       
       var c = b2Color(0.9, 0.9, 0.9)
-      if actor === m_rayActor && actor.overlap {
+      if actor === rayActor && actor.overlap {
         c.set(0.9, 0.6, 0.6)
       }
-      else if actor === m_rayActor {
+      else if actor === rayActor {
         c.set(0.6, 0.9, 0.6)
       }
       else if actor.overlap {
@@ -146,45 +145,45 @@ class DynamicTreeTestViewController: BaseViewController, b2QueryWrapper, b2RayCa
     }
     
     let c = b2Color(0.7, 0.7, 0.7)
-    debugDraw.drawAABB(m_queryAABB, c)
+    debugDraw.drawAABB(queryAABB, c)
     
-    debugDraw.drawSegment(m_rayCastInput.p1, m_rayCastInput.p2, c)
+    debugDraw.drawSegment(rayCastInput.p1, rayCastInput.p2, c)
     
     let c1 = b2Color(0.2, 0.9, 0.2)
     let c2 = b2Color(0.9, 0.2, 0.2)
-    debugDraw.drawPoint(m_rayCastInput.p1, 6.0, c1)
-    debugDraw.drawPoint(m_rayCastInput.p2, 6.0, c2)
+    debugDraw.drawPoint(rayCastInput.p1, 6.0, c1)
+    debugDraw.drawPoint(rayCastInput.p2, 6.0, c2)
     
-    if m_rayActor != nil {
+    if rayActor != nil {
       let cr = b2Color(0.2, 0.2, 0.9)
-      let p = m_rayCastInput.p1 + m_rayActor!.fraction * (m_rayCastInput.p2 - m_rayCastInput.p1)
+      let p = rayCastInput.p1 + rayActor!.fraction * (rayCastInput.p2 - rayCastInput.p1)
       debugDraw.drawPoint(p, 6.0, cr);
     }
     
     b2Locally {
-      let height = m_tree.getHeight()
+      let height = tree.getHeight()
       
-      self.m_additionalInfoView.begin()
-      self.m_additionalInfoView.append(String(format: "dynamic tree height = %d", height))
-      self.m_additionalInfoView.end()
+      self.additionalInfoView.begin()
+      self.additionalInfoView.append(String(format: "dynamic tree height = %d", height))
+      self.additionalInfoView.end()
     }
   }
   
   func queryCallback(proxyId: Int) -> Bool {
-    var actor = m_tree.getUserData(proxyId)! as Actor
-    actor.overlap = b2TestOverlap(m_queryAABB, actor.aabb)
+    var actor = tree.getUserData(proxyId)! as Actor
+    actor.overlap = b2TestOverlap(queryAABB, actor.aabb)
     return true
   }
   
   func rayCastCallback(input: b2RayCastInput, _ proxyId: Int) -> b2Float {
-    var actor = m_tree.getUserData(proxyId)! as Actor
+    var actor = tree.getUserData(proxyId)! as Actor
     
     let output = actor.aabb.rayCast(input)
     
     if output != nil {
-      m_rayCastOutput = output!
-      m_rayActor = actor
-      m_rayActor!.fraction = output!.fraction
+      rayCastOutput = output!
+      rayActor = actor
+      rayActor!.fraction = output!.fraction
       return output!.fraction
     }
     
@@ -192,9 +191,9 @@ class DynamicTreeTestViewController: BaseViewController, b2QueryWrapper, b2RayCa
   }
   
   func GetRandomAABB(inout aabb: b2AABB) {
-    let w = b2Vec2(2.0 * m_proxyExtent, 2.0 * m_proxyExtent)
-    //aabb->lowerBound.x = -m_proxyExtent;
-    //aabb->lowerBound.y = -m_proxyExtent + worldExtent;
+    let w = b2Vec2(2.0 * proxyExtent, 2.0 * proxyExtent)
+    //aabb->lowerBound.x = -proxyExtent;
+    //aabb->lowerBound.y = -proxyExtent + worldExtent;
     aabb.lowerBound.x = RandomFloat(-worldExtent, worldExtent)
     aabb.lowerBound.y = RandomFloat(0.0, 2.0 * worldExtent)
     aabb.upperBound = aabb.lowerBound + w
@@ -221,10 +220,10 @@ class DynamicTreeTestViewController: BaseViewController, b2QueryWrapper, b2RayCa
   func CreateProxy() {
     for i in 0 ..< self.actorCount {
       let j = Int(arc4random_uniform(UInt32(self.actorCount)))
-      let actor = m_actors[j]
+      let actor = actors[j]
       if actor.proxyId == b2_nullNode {
         GetRandomAABB(&actor.aabb)
-        actor.proxyId = m_tree.createProxy(aabb: actor.aabb, userData: actor)
+        actor.proxyId = tree.createProxy(aabb: actor.aabb, userData: actor)
         return
       }
     }
@@ -233,9 +232,9 @@ class DynamicTreeTestViewController: BaseViewController, b2QueryWrapper, b2RayCa
   func DestroyProxy() {
     for i in 0 ..< self.actorCount {
       let j = Int(arc4random_uniform(UInt32(self.actorCount)))
-      let actor = m_actors[j]
+      let actor = actors[j]
       if actor.proxyId != b2_nullNode {
-        m_tree.destroyProxy(actor.proxyId)
+        tree.destroyProxy(actor.proxyId)
         actor.proxyId = b2_nullNode
         return
       }
@@ -245,7 +244,7 @@ class DynamicTreeTestViewController: BaseViewController, b2QueryWrapper, b2RayCa
   func MoveProxy() {
     for i in 0 ..< self.actorCount {
       let j = Int(arc4random_uniform(UInt32(self.actorCount)))
-      let actor = m_actors[j]
+      let actor = actors[j]
       if actor.proxyId == b2_nullNode {
         continue
       }
@@ -253,7 +252,7 @@ class DynamicTreeTestViewController: BaseViewController, b2QueryWrapper, b2RayCa
       let aabb0 = actor.aabb
       MoveAABB(&actor.aabb)
       let displacement = actor.aabb.center - aabb0.center
-      m_tree.moveProxy(actor.proxyId, aabb: actor.aabb, displacement: displacement)
+      tree.moveProxy(actor.proxyId, aabb: actor.aabb, displacement: displacement)
       return
     }
   }
@@ -273,29 +272,29 @@ class DynamicTreeTestViewController: BaseViewController, b2QueryWrapper, b2RayCa
   }
   
   func Query() {
-    m_tree.query(callback: self, aabb: m_queryAABB)
+    tree.query(callback: self, aabb: queryAABB)
     
-    for actor in m_actors {
+    for actor in actors {
       if actor.proxyId == b2_nullNode {
         continue
       }
       
-      let overlap = b2TestOverlap(m_queryAABB, actor.aabb)
+      let overlap = b2TestOverlap(queryAABB, actor.aabb)
       assert(overlap == actor.overlap)
     }
   }
   
   func RayCast() {
-    m_rayActor = nil
+    rayActor = nil
     
-    var input = m_rayCastInput
+    var input = rayCastInput
     // Ray cast against the dynamic tree.
-    m_tree.rayCast(callback: self, input: input)
+    tree.rayCast(callback: self, input: input)
     
     // Brute force ray cast.
     var bruteActor: Actor? = nil
     var bruteOutput: b2RayCastOutput? = nil
-    for actor in m_actors {
+    for actor in actors {
       if actor.proxyId == b2_nullNode {
         continue
       }
@@ -309,7 +308,7 @@ class DynamicTreeTestViewController: BaseViewController, b2QueryWrapper, b2RayCa
     }
     
     if bruteActor != nil {
-      assert(bruteOutput!.fraction == m_rayCastOutput.fraction)
+      assert(bruteOutput!.fraction == rayCastOutput.fraction)
     }
   }
   

@@ -28,8 +28,8 @@ import UIKit
 import Box2D
 
 class RopeJointViewController: BaseViewController {
-  var m_ropeDef: b2RopeJointDef!
-  var m_rope: b2Joint? = nil
+  var ropeDef: b2RopeJointDef!
+  var rope: b2Joint? = nil
 
   override func viewDidLoad() {
     super.viewDidLoad()
@@ -40,12 +40,12 @@ class RopeJointViewController: BaseViewController {
   }
   
   func onJoint(sender: UIBarButtonItem) {
-    if m_rope != nil {
-      world.destroyJoint(m_rope!)
-      m_rope = nil
+    if rope != nil {
+      world.destroyJoint(rope!)
+      rope = nil
     }
     else {
-      m_rope = world.createJoint(m_ropeDef)
+      rope = world.createJoint(ropeDef)
     }
   }
   
@@ -76,8 +76,8 @@ class RopeJointViewController: BaseViewController {
       
       let N = 10
       let y: b2Float = 15.0
-      self.m_ropeDef = b2RopeJointDef()
-      self.m_ropeDef.localAnchorA.set(0.0, y)
+      self.ropeDef = b2RopeJointDef()
+      self.ropeDef.localAnchorA.set(0.0, y)
       
       var prevBody = ground
       for i in 0 ..< N {
@@ -103,16 +103,16 @@ class RopeJointViewController: BaseViewController {
         prevBody = body
       }
       
-      self.m_ropeDef.localAnchorB.setZero()
+      self.ropeDef.localAnchorB.setZero()
       
       let extraLength: b2Float = 0.01
-      self.m_ropeDef.maxLength = b2Float(N) - 1.0 + extraLength
-      self.m_ropeDef.bodyB = prevBody
+      self.ropeDef.maxLength = b2Float(N) - 1.0 + extraLength
+      self.ropeDef.bodyB = prevBody
     }
   
     b2Locally {
-      self.m_ropeDef.bodyA = ground
-      self.m_rope = self.world.createJoint(self.m_ropeDef)
+      self.ropeDef.bodyA = ground
+      self.rope = self.world.createJoint(self.ropeDef)
     }
   }
   

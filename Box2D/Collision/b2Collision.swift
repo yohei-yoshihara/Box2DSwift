@@ -34,7 +34,6 @@ queries, and TOI queries.
 
 public let b2_nullFeature = UINT8_MAX
 
-
 public enum b2ContactFeatureType : UInt8, Printable {
   case vertex = 0
   case face = 1
@@ -158,7 +157,6 @@ All contact scenarios must be expressed in one of these types.
 This structure is stored across time steps, so we keep it small.
 */
 public class b2Manifold : Printable {
-  
   /**
   the points of contact
   */
@@ -322,7 +320,8 @@ public enum b2PointState : Printable {
 Compute the point states given two manifolds. The states pertain to the transition from manifold1
 to manifold2. So state1 is either persist or remove while state2 is either add or persist.
 */
-public func b2GetPointStates(#manifold1: b2Manifold, #manifold2: b2Manifold) -> (state1: [b2PointState], state2: [b2PointState]) {
+public func b2GetPointStates(#manifold1: b2Manifold, #manifold2: b2Manifold)
+            -> (state1: [b2PointState], state2: [b2PointState]) {
   var state1 = [b2PointState]()
   var state2 = [b2PointState]()
   
@@ -518,7 +517,8 @@ public struct b2AABB : Printable {
 
 /// Clipping for contact manifolds.
 /// Sutherland-Hodgman clipping.
-public func b2ClipSegmentToLine(inputVertices vIn: [b2ClipVertex], #normal: b2Vec2, #offset: b2Float, #vertexIndexA: Int) -> [b2ClipVertex] {
+public func b2ClipSegmentToLine(inputVertices vIn: [b2ClipVertex], #normal: b2Vec2, #offset: b2Float, #vertexIndexA: Int)
+            -> [b2ClipVertex] {
   assert(vIn.count == 2)
   var vOut = [b2ClipVertex]()
   

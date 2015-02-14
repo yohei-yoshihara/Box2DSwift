@@ -29,7 +29,7 @@ import Box2D
 
 class SphereStackViewController: BaseViewController {
   let count = 10
-  var m_bodies = [b2Body]()
+  var bodies = [b2Body]()
 
   override func prepare() {
     b2Locally {
@@ -50,11 +50,11 @@ class SphereStackViewController: BaseViewController {
         bd.type = b2BodyType.dynamicBody
         bd.position.set(0.0, 4.0 + 3.0 * b2Float(i))
         
-        self.m_bodies.append(self.world.createBody(bd))
+        self.bodies.append(self.world.createBody(bd))
         
-        self.m_bodies.last!.createFixture(shape: shape, density: 1.0)
+        self.bodies.last!.createFixture(shape: shape, density: 1.0)
         
-        self.m_bodies.last!.setLinearVelocity(b2Vec2(0.0, -50.0))
+        self.bodies.last!.setLinearVelocity(b2Vec2(0.0, -50.0))
       }
     }
   }

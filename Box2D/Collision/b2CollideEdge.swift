@@ -151,12 +151,12 @@ public func b2CollideEdgeAndCircle(inout #manifold: b2Manifold,
 }
 
 enum b2EPAxisType : Printable {
-  case e_unknown
+  case unknown
   case edgeA
   case edgeB
   var description: String {
     switch self {
-    case .e_unknown: return "e_unknown"
+    case .unknown: return "unknown"
     case .edgeA: return "edgeA"
     case .edgeB: return "edgeB"
     }
@@ -165,7 +165,7 @@ enum b2EPAxisType : Printable {
 
 // This structure is used to keep track of the best separating axis.
 struct b2EPAxis : Printable {
-  var type = b2EPAxisType.e_unknown
+  var type = b2EPAxisType.unknown
   var index = 0
   var separation: b2Float = 0
   var description: String {
@@ -385,7 +385,7 @@ class b2EPCollider {
     let edgeAxis = ComputeEdgeSeparation()
     
     // If no valid normal can be found than this edge should not collide.
-    if edgeAxis.type == b2EPAxisType.e_unknown {
+    if edgeAxis.type == b2EPAxisType.unknown {
       return manifold
     }
     
@@ -394,7 +394,7 @@ class b2EPCollider {
     }
     
     let polygonAxis = ComputePolygonSeparation()
-    if polygonAxis.type != b2EPAxisType.e_unknown && polygonAxis.separation > m_radius {
+    if polygonAxis.type != b2EPAxisType.unknown && polygonAxis.separation > m_radius {
       return manifold
     }
     
@@ -403,7 +403,7 @@ class b2EPCollider {
     let k_absoluteTol:b2Float = 0.001
     
     var primaryAxis: b2EPAxis
-    if polygonAxis.type == b2EPAxisType.e_unknown {
+    if polygonAxis.type == b2EPAxisType.unknown {
       primaryAxis = edgeAxis
     }
     else if polygonAxis.separation > k_relativeTol * edgeAxis.separation + k_absoluteTol {
@@ -506,7 +506,7 @@ class b2EPCollider {
       manifold.localNormal = rf.normal
       manifold.localPoint = rf.v1
     }
-      else {
+    else {
       manifold.localNormal = polygonB.m_normals[rf.i1]
       manifold.localPoint = polygonB.m_vertices[rf.i1]
     }
@@ -533,10 +533,9 @@ class b2EPCollider {
         ++pointCount
       }
     }
-    
-//    manifold.pointCount = pointCount
     return manifold
   }
+  
   func ComputeEdgeSeparation() -> b2EPAxis {
     var axis = b2EPAxis()
     axis.type = b2EPAxisType.edgeA
@@ -552,60 +551,61 @@ class b2EPCollider {
     
     return axis
   }
+
   func ComputePolygonSeparation() -> b2EPAxis {
-      var axis = b2EPAxis()
-      axis.type = b2EPAxisType.e_unknown
-      axis.index = -1
-      axis.separation = -FLT_MAX
+    var axis = b2EPAxis()
+    axis.type = b2EPAxisType.unknown
+    axis.index = -1
+    axis.separation = -FLT_MAX
+    
+    var perp = b2Vec2(-m_normal.y, m_normal.x)
+    
+    for i in 0 ..< m_polygonB.count {
+      let n = -m_polygonB.normals[i]
       
-      var perp = b2Vec2(-m_normal.y, m_normal.x)
+      let s1 = b2Dot(n, m_polygonB.vertices[i] - m_v1)
+      let s2 = b2Dot(n, m_polygonB.vertices[i] - m_v2)
+      let s = min(s1, s2)
       
-      for i in 0 ..< m_polygonB.count {
-        let n = -m_polygonB.normals[i]
-        
-        let s1 = b2Dot(n, m_polygonB.vertices[i] - m_v1)
-        let s2 = b2Dot(n, m_polygonB.vertices[i] - m_v2)
-        let s = min(s1, s2)
-        
-        if s > m_radius {
-          // No collision
-          axis.type = b2EPAxisType.edgeB
-          axis.index = i
-          axis.separation = s
-          return axis
-        }
-        
-        // Adjacency
-        if b2Dot(n, perp) >= 0.0 {
-          if b2Dot(n - m_upperLimit, m_normal) < -b2_angularSlop {
-            continue
-          }
-        }
-        else {
-          if b2Dot(n - m_lowerLimit, m_normal) < -b2_angularSlop {
+      if s > m_radius {
+        // No collision
+        axis.type = b2EPAxisType.edgeB
+        axis.index = i
+        axis.separation = s
+        return axis
+      }
+      
+      // Adjacency
+      if b2Dot(n, perp) >= 0.0 {
+        if b2Dot(n - m_upperLimit, m_normal) < -b2_angularSlop {
           continue
-          }
         }
-        
-        if s > axis.separation {
-          axis.type = b2EPAxisType.edgeB
-          axis.index = i
-          axis.separation = s
+      }
+      else {
+        if b2Dot(n - m_lowerLimit, m_normal) < -b2_angularSlop {
+          continue
         }
       }
       
-      return axis
+      if s > axis.separation {
+        axis.type = b2EPAxisType.edgeB
+        axis.index = i
+        axis.separation = s
+      }
+    }
+    
+    return axis
   }
   
   enum VertexType : Printable {
-    case e_isolated
-    case e_concave
-    case e_convex
+    case isolated
+    case concave
+    case convex
     var description: String {
       switch self {
-      case e_isolated: return "e_isolated"
-      case e_concave: return "e_concave"
-      case e_convex: return "e_convex"
+      case isolated: return "isolated"
+      case concave: return "concave"
+      case convex: return "convex"
       }
     }
   }
@@ -617,7 +617,7 @@ class b2EPCollider {
   var m_v0 = b2Vec2(), m_v1 = b2Vec2(), m_v2 = b2Vec2(), m_v3 = b2Vec2()
   var m_normal0 = b2Vec2(), m_normal1 = b2Vec2(), m_normal2 = b2Vec2()
   var m_normal = b2Vec2()
-  var m_type1 = VertexType.e_isolated, m_type2 = VertexType.e_isolated
+  var m_type1 = VertexType.isolated, m_type2 = VertexType.isolated
   var m_lowerLimit = b2Vec2(), m_upperLimit = b2Vec2()
   var m_radius: b2Float = 0
   var m_front = false
@@ -629,7 +629,7 @@ public func b2CollideEdgeAndPolygon(
   #edgeA: b2EdgeShape, transformA xfA: b2Transform,
   #polygonB: b2PolygonShape, transformB xfB: b2Transform)
 {
-    var collider = b2EPCollider()
-    manifold = collider.Collide(edgeA, xfA, polygonB, xfB)
+  var collider = b2EPCollider()
+  manifold = collider.Collide(edgeA, xfA, polygonB, xfB)
 }
 

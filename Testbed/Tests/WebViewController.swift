@@ -28,8 +28,8 @@ import UIKit
 import Box2D
 
 class WebViewController: BaseViewController {
-  var m_bodies = [b2Body?]()
-  var m_joints = [b2Joint?]()
+  var bodies = [b2Body?]()
+  var joints = [b2Joint?]()
 
   override func viewDidLoad() {
     super.viewDidLoad()
@@ -45,9 +45,9 @@ class WebViewController: BaseViewController {
 
   func ondestroyBody(sender: UIBarButtonItem) {
     for i in 0 ..< 4 {
-      if m_bodies[i] != nil {
-        world.destroyBody(m_bodies[i]!)
-        m_bodies[i] = nil
+      if bodies[i] != nil {
+        world.destroyBody(bodies[i]!)
+        bodies[i] = nil
         break
       }
     }
@@ -55,9 +55,9 @@ class WebViewController: BaseViewController {
 
   func ondestroyJoint(sender: UIBarButtonItem) {
     for i in 0 ..< 8 {
-      if m_joints[i] != nil {
-        world.destroyJoint(m_joints[i]!)
-        m_joints[i] = nil
+      if joints[i] != nil {
+        world.destroyJoint(joints[i]!)
+        joints[i] = nil
         break
       }
     }
@@ -82,20 +82,20 @@ class WebViewController: BaseViewController {
       bd.type = b2BodyType.dynamicBody
       
       bd.position.set(-5.0, 5.0)
-      self.m_bodies.append(self.world.createBody(bd))
-      self.m_bodies.last!!.createFixture(shape: shape, density: 5.0)
+      self.bodies.append(self.world.createBody(bd))
+      self.bodies.last!!.createFixture(shape: shape, density: 5.0)
       
       bd.position.set(5.0, 5.0)
-      self.m_bodies.append(self.world.createBody(bd))
-      self.m_bodies.last!!.createFixture(shape: shape, density: 5.0)
+      self.bodies.append(self.world.createBody(bd))
+      self.bodies.last!!.createFixture(shape: shape, density: 5.0)
       
       bd.position.set(5.0, 15.0)
-      self.m_bodies.append(self.world.createBody(bd))
-      self.m_bodies.last!!.createFixture(shape: shape, density: 5.0)
+      self.bodies.append(self.world.createBody(bd))
+      self.bodies.last!!.createFixture(shape: shape, density: 5.0)
       
       bd.position.set(-5.0, 15.0)
-      self.m_bodies.append(self.world.createBody(bd))
-      self.m_bodies.last!!.createFixture(shape: shape, density: 5.0)
+      self.bodies.append(self.world.createBody(bd))
+      self.bodies.last!!.createFixture(shape: shape, density: 5.0)
       
       let jd = b2DistanceJointDef()
       var p1 = b2Vec2(), p2 = b2Vec2(), d = b2Vec2()
@@ -104,89 +104,84 @@ class WebViewController: BaseViewController {
       jd.dampingRatio = 0.0
       
       jd.bodyA = ground
-      jd.bodyB = self.m_bodies[0]
+      jd.bodyB = self.bodies[0]
       jd.localAnchorA.set(-10.0, 0.0)
       jd.localAnchorB.set(-0.5, -0.5)
       p1 = jd.bodyA.getWorldPoint(jd.localAnchorA)
       p2 = jd.bodyB.getWorldPoint(jd.localAnchorB)
       d = p2 - p1
       jd.length = d.length()
-      self.m_joints.append(self.world.createJoint(jd))
+      self.joints.append(self.world.createJoint(jd))
       
       jd.bodyA = ground
-      jd.bodyB = self.m_bodies[1]
+      jd.bodyB = self.bodies[1]
       jd.localAnchorA.set(10.0, 0.0)
       jd.localAnchorB.set(0.5, -0.5)
       p1 = jd.bodyA.getWorldPoint(jd.localAnchorA)
       p2 = jd.bodyB.getWorldPoint(jd.localAnchorB)
       d = p2 - p1
       jd.length = d.length()
-      self.m_joints.append(self.world.createJoint(jd))
+      self.joints.append(self.world.createJoint(jd))
       
       jd.bodyA = ground
-      jd.bodyB = self.m_bodies[2]
+      jd.bodyB = self.bodies[2]
       jd.localAnchorA.set(10.0, 20.0)
       jd.localAnchorB.set(0.5, 0.5)
       p1 = jd.bodyA.getWorldPoint(jd.localAnchorA)
       p2 = jd.bodyB.getWorldPoint(jd.localAnchorB)
       d = p2 - p1
       jd.length = d.length()
-      self.m_joints.append(self.world.createJoint(jd))
+      self.joints.append(self.world.createJoint(jd))
       
       jd.bodyA = ground
-      jd.bodyB = self.m_bodies[3]
+      jd.bodyB = self.bodies[3]
       jd.localAnchorA.set(-10.0, 20.0)
       jd.localAnchorB.set(-0.5, 0.5)
       p1 = jd.bodyA.getWorldPoint(jd.localAnchorA)
       p2 = jd.bodyB.getWorldPoint(jd.localAnchorB)
       d = p2 - p1
       jd.length = d.length()
-      self.m_joints.append(self.world.createJoint(jd))
+      self.joints.append(self.world.createJoint(jd))
       
-      jd.bodyA = self.m_bodies[0]
-      jd.bodyB = self.m_bodies[1]
+      jd.bodyA = self.bodies[0]
+      jd.bodyB = self.bodies[1]
       jd.localAnchorA.set(0.5, 0.0)
       jd.localAnchorB.set(-0.5, 0.0)
       p1 = jd.bodyA.getWorldPoint(jd.localAnchorA)
       p2 = jd.bodyB.getWorldPoint(jd.localAnchorB)
       d = p2 - p1
       jd.length = d.length()
-      self.m_joints.append(self.world.createJoint(jd))
+      self.joints.append(self.world.createJoint(jd))
       
-      jd.bodyA = self.m_bodies[1]
-      jd.bodyB = self.m_bodies[2]
+      jd.bodyA = self.bodies[1]
+      jd.bodyB = self.bodies[2]
       jd.localAnchorA.set(0.0, 0.5)
       jd.localAnchorB.set(0.0, -0.5)
       p1 = jd.bodyA.getWorldPoint(jd.localAnchorA)
       p2 = jd.bodyB.getWorldPoint(jd.localAnchorB)
       d = p2 - p1
       jd.length = d.length()
-      self.m_joints.append(self.world.createJoint(jd))
+      self.joints.append(self.world.createJoint(jd))
       
-      jd.bodyA = self.m_bodies[2]
-      jd.bodyB = self.m_bodies[3]
+      jd.bodyA = self.bodies[2]
+      jd.bodyB = self.bodies[3]
       jd.localAnchorA.set(-0.5, 0.0)
       jd.localAnchorB.set(0.5, 0.0)
       p1 = jd.bodyA.getWorldPoint(jd.localAnchorA)
       p2 = jd.bodyB.getWorldPoint(jd.localAnchorB)
       d = p2 - p1
       jd.length = d.length()
-      self.m_joints.append(self.world.createJoint(jd))
+      self.joints.append(self.world.createJoint(jd))
       
-      jd.bodyA = self.m_bodies[3]
-      jd.bodyB = self.m_bodies[0]
+      jd.bodyA = self.bodies[3]
+      jd.bodyB = self.bodies[0]
       jd.localAnchorA.set(0.0, -0.5)
       jd.localAnchorB.set(0.0, 0.5)
       p1 = jd.bodyA.getWorldPoint(jd.localAnchorA)
       p2 = jd.bodyB.getWorldPoint(jd.localAnchorB)
       d = p2 - p1
       jd.length = d.length()
-      self.m_joints.append(self.world.createJoint(jd))
+      self.joints.append(self.world.createJoint(jd))
     }
   }
-  
-  override func step() {
-    
-  }
-  
 }

@@ -67,13 +67,13 @@ public class b2Island {
     m_positions.removeAll(keepCapacity: true)
     m_positions.reserveCapacity(m_bodyCapacity)
   }
-
-	func clear() {
+  
+  func clear() {
     m_bodies.removeAll(keepCapacity: true)
     m_contacts.removeAll(keepCapacity: true)
     m_joints.removeAll(keepCapacity: true)
-	}
-
+  }
+  
   func solve(inout profile: b2Profile, _ step: b2TimeStep, _ gravity: b2Vec2, _ allowSleep: Bool) {
     var timer = b2Timer()
     
@@ -233,10 +233,10 @@ public class b2Island {
         }
         
         if (b.m_flags & b2Body.Flags.e_autoSleepFlag) == 0 ||
-            b.m_angularVelocity * b.m_angularVelocity > angTolSqr ||
-            b2Dot(b.m_linearVelocity, b.m_linearVelocity) > linTolSqr {
-          b.m_sleepTime = 0.0
-          minSleepTime = 0.0
+          b.m_angularVelocity * b.m_angularVelocity > angTolSqr ||
+          b2Dot(b.m_linearVelocity, b.m_linearVelocity) > linTolSqr {
+            b.m_sleepTime = 0.0
+            minSleepTime = 0.0
         }
         else {
           b.m_sleepTime += h
@@ -252,7 +252,7 @@ public class b2Island {
       }
     }
   }
-
+  
   func solveTOI(subStep: b2TimeStep, _ toiIndexA: Int, _ toiIndexB: Int) {
     assert(toiIndexA < m_bodyCount)
     assert(toiIndexB < m_bodyCount)
@@ -373,23 +373,23 @@ public class b2Island {
     
     report(contactSolver.m_velocityConstraints)
   }
-
+  
   func add(body: b2Body) {
-		assert(m_bodyCount < m_bodyCapacity)
-		body.m_islandIndex = m_bodyCount
+    assert(m_bodyCount < m_bodyCapacity)
+    body.m_islandIndex = m_bodyCount
     m_bodies.append(body)
-	}
-
+  }
+  
   func add(contact: b2Contact) {
-		assert(m_contactCount < m_contactCapacity)
+    assert(m_contactCount < m_contactCapacity)
     m_contacts.append(contact)
-	}
-
+  }
+  
   func add(joint: b2Joint) {
-		assert(m_jointCount < m_jointCapacity)
+    assert(m_jointCount < m_jointCapacity)
     m_joints.append(joint)
-	}
-
+  }
+  
   func report(constraints: [b2ContactVelocityConstraint]) {
     if m_listener == nil {
       return
@@ -410,20 +410,20 @@ public class b2Island {
       m_listener?.postSolve(c, impulse: impulse)
     }
   }
-
+  
   var m_listener: b2ContactListener?
-
+  
   var m_bodies: [b2Body]
   var m_contacts: [b2Contact]
   var m_joints: [b2Joint]
-
+  
   var m_positions: b2Array<b2Position>
   var m_velocities: b2Array<b2Velocity>
-
+  
   var m_bodyCount: Int { return m_bodies.count }
   var m_jointCount: Int { return m_joints.count }
   var m_contactCount: Int { return m_contacts.count }
-
+  
   var m_bodyCapacity: Int
   var m_contactCapacity: Int
   var m_jointCapacity: Int

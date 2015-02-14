@@ -28,15 +28,15 @@ import UIKit
 import Box2D
 
 class CarViewController: BaseViewController {
-  var m_car: b2Body!
-  var m_wheel1: b2Body!
-  var m_wheel2: b2Body!
+  var car: b2Body!
+  var wheel1: b2Body!
+  var wheel2: b2Body!
   
-  var m_hz: b2Float = 4.0
-  let m_zeta: b2Float = 0.7
-  let m_speed: b2Float = 50.0
-  var m_spring1: b2WheelJoint!
-  var m_spring2: b2WheelJoint!
+  var hz: b2Float = 4.0
+  let zeta: b2Float = 0.7
+  let speed: b2Float = 50.0
+  var spring1: b2WheelJoint!
+  var spring2: b2WheelJoint!
 
   override func viewDidLoad() {
     super.viewDidLoad()
@@ -57,27 +57,27 @@ class CarViewController: BaseViewController {
   }
   
   func onLeft(sender: UIBarButtonItem) {
-    m_spring1.setMotorSpeed(m_speed)
+    spring1.setMotorSpeed(speed)
   }
 
   func onBrake(sender: UIBarButtonItem) {
-    m_spring1.setMotorSpeed(0.0)
+    spring1.setMotorSpeed(0.0)
   }
 
   func onRight(sender: UIBarButtonItem) {
-    m_spring1.setMotorSpeed(-m_speed)
+    spring1.setMotorSpeed(-speed)
   }
   
   func onHzDown(sender: UIBarButtonItem) {
-    m_hz = max(0.0, m_hz - 1.0)
-    m_spring1.setSpringFrequencyHz(m_hz)
-    m_spring2.setSpringFrequencyHz(m_hz)
+    hz = max(0.0, hz - 1.0)
+    spring1.setSpringFrequencyHz(hz)
+    spring2.setSpringFrequencyHz(hz)
   }
 
   func onHzUp(sender: UIBarButtonItem) {
-    m_hz += 1.0
-    m_spring1.setSpringFrequencyHz(m_hz)
-    m_spring2.setSpringFrequencyHz(m_hz)
+    hz += 1.0
+    spring1.setSpringFrequencyHz(hz)
+    spring2.setSpringFrequencyHz(hz)
   }
 
 
@@ -239,8 +239,8 @@ class CarViewController: BaseViewController {
       let bd = b2BodyDef()
       bd.type = b2BodyType.dynamicBody
       bd.position.set(0.0, 1.0)
-      self.m_car = self.world.createBody(bd)
-      self.m_car.createFixture(shape: chassis, density: 1.0)
+      self.car = self.world.createBody(bd)
+      self.car.createFixture(shape: chassis, density: 1.0)
       
       let fd = b2FixtureDef()
       fd.shape = circle
@@ -248,36 +248,36 @@ class CarViewController: BaseViewController {
       fd.friction = 0.9
       
       bd.position.set(-1.0, 0.35)
-      self.m_wheel1 = self.world.createBody(bd)
-      self.m_wheel1.createFixture(fd)
+      self.wheel1 = self.world.createBody(bd)
+      self.wheel1.createFixture(fd)
       
       bd.position.set(1.0, 0.4)
-      self.m_wheel2 = self.world.createBody(bd)
-      self.m_wheel2.createFixture(fd)
+      self.wheel2 = self.world.createBody(bd)
+      self.wheel2.createFixture(fd)
       
       let jd = b2WheelJointDef()
       let axis = b2Vec2(0.0, 1.0)
       
-      jd.initialize(self.m_car, bodyB: self.m_wheel1, anchor: self.m_wheel1.position, axis: axis)
+      jd.initialize(self.car, bodyB: self.wheel1, anchor: self.wheel1.position, axis: axis)
       jd.motorSpeed = 0.0
       jd.maxMotorTorque = 20.0
       jd.enableMotor = true
-      jd.frequencyHz = self.m_hz
-      jd.dampingRatio = self.m_zeta
-      self.m_spring1 = self.world.createJoint(jd) as! b2WheelJoint
+      jd.frequencyHz = self.hz
+      jd.dampingRatio = self.zeta
+      self.spring1 = self.world.createJoint(jd) as! b2WheelJoint
       
-      jd.initialize(self.m_car, bodyB: self.m_wheel2, anchor: self.m_wheel2.position, axis: axis)
+      jd.initialize(self.car, bodyB: self.wheel2, anchor: self.wheel2.position, axis: axis)
       jd.motorSpeed = 0.0
       jd.maxMotorTorque = 10.0
       jd.enableMotor = false
-      jd.frequencyHz = self.m_hz
-      jd.dampingRatio = self.m_zeta
-      self.m_spring2 = self.world.createJoint(jd) as! b2WheelJoint
+      jd.frequencyHz = self.hz
+      jd.dampingRatio = self.zeta
+      self.spring2 = self.world.createJoint(jd) as! b2WheelJoint
     }
   }
   
   override func step() {
-    settings.viewCenter.x = m_car.position.x;
+    settings.viewCenter.x = car.position.x;
   }
   
 }

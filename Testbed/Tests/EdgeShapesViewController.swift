@@ -28,14 +28,14 @@ import UIKit
 import Box2D
 
 class EdgeShapesCallback : b2RayCastCallback {
-  var m_fixture: b2Fixture? = nil
-  var m_point = b2Vec2()
-  var m_normal = b2Vec2()
+  var fixture: b2Fixture? = nil
+  var point = b2Vec2()
+  var normal = b2Vec2()
   
   func reportFixture(fixture: b2Fixture, point: b2Vec2, normal: b2Vec2, fraction: b2Float) -> b2Float {
-    m_fixture = fixture
-    m_point = point
-    m_normal = normal
+    self.fixture = fixture
+    self.point = point
+    self.normal = normal
     return fraction
   }
 }
@@ -44,20 +44,20 @@ class EdgeShapesViewController: BaseViewController, TextListViewControllerDelega
   struct Const {
     static let maxBodies = 256
   }
-  var m_dropVC = TextListViewController()
-  var m_bodyIndex = 0
-  var m_bodies = [b2Body?](count: Const.maxBodies, repeatedValue: nil)
-  var m_polygons = [b2PolygonShape]()
-  var m_circle: b2CircleShape!
-  var m_angle: b2Float = 0
+  var dropVC = TextListViewController()
+  var bodyIndex = 0
+  var bodies = [b2Body?](count: Const.maxBodies, repeatedValue: nil)
+  var polygons = [b2PolygonShape]()
+  var circle: b2CircleShape!
+  var angle: b2Float = 0
   
   override func viewDidLoad() {
     super.viewDidLoad()
     
-    m_dropVC.title = "Drop Object"
-    m_dropVC.textListName = "Drop"
-    m_dropVC.textList = ["1", "2", "3", "4", "5", "6"]
-    m_dropVC.textListDelegate = self
+    dropVC.title = "Drop Object"
+    dropVC.textListName = "Drop"
+    dropVC.textList = ["1", "2", "3", "4", "5", "6"]
+    dropVC.textListDelegate = self
     
     let dropStuffButton = UIBarButtonItem(title: "Drop", style: UIBarButtonItemStyle.Plain, target: self, action: "onDropStuff:")
     let deleteStuffButton = UIBarButtonItem(barButtonSystemItem: UIBarButtonSystemItem.Trash, target: self, action: "onDeleteStuff:")
@@ -96,7 +96,7 @@ class EdgeShapesViewController: BaseViewController, TextListViewControllerDelega
       vertices.append(b2Vec2(0.0, 1.5))
       let shape = b2PolygonShape()
       shape.set(vertices: vertices)
-      self.m_polygons.append(shape)
+      self.polygons.append(shape)
     }
     
     b2Locally {
@@ -106,7 +106,7 @@ class EdgeShapesViewController: BaseViewController, TextListViewControllerDelega
       vertices.append(b2Vec2(0.0, 1.5))
       let shape = b2PolygonShape()
       shape.set(vertices: vertices)
-      self.m_polygons.append(shape)
+      self.polygons.append(shape)
     }
     
     b2Locally {
@@ -126,28 +126,28 @@ class EdgeShapesViewController: BaseViewController, TextListViewControllerDelega
       
       let shape = b2PolygonShape()
       shape.set(vertices: vertices)
-      self.m_polygons.append(shape)
+      self.polygons.append(shape)
     }
     
     b2Locally {
       let shape = b2PolygonShape()
       shape.setAsBox(halfWidth: 0.5, halfHeight: 0.5)
-      self.m_polygons.append(shape)
+      self.polygons.append(shape)
     }
     
     b2Locally {
-      self.m_circle = b2CircleShape()
-      self.m_circle.radius = 0.5
+      self.circle = b2CircleShape()
+      self.circle.radius = 0.5
     }
     
-    m_bodyIndex = 0
-    m_angle = 0.0
+    bodyIndex = 0
+    angle = 0.0
   }
   
   func create(index: Int) {
-		if m_bodies[m_bodyIndex] != nil {
-      world.destroyBody(m_bodies[m_bodyIndex]!)
-      m_bodies[m_bodyIndex] = nil
+		if bodies[bodyIndex] != nil {
+      world.destroyBody(bodies[bodyIndex]!)
+      bodies[bodyIndex] = nil
 		}
   
 		let bd = b2BodyDef()
@@ -161,30 +161,30 @@ class EdgeShapesViewController: BaseViewController, TextListViewControllerDelega
       bd.angularDamping = 0.02
 		}
   
-		m_bodies[m_bodyIndex] = world.createBody(bd)
+		bodies[bodyIndex] = world.createBody(bd)
   
 		if index < 4 {
       let fd = b2FixtureDef()
-      fd.shape = m_polygons[index]
+      fd.shape = polygons[index]
       fd.friction = 0.3
       fd.density = 20.0
-      m_bodies[m_bodyIndex]!.createFixture(fd)
+      bodies[bodyIndex]!.createFixture(fd)
 		}
 		else {
       let fd = b2FixtureDef()
-      fd.shape = m_circle
+      fd.shape = circle
       fd.friction = 0.3
       fd.density = 20.0
-      m_bodies[m_bodyIndex]!.createFixture(fd)
+      bodies[bodyIndex]!.createFixture(fd)
 		}
-		m_bodyIndex = (m_bodyIndex + 1) % Const.maxBodies
+		bodyIndex = (bodyIndex + 1) % Const.maxBodies
   }
   
   func destroyBody() {
 		for i in 0 ..< Const.maxBodies {
-      if m_bodies[i] != nil {
-        world.destroyBody(m_bodies[i]!)
-        m_bodies[i] = nil
+      if bodies[i] != nil {
+        world.destroyBody(bodies[i]!)
+        bodies[i] = nil
         return
       }
     }
@@ -195,34 +195,34 @@ class EdgeShapesViewController: BaseViewController, TextListViewControllerDelega
   
 		let L: b2Float = 25.0
 		let point1 = b2Vec2(0.0, 10.0)
-		let d = b2Vec2(L * cos(m_angle), -L * abs(sin(m_angle)))
+		let d = b2Vec2(L * cos(angle), -L * abs(sin(angle)))
 		let point2 = point1 + d
   
 		let callback = EdgeShapesCallback()
   
     world.rayCast(callback: callback, point1: point1, point2: point2)
   
-		if callback.m_fixture != nil {
-      debugDraw.drawPoint(callback.m_point, 5.0, b2Color(0.4, 0.9, 0.4))
-      debugDraw.drawSegment(point1, callback.m_point, b2Color(0.8, 0.8, 0.8))
-      let head = callback.m_point + 0.5 * callback.m_normal
-      debugDraw.drawSegment(callback.m_point, head, b2Color(0.9, 0.9, 0.4))
+		if callback.fixture != nil {
+      debugDraw.drawPoint(callback.point, 5.0, b2Color(0.4, 0.9, 0.4))
+      debugDraw.drawSegment(point1, callback.point, b2Color(0.8, 0.8, 0.8))
+      let head = callback.point + 0.5 * callback.normal
+      debugDraw.drawSegment(callback.point, head, b2Color(0.9, 0.9, 0.4))
 		}
     else {
       debugDraw.drawSegment(point1, point2, b2Color(0.8, 0.8, 0.8))
 		}
   
 		if advanceRay {
-      m_angle += 0.25 * b2_pi / 180.0
+      angle += 0.25 * b2_pi / 180.0
 		}
   }
 
   func onDropStuff(sender: UIBarButtonItem) {
-    m_dropVC.modalPresentationStyle = UIModalPresentationStyle.Popover
-    var popPC = m_dropVC.popoverPresentationController
+    dropVC.modalPresentationStyle = UIModalPresentationStyle.Popover
+    var popPC = dropVC.popoverPresentationController
     popPC?.barButtonItem = sender
     popPC?.permittedArrowDirections = UIPopoverArrowDirection.Any
-    self.presentViewController(m_dropVC, animated: true, completion: nil)
+    self.presentViewController(dropVC, animated: true, completion: nil)
   }
   
   func onDeleteStuff(sender: UIBarButtonItem) {

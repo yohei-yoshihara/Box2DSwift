@@ -28,9 +28,9 @@ import UIKit
 import Box2D
 
 class TumblerViewController: BaseViewController {
-  let count = 50
-  var m_joint: b2RevoluteJoint!
-  var m_count = 0
+  let maxCount = 50
+  var joint: b2RevoluteJoint!
+  var count = 0
   
   override func prepare() {
     var ground: b2Body! = nil
@@ -65,14 +65,14 @@ class TumblerViewController: BaseViewController {
       jd.motorSpeed = 0.05 * b2_pi
       jd.maxMotorTorque = 1e8
       jd.enableMotor = true
-      self.m_joint = self.world.createJoint(jd) as! b2RevoluteJoint
+      self.joint = self.world.createJoint(jd) as! b2RevoluteJoint
     }
     
-    m_count = 0
+    count = 0
   }
   
   override func step() {
-    if m_count < self.count {
+    if count < maxCount {
       var bd = b2BodyDef()
       bd.type = b2BodyType.dynamicBody
       bd.position.set(0.0, 10.0)
@@ -82,7 +82,7 @@ class TumblerViewController: BaseViewController {
       shape.setAsBox(halfWidth: 0.125, halfHeight: 0.125)
       body.createFixture(shape: shape, density: 1.0)
       
-      ++m_count
+      ++count
     }
   }
   

@@ -29,9 +29,9 @@ import Foundation
 /// This holds contact filtering data.
 public struct b2Filter {
   public init() {
-		categoryBits = 0x0001
-		maskBits = 0xFFFF
-		groupIndex = 0
+    categoryBits = 0x0001
+    maskBits = 0xFFFF
+    groupIndex = 0
   }
   
   /// The collision category bits. Normally you would just set one bit.
@@ -52,12 +52,12 @@ public struct b2Filter {
 public class b2FixtureDef {
   /// The constructor sets the default fixture definition values.
   public init() {
-		shape = nil
-		userData = nil
-		friction = 0.2
-		restitution = 0.0
-		density = 0.0
-		isSensor = false
+    shape = nil
+    userData = nil
+    friction = 0.2
+    restitution = 0.0
+    density = 0.0
+    isSensor = false
     filter = b2Filter()
   }
   
@@ -155,10 +155,6 @@ public class b2Fixture : Printable {
   
   /// Call this if you want to establish collision that was previously disabled by b2ContactFilter::ShouldCollide.
   public func refilter() {
-//    if m_body == nil {
-//      return
-//    }
-    
     // Flag associated contacts for filtering.
     var edge = m_body.getContactList()
     while edge != nil {
@@ -225,7 +221,7 @@ public class b2Fixture : Printable {
   
   /**
   Cast a ray against this shape.
-
+  
   :param: output the ray-cast results.
   :param: input the ray-cast input parameters.
   */
@@ -394,11 +390,11 @@ public class b2Fixture : Printable {
   func destroy() {
     // The proxies must be destroyed before calling this.
     assert(m_proxyCount == 0)
-      
+    
     // Free the proxy array.
     let childCount = m_shape.childCount
     m_proxies.removeAll()
-      
+    
     // Free the child shape.
     m_shape = nil
   }
@@ -406,10 +402,10 @@ public class b2Fixture : Printable {
   // These support body activation/deactivation.
   func createProxies(broadPhase: b2BroadPhase, xf: b2Transform) {
     assert(m_proxyCount == 0)
-      
+    
     // Create proxies in the broad-phase.
     let proxyCount = m_shape.childCount
-      
+    
     for var i = 0; i < proxyCount; ++i {
       var proxy = b2FixtureProxy(self)
       m_shape.computeAABB(&proxy.aabb, transform: xf, childIndex: i)
@@ -424,7 +420,7 @@ public class b2Fixture : Printable {
       var proxy = m_proxies[i]
       broadPhase.destroyProxy(proxy.proxyId)
     }
-        
+    
     m_proxies.removeAll()
   }
   

@@ -28,12 +28,12 @@ import UIKit
 import Box2D
 
 class TheoJansenViewController: BaseViewController {
-  var m_offset = b2Vec2()
-  var m_chassis: b2Body!
-  var m_wheel: b2Body!
-  var m_motorJoint: b2RevoluteJoint!
-  var m_motorOn = false
-  var m_motorSpeed: b2Float = 0
+  var offset = b2Vec2()
+  var chassis: b2Body!
+  var wheel: b2Body!
+  var motorJoint: b2RevoluteJoint!
+  var motorOn = false
+  var motorSpeed: b2Float = 0
 
   override func viewDidLoad() {
     super.viewDidLoad()
@@ -52,19 +52,19 @@ class TheoJansenViewController: BaseViewController {
   }
   
   func onLeft(sender: UIBarButtonItem) {
-    m_motorJoint.setMotorSpeed(-m_motorSpeed)
+    motorJoint.setMotorSpeed(-motorSpeed)
   }
 
   func onBrake(sender: UIBarButtonItem) {
-    m_motorJoint.setMotorSpeed(0.0)
+    motorJoint.setMotorSpeed(0.0)
   }
 
   func onRight(sender: UIBarButtonItem) {
-    m_motorJoint.setMotorSpeed(m_motorSpeed)
+    motorJoint.setMotorSpeed(motorSpeed)
   }
 
   func onMotor(sender: UIBarButtonItem) {
-    m_motorJoint.enableMotor(!m_motorJoint.isMotorEnabled)
+    motorJoint.enableMotor(!motorJoint.isMotorEnabled)
   }
 
   func createLeg(s: b2Float, wheelAnchor: b2Vec2) {
@@ -116,8 +116,8 @@ class TheoJansenViewController: BaseViewController {
 		let bd1 = b2BodyDef(), bd2 = b2BodyDef()
 		bd1.type = b2BodyType.dynamicBody
 		bd2.type = b2BodyType.dynamicBody
-		bd1.position = m_offset
-		bd2.position = p4 + m_offset
+		bd1.position = offset
+		bd2.position = p4 + offset
   
 		bd1.angularDamping = 10.0
 		bd2.angularDamping = 10.0
@@ -136,27 +136,27 @@ class TheoJansenViewController: BaseViewController {
 		djd.dampingRatio = 0.5
 		djd.frequencyHz = 10.0
   
-    djd.initialize(body1, bodyB: body2, anchorA: p2 + m_offset, anchorB: p5 + m_offset)
+    djd.initialize(body1, bodyB: body2, anchorA: p2 + offset, anchorB: p5 + offset)
 		world.createJoint(djd)
   
-    djd.initialize(body1, bodyB: body2, anchorA: p3 + m_offset, anchorB: p4 + m_offset)
+    djd.initialize(body1, bodyB: body2, anchorA: p3 + offset, anchorB: p4 + offset)
 		world.createJoint(djd)
   
-    djd.initialize(body1, bodyB: m_wheel, anchorA: p3 + m_offset, anchorB: wheelAnchor + m_offset)
+    djd.initialize(body1, bodyB: wheel, anchorA: p3 + offset, anchorB: wheelAnchor + offset)
 		world.createJoint(djd)
   
-    djd.initialize(body2, bodyB: m_wheel, anchorA: p6 + m_offset, anchorB: wheelAnchor + m_offset)
+    djd.initialize(body2, bodyB: wheel, anchorA: p6 + offset, anchorB: wheelAnchor + offset)
 		world.createJoint(djd)
   
 		let rjd = b2RevoluteJointDef()
-    rjd.initialize(body2, bodyB: m_chassis, anchor: p4 + m_offset)
+    rjd.initialize(body2, bodyB: chassis, anchor: p4 + offset)
 		world.createJoint(rjd)
   }
 
   override func prepare() {
-    m_offset.set(0.0, 8.0)
-    m_motorSpeed = 2.0
-    m_motorOn = true
+    offset.set(0.0, 8.0)
+    motorSpeed = 2.0
+    motorOn = true
     let pivot = b2Vec2(0.0, 0.8)
     
     // Ground
@@ -199,9 +199,9 @@ class TheoJansenViewController: BaseViewController {
       sd.filter.groupIndex = -1
       let bd = b2BodyDef()
       bd.type = b2BodyType.dynamicBody
-      bd.position = pivot + self.m_offset
-      self.m_chassis = self.world.createBody(bd)
-      self.m_chassis.createFixture(sd)
+      bd.position = pivot + self.offset
+      self.chassis = self.world.createBody(bd)
+      self.chassis.createFixture(sd)
     }
     
     b2Locally {
@@ -214,19 +214,19 @@ class TheoJansenViewController: BaseViewController {
       sd.filter.groupIndex = -1
       let bd = b2BodyDef()
       bd.type = b2BodyType.dynamicBody
-      bd.position = pivot + self.m_offset
-      self.m_wheel = self.world.createBody(bd)
-      self.m_wheel.createFixture(sd)
+      bd.position = pivot + self.offset
+      self.wheel = self.world.createBody(bd)
+      self.wheel.createFixture(sd)
     }
     
     b2Locally {
       let jd = b2RevoluteJointDef()
-      jd.initialize(self.m_wheel, bodyB: self.m_chassis, anchor: pivot + self.m_offset)
+      jd.initialize(self.wheel, bodyB: self.chassis, anchor: pivot + self.offset)
       jd.collideConnected = false
-      jd.motorSpeed = self.m_motorSpeed
+      jd.motorSpeed = self.motorSpeed
       jd.maxMotorTorque = 400.0
-      jd.enableMotor = self.m_motorOn
-      self.m_motorJoint = self.world.createJoint(jd) as! b2RevoluteJoint
+      jd.enableMotor = self.motorOn
+      self.motorJoint = self.world.createJoint(jd) as! b2RevoluteJoint
     }
     
     var wheelAnchor = b2Vec2()
@@ -236,11 +236,11 @@ class TheoJansenViewController: BaseViewController {
     createLeg(-1.0, wheelAnchor: wheelAnchor)
     createLeg(1.0, wheelAnchor: wheelAnchor)
     
-    m_wheel.setTransform(position: self.m_wheel.position, angle: 120.0 * b2_pi / 180.0)
+    wheel.setTransform(position: self.wheel.position, angle: 120.0 * b2_pi / 180.0)
     createLeg(-1.0, wheelAnchor: wheelAnchor)
     createLeg(1.0, wheelAnchor: wheelAnchor)
     
-    m_wheel.setTransform(position: self.m_wheel.position, angle: -120.0 * b2_pi / 180.0)
+    wheel.setTransform(position: self.wheel.position, angle: -120.0 * b2_pi / 180.0)
     createLeg(-1.0, wheelAnchor: wheelAnchor)
     createLeg(1.0, wheelAnchor: wheelAnchor)
   }

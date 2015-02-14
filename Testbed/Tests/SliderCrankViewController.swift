@@ -28,8 +28,8 @@ import UIKit
 import Box2D
 
 class SliderCrankViewController: BaseViewController {
-  var m_joint1: b2RevoluteJoint!
-  var m_joint2: b2PrismaticJoint!
+  var joint1: b2RevoluteJoint!
+  var joint2: b2PrismaticJoint!
   var prevBody: b2Body!
 
   override func viewDidLoad() {
@@ -45,13 +45,13 @@ class SliderCrankViewController: BaseViewController {
   }
   
   func onFriction(sender: UIBarButtonItem) {
-    m_joint2.enableMotor(!m_joint2.isMotorEnabled)
-    m_joint2.bodyB.setAwake(true)
+    joint2.enableMotor(!joint2.isMotorEnabled)
+    joint2.bodyB.setAwake(true)
   }
   
   func onMotor(sender: UIBarButtonItem) {
-    m_joint1.enableMotor(!m_joint1.isMotorEnabled)
-    m_joint1.bodyB.setAwake(true)
+    joint1.enableMotor(!joint1.isMotorEnabled)
+    joint1.bodyB.setAwake(true)
   }
   
   override func prepare() {
@@ -83,7 +83,7 @@ class SliderCrankViewController: BaseViewController {
       rjd.motorSpeed = 1.0 * b2_pi
       rjd.maxMotorTorque = 10000.0
       rjd.enableMotor = true
-      self.m_joint1 = self.world.createJoint(rjd) as! b2RevoluteJoint
+      self.joint1 = self.world.createJoint(rjd) as! b2RevoluteJoint
       
       self.prevBody = body
     }
@@ -129,7 +129,7 @@ class SliderCrankViewController: BaseViewController {
       pjd.maxMotorForce = 1000.0
       pjd.enableMotor = true
         
-      self.m_joint2 = self.world.createJoint(pjd) as! b2PrismaticJoint
+      self.joint2 = self.world.createJoint(pjd) as! b2PrismaticJoint
     }
     
       // Create a payload

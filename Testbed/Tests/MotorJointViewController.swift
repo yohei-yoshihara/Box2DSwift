@@ -28,9 +28,9 @@ import UIKit
 import Box2D
 
 class MotorJointViewController: BaseViewController {
-  var m_joint: b2MotorJoint!
-  var m_time: b2Float = 0
-  var m_go = false
+  var joint: b2MotorJoint!
+  var time: b2Float = 0
+  var go = false
 
   override func viewDidLoad() {
     super.viewDidLoad()
@@ -74,31 +74,31 @@ class MotorJointViewController: BaseViewController {
       mjd.initialize(ground!, bodyB: body)
       mjd.maxForce = 1000.0
       mjd.maxTorque = 1000.0
-      self.m_joint = self.world.createJoint(mjd) as! b2MotorJoint
+      self.joint = self.world.createJoint(mjd) as! b2MotorJoint
     }
     
-    m_go = false
-    m_time = 0.0
+    go = false
+    time = 0.0
   }
   
 
   func onStart(sender: UIBarButtonItem) {
-    m_go = !m_go
+    go = !go
   }
   
   override func step() {
-    if m_go && settings.hz > 0.0 {
-      m_time += 1.0 / settings.hz
+    if go && settings.hz > 0.0 {
+      time += 1.0 / settings.hz
     }
     
     var linearOffset = b2Vec2()
-    linearOffset.x = 6.0 * sin(2.0 * m_time)
-    linearOffset.y = 8.0 + 4.0 * sin(1.0 * m_time)
+    linearOffset.x = 6.0 * sin(2.0 * time)
+    linearOffset.y = 8.0 + 4.0 * sin(1.0 * time)
     
-    var angularOffset = 4.0 * m_time
+    var angularOffset = 4.0 * time
     
-    m_joint!.setLinearOffset(linearOffset)
-    m_joint!.setAngularOffset(angularOffset)
+    joint!.setLinearOffset(linearOffset)
+    joint!.setAngularOffset(angularOffset)
     
     debugDraw.drawPoint(linearOffset, 4.0, b2Color(0.9, 0.9, 0.9))
     

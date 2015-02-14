@@ -36,11 +36,6 @@ public class b2TreeNode<T> : Printable {
   public var userData: T? = nil
   
   var parentOrNext: Int = b2_nullNode
-  //  union
-  //  {
-//		var parent = 0
-//		var next = 0
-  //  }
   
   var child1: Int = b2_nullNode
   var child2: Int = b2_nullNode
@@ -130,10 +125,13 @@ public class b2DynamicTree<T> : Printable {
     freeNode(proxyId)
   }
   
-  /// Move a proxy with a swepted AABB. If the proxy has moved outside of its fattened AABB,
-  /// then the proxy is removed from the tree and re-inserted. Otherwise
-  /// the function returns immediately.
-  /// @return true if the proxy was re-inserted.
+  /**
+  Move a proxy with a swepted AABB. If the proxy has moved outside of its fattened AABB,
+  then the proxy is removed from the tree and re-inserted. Otherwise
+  the function returns immediately.
+
+  :returns: true if the proxy was re-inserted.
+  */
   public func moveProxy(proxyId: Int, aabb: b2AABB, displacement: b2Vec2) -> Bool {
     assert(0 <= proxyId && proxyId < m_nodes.count)
     
@@ -174,8 +172,11 @@ public class b2DynamicTree<T> : Printable {
     return true
   }
   
-  /// Get proxy user data.
-  /// @return the proxy user data or 0 if the id is invalid.
+  /**
+  Get proxy user data.
+  
+  :returns: the proxy user data or 0 if the id is invalid.
+  */
   public func getUserData(proxyId: Int) -> T? {
     assert(0 <= proxyId && proxyId < m_nodes.count)
     return m_nodes[proxyId].userData

@@ -28,10 +28,10 @@ import UIKit
 import Box2D
 
 class ShapeEditingViewController: BaseViewController {
-  var m_body: b2Body!
-  var m_fixture1: b2Fixture!
-  var m_fixture2: b2Fixture? = nil
-  var m_sensor = false
+  var body: b2Body!
+  var fixture1: b2Fixture!
+  var fixture2: b2Fixture? = nil
+  var sensor = false
 
   override func viewDidLoad() {
     super.viewDidLoad()
@@ -59,39 +59,39 @@ class ShapeEditingViewController: BaseViewController {
     let bd = b2BodyDef()
     bd.type = b2BodyType.dynamicBody
     bd.position.set(0.0, 10.0)
-    m_body = world.createBody(bd)
+    body = world.createBody(bd)
     
     let shape = b2PolygonShape()
     shape.setAsBox(halfWidth: 4.0, halfHeight: 4.0, center: b2Vec2(0.0, 0.0), angle: 0.0)
-    m_fixture1 = m_body.createFixture(shape: shape, density: 10.0)
+    fixture1 = body.createFixture(shape: shape, density: 10.0)
     
-    m_fixture2 = nil
+    fixture2 = nil
     
-    m_sensor = false
+    sensor = false
   }
   
   func onCreate(sender: UIBarButtonItem) {
-    if m_fixture2 == nil {
+    if fixture2 == nil {
       let shape = b2CircleShape()
       shape.radius = 3.0
       shape.p.set(0.5, -4.0)
-      m_fixture2 = m_body.createFixture(shape: shape, density: 10.0)
-      m_body.setAwake(true)
+      fixture2 = body.createFixture(shape: shape, density: 10.0)
+      body.setAwake(true)
     }
   }
 
   func onDestroy(sender: UIBarButtonItem) {
-    if m_fixture2 != nil {
-      m_body.destroyFixture(m_fixture2!)
-      m_fixture2 = nil
-      m_body.setAwake(true)
+    if fixture2 != nil {
+      body.destroyFixture(fixture2!)
+      fixture2 = nil
+      body.setAwake(true)
     }
   }
 
   func onSensor(sender: UIBarButtonItem) {
-    if m_fixture2 != nil {
-      m_sensor = !m_sensor
-      m_fixture2!.setSensor(m_sensor)
+    if fixture2 != nil {
+      sensor = !sensor
+      fixture2!.setSensor(sensor)
     }
   }
 }

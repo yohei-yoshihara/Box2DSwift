@@ -168,13 +168,16 @@ public class b2BroadPhase : b2QueryWrapper {
     m_tree.query(callback: callback, aabb: aabb)
   }
   
-  /// Ray-cast against the proxies in the tree. This relies on the callback
-  /// to perform a exact ray-cast in the case were the proxy contains a shape.
-  /// The callback also performs the any collision filtering. This has performance
-  /// roughly equal to k * log(n), where k is the number of collisions and n is the
-  /// number of proxies in the tree.
-  /// @param input the ray-cast input data. The ray extends from p1 to p1 + maxFraction * (p2 - p1).
-  /// @param callback a callback class that is called for each proxy that is hit by the ray.
+  /**
+  Ray-cast against the proxies in the tree. This relies on the callback
+  to perform a exact ray-cast in the case were the proxy contains a shape.
+  The callback also performs the any collision filtering. This has performance
+  roughly equal to k * log(n), where k is the number of collisions and n is the
+  number of proxies in the tree.
+
+  :param: input the ray-cast input data. The ray extends from p1 to p1 + maxFraction * (p2 - p1).
+  :param: callback a callback class that is called for each proxy that is hit by the ray.
+  */
   public func rayCast<T: b2RayCastWrapper>(#callback: T, input: b2RayCastInput) {
     m_tree.rayCast(callback: callback, input: input)
   }
@@ -194,9 +197,12 @@ public class b2BroadPhase : b2QueryWrapper {
     return m_tree.getAreaRatio()
   }
   
-  /// Shift the world origin. Useful for large worlds.
-  /// The shift formula is: position -= newOrigin
-  /// @param newOrigin the new origin with respect to the old origin
+  /**
+  Shift the world origin. Useful for large worlds.
+  The shift formula is: position -= newOrigin
+
+  :param: newOrigin the new origin with respect to the old origin
+  */
   public func shiftOrigin(newOrigin: b2Vec2) {
     m_tree.shiftOrigin(newOrigin)
   }

@@ -524,18 +524,6 @@ public struct b2SimplexCache : Printable {
 /// in the computation. Even
 public struct b2DistanceInput : Printable {
   public init() {}
-//  init(proxyA: b2DistanceProxy, proxyB: b2DistanceProxy, useRadii: Bool) {
-//    self.proxyA = proxyA
-//    self.proxyB = proxyB
-//    self.useRadii = useRadii
-//  }
-//  init(proxyA: b2DistanceProxy, proxyB: b2DistanceProxy, transformA: b2Transform, transformB: b2Transform, useRadii: Bool) {
-//    self.proxyA = proxyA
-//    self.proxyB = proxyB
-//    self.transformA = transformA
-//    self.transformB = transformB
-//    self.useRadii = useRadii
-//  }
   public var description: String {
     return "b2DistanceInput[proxyA=\(proxyA),proxyB=\(proxyB),transformA=\(transformA),transformB=\(transformB),useRadii=\(useRadii)]"
   }
@@ -561,8 +549,7 @@ public struct b2DistanceOutput : Printable {
 /// Compute the closest points between two shapes. Supports any combination of:
 /// b2CircleShape, b2PolygonShape, b2EdgeShape. The simplex cache is input/output.
 /// On the first call set b2SimplexCache.count to zero.
-public func b2Distance(inout output: b2DistanceOutput, inout cache: b2SimplexCache, input: b2DistanceInput)
-{
+public func b2Distance(inout output: b2DistanceOutput, inout cache: b2SimplexCache, input: b2DistanceInput) {
   ++b2_gjkCalls
   
   let proxyA = input.proxyA

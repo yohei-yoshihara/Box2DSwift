@@ -29,7 +29,7 @@ import Box2D
 
 class CantileverViewController: BaseViewController {
   let count = 8
-  var m_middle: b2Body!
+  var middle: b2Body!
 
   override func prepare() {
     var ground: b2Body! = nil

@@ -28,32 +28,32 @@ import UIKit
 import Box2D
 
 class DistanceTestViewController: BaseViewController {
-  var m_positionB = b2Vec2()
-  var m_angleB: b2Float = 0
+  var positionB = b2Vec2()
+  var angleB: b2Float = 0
   
-  var m_transformA = b2Transform()
-  var m_transformB = b2Transform()
-  var m_polygonA = b2PolygonShape()
-  var m_polygonB = b2PolygonShape()
+  var transformA = b2Transform()
+  var transformB = b2Transform()
+  var polygonA = b2PolygonShape()
+  var polygonB = b2PolygonShape()
 
   override func prepare() {
-    m_transformA.setIdentity()
-    m_transformA.p.set(0.0, -0.2)
-    m_polygonA.setAsBox(halfWidth: 10.0, halfHeight: 0.2)
+    transformA.setIdentity()
+    transformA.p.set(0.0, -0.2)
+    polygonA.setAsBox(halfWidth: 10.0, halfHeight: 0.2)
     
-    m_positionB.set(12.017401, 0.13678508)
-    m_angleB = -0.0109265
-    m_transformB.set(m_positionB, angle: m_angleB)
+    positionB.set(12.017401, 0.13678508)
+    angleB = -0.0109265
+    transformB.set(positionB, angle: angleB)
     
-    m_polygonB.setAsBox(halfWidth: 2.0, halfHeight: 0.1)
+    polygonB.setAsBox(halfWidth: 2.0, halfHeight: 0.1)
   }
   
   override func step() {
     var input = b2DistanceInput()
-    input.proxyA.set(m_polygonA, 0)
-    input.proxyB.set(m_polygonB, 0)
-    input.transformA = m_transformA
-    input.transformB = m_transformB
+    input.proxyA.set(polygonA, 0)
+    input.proxyB.set(polygonB, 0)
+    input.transformA = transformA
+    input.transformB = transformB
     input.useRadii = true
     var cache = b2SimplexCache()
     cache.count = 0
@@ -69,13 +69,13 @@ class DistanceTestViewController: BaseViewController {
     b2Locally {
       let color = b2Color(0.9, 0.9, 0.9)
       var v = [b2Vec2]()
-      for i in 0 ..< self.m_polygonA.count {
-        v.append(b2Mul(self.m_transformA, self.m_polygonA.vertices[i]))
+      for i in 0 ..< self.polygonA.count {
+        v.append(b2Mul(self.transformA, self.polygonA.vertices[i]))
       }
       self.debugDraw.drawPolygon(v, color)
       
-      for i in 0 ..< self.m_polygonB.count {
-        v.append(b2Mul(self.m_transformB, self.m_polygonB.vertices[i]))
+      for i in 0 ..< self.polygonB.count {
+        v.append(b2Mul(self.transformB, self.polygonB.vertices[i]))
       }
       self.debugDraw.drawPolygon(v, color)
     }

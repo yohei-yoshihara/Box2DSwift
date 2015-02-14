@@ -29,19 +29,19 @@ import Box2D
 
 class TilesViewController: BaseViewController {
   let count = 10
-  var m_fixtureCount = 0
-  var m_createTime: b2Float = 0.0
-  var m_additionalInfoView: AdditionalInfoView!
+  var fixtureCount = 0
+  var createTime: b2Float = 0.0
+  var additionalInfoView: AdditionalInfoView!
 
   override func viewDidLoad() {
     super.viewDidLoad()
     
-    m_additionalInfoView = AdditionalInfoView(frame: self.view.bounds)
-    self.view.addSubview(m_additionalInfoView)
+    additionalInfoView = AdditionalInfoView(frame: self.view.bounds)
+    self.view.addSubview(additionalInfoView)
   }
 
   override func prepare() {
-    m_fixtureCount = 0
+    fixtureCount = 0
     var timer = b2Timer()
     
     b2Locally {
@@ -61,7 +61,7 @@ class TilesViewController: BaseViewController {
           var shape = b2PolygonShape()
           shape.setAsBox(halfWidth: a, halfHeight: a, center: position, angle: 0.0)
           ground.createFixture(shape: shape, density: 0.0)
-          ++self.m_fixtureCount
+          ++self.fixtureCount
           position.x += 2.0 * a
         }
         position.y -= 2.0 * a
@@ -113,7 +113,7 @@ class TilesViewController: BaseViewController {
           
           var body = world.createBody(bd)
           body.createFixture(shape: shape, density: 5.0)
-          ++self.m_fixtureCount
+          ++self.fixtureCount
           y += deltaY
         }
         
@@ -121,7 +121,7 @@ class TilesViewController: BaseViewController {
       }
     }
     
-    m_createTime = timer.milliseconds
+    createTime = timer.milliseconds
   }
  
   override func step() {
@@ -131,13 +131,13 @@ class TilesViewController: BaseViewController {
     let minimumNodeCount = 2 * leafCount - 1
     let minimumHeight = ceil(log(b2Float(minimumNodeCount)) / log(2.0))
     
-    m_additionalInfoView.begin()
-    m_additionalInfoView.append(String(format: "dynamic tree height = %d, min = %d", height, Int(minimumHeight)))
-    m_additionalInfoView.append(String(format: "create time = %6.2f ms, fixture count = %d",
-      m_createTime, m_fixtureCount))
-    m_additionalInfoView.end()
+    additionalInfoView.begin()
+    additionalInfoView.append(String(format: "dynamic tree height = %d, min = %d", height, Int(minimumHeight)))
+    additionalInfoView.append(String(format: "create time = %6.2f ms, fixture count = %d",
+      createTime, fixtureCount))
+    additionalInfoView.end()
     
-    //b2DynamicTree* tree = &world->m_contactManager.m_broadPhase.m_tree;
+    //b2DynamicTree* tree = &world->contactManager.broadPhase.tree;
     
     //if (stepCount == 400)
     //{

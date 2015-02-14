@@ -30,8 +30,11 @@ import Foundation
 /// and asynchronous queries. The world also contains efficient memory
 /// management facilities.
 public class b2World {
-  /// Construct a world object.
-  /// @param gravity the world gravity vector.
+  /**
+  Construct a world object.
+  
+  :param: gravity the world gravity vector.
+  */
   public init(gravity: b2Vec2) {
     m_destructionListener = nil
     m_debugDraw = nil
@@ -1076,7 +1079,7 @@ public class b2World {
           
           // Beta is the fraction of the remaining portion of the .
           let beta = output.t
-          if output.state == b2TOIOutput.State.e_touching {
+          if output.state == b2TOIOutput.State.touching {
             alpha = min(alpha0 + (1.0 - alpha0) * beta, 1.0)
           }
           else {

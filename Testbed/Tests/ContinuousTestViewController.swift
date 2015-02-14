@@ -28,9 +28,9 @@ import UIKit
 import Box2D
 
 class ContinuousTestViewController: BaseViewController {
-  var m_body: b2Body!
-  var m_angularVelocity: b2Float = 0.0
-  var m_label: UILabel!
+  var body: b2Body!
+  var angularVelocity: b2Float = 0.0
+  var label: UILabel!
   var s = String()
   var lastUpdate: CFTimeInterval = 0
   
@@ -38,13 +38,13 @@ class ContinuousTestViewController: BaseViewController {
     super.viewDidLoad()
     
     let size = self.view.bounds.size
-    m_label = UILabel(frame: CGRect(x: 0, y: 0, width: 1, height: 1))
-    m_label.autoresizingMask = UIViewAutoresizing.FlexibleBottomMargin | UIViewAutoresizing.FlexibleRightMargin
-    m_label.numberOfLines = 0
-    m_label.backgroundColor = UIColor.blackColor()
-    m_label.textColor = UIColor.whiteColor()
-    m_label.font = UIFont.systemFontOfSize(9)
-    self.view.addSubview(m_label)
+    label = UILabel(frame: CGRect(x: 0, y: 0, width: 1, height: 1))
+    label.autoresizingMask = UIViewAutoresizing.FlexibleBottomMargin | UIViewAutoresizing.FlexibleRightMargin
+    label.numberOfLines = 0
+    label.backgroundColor = UIColor.blackColor()
+    label.textColor = UIColor.whiteColor()
+    label.font = UIFont.systemFontOfSize(9)
+    self.view.addSubview(label)
   }
 
   override func prepare() {
@@ -73,13 +73,13 @@ class ContinuousTestViewController: BaseViewController {
       var shape = b2PolygonShape()
       shape.setAsBox(halfWidth: 2.0, halfHeight: 0.1)
       
-      self.m_body = self.world.createBody(bd)
-      self.m_body.createFixture(shape: shape, density: 1.0)
+      self.body = self.world.createBody(bd)
+      self.body.createFixture(shape: shape, density: 1.0)
       
-      self.m_angularVelocity = RandomFloat(-50.0, 50.0)
-      //m_angularVelocity = 46.661274f;
-      self.m_body.setLinearVelocity(b2Vec2(0.0, -100.0))
-      self.m_body.setAngularVelocity(self.m_angularVelocity)
+      self.angularVelocity = RandomFloat(-50.0, 50.0)
+      //angularVelocity = 46.661274f;
+      self.body.setLinearVelocity(b2Vec2(0.0, -100.0))
+      self.body.setAngularVelocity(self.angularVelocity)
     }
 #else
     b2Locally {
@@ -125,9 +125,9 @@ class ContinuousTestViewController: BaseViewController {
       //Launch();
     }
     
-    m_label.text = s
-    m_label.frame = CGRect(x: 0, y: 0, width: self.view.bounds.size.width, height: self.view.bounds.size.height)
-    m_label.sizeToFit()
+    label.text = s
+    label.frame = CGRect(x: 0, y: 0, width: self.view.bounds.size.width, height: self.view.bounds.size.height)
+    label.sizeToFit()
     lastUpdate = CACurrentMediaTime()
   }
   

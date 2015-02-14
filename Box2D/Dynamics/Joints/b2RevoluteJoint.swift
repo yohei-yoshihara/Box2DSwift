@@ -39,15 +39,15 @@ import Foundation
 ///    the joints will be broken.
 public class b2RevoluteJointDef : b2JointDef {
   public override init() {
-      localAnchorA = b2Vec2(0.0, 0.0)
-      localAnchorB = b2Vec2(0.0, 0.0)
-      referenceAngle = 0.0
-      lowerAngle = 0.0
-      upperAngle = 0.0
-      maxMotorTorque = 0.0
-      motorSpeed = 0.0
-      enableLimit = false
-      enableMotor = false
+    localAnchorA = b2Vec2(0.0, 0.0)
+    localAnchorB = b2Vec2(0.0, 0.0)
+    referenceAngle = 0.0
+    lowerAngle = 0.0
+    upperAngle = 0.0
+    maxMotorTorque = 0.0
+    motorSpeed = 0.0
+    enableLimit = false
+    enableMotor = false
     super.init()
     type = b2JointType.revoluteJoint
   }
@@ -162,7 +162,7 @@ public class b2RevoluteJoint : b2Joint {
   /// Set the joint limits in radians.
   public func setLimits(#lower: b2Float, upper: b2Float) {
     assert(lower <= upper)
-      
+    
     if lower != m_lowerAngle || upper != m_upperAngle {
       m_bodyA.setAwake(true)
       m_bodyB.setAwake(true)
@@ -262,10 +262,10 @@ public class b2RevoluteJoint : b2Joint {
     m_localAnchorA = def.localAnchorA
     m_localAnchorB = def.localAnchorB
     m_referenceAngle = def.referenceAngle
-      
+    
     m_impulse = b2Vec3(0.0, 0.0, 0.0)
     m_motorImpulse = 0.0
-      
+    
     m_lowerAngle = def.lowerAngle
     m_upperAngle = def.upperAngle
     m_maxMotorTorque = def.maxMotorTorque
@@ -285,34 +285,34 @@ public class b2RevoluteJoint : b2Joint {
     m_invMassB = m_bodyB.m_invMass
     m_invIA = m_bodyA.m_invI
     m_invIB = m_bodyB.m_invI
-      
+    
     let aA = data.positions[m_indexA].a
     var vA = data.velocities[m_indexA].v
     var wA = data.velocities[m_indexA].w
-      
+    
     let aB = data.positions[m_indexB].a
     var vB = data.velocities[m_indexB].v
     var wB = data.velocities[m_indexB].w
-      
+    
     let qA = b2Rot(aA), qB = b2Rot(aB)
-      
+    
     m_rA = b2Mul(qA, m_localAnchorA - m_localCenterA)
     m_rB = b2Mul(qB, m_localAnchorB - m_localCenterB)
-      
+    
     // J = [-I -r1_skew I r2_skew]
     //     [ 0       -1 0       1]
     // r_skew = [-ry; rx]
-      
+    
     // Matlab
     // K = [ mA+r1y^2*iA+mB+r2y^2*iB,  -r1y*iA*r1x-r2y*iB*r2x,          -r1y*iA-r2y*iB]
     //     [  -r1y*iA*r1x-r2y*iB*r2x, mA+r1x^2*iA+mB+r2x^2*iB,           r1x*iA+r2x*iB]
     //     [          -r1y*iA-r2y*iB,           r1x*iA+r2x*iB,                   iA+iB]
-      
+    
     let mA = m_invMassA, mB = m_invMassB
     let iA = m_invIA, iB = m_invIB
-      
+    
     let fixedRotation = (iA + iB == 0.0)
-      
+    
     m_mass.ex.x = mA + mB + m_rA.y * m_rA.y * iA + m_rB.y * m_rB.y * iB
     m_mass.ey.x = -m_rA.y * m_rA.x * iA - m_rB.y * m_rB.x * iB
     m_mass.ez.x = -m_rA.y * iA - m_rB.y * iB
@@ -322,16 +322,16 @@ public class b2RevoluteJoint : b2Joint {
     m_mass.ex.z = m_mass.ez.x
     m_mass.ey.z = m_mass.ez.y
     m_mass.ez.z = iA + iB
-      
+    
     m_motorMass = iA + iB
     if m_motorMass > 0.0 {
       m_motorMass = 1.0 / m_motorMass
     }
-      
+    
     if m_enableMotor == false || fixedRotation {
       m_motorImpulse = 0.0
     }
-      
+    
     if m_enableLimit && fixedRotation == false {
       let jointAngle = aB - aA - m_referenceAngle
       if abs(m_upperAngle - m_lowerAngle) < 2.0 * b2_angularSlop {
@@ -357,17 +357,17 @@ public class b2RevoluteJoint : b2Joint {
     else {
       m_limitState = b2LimitState.inactiveLimit
     }
-      
+    
     if data.step.warmStarting {
       // Scale impulses to support a variable time step.
       m_impulse *= data.step.dtRatio
       m_motorImpulse *= data.step.dtRatio
-        
+      
       let P = b2Vec2(m_impulse.x, m_impulse.y)
-        
+      
       vA -= mA * P
       wA -= iA * (b2Cross(m_rA, P) + m_motorImpulse + m_impulse.z)
-        
+      
       vB += mB * P
       wB += iB * (b2Cross(m_rB, P) + m_motorImpulse + m_impulse.z)
     }
@@ -375,7 +375,7 @@ public class b2RevoluteJoint : b2Joint {
       m_impulse.setZero()
       m_motorImpulse = 0.0
     }
-      
+    
     data.velocities[m_indexA].v = vA
     data.velocities[m_indexA].w = wA
     data.velocities[m_indexB].v = vB
@@ -387,12 +387,12 @@ public class b2RevoluteJoint : b2Joint {
     var wA = data.velocities[m_indexA].w
     var vB = data.velocities[m_indexB].v
     var wB = data.velocities[m_indexB].w
-      
+    
     let mA = m_invMassA, mB = m_invMassB
     let iA = m_invIA, iB = m_invIB
-      
+    
     let fixedRotation = (iA + iB == 0.0)
-      
+    
     // Solve motor constraint.
     if m_enableMotor && m_limitState != b2LimitState.equalLimits && fixedRotation == false {
       let Cdot = wB - wA - m_motorSpeed
@@ -401,19 +401,19 @@ public class b2RevoluteJoint : b2Joint {
       let maxImpulse = data.step.dt * m_maxMotorTorque
       m_motorImpulse = b2Clamp(m_motorImpulse + impulse, -maxImpulse, maxImpulse)
       impulse = m_motorImpulse - oldImpulse
-        
+      
       wA -= iA * impulse
       wB += iB * impulse
     }
-      
+    
     // Solve limit constraint.
     if m_enableLimit && m_limitState != b2LimitState.inactiveLimit && fixedRotation == false {
       let Cdot1 = vB + b2Cross(wB, m_rB) - vA - b2Cross(wA, m_rA)
       let Cdot2 = wB - wA
       let Cdot = b2Vec3(Cdot1.x, Cdot1.y, Cdot2)
-          
+      
       var impulse = -m_mass.solve33(Cdot)
-          
+      
       if m_limitState == b2LimitState.equalLimits {
         m_impulse += impulse
       }
@@ -449,12 +449,12 @@ public class b2RevoluteJoint : b2Joint {
           m_impulse += impulse
         }
       }
-          
+      
       let P = b2Vec2(impulse.x, impulse.y)
-          
+      
       vA -= mA * P
       wA -= iA * (b2Cross(m_rA, P) + impulse.z)
-          
+      
       vB += mB * P
       wB += iB * (b2Cross(m_rB, P) + impulse.z)
     }
@@ -462,17 +462,17 @@ public class b2RevoluteJoint : b2Joint {
       // Solve point-to-point constraint
       let Cdot = vB + b2Cross(wB, m_rB) - vA - b2Cross(wA, m_rA)
       let impulse = m_mass.solve22(-Cdot)
-            
+      
       m_impulse.x += impulse.x
       m_impulse.y += impulse.y
-            
+      
       vA -= mA * impulse
       wA -= iA * b2Cross(m_rA, impulse)
-            
+      
       vB += mB * impulse
       wB += iB * b2Cross(m_rB, impulse)
     }
-      
+    
     data.velocities[m_indexA].v = vA
     data.velocities[m_indexA].w = wA
     data.velocities[m_indexB].v = vB
@@ -484,19 +484,19 @@ public class b2RevoluteJoint : b2Joint {
     var aA = data.positions[m_indexA].a
     var cB = data.positions[m_indexB].c
     var aB = data.positions[m_indexB].a
-      
+    
     var qA = b2Rot(aA), qB = b2Rot(aB)
-      
+    
     var angularError: b2Float = 0.0
     var positionError: b2Float = 0.0
-      
+    
     let fixedRotation = (m_invIA + m_invIB == 0.0)
-      
+    
     // Solve angular limit constraint.
     if m_enableLimit && m_limitState != b2LimitState.inactiveLimit && fixedRotation == false {
       let angle = aB - aA - m_referenceAngle
       var limitImpulse: b2Float = 0.0
-        
+      
       if m_limitState == b2LimitState.equalLimits {
         // Prevent large angular corrections
         let C = b2Clamp(angle - m_lowerAngle, -b2_maxAngularCorrection, b2_maxAngularCorrection)
@@ -506,7 +506,7 @@ public class b2RevoluteJoint : b2Joint {
       else if m_limitState == b2LimitState.atLowerLimit {
         var C = angle - m_lowerAngle
         angularError = -C
-          
+        
         // Prevent large angular corrections and allow some slop.
         C = b2Clamp(C + b2_angularSlop, -b2_maxAngularCorrection, 0.0)
         limitImpulse = -m_motorMass * C
@@ -514,50 +514,50 @@ public class b2RevoluteJoint : b2Joint {
       else if m_limitState == b2LimitState.atUpperLimit {
         var C = angle - m_upperAngle
         angularError = C
-            
+        
         // Prevent large angular corrections and allow some slop.
         C = b2Clamp(C - b2_angularSlop, 0.0, b2_maxAngularCorrection)
-            limitImpulse = -m_motorMass * C
-        }
-        
-        aA -= m_invIA * limitImpulse
-        aB += m_invIB * limitImpulse
+        limitImpulse = -m_motorMass * C
       }
       
-      // Solve point-to-point constraint.
-      b2Locally {
-        qA.set(aA)
-        qB.set(aB)
-        let rA = b2Mul(qA, self.m_localAnchorA - self.m_localCenterA)
-        let rB = b2Mul(qB, self.m_localAnchorB - self.m_localCenterB)
-          
-        let C = cB + rB - cA - rA
-        positionError = C.length()
-          
-        let mA = self.m_invMassA, mB = self.m_invMassB
-        let iA = self.m_invIA, iB = self.m_invIB
-          
-        var K = b2Mat22()
-        K.ex.x = mA + mB + iA * rA.y * rA.y + iB * rB.y * rB.y
-        K.ex.y = -iA * rA.x * rA.y - iB * rB.x * rB.y
-        K.ey.x = K.ex.y
-        K.ey.y = mA + mB + iA * rA.x * rA.x + iB * rB.x * rB.x
-          
-        let impulse = -K.solve(C)
-          
-        cA -= mA * impulse
-        aA -= iA * b2Cross(rA, impulse)
-          
-        cB += mB * impulse
-        aB += iB * b2Cross(rB, impulse)
-      }
+      aA -= m_invIA * limitImpulse
+      aB += m_invIB * limitImpulse
+    }
     
-      data.positions[m_indexA].c = cA
-      data.positions[m_indexA].a = aA
-      data.positions[m_indexB].c = cB
-      data.positions[m_indexB].a = aB
+    // Solve point-to-point constraint.
+    b2Locally {
+      qA.set(aA)
+      qB.set(aB)
+      let rA = b2Mul(qA, self.m_localAnchorA - self.m_localCenterA)
+      let rB = b2Mul(qB, self.m_localAnchorB - self.m_localCenterB)
       
-      return positionError <= b2_linearSlop && angularError <= b2_angularSlop
+      let C = cB + rB - cA - rA
+      positionError = C.length()
+      
+      let mA = self.m_invMassA, mB = self.m_invMassB
+      let iA = self.m_invIA, iB = self.m_invIB
+      
+      var K = b2Mat22()
+      K.ex.x = mA + mB + iA * rA.y * rA.y + iB * rB.y * rB.y
+      K.ex.y = -iA * rA.x * rA.y - iB * rB.x * rB.y
+      K.ey.x = K.ex.y
+      K.ey.y = mA + mB + iA * rA.x * rA.x + iB * rB.x * rB.x
+      
+      let impulse = -K.solve(C)
+      
+      cA -= mA * impulse
+      aA -= iA * b2Cross(rA, impulse)
+      
+      cB += mB * impulse
+      aB += iB * b2Cross(rB, impulse)
+    }
+    
+    data.positions[m_indexA].c = cA
+    data.positions[m_indexA].a = aA
+    data.positions[m_indexB].c = cB
+    data.positions[m_indexB].a = aB
+    
+    return positionError <= b2_linearSlop && angularError <= b2_angularSlop
   }
   
   // MARK: private variables

@@ -366,7 +366,7 @@ public struct b2Mat22 : Printable {
       return "(\(ex),\(ey))"
     }
   }
-
+  
   public var ex : b2Vec2
   public var ey : b2Vec2
 }
@@ -407,7 +407,7 @@ public struct b2Mat33 : Printable {
   public func solve33(b: b2Vec3) -> b2Vec3 {
     var det = b2Dot(ex, b2Cross(ey, ez))
     if det != 0.0 {
-    det = 1.0 / det
+      det = 1.0 / det
     }
     var x = b2Vec3()
     x.x = det * b2Dot(b, b2Cross(ey, ez))
@@ -455,7 +455,7 @@ public struct b2Mat33 : Printable {
   public func getSymInverse33() -> b2Mat33 {
     var det = b2Dot(ex, b2Cross(ey, ez))
     if det != 0.0 {
-    det = 1.0 / det
+      det = 1.0 / det
     }
     
     let a11 = ex.x, a12 = ey.x, a13 = ez.x
@@ -500,40 +500,40 @@ public struct b2Rot : Printable {
   Initialize from an angle in radians
   */
   public init(_ angle : b2Float) {
-		s = sin(angle)
-		c = cos(angle)
+    s = sin(angle)
+    c = cos(angle)
   }
   /**
   Set using an angle in radians.
   */
   public mutating func set(angle : b2Float) {
-		s = sin(angle)
-		c = cos(angle)
+    s = sin(angle)
+    c = cos(angle)
   }
   /**
   Set to the identity rotation
   */
   public mutating func setIdentity() {
-		s = 0.0
-		c = 1.0
+    s = 0.0
+    c = 1.0
   }
   /**
   Get the angle in radians
   */
   public var angle: b2Float {
-		return b2Atan2(s, c)
+    return b2Atan2(s, c)
   }
   /**
   Get the x-axis
   */
   public var xAxis: b2Vec2 {
-		return b2Vec2(c, s)
+    return b2Vec2(c, s)
   }
   /**
   Get the u-axis
   */
   public var yAxis: b2Vec2 {
-		return b2Vec2(-s, c)
+    return b2Vec2(-s, c)
   }
   public var description: String {
     get {
@@ -563,29 +563,29 @@ public struct b2Transform : Printable {
   Initialize using a position vector and a rotation.
   */
   public init(position: b2Vec2, rotation: b2Rot) {
-   p = position
-   q = rotation
+    p = position
+    q = rotation
   }
   /**
   Set this to the identity transform.
   */
   public mutating func setIdentity() {
-		p.setZero()
-		q.setIdentity()
+    p.setZero()
+    q.setIdentity()
   }
   /**
   Set this based on the position and angle.
   */
   public mutating func set(position: b2Vec2, angle: b2Float) {
-		p = position
-		q.set(angle)
+    p = position
+    q.set(angle)
   }
   public var description: String {
     get {
       return "(p:\(p),q:\(q))"
     }
   }
-
+  
   public var p: b2Vec2
   public var q: b2Rot
 }
@@ -608,7 +608,7 @@ public struct b2Sweep : Printable {
     xf.p = (1.0 - beta) * c0 + beta * c
     let angle = (1.0 - beta) * a0 + beta * a
     xf.q.set(angle)
-  
+    
     // Shift to origin
     xf.p -= b2Mul(xf.q, localCenter)
     return xf
@@ -869,7 +869,7 @@ public func b2MulT(T : b2Transform, v : b2Vec2) -> b2Vec2
 }
 /**
 v2 = A.q.Rot(B.q.Rot(v1) + B.p) + A.p
-   = (A.q * B.q).Rot(v1) + A.q.Rot(B.p) + A.p
+= (A.q * B.q).Rot(v1) + A.q.Rot(B.p) + A.p
 */
 public func b2Mul(A : b2Transform, B : b2Transform) -> b2Transform
 {
@@ -880,7 +880,7 @@ public func b2Mul(A : b2Transform, B : b2Transform) -> b2Transform
 }
 /**
 v2 = A.q' * (B.q * v1 + B.p - A.p)
-   = A.q' * B.q * v1 + A.q' * (B.p - A.p)
+= A.q' * B.q * v1 + A.q' * (B.p - A.p)
 */
 public func b2MulT(A : b2Transform, B : b2Transform) -> b2Transform
 {
@@ -907,7 +907,7 @@ public func b2Max(a : b2Vec2, b : b2Vec2) -> b2Vec2 {
 }
 
 public func b2Clamp(a : b2Float, low : b2Float, high : b2Float) -> b2Float {
-    return max(low, min(a, high))
+  return max(low, min(a, high))
 }
 
 public func b2Clamp(a : b2Vec2, low : b2Vec2, high : b2Vec2) -> b2Vec2

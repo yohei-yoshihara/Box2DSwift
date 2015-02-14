@@ -29,7 +29,7 @@ import Box2D
 
 class BridgeViewController: BaseViewController {
   let count = 30
-  var m_middle: b2Body!
+  var middle: b2Body!
   
   override func prepare() {
     var ground: b2Body! = nil
@@ -66,7 +66,7 @@ class BridgeViewController: BaseViewController {
         self.world.createJoint(jd)
         
         if i == (self.count >> 1) {
-          self.m_middle = body
+          self.middle = body
         }
         prevBody = body
       }

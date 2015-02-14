@@ -98,11 +98,11 @@ public class b2JointEdge {
 /// Joint definitions are used to construct joints.
 public class b2JointDef {
   public init() {
-		type = b2JointType.unknownJoint
-		userData = nil
+    type = b2JointType.unknownJoint
+    userData = nil
     bodyA = nil
     bodyB = nil
-		collideConnected = false
+    collideConnected = false
   }
   
   /// The joint type is set automatically for concrete joint types.

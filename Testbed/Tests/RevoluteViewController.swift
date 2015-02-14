@@ -28,8 +28,8 @@ import UIKit
 import Box2D
 
 class RevoluteViewController: BaseViewController {
-  var m_ball: b2Body!
-  var m_joint: b2RevoluteJoint!
+  var ball: b2Body!
+  var joint: b2RevoluteJoint!
 
   override func viewDidLoad() {
     super.viewDidLoad()
@@ -84,7 +84,7 @@ class RevoluteViewController: BaseViewController {
       rjd.enableLimit = true
       rjd.collideConnected = true
       
-      self.m_joint = self.world.createJoint(rjd) as! b2RevoluteJoint
+      self.joint = self.world.createJoint(rjd) as! b2RevoluteJoint
     }
     
     b2Locally {
@@ -100,8 +100,8 @@ class RevoluteViewController: BaseViewController {
       fd.filter.maskBits = 1
       fd.shape = circle_shape
       
-      self.m_ball = self.world.createBody(circle_bd)
-      self.m_ball.createFixture(fd);
+      self.ball = self.world.createBody(circle_bd)
+      self.ball.createFixture(fd);
       
       let polygon_shape = b2PolygonShape()
       polygon_shape.setAsBox(halfWidth: 10.0, halfHeight: 0.2, center: b2Vec2(-10.0, 0.0), angle: 0.0)
@@ -146,10 +146,10 @@ class RevoluteViewController: BaseViewController {
   }
   
   func onLimits(sender: UIBarButtonItem) {
-    m_joint.enableLimit(!m_joint.isLimitEnabled)
+    joint.enableLimit(!joint.isLimitEnabled)
   }
   
   func onMotor(sender: UIBarButtonItem) {
-    m_joint.enableMotor(!m_joint.isMotorEnabled)
+    joint.enableMotor(!joint.isMotorEnabled)
   }
 }

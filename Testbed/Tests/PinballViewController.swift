@@ -28,10 +28,10 @@ import UIKit
 import Box2D
 
 class PinballViewController: BaseViewController {
-  var m_leftJoint: b2RevoluteJoint!
-  var m_rightJoint: b2RevoluteJoint!
-  var m_ball: b2Body!
-  var m_button = false
+  var leftJoint: b2RevoluteJoint!
+  var rightJoint: b2RevoluteJoint!
+  var ball: b2Body!
+  var button = false
 
   override func viewDidLoad() {
     super.viewDidLoad()
@@ -42,7 +42,7 @@ class PinballViewController: BaseViewController {
   }
   
   func onSwitch(sender: UIBarButtonItem) {
-    m_button = !m_button
+    button = !button
   }
   
   override func prepare() {
@@ -102,14 +102,14 @@ class PinballViewController: BaseViewController {
       jd.bodyB = leftFlipper
       jd.lowerAngle = -30.0 * b2_pi / 180.0
       jd.upperAngle = 5.0 * b2_pi / 180.0
-      self.m_leftJoint = self.world.createJoint(jd) as! b2RevoluteJoint
+      self.leftJoint = self.world.createJoint(jd) as! b2RevoluteJoint
       
       jd.motorSpeed = 0.0
       jd.localAnchorA = p2
       jd.bodyB = rightFlipper
       jd.lowerAngle = -5.0 * b2_pi / 180.0
       jd.upperAngle = 30.0 * b2_pi / 180.0
-      self.m_rightJoint = self.world.createJoint(jd) as! b2RevoluteJoint
+      self.rightJoint = self.world.createJoint(jd) as! b2RevoluteJoint
     }
     
     // Circle character
@@ -119,7 +119,7 @@ class PinballViewController: BaseViewController {
       bd.type = b2BodyType.dynamicBody
       bd.bullet = true
       
-      self.m_ball = self.world.createBody(bd)
+      self.ball = self.world.createBody(bd)
       
       let shape = b2CircleShape()
       shape.radius = 0.2
@@ -127,18 +127,18 @@ class PinballViewController: BaseViewController {
       let fd = b2FixtureDef()
       fd.shape = shape
       fd.density = 1.0
-      self.m_ball.createFixture(fd)
+      self.ball.createFixture(fd)
     }
   }
   
   override func step() {
-    if m_button {
-      m_leftJoint.setMotorSpeed(20.0)
-      m_rightJoint.setMotorSpeed(-20.0)
+    if button {
+      leftJoint.setMotorSpeed(20.0)
+      rightJoint.setMotorSpeed(-20.0)
     }
     else {
-      m_leftJoint.setMotorSpeed(-10.0)
-      m_rightJoint.setMotorSpeed(10.0)
+      leftJoint.setMotorSpeed(-10.0)
+      rightJoint.setMotorSpeed(10.0)
     }
   }
   

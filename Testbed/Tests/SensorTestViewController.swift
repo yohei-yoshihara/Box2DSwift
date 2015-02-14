@@ -30,8 +30,8 @@ import Box2D
 class SensorTestViewController: BaseViewController, b2ContactListener {
   let count = 7
   
-  var m_sensor: b2Fixture!
-  var m_bodies = [b2Body]()
+  var sensor: b2Fixture!
+  var bodies = [b2Body]()
 
   override func prepare() {
     world.setContactListener(self)
@@ -50,7 +50,7 @@ class SensorTestViewController: BaseViewController, b2ContactListener {
         let sd = b2FixtureDef()
         sd.SetAsBox(10.0, 2.0, b2Vec2(0.0, 20.0), 0.0)
         sd.isSensor = true
-        self.m_sensor = ground.createFixture(sd)
+        self.sensor = ground.createFixture(sd)
       }
 #else
       b2Locally {
@@ -61,7 +61,7 @@ class SensorTestViewController: BaseViewController, b2ContactListener {
         let fd = b2FixtureDef()
         fd.shape = shape
         fd.isSensor = true
-        self.m_sensor = ground.createFixture(fd)
+        self.sensor = ground.createFixture(fd)
       }
 #endif
     }
@@ -75,8 +75,8 @@ class SensorTestViewController: BaseViewController, b2ContactListener {
         bd.type = b2BodyType.dynamicBody
         bd.position.set(-10.0 + 3.0 * b2Float(i), 20.0)
         bd.userData = NSNumber(bool: false)
-        self.m_bodies.append(self.world.createBody(bd))
-        self.m_bodies.last!.createFixture(shape: shape, density: 1.0)
+        self.bodies.append(self.world.createBody(bd))
+        self.bodies.last!.createFixture(shape: shape, density: 1.0)
       }
     }
   }
@@ -87,14 +87,14 @@ class SensorTestViewController: BaseViewController, b2ContactListener {
     let fixtureA = contact.fixtureA
     let fixtureB = contact.fixtureB
     
-    if fixtureA === m_sensor {
+    if fixtureA === sensor {
       let userData: AnyObject? = fixtureB.body.userData
       if userData != nil {
         fixtureB.body.setUserData(NSNumber(bool: true))
       }
     }
     
-    if fixtureB === m_sensor {
+    if fixtureB === sensor {
       let userData: AnyObject? = fixtureA.body.userData
       if userData != nil {
         fixtureA.body.setUserData(NSNumber(bool: true))
@@ -108,14 +108,14 @@ class SensorTestViewController: BaseViewController, b2ContactListener {
     let fixtureA = contact.fixtureA
     let fixtureB = contact.fixtureB
     
-    if fixtureA === m_sensor {
+    if fixtureA === sensor {
       let userData: AnyObject? = fixtureB.body.userData
       if userData != nil {
         fixtureB.body.setUserData(NSNumber(bool: false))
       }
     }
     
-    if fixtureB === m_sensor {
+    if fixtureB === sensor {
       let userData: AnyObject? = fixtureA.body.userData
       if userData != nil {
         fixtureA.body.setUserData(NSNumber(bool: false))
@@ -135,7 +135,7 @@ class SensorTestViewController: BaseViewController, b2ContactListener {
 		// Traverse the contact results. Apply a force on shapes
 		// that overlap the sensor.
 		for i in 0 ..< self.count {
-      let body = m_bodies[i]
+      let body = bodies[i]
       let userData: AnyObject? = body.userData
       if userData == nil {
         continue
@@ -144,9 +144,9 @@ class SensorTestViewController: BaseViewController, b2ContactListener {
         continue
       }
       
-      let ground = m_sensor.body
+      let ground = sensor.body
       
-      let circle = m_sensor.shape as! b2CircleShape
+      let circle = sensor.shape as! b2CircleShape
       let center = ground.getWorldPoint(circle.p)
       
       let position = body.position

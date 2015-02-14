@@ -28,13 +28,13 @@ import UIKit
 import Box2D
 
 class PrismaticViewController: BaseViewController {
-  var m_joint: b2PrismaticJoint!
-  var m_additionalInfoView: AdditionalInfoView!
+  var joint: b2PrismaticJoint!
+  var additionalInfoView: AdditionalInfoView!
 
   override func viewDidLoad() {
     super.viewDidLoad()
-    m_additionalInfoView = AdditionalInfoView(frame: self.view.bounds)
-    self.view.addSubview(m_additionalInfoView)
+    additionalInfoView = AdditionalInfoView(frame: self.view.bounds)
+    self.view.addSubview(additionalInfoView)
   }
   
   override func prepare() {
@@ -77,15 +77,15 @@ class PrismaticViewController: BaseViewController {
       pjd.upperTranslation = 20.0
       pjd.enableLimit = true
       
-      self.m_joint = self.world.createJoint(pjd) as! b2PrismaticJoint
+      self.joint = self.world.createJoint(pjd) as! b2PrismaticJoint
     }
   }
   
   override func step() {
-    let force = m_joint.getMotorForce(inverseTimeStep: settings.hz)
-    m_additionalInfoView.begin()
-    m_additionalInfoView.append(String(format: "Motor Force = %4.0f", force))
-    m_additionalInfoView.end()
+    let force = joint.getMotorForce(inverseTimeStep: settings.hz)
+    additionalInfoView.begin()
+    additionalInfoView.append(String(format: "Motor Force = %4.0f", force))
+    additionalInfoView.end()
   }
   
 }

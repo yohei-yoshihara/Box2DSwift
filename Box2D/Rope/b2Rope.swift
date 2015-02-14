@@ -29,13 +29,13 @@ import Foundation
 ///
 public struct b2RopeDef {
   init() {
-		vertices = nil
-		count = 0
-		masses = nil
-		gravity = b2Vec2()
-		damping = 0.1
-		k2 = 0.9
-		k3 = 0.1
+    vertices = nil
+    count = 0
+    masses = nil
+    gravity = b2Vec2()
+    damping = 0.1
+    k2 = 0.9
+    k3 = 0.1
   }
   
   ///
@@ -163,12 +163,12 @@ public class b2Rope {
   
   ///
   var vertexCount: Int {
-		return m_count
+    return m_count
   }
   
   ///
   var vertices: [b2Vec2] {
-		return m_ps
+    return m_ps
   }
   
   ///

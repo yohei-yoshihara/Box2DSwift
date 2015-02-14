@@ -110,13 +110,17 @@ public class b2BodyDef {
 // MARK: -
 /// A rigid body. These are created via b2World::createBody.
 public class b2Body : Printable {
-  /// Creates a fixture and attach it to this body. Use this function if you need
-  /// to set some fixture parameters, like friction. Otherwise you can create the
-  /// fixture directly from a shape.
-  /// If the density is non-zero, this function automatically updates the mass of the body.
-  /// Contacts are not created until the next time step.
-  /// @param def the fixture definition.
-  /// @warning This function is locked during callbacks.
+  /**
+  Creates a fixture and attach it to this body. Use this function if you need
+  to set some fixture parameters, like friction. Otherwise you can create the
+  fixture directly from a shape.
+  If the density is non-zero, this function automatically updates the mass of the body.
+  Contacts are not created until the next time step.
+  
+  :param: def the fixture definition.
+  
+  warning) This function is locked during callbacks.
+  */
   public func createFixture(def: b2FixtureDef) -> b2Fixture {
     assert(m_world.isLocked == false)
     if m_world.isLocked == true {

@@ -40,9 +40,9 @@ public struct b2Profile {
 }
 
 public struct b2TimeStep {
-  var dt: b2Float = 0.0			// time step
-  var inv_dt: b2Float = 0.0		// inverse time step (0 if dt == 0).
-  var dtRatio: b2Float = 0.0	// dt * inv_dt0
+  var dt: b2Float = 0.0       // time step
+  var inv_dt: b2Float = 0.0   // inverse time step (0 if dt == 0).
+  var dtRatio: b2Float = 0.0  // dt * inv_dt0
   var velocityIterations: Int = 0
   var positionIterations: Int = 0
   var warmStarting: Bool = false

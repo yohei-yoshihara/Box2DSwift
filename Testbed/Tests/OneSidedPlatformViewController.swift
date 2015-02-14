@@ -28,19 +28,19 @@ import UIKit
 import Box2D
 
 class OneSidedPlatformViewController: BaseViewController, b2ContactListener {
-  var m_radius: b2Float = 0.5
-  let m_top: b2Float = 10.0 + 0.5
-  let m_bottom: b2Float = 10.0 - 0.5
-  var m_platform: b2Fixture!
-  var m_character: b2Fixture!
-  var m_additionalInfoView: AdditionalInfoView!
+  var radius: b2Float = 0.5
+  let top: b2Float = 10.0 + 0.5
+  let bottom: b2Float = 10.0 - 0.5
+  var platform: b2Fixture!
+  var character: b2Fixture!
+  var additionalInfoView: AdditionalInfoView!
 
   override func viewDidLoad() {
     super.viewDidLoad()
     
     let size = self.view.bounds.size
-    m_additionalInfoView = AdditionalInfoView(frame: CGRect(x: 0, y: 0, width: size.width, height: size.height))
-    self.view.addSubview(m_additionalInfoView)
+    additionalInfoView = AdditionalInfoView(frame: CGRect(x: 0, y: 0, width: size.width, height: size.height))
+    self.view.addSubview(additionalInfoView)
   }
   
   override func prepare() {
@@ -64,7 +64,7 @@ class OneSidedPlatformViewController: BaseViewController, b2ContactListener {
       
       var shape = b2PolygonShape()
       shape.setAsBox(halfWidth: 3.0, halfHeight: 0.5)
-      self.m_platform = body.createFixture(shape: shape, density: 0.0)
+      self.platform = body.createFixture(shape: shape, density: 0.0)
     }
     
     // Actor
@@ -75,8 +75,8 @@ class OneSidedPlatformViewController: BaseViewController, b2ContactListener {
       var body = world.createBody(bd)
       
       var shape = b2CircleShape()
-      shape.radius = self.m_radius
-      self.m_character = body.createFixture(shape: shape, density: 20.0)
+      shape.radius = self.radius
+      self.character = body.createFixture(shape: shape, density: 20.0)
       
       body.setLinearVelocity(b2Vec2(0.0, -50.0))
     }
@@ -88,21 +88,21 @@ class OneSidedPlatformViewController: BaseViewController, b2ContactListener {
     let fixtureA = contact.fixtureA
     let fixtureB = contact.fixtureB
     
-    if fixtureA !== m_platform && fixtureA !== m_character {
+    if fixtureA !== platform && fixtureA !== character {
       return
     }
     
-    if fixtureB !== m_platform && fixtureB !== m_character {
+    if fixtureB !== platform && fixtureB !== character {
       return
     }
     
 #if true
-    let position = m_character.body.position
-    if position.y < m_top + m_radius - 3.0 * b2_linearSlop {
+    let position = character.body.position
+    if position.y < top + radius - 3.0 * b2_linearSlop {
       contact.setEnabled(false)
     }
 #else
-    let v = m_character.body.linearVelocity
+    let v = character.body.linearVelocity
     if v.y > 0.0 {
       contact.setEnabled(false);
     }
@@ -110,10 +110,10 @@ class OneSidedPlatformViewController: BaseViewController, b2ContactListener {
   }
   
   override func step() {
-    m_additionalInfoView.begin()
-    let v = m_character.body.linearVelocity
-    m_additionalInfoView.append(String(format: "Character Linear Velocity: %f", v.y))
-    m_additionalInfoView.end()
+    additionalInfoView.begin()
+    let v = character.body.linearVelocity
+    additionalInfoView.append(String(format: "Character Linear Velocity: %f", v.y))
+    additionalInfoView.end()
   }
   
   func beginContact(contact : b2Contact) { contactListener.beginContact(contact) }

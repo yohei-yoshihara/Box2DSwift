@@ -28,7 +28,7 @@ import UIKit
 import Box2D
 
 class CharacterCollisionViewController: BaseViewController {
-  var m_character: b2Body!
+  var character: b2Body!
 
   override func prepare() {
     // Ground body
@@ -217,7 +217,7 @@ class CharacterCollisionViewController: BaseViewController {
       bd.type = b2BodyType.dynamicBody
       bd.allowSleep = false
       
-      self.m_character = self.world.createBody(bd)
+      self.character = self.world.createBody(bd)
       
       let shape = b2CircleShape()
       shape.radius = 0.25
@@ -226,14 +226,14 @@ class CharacterCollisionViewController: BaseViewController {
       fd.shape = shape
       fd.density = 20.0
       fd.friction = 1.0
-      self.m_character.createFixture(fd)
+      self.character.createFixture(fd)
     }
   }
   
   override func step() {
-    /*var v = m_character.linearVelocity
+    /*var v = character.linearVelocity
     v.x = -5.0
-    m_character.setLinearVelocity(v)*/
+    character.setLinearVelocity(v)*/
   }
   
 }

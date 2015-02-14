@@ -30,16 +30,16 @@ import Box2D
 class BreakableViewController: BaseViewController, b2ContactListener {
   let count = 7
   
-  var m_body1: b2Body!
-  var m_velocity = b2Vec2()
-  var m_angularVelocity: b2Float = 0
-  var m_shape1 = b2PolygonShape()
-  var m_shape2 = b2PolygonShape()
-  var m_piece1: b2Fixture!
-  var m_piece2: b2Fixture!
+  var body1: b2Body!
+  var velocity = b2Vec2()
+  var angularVelocity: b2Float = 0
+  var shape1 = b2PolygonShape()
+  var shape2 = b2PolygonShape()
+  var piece1: b2Fixture!
+  var piece2: b2Fixture!
   
-  var m_broke = false
-  var m_break = false
+  var broke = false
+  var enableBreak = false
   
   override func prepare() {
     world.setContactListener(self)
@@ -60,23 +60,23 @@ class BreakableViewController: BaseViewController, b2ContactListener {
       bd.type = b2BodyType.dynamicBody
       bd.position.set(0.0, 40.0)
       bd.angle = 0.25 * b2_pi
-      self.m_body1 = self.world.createBody(bd)
+      self.body1 = self.world.createBody(bd)
       
-      self.m_shape1.setAsBox(halfWidth: 0.5, halfHeight: 0.5, center: b2Vec2(-0.5, 0.0), angle: 0.0)
-      self.m_piece1 = self.m_body1.createFixture(shape: self.m_shape1, density: 1.0)
+      self.shape1.setAsBox(halfWidth: 0.5, halfHeight: 0.5, center: b2Vec2(-0.5, 0.0), angle: 0.0)
+      self.piece1 = self.body1.createFixture(shape: self.shape1, density: 1.0)
       
-      self.m_shape2.setAsBox(halfWidth: 0.5, halfHeight: 0.5, center: b2Vec2(0.5, 0.0), angle: 0.0)
-      self.m_piece2 = self.m_body1.createFixture(shape: self.m_shape2, density: 1.0)
+      self.shape2.setAsBox(halfWidth: 0.5, halfHeight: 0.5, center: b2Vec2(0.5, 0.0), angle: 0.0)
+      self.piece2 = self.body1.createFixture(shape: self.shape2, density: 1.0)
     }
     
-    m_break = false
-    m_broke = false
+    enableBreak = false
+    broke = false
   }
   
   func postSolve(contact: b2Contact, impulse: b2ContactImpulse) {
     contactListener.postSolve(contact, impulse: impulse)
   
-    if m_broke {
+    if broke {
       // The body already broke.
       return
     }
@@ -91,17 +91,17 @@ class BreakableViewController: BaseViewController, b2ContactListener {
     
     if maxImpulse > 40.0 {
       // Flag the body for breaking.
-      m_break = true
+      enableBreak = true
     }
   }
 
   func doBreak() {
 		// Create two bodies from one.
-		let body1 = m_piece1.body
+		let body1 = piece1.body
 		let center = body1.worldCenter
   
-		body1.destroyFixture(m_piece2)
-		m_piece2 = nil
+		body1.destroyFixture(piece2)
+		piece2 = nil
   
 		let bd = b2BodyDef()
 		bd.type = b2BodyType.dynamicBody
@@ -109,34 +109,34 @@ class BreakableViewController: BaseViewController, b2ContactListener {
 		bd.angle = body1.angle
   
 		let body2 = world.createBody(bd)
-    m_piece2 = body2.createFixture(shape: m_shape2, density: 1.0)
+    piece2 = body2.createFixture(shape: shape2, density: 1.0)
   
 		// Compute consistent velocities for new bodies based on
 		// cached velocity.
 		let center1 = body1.worldCenter
 		let center2 = body2.worldCenter
 		
-		let velocity1 = m_velocity + b2Cross(m_angularVelocity, center1 - center)
-		let velocity2 = m_velocity + b2Cross(m_angularVelocity, center2 - center)
+		let velocity1 = velocity + b2Cross(angularVelocity, center1 - center)
+		let velocity2 = velocity + b2Cross(angularVelocity, center2 - center)
   
-		body1.setAngularVelocity(m_angularVelocity)
+		body1.setAngularVelocity(angularVelocity)
 		body1.setLinearVelocity(velocity1)
   
-		body2.setAngularVelocity(m_angularVelocity)
+		body2.setAngularVelocity(angularVelocity)
 		body2.setLinearVelocity(velocity2)
   }
 
   override func step() {
-		if m_break {
+		if enableBreak {
       doBreak();
-      m_broke = true
-      m_break = false
+      broke = true
+      enableBreak = false
 		}
   
 		// Cache velocities to improve movement on breakage.
-		if m_broke == false {
-      m_velocity = m_body1.linearVelocity
-      m_angularVelocity = m_body1.angularVelocity
+		if broke == false {
+      velocity = body1.linearVelocity
+      angularVelocity = body1.angularVelocity
 		}
   }
   

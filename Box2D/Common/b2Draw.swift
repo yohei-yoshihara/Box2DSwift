@@ -52,13 +52,13 @@ public struct b2Color : Printable {
 
 public struct b2DrawFlags {
   /// draw shapes
-  public static let e_shapeBit: UInt32		    = 0x0001
+  public static let e_shapeBit: UInt32        = 0x0001
   /// draw joint connections
-  public static let e_jointBit: UInt32			  = 0x0002
+  public static let e_jointBit: UInt32        = 0x0002
   /// draw axis aligned bounding boxes
-  public static let e_aabbBit: UInt32				  = 0x0004
+  public static let e_aabbBit: UInt32         = 0x0004
   /// draw broad-phase pairs
-  public static let e_pairBit: UInt32				  = 0x0008
+  public static let e_pairBit: UInt32         = 0x0008
   /// draw center of mass frame
   public static let e_centerOfMassBit: UInt32 = 0x0010
 }

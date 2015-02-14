@@ -28,7 +28,6 @@ import UIKit
 import Box2D
 
 class VaryingRestitutionViewController: BaseViewController {
-
   override func prepare() {
     b2Locally {
       let bd = b2BodyDef()

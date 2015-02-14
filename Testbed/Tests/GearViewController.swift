@@ -28,18 +28,18 @@ import UIKit
 import Box2D
 
 class GearViewController: BaseViewController {
-  var m_joint1: b2RevoluteJoint!
-  var m_joint2: b2RevoluteJoint!
-  var m_joint3: b2PrismaticJoint!
-  var m_joint4: b2GearJoint!
-  var m_joint5: b2GearJoint!
-  var m_additionalInfoView: AdditionalInfoView!
+  var joint1: b2RevoluteJoint!
+  var joint2: b2RevoluteJoint!
+  var joint3: b2PrismaticJoint!
+  var joint4: b2GearJoint!
+  var joint5: b2GearJoint!
+  var additionalInfoView: AdditionalInfoView!
 
   override func viewDidLoad() {
     super.viewDidLoad()
     
-    m_additionalInfoView = AdditionalInfoView(frame: self.view.bounds)
-    self.view.addSubview(m_additionalInfoView)
+    additionalInfoView = AdditionalInfoView(frame: self.view.bounds)
+    self.view.addSubview(additionalInfoView)
   }
   
   override func prepare() {
@@ -120,7 +120,7 @@ class GearViewController: BaseViewController {
       jd1.localAnchorA = ground.getLocalPoint(bd1.position)
       jd1.localAnchorB = body1.getLocalPoint(bd1.position)
       jd1.referenceAngle = body1.angle - ground.angle
-      self.m_joint1 = self.world.createJoint(jd1) as! b2RevoluteJoint
+      self.joint1 = self.world.createJoint(jd1) as! b2RevoluteJoint
       
       var bd2 = b2BodyDef()
       bd2.type = b2BodyType.dynamicBody
@@ -130,7 +130,7 @@ class GearViewController: BaseViewController {
       
       var jd2 = b2RevoluteJointDef()
       jd2.initialize(ground, bodyB: body2, anchor: bd2.position)
-      self.m_joint2 = self.world.createJoint(jd2) as! b2RevoluteJoint
+      self.joint2 = self.world.createJoint(jd2) as! b2RevoluteJoint
       
       var bd3 = b2BodyDef()
       bd3.type = b2BodyType.dynamicBody
@@ -144,38 +144,38 @@ class GearViewController: BaseViewController {
       jd3.upperTranslation = 5.0
       jd3.enableLimit = true
       
-      self.m_joint3 = self.world.createJoint(jd3) as! b2PrismaticJoint
+      self.joint3 = self.world.createJoint(jd3) as! b2PrismaticJoint
       
       var jd4 = b2GearJointDef()
       jd4.bodyA = body1
       jd4.bodyB = body2
-      jd4.joint1 = self.m_joint1
-      jd4.joint2 = self.m_joint2
+      jd4.joint1 = self.joint1
+      jd4.joint2 = self.joint2
       jd4.ratio = circle2.radius / circle1.radius
-      self.m_joint4 = self.world.createJoint(jd4) as! b2GearJoint
+      self.joint4 = self.world.createJoint(jd4) as! b2GearJoint
       
       var jd5 = b2GearJointDef()
       jd5.bodyA = body2
       jd5.bodyB = body3
-      jd5.joint1 = self.m_joint2
-      jd5.joint2 = self.m_joint3
+      jd5.joint1 = self.joint2
+      jd5.joint2 = self.joint3
       jd5.ratio = -1.0 / circle2.radius
-      self.m_joint5 = self.world.createJoint(jd5) as! b2GearJoint
+      self.joint5 = self.world.createJoint(jd5) as! b2GearJoint
     }
   }
   
   override func step() {
-    m_additionalInfoView.begin()
+    additionalInfoView.begin()
     
-    var ratio = m_joint4.ratio
-    var value = m_joint1.jointAngle + ratio * m_joint2.jointAngle
-    m_additionalInfoView.append(String(format: "theta1 + %4.2f * theta2 = %4.2f", ratio, value))
+    var ratio = joint4.ratio
+    var value = joint1.jointAngle + ratio * joint2.jointAngle
+    additionalInfoView.append(String(format: "theta1 + %4.2f * theta2 = %4.2f", ratio, value))
     
-    ratio = m_joint5.ratio
-    value = m_joint2.jointAngle + ratio * m_joint3.jointTranslation
-    m_additionalInfoView.append(String(format: "theta1 + %4.2f * theta2 = %4.2f", ratio, value))
+    ratio = joint5.ratio
+    value = joint2.jointAngle + ratio * joint3.jointTranslation
+    additionalInfoView.append(String(format: "theta1 + %4.2f * theta2 = %4.2f", ratio, value))
     
-    m_additionalInfoView.end()
+    additionalInfoView.end()
   }
   
 }

@@ -31,9 +31,9 @@ class VerticalStackViewController: BaseViewController {
   let columnCount = 5
   let rowCount = 16
   
-  var m_bullet: b2Body? = nil
-  var m_bodies = [b2Body]()
-  var m_indices = [Int]()
+  var bullet: b2Body? = nil
+  var bodies = [b2Body]()
+  var indices = [Int]()
   
   override func viewDidLoad() {
     super.viewDidLoad()
@@ -73,8 +73,8 @@ class VerticalStackViewController: BaseViewController {
         
         let n = j * self.rowCount + i
         assert(n < self.rowCount * self.columnCount)
-        m_indices.append(n)
-        bd.userData = NSNumber(integer: m_indices.last!)
+        indices.append(n)
+        bd.userData = NSNumber(integer: indices.last!)
         
         var x: b2Float = 0.0
         //float32 x = RandomFloat(-0.02f, 0.02f);
@@ -82,19 +82,19 @@ class VerticalStackViewController: BaseViewController {
         bd.position.set(xs[j] + x, 0.752 + 1.54 * b2Float(i))
         let body = world.createBody(bd)
         
-        m_bodies.append(body)
+        bodies.append(body)
         
         body.createFixture(fd)
       }
     }
     
-    m_bullet = nil
+    bullet = nil
   }
   
   func onShoot(sender: UIBarButtonItem) {
-    if m_bullet != nil {
-      world.destroyBody(m_bullet!)
-      m_bullet = nil
+    if bullet != nil {
+      world.destroyBody(bullet!)
+      bullet = nil
     }
     
     b2Locally {
@@ -111,10 +111,10 @@ class VerticalStackViewController: BaseViewController {
       bd.bullet = true
       bd.position.set(-31.0, 5.0)
       
-      self.m_bullet = self.world.createBody(bd)
-      self.m_bullet!.createFixture(fd)
+      self.bullet = self.world.createBody(bd)
+      self.bullet!.createFixture(fd)
       
-      self.m_bullet!.setLinearVelocity(b2Vec2(400.0, 0.0))
+      self.bullet!.setLinearVelocity(b2Vec2(400.0, 0.0))
     }
   }
 }

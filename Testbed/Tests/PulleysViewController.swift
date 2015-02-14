@@ -28,13 +28,13 @@ import UIKit
 import Box2D
 
 class PulleysViewController: BaseViewController {
-  var m_joint1: b2PulleyJoint!
-  var m_additionalInfoView: AdditionalInfoView!
+  var joint1: b2PulleyJoint!
+  var additionalInfoView: AdditionalInfoView!
   
   override func viewDidLoad() {
     super.viewDidLoad()
-    m_additionalInfoView = AdditionalInfoView(frame: self.view.bounds)
-    self.view.addSubview(m_additionalInfoView)
+    additionalInfoView = AdditionalInfoView(frame: self.view.bounds)
+    self.view.addSubview(additionalInfoView)
   }
 
   override func prepare() {
@@ -85,16 +85,16 @@ class PulleysViewController: BaseViewController {
       let groundAnchor2 = b2Vec2(10.0, y + b + L)
       pulleyDef.initialize(body1, body2, groundAnchor1, groundAnchor2, anchor1, anchor2, 1.5)
       
-      self.m_joint1 = self.world.createJoint(pulleyDef) as! b2PulleyJoint
+      self.joint1 = self.world.createJoint(pulleyDef) as! b2PulleyJoint
     }
   }
   
   override func step() {
-    m_additionalInfoView.begin()
-    let ratio = m_joint1.ratio
-    let L = m_joint1.currentLengthA + ratio * m_joint1.currentLengthB
-    m_additionalInfoView.append(String(format:"L1 + %4.2f * L2 = %4.2f", ratio, L))
-    m_additionalInfoView.end()
+    additionalInfoView.begin()
+    let ratio = joint1.ratio
+    let L = joint1.currentLengthA + ratio * joint1.currentLengthB
+    additionalInfoView.append(String(format:"L1 + %4.2f * L2 = %4.2f", ratio, L))
+    additionalInfoView.end()
   }
 
 }

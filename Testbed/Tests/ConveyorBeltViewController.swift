@@ -28,7 +28,7 @@ import UIKit
 import Box2D
 
 class ConveyorBeltViewController: BaseViewController, b2ContactListener {
-  var m_platform: b2Fixture!
+  var platform: b2Fixture!
 
   override func prepare() {
     world.setContactListener(self)
@@ -55,7 +55,7 @@ class ConveyorBeltViewController: BaseViewController, b2ContactListener {
       var fd = b2FixtureDef()
       fd.shape = shape
       fd.friction = 0.8
-      self.m_platform = body.createFixture(fd)
+      self.platform = body.createFixture(fd)
     }
     
     // Boxes
@@ -77,11 +77,11 @@ class ConveyorBeltViewController: BaseViewController, b2ContactListener {
     let fixtureA = contact.fixtureA
     let fixtureB = contact.fixtureB
     
-    if fixtureA === m_platform {
+    if fixtureA === platform {
       contact.setTangentSpeed(5.0)
     }
     
-    if fixtureB === m_platform {
+    if fixtureB === platform {
       contact.setTangentSpeed(-5.0)
     }
   }

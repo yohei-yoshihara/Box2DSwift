@@ -128,7 +128,6 @@
 		47F39C3C1A8E0FF70011E2CB /* WebViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 47F39BFD1A8E0FF70011E2CB /* WebViewController.swift */; };
 		47F39C3D1A8E0FF70011E2CB /* TextListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 47F39BFE1A8E0FF70011E2CB /* TextListViewController.swift */; };
 		47F39C401A8E11380011E2CB /* License.txt in Resources */ = {isa = PBXBuildFile; fileRef = 47F39C3E1A8E11380011E2CB /* License.txt */; };
-		47F39C411A8E11380011E2CB /* Readme.md in Sources */ = {isa = PBXBuildFile; fileRef = 47F39C3F1A8E11380011E2CB /* Readme.md */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -891,7 +890,6 @@
 				47F39C1D1A8E0FF70011E2CB /* DistanceTestViewController.swift in Sources */,
 				47F39C041A8E0FF70011E2CB /* InfoView.swift in Sources */,
 				47F39C251A8E0FF70011E2CB /* MobileViewController.swift in Sources */,
-				47F39C411A8E11380011E2CB /* Readme.md in Sources */,
 				47F39C3C1A8E0FF70011E2CB /* WebViewController.swift in Sources */,
 				47F39C191A8E0FF70011E2CB /* CompoundShapesViewController.swift in Sources */,
 				47F39C371A8E0FF70011E2CB /* TimeOfImpactViewController.swift in Sources */,

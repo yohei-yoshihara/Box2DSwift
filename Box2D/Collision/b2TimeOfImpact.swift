@@ -39,24 +39,24 @@ public struct b2TOIInput {
 // Output parameters for b2TimeOfImpact.
 public struct b2TOIOutput {
   public enum State : Printable {
-    case e_unknown
-    case e_failed
-    case e_overlapped
-    case e_touching
-    case e_separated
+    case unknown
+    case failed
+    case overlapped
+    case touching
+    case separated
     public var description: String {
       switch self {
-      case e_unknown: return "e_unknown"
-      case e_failed: return "e_failed"
-      case e_overlapped: return "e_overlapped"
-      case e_touching: return "e_touching"
-      case e_separated: return "e_separated"
+      case unknown: return "unknown"
+      case failed: return "failed"
+      case overlapped: return "overlapped"
+      case touching: return "touching"
+      case separated: return "separated"
       }
     }
   }
   public init() {}
   
-  public var state = State.e_unknown
+  public var state = State.unknown
   public var t: b2Float = 0
 }
 
@@ -70,7 +70,7 @@ public func b2TimeOfImpact(inout output: b2TOIOutput, input: b2TOIInput) {
   
   ++b2_toiCalls
   
-  output.state = b2TOIOutput.State.e_unknown
+  output.state = b2TOIOutput.State.unknown
   output.t = input.tMax
   
   let proxyA = input.proxyA
@@ -119,14 +119,14 @@ public func b2TimeOfImpact(inout output: b2TOIOutput, input: b2TOIInput) {
     // If the shapes are overlapped, we give up on continuous collision.
     if distanceOutput.distance <= 0.0 {
       // Failure!
-      output.state = b2TOIOutput.State.e_overlapped
+      output.state = b2TOIOutput.State.overlapped
       output.t = 0.0
       break
     }
     
     if distanceOutput.distance < target + tolerance {
       // Victory!
-      output.state = b2TOIOutput.State.e_touching
+      output.state = b2TOIOutput.State.touching
       output.t = t1
       break
     }
@@ -169,7 +169,7 @@ public func b2TimeOfImpact(inout output: b2TOIOutput, input: b2TOIInput) {
       // Is the final configuration separated?
       if s2 > target + tolerance {
         // Victory!
-        output.state = b2TOIOutput.State.e_separated
+        output.state = b2TOIOutput.State.separated
         output.t = tMax
         done = true
         break
@@ -188,7 +188,7 @@ public func b2TimeOfImpact(inout output: b2TOIOutput, input: b2TOIInput) {
       // Check for initial overlap. This might happen if the root finder
       // runs out of iterations.
       if s1 < target - tolerance {
-        output.state = b2TOIOutput.State.e_failed
+        output.state = b2TOIOutput.State.failed
         output.t = t1
         done = true
         break
@@ -197,7 +197,7 @@ public func b2TimeOfImpact(inout output: b2TOIOutput, input: b2TOIInput) {
       // Check for touching
       if s1 <= target + tolerance {
         // Victory! t1 should hold the TOI (could be 0.0).
-        output.state = b2TOIOutput.State.e_touching
+        output.state = b2TOIOutput.State.touching
         output.t = t1
         done = true
         break
@@ -262,7 +262,7 @@ public func b2TimeOfImpact(inout output: b2TOIOutput, input: b2TOIInput) {
     
     if iter == k_maxIterations {
       // Root finder got stuck. Semi-victory.
-      output.state = b2TOIOutput.State.e_failed
+      output.state = b2TOIOutput.State.failed
       output.t = t1
       break
     }
@@ -281,15 +281,14 @@ public var b2_toiTime: b2Float = 0, b2_toiMaxTime: b2Float = 0
 public var b2_toiCalls = 0, b2_toiIters = 0, b2_toiMaxIters = 0
 public var b2_toiRootIters = 0, b2_toiMaxRootIters = 0
 
-private struct b2SeparationFunction
-{
+private struct b2SeparationFunction {
   enum TYPE : Printable {
-    case e_points
+    case points
     case faceA
     case faceB
     var description: String {
       switch self {
-      case e_points: return "e_points"
+      case points: return "points"
       case faceA: return "faceA"
       case faceB: return "faceB"
       }
@@ -302,19 +301,19 @@ private struct b2SeparationFunction
     _ proxyB: b2DistanceProxy, _ sweepB: b2Sweep,
     _ t1: b2Float) -> b2Float
   {
-		m_proxyA = proxyA
-		m_proxyB = proxyB
-		let count = cache.count
-		assert(0 < count && count < 3)
-  
-		m_sweepA = sweepA
-		m_sweepB = sweepB
-  
+    m_proxyA = proxyA
+    m_proxyB = proxyB
+    let count = cache.count
+    assert(0 < count && count < 3)
+    
+    m_sweepA = sweepA
+    m_sweepB = sweepB
+    
     let xfA = m_sweepA.getTransform(beta: t1)
-		let xfB = m_sweepB.getTransform(beta: t1)
-  
-		if count == 1 {
-      m_type = TYPE.e_points
+    let xfB = m_sweepB.getTransform(beta: t1)
+    
+    if count == 1 {
+      m_type = TYPE.points
       let localPointA = m_proxyA.getVertex(Int(cache.indexA[0]))
       let localPointB = m_proxyB.getVertex(Int(cache.indexB[0]))
       let pointA = b2Mul(xfA, localPointA)
@@ -322,166 +321,162 @@ private struct b2SeparationFunction
       m_axis = pointB - pointA
       let s = m_axis.normalize()
       return s
-		}
-		else if cache.indexA[0] == cache.indexA[1] {
+    }
+    else if cache.indexA[0] == cache.indexA[1] {
       // Two points on B and one on A.
       m_type = TYPE.faceB
       let localPointB1 = proxyB.getVertex(Int(cache.indexB[0]))
       let localPointB2 = proxyB.getVertex(Int(cache.indexB[1]))
-  
+      
       m_axis = b2Cross(localPointB2 - localPointB1, 1.0)
       m_axis.normalize()
       let normal = b2Mul(xfB.q, m_axis)
-  
+      
       m_localPoint = 0.5 * (localPointB1 + localPointB2)
       let pointB = b2Mul(xfB, m_localPoint)
-  
+      
       let localPointA = proxyA.getVertex(Int(cache.indexA[0]))
       let pointA = b2Mul(xfA, localPointA)
-  
+      
       var s = b2Dot(pointA - pointB, normal)
       if s < 0.0 {
         m_axis = -m_axis
         s = -s
       }
       return s
-		}
-		else {
+    }
+    else {
       // Two points on A and one or two points on B.
       m_type = TYPE.faceA
       let localPointA1 = m_proxyA.getVertex(Int(cache.indexA[0]))
       let localPointA2 = m_proxyA.getVertex(Int(cache.indexA[1]))
-  
+      
       m_axis = b2Cross(localPointA2 - localPointA1, 1.0)
       m_axis.normalize()
       let normal = b2Mul(xfA.q, m_axis)
-  
+      
       m_localPoint = 0.5 * (localPointA1 + localPointA2)
       let pointA = b2Mul(xfA, m_localPoint)
-  
+      
       let localPointB = m_proxyB.getVertex(Int(cache.indexB[0]))
       let pointB = b2Mul(xfB, localPointB)
-  
+      
       var s = b2Dot(pointB - pointA, normal)
       if s < 0.0 {
         m_axis = -m_axis
         s = -s
       }
       return s
-		}
+    }
   }
   
-  //
-  func findMinSeparation(t: b2Float) -> (separation: b2Float, indexA: Int, indexB: Int)
-  {
+  func findMinSeparation(t: b2Float) -> (separation: b2Float, indexA: Int, indexB: Int) {
     var indexA: Int
     var indexB: Int
     
-		let xfA = m_sweepA.getTransform(beta: t)
-		let xfB = m_sweepB.getTransform(beta: t)
-  
-		switch m_type {
-		case TYPE.e_points:
+    let xfA = m_sweepA.getTransform(beta: t)
+    let xfB = m_sweepB.getTransform(beta: t)
+    
+    switch m_type {
+    case TYPE.points:
       let axisA = b2MulT(xfA.q,  m_axis)
       let axisB = b2MulT(xfB.q, -m_axis)
-  
+      
       indexA = m_proxyA.getSupport(axisA)
       indexB = m_proxyB.getSupport(axisB)
-  
+      
       let localPointA = m_proxyA.getVertex(indexA)
       let localPointB = m_proxyB.getVertex(indexB)
-  
+      
       let pointA = b2Mul(xfA, localPointA)
       let pointB = b2Mul(xfB, localPointB)
-  
+      
       let separation = b2Dot(pointB - pointA, m_axis)
       return (separation, indexA, indexB)
-  
-		case TYPE.faceA:
+      
+    case TYPE.faceA:
       let normal = b2Mul(xfA.q, m_axis)
       let pointA = b2Mul(xfA, m_localPoint)
-  
+      
       let axisB = b2MulT(xfB.q, -normal)
-  
+      
       indexA = -1
       indexB = m_proxyB.getSupport(axisB)
-  
+      
       let localPointB = m_proxyB.getVertex(indexB)
       let pointB = b2Mul(xfB, localPointB)
-  
+      
       let separation = b2Dot(pointB - pointA, normal)
       return (separation, indexA, indexB)
-  
-		case TYPE.faceB:
+      
+    case TYPE.faceB:
       let normal = b2Mul(xfB.q, m_axis)
       let pointB = b2Mul(xfB, m_localPoint)
-  
+      
       let axisA = b2MulT(xfA.q, -normal)
-  
+      
       indexB = -1
       indexA = m_proxyA.getSupport(axisA)
-  
+      
       let localPointA = m_proxyA.getVertex(indexA)
       let pointA = b2Mul(xfA, localPointA)
-  
+      
       let separation = b2Dot(pointA - pointB, normal)
       return (separation, indexA, indexB)
-  
-		default:
+      
+    default:
       assert(false)
       indexA = -1
       indexB = -1
       return (0.0, indexA, indexB)
-		}
+    }
   }
   
-  //
-  func evaluate(indexA: Int, _ indexB: Int, _ t: b2Float) -> b2Float
-  {
-		let xfA = m_sweepA.getTransform(beta: t)
-		let xfB = m_sweepB.getTransform(beta: t)
-  
-		switch m_type {
-		case .e_points:
+  func evaluate(indexA: Int, _ indexB: Int, _ t: b2Float) -> b2Float {
+    let xfA = m_sweepA.getTransform(beta: t)
+    let xfB = m_sweepB.getTransform(beta: t)
+    
+    switch m_type {
+    case .points:
       let localPointA = m_proxyA.getVertex(indexA)
       let localPointB = m_proxyB.getVertex(indexB)
-  
+      
       let pointA = b2Mul(xfA, localPointA)
       let pointB = b2Mul(xfB, localPointB)
       let separation = b2Dot(pointB - pointA, m_axis)
-  
+      
       return separation
       
-		case .faceA:
+    case .faceA:
       let normal = b2Mul(xfA.q, m_axis)
       let pointA = b2Mul(xfA, m_localPoint)
-  
+      
       let localPointB = m_proxyB.getVertex(indexB)
       let pointB = b2Mul(xfB, localPointB)
-  
+      
       let separation = b2Dot(pointB - pointA, normal)
       return separation
       
-		case .faceB:
+    case .faceB:
       let normal = b2Mul(xfB.q, m_axis)
       let pointB = b2Mul(xfB, m_localPoint)
-  
+      
       let localPointA = m_proxyA.getVertex(indexA)
       let pointA = b2Mul(xfA, localPointA)
-  
+      
       let separation = b2Dot(pointA - pointB, normal)
       return separation
-  
-		default:
+      
+    default:
       assert(false)
       return 0.0
-		}
+    }
   }
   
   var m_proxyA = b2DistanceProxy()
   var m_proxyB = b2DistanceProxy()
   var m_sweepA = b2Sweep(), m_sweepB = b2Sweep()
-  var m_type = TYPE.e_points
+  var m_type = TYPE.points
   var m_localPoint = b2Vec2()
   var m_axis = b2Vec2()
 }
