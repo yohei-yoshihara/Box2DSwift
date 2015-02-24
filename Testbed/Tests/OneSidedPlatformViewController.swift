@@ -49,7 +49,7 @@ class OneSidedPlatformViewController: BaseViewController, b2ContactListener {
     // Ground
     b2Locally {
       var bd = b2BodyDef()
-      var ground = world.createBody(bd)
+      var ground = self.world.createBody(bd)
       
       var shape = b2EdgeShape()
       shape.set(vertex1: b2Vec2(-20.0, 0.0), vertex2: b2Vec2(20.0, 0.0))
@@ -60,7 +60,7 @@ class OneSidedPlatformViewController: BaseViewController, b2ContactListener {
     b2Locally {
       var bd = b2BodyDef()
       bd.position.set(0.0, 10.0)
-      var body = world.createBody(bd)
+      var body = self.world.createBody(bd)
       
       var shape = b2PolygonShape()
       shape.setAsBox(halfWidth: 3.0, halfHeight: 0.5)
@@ -72,7 +72,7 @@ class OneSidedPlatformViewController: BaseViewController, b2ContactListener {
       var bd = b2BodyDef()
       bd.type = b2BodyType.dynamicBody
       bd.position.set(0.0, 12.0)
-      var body = world.createBody(bd)
+      var body = self.world.createBody(bd)
       
       var shape = b2CircleShape()
       shape.radius = self.radius

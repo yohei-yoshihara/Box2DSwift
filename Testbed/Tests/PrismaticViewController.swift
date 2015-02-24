@@ -57,7 +57,7 @@ class PrismaticViewController: BaseViewController {
       bd.position.set(-10.0, 10.0)
       bd.angle = 0.5 * b2_pi
       bd.allowSleep = false
-      let body = world.createBody(bd)
+      let body = self.world.createBody(bd)
       body.createFixture(shape: shape, density: 5.0)
       
       let pjd = b2PrismaticJointDef()

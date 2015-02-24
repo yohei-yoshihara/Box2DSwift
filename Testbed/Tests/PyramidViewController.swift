@@ -33,7 +33,7 @@ class PyramidViewController: BaseViewController {
   override func prepare() {
     b2Locally {
       let bd = b2BodyDef()
-      let ground = world.createBody(bd)
+      let ground = self.world.createBody(bd)
       
       let shape = b2EdgeShape()
       shape.set(vertex1: b2Vec2(-40.0, 0.0), vertex2: b2Vec2(40.0, 0.0))
@@ -57,7 +57,7 @@ class PyramidViewController: BaseViewController {
           let bd = b2BodyDef()
           bd.type = b2BodyType.dynamicBody
           bd.position = y
-          let body = world.createBody(bd)
+          let body = self.world.createBody(bd)
           body.createFixture(shape: shape, density: 5.0)
           y += deltaY
         }

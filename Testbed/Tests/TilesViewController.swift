@@ -48,7 +48,7 @@ class TilesViewController: BaseViewController {
       let a: b2Float = 0.5
       var bd = b2BodyDef()
       bd.position.y = -a
-      var ground = world.createBody(bd)
+      var ground = self.world.createBody(bd)
       
 #if true
       let N = 200
@@ -111,7 +111,7 @@ class TilesViewController: BaseViewController {
           //	bd.allowSleep = true;
           //}
           
-          var body = world.createBody(bd)
+          var body = self.world.createBody(bd)
           body.createFixture(shape: shape, density: 5.0)
           ++self.fixtureCount
           y += deltaY

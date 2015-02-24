@@ -44,7 +44,7 @@ class BulletTestViewController: BaseViewController {
     b2Locally {
       let bd = b2BodyDef()
       bd.position.set(0.0, 0.0)
-      let body = world.createBody(bd)
+      let body = self.world.createBody(bd)
       
       let edge = b2EdgeShape()
       

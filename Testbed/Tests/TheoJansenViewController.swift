@@ -162,7 +162,7 @@ class TheoJansenViewController: BaseViewController {
     // Ground
     b2Locally {
       let bd = b2BodyDef()
-      let ground = world.createBody(bd)
+      let ground = self.world.createBody(bd)
       
       let shape = b2EdgeShape()
       shape.set(vertex1: b2Vec2(-50.0, 0.0), vertex2: b2Vec2(50.0, 0.0))

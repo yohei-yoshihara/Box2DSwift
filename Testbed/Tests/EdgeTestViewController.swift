@@ -96,7 +96,7 @@ class EdgeTestViewController: BaseViewController {
       bd.type = b2BodyType.dynamicBody
       bd.position.set(1.0, 0.6)
       bd.allowSleep = false
-      let body = world.createBody(bd)
+      let body = self.world.createBody(bd)
       
       let shape = b2PolygonShape()
       shape.setAsBox(halfWidth: 0.5, halfHeight: 0.5)

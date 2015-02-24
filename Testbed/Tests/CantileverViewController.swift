@@ -57,7 +57,7 @@ class CantileverViewController: BaseViewController {
         var bd = b2BodyDef()
         bd.type = b2BodyType.dynamicBody
         bd.position.set(-14.5 + 1.0 * b2Float(i), 5.0)
-        var body = world.createBody(bd)
+        var body = self.world.createBody(bd)
         body.createFixture(fd)
         
         let anchor = b2Vec2(-15.0 + 1.0 * b2Float(i), 5.0)
@@ -85,7 +85,7 @@ class CantileverViewController: BaseViewController {
         var bd = b2BodyDef()
         bd.type = b2BodyType.dynamicBody
         bd.position.set(-14.0 + 2.0 * b2Float(i), 15.0)
-        var body = world.createBody(bd)
+        var body = self.world.createBody(bd)
         body.createFixture(fd)
         
         let anchor = b2Vec2(-15.0 + 2.0 * b2Float(i), 15.0)
@@ -111,7 +111,7 @@ class CantileverViewController: BaseViewController {
         var bd = b2BodyDef()
         bd.type = b2BodyType.dynamicBody
         bd.position.set(-4.5 + 1.0 * b2Float(i), 5.0)
-        var body = world.createBody(bd)
+        var body = self.world.createBody(bd)
         body.createFixture(fd)
         
         if i > 0 {
@@ -141,7 +141,7 @@ class CantileverViewController: BaseViewController {
         var bd = b2BodyDef()
         bd.type = b2BodyType.dynamicBody
         bd.position.set(5.5 + 1.0 * b2Float(i), 10.0)
-        var body = world.createBody(bd)
+        var body = self.world.createBody(bd)
         body.createFixture(fd)
         
         if i > 0 {

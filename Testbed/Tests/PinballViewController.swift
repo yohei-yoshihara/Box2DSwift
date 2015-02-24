@@ -75,10 +75,10 @@ class PinballViewController: BaseViewController {
       bd.type = b2BodyType.dynamicBody
       
       bd.position = p1
-      let leftFlipper = world.createBody(bd)
+      let leftFlipper = self.world.createBody(bd)
       
       bd.position = p2
-      let rightFlipper = world.createBody(bd)
+      let rightFlipper = self.world.createBody(bd)
       
       let box = b2PolygonShape()
       box.setAsBox(halfWidth: 1.75, halfHeight: 0.1)

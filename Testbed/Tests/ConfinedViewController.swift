@@ -46,7 +46,7 @@ class ConfinedViewController: BaseViewController {
   override func prepare() {
     b2Locally {
       let bd = b2BodyDef()
-      let ground = world.createBody(bd)
+      let ground = self.world.createBody(bd)
       
       let shape = b2EdgeShape()
       

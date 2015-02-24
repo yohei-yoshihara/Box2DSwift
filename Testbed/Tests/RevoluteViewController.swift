@@ -110,7 +110,7 @@ class RevoluteViewController: BaseViewController {
       polygon_bd.position.set(20.0, 10.0)
       polygon_bd.type = b2BodyType.dynamicBody
       polygon_bd.bullet = true
-      let polygon_body = world.createBody(polygon_bd)
+      let polygon_body = self.world.createBody(polygon_bd)
       polygon_body.createFixture(shape: polygon_shape, density: 2.0)
       
       let rjd = b2RevoluteJointDef()
@@ -125,7 +125,7 @@ class RevoluteViewController: BaseViewController {
     b2Locally {
       let bodyDef = b2BodyDef()
       bodyDef.type = b2BodyType.dynamicBody
-      let body = world.createBody(bodyDef)
+      let body = self.world.createBody(bodyDef)
       
       let polyShape = b2PolygonShape()
       var verts = [b2Vec2]()

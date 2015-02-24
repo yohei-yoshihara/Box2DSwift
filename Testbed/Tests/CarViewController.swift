@@ -143,7 +143,7 @@ class CarViewController: BaseViewController {
       let bd = b2BodyDef()
       bd.position.set(140.0, 1.0);
       bd.type = b2BodyType.dynamicBody
-      let body = world.createBody(bd)
+      let body = self.world.createBody(bd)
       
       let box = b2PolygonShape()
       box.setAsBox(halfWidth: 10.0, halfHeight: 0.25)
@@ -177,7 +177,7 @@ class CarViewController: BaseViewController {
         let bd = b2BodyDef()
         bd.type = b2BodyType.dynamicBody
         bd.position.set(161.0 + 2.0 * b2Float(i), -0.125)
-        let body = world.createBody(bd)
+        let body = self.world.createBody(bd)
         body.createFixture(fd)
         
         let anchor = b2Vec2(160.0 + 2.0 * b2Float(i), -0.125)

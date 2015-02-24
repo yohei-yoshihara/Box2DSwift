@@ -37,7 +37,7 @@ class SensorTestViewController: BaseViewController, b2ContactListener {
     world.setContactListener(self)
     b2Locally {
       let bd = b2BodyDef()
-      let ground = world.createBody(bd)
+      let ground = self.world.createBody(bd)
       
       b2Locally {
         let shape = b2EdgeShape()

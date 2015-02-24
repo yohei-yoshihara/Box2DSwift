@@ -59,7 +59,7 @@ class CollisionFilteringViewController: BaseViewController {
       sd.friction = 0.3
       
       let bd = b2BodyDef()
-      let ground = world.createBody(bd)
+      let ground = self.world.createBody(bd)
       ground.createFixture(sd)
     }
     
@@ -102,7 +102,7 @@ class CollisionFilteringViewController: BaseViewController {
       let bd = b2BodyDef()
       bd.type = b2BodyType.dynamicBody
       bd.position.set(-5.0, 10.0)
-      let body = world.createBody(bd)
+      let body = self.world.createBody(bd)
       
       let p = b2PolygonShape()
       p.setAsBox(halfWidth: 0.5, halfHeight: 1.0)

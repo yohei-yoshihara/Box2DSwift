@@ -161,7 +161,7 @@ class DynamicTreeTestViewController: BaseViewController, b2QueryWrapper, b2RayCa
     }
     
     b2Locally {
-      let height = tree.getHeight()
+      let height = self.tree.getHeight()
       
       self.additionalInfoView.begin()
       self.additionalInfoView.append(String(format: "dynamic tree height = %d", height))

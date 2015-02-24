@@ -44,7 +44,7 @@ class TumblerViewController: BaseViewController {
       bd.type = b2BodyType.dynamicBody
       bd.allowSleep = false
       bd.position.set(0.0, 10.0)
-      let body = world.createBody(bd)
+      let body = self.world.createBody(bd)
       
       var shape = b2PolygonShape()
       shape.setAsBox(halfWidth: 0.5, halfHeight: 10.0, center: b2Vec2( 10.0, 0.0), angle: 0.0)

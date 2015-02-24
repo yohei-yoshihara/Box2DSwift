@@ -66,28 +66,28 @@ class GearViewController: BaseViewController {
       var bd1 = b2BodyDef()
       bd1.type = b2BodyType.staticBody
       bd1.position.set(10.0, 9.0)
-      var body1 = world.createBody(bd1)
+      var body1 = self.world.createBody(bd1)
       body1.createFixture(shape: circle1, density: 5.0)
       
       var bd2 = b2BodyDef()
       bd2.type = b2BodyType.dynamicBody
       bd2.position.set(10.0, 8.0)
-      var body2 = world.createBody(bd2)
+      var body2 = self.world.createBody(bd2)
       body2.createFixture(shape: box, density: 5.0)
       
       var bd3 = b2BodyDef()
       bd3.type = b2BodyType.dynamicBody
       bd3.position.set(10.0, 6.0)
-      var body3 = world.createBody(bd3)
+      var body3 = self.world.createBody(bd3)
       body3.createFixture(shape: circle2, density: 5.0)
       
       var jd1 = b2RevoluteJointDef()
       jd1.initialize(body2, bodyB: body1, anchor: bd1.position)
-      let joint1 = world.createJoint(jd1)
+      let joint1 = self.world.createJoint(jd1)
       
       var jd2 = b2RevoluteJointDef()
       jd2.initialize(body2, bodyB: body3, anchor: bd3.position)
-      let joint2 = world.createJoint(jd2)
+      let joint2 = self.world.createJoint(jd2)
       
       var jd4 = b2GearJointDef()
       jd4.bodyA = body1
@@ -111,7 +111,7 @@ class GearViewController: BaseViewController {
       var bd1 = b2BodyDef()
       bd1.type = b2BodyType.dynamicBody
       bd1.position.set(-3.0, 12.0)
-      var body1 = world.createBody(bd1)
+      var body1 = self.world.createBody(bd1)
       body1.createFixture(shape: circle1, density: 5.0)
       
       var jd1 = b2RevoluteJointDef()
@@ -125,7 +125,7 @@ class GearViewController: BaseViewController {
       var bd2 = b2BodyDef()
       bd2.type = b2BodyType.dynamicBody
       bd2.position.set(0.0, 12.0)
-      var body2 = world.createBody(bd2)
+      var body2 = self.world.createBody(bd2)
       body2.createFixture(shape: circle2, density: 5.0)
       
       var jd2 = b2RevoluteJointDef()
@@ -135,7 +135,7 @@ class GearViewController: BaseViewController {
       var bd3 = b2BodyDef()
       bd3.type = b2BodyType.dynamicBody
       bd3.position.set(2.5, 12.0)
-      var body3 = world.createBody(bd3)
+      var body3 = self.world.createBody(bd3)
       body3.createFixture(shape: box, density: 5.0)
       
       var jd3 = b2PrismaticJointDef()

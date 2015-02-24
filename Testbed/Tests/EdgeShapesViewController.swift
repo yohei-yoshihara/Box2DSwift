@@ -72,7 +72,7 @@ class EdgeShapesViewController: BaseViewController, TextListViewControllerDelega
     // Ground body
     b2Locally {
       let bd = b2BodyDef()
-      let ground = world.createBody(bd)
+      let ground = self.world.createBody(bd)
       
       var x1: b2Float = -20.0
       var y1: b2Float = 2.0 * cos(x1 / 10.0 * b2_pi)

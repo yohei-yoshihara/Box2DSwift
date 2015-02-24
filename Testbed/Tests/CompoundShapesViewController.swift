@@ -33,7 +33,7 @@ class CompoundShapesViewController: BaseViewController {
     b2Locally {
       let bd = b2BodyDef()
       bd.position.set(0.0, 0.0)
-      let body = world.createBody(bd)
+      let body = self.world.createBody(bd)
       
       let shape = b2EdgeShape()
       shape.set(vertex1: b2Vec2(50.0, 0.0), vertex2: b2Vec2(-50.0, 0.0))
@@ -56,7 +56,7 @@ class CompoundShapesViewController: BaseViewController {
         bd.type = b2BodyType.dynamicBody
         bd.position.set(x + 5.0, 1.05 + 2.5 * b2Float(i))
         bd.angle = RandomFloat(-b2_pi, b2_pi)
-        let body = world.createBody(bd)
+        let body = self.world.createBody(bd)
         body.createFixture(shape: circle1, density: 2.0)
         body.createFixture(shape: circle2, density: 0.0)
       }
@@ -75,7 +75,7 @@ class CompoundShapesViewController: BaseViewController {
         bd.type = b2BodyType.dynamicBody
         bd.position.set(x - 5.0, 1.05 + 2.5 * b2Float(i))
         bd.angle = RandomFloat(-b2_pi, b2_pi)
-        let body = world.createBody(bd)
+        let body = self.world.createBody(bd)
         body.createFixture(shape: polygon1, density: 2.0)
         body.createFixture(shape: polygon2, density: 2.0)
       }
@@ -110,7 +110,7 @@ class CompoundShapesViewController: BaseViewController {
         bd.type = b2BodyType.dynamicBody
         bd.position.set(x, 2.05 + 2.5 * b2Float(i))
         bd.angle = 0.0
-        let body = world.createBody(bd)
+        let body = self.world.createBody(bd)
         body.createFixture(shape: triangle1, density: 2.0)
         body.createFixture(shape: triangle2, density: 2.0)
       }
@@ -129,7 +129,7 @@ class CompoundShapesViewController: BaseViewController {
       let bd = b2BodyDef()
       bd.type = b2BodyType.dynamicBody
       bd.position.set(0.0, 2.0)
-      let body = world.createBody(bd)
+      let body = self.world.createBody(bd)
       body.createFixture(shape: bottom, density: 4.0)
       body.createFixture(shape: left, density: 4.0)
       body.createFixture(shape: right, density: 4.0)

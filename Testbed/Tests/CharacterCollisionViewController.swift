@@ -46,7 +46,7 @@ class CharacterCollisionViewController: BaseViewController {
     // an internal vertex.
     b2Locally {
       let bd = b2BodyDef()
-      let ground = world.createBody(bd)
+      let ground = self.world.createBody(bd)
       
       let shape = b2EdgeShape()
       shape.set(vertex1: b2Vec2(-8.0, 1.0), vertex2: b2Vec2(-6.0, 1.0))
@@ -61,7 +61,7 @@ class CharacterCollisionViewController: BaseViewController {
     b2Locally {
       let bd = b2BodyDef()
       bd.angle = 0.25 * b2_pi
-      let ground = world.createBody(bd)
+      let ground = self.world.createBody(bd)
       
       var vs = [b2Vec2]()
       vs.append(b2Vec2(5.0, 7.0))
@@ -78,7 +78,7 @@ class CharacterCollisionViewController: BaseViewController {
     // to this problem.
     b2Locally {
       let bd = b2BodyDef()
-      let ground = world.createBody(bd)
+      let ground = self.world.createBody(bd)
       
       let shape = b2PolygonShape()
       shape.setAsBox(halfWidth: 1.0, halfHeight: 1.0, center: b2Vec2(4.0, 3.0), angle: 0.0)
@@ -92,7 +92,7 @@ class CharacterCollisionViewController: BaseViewController {
     // Square made from an edge loop. Collision should be smooth.
     b2Locally {
       let bd = b2BodyDef()
-      let ground = world.createBody(bd)
+      let ground = self.world.createBody(bd)
       
       var vs = [b2Vec2]()
       vs.append(b2Vec2(-1.0, 3.0))
@@ -108,7 +108,7 @@ class CharacterCollisionViewController: BaseViewController {
     b2Locally {
       let bd = b2BodyDef()
       bd.position.set(-10.0, 4.0)
-      let ground = world.createBody(bd)
+      let ground = self.world.createBody(bd)
       
       var vs = [b2Vec2]()
       vs.append(b2Vec2(0.0, 0.0))
@@ -134,7 +134,7 @@ class CharacterCollisionViewController: BaseViewController {
       bd.fixedRotation = true
       bd.allowSleep = false
       
-      let body = world.createBody(bd)
+      let body = self.world.createBody(bd)
       
       let shape = b2PolygonShape()
       shape.setAsBox(halfWidth: 0.5, halfHeight: 0.5)
@@ -153,7 +153,7 @@ class CharacterCollisionViewController: BaseViewController {
       bd.fixedRotation = true
       bd.allowSleep = false
       
-      let body = world.createBody(bd)
+      let body = self.world.createBody(bd)
       
       let shape = b2PolygonShape()
       shape.setAsBox(halfWidth: 0.25, halfHeight: 0.25)
@@ -172,7 +172,7 @@ class CharacterCollisionViewController: BaseViewController {
       bd.fixedRotation = true
       bd.allowSleep = false
       
-      let body = world.createBody(bd)
+      let body = self.world.createBody(bd)
       
       var angle: b2Float = 0.0
       let delta: b2Float = b2_pi / 3.0
@@ -199,7 +199,7 @@ class CharacterCollisionViewController: BaseViewController {
       bd.fixedRotation = true
       bd.allowSleep = false
       
-      let body = world.createBody(bd)
+      let body = self.world.createBody(bd)
       
       let shape = b2CircleShape()
       shape.radius = 0.5

@@ -36,7 +36,7 @@ class ConveyorBeltViewController: BaseViewController, b2ContactListener {
     // Ground
     b2Locally {
       let bd = b2BodyDef()
-      let ground = world.createBody(bd)
+      let ground = self.world.createBody(bd)
         
       var shape = b2EdgeShape()
       shape.set(vertex1: b2Vec2(-20.0, 0.0), vertex2: b2Vec2(20.0, 0.0))
@@ -47,7 +47,7 @@ class ConveyorBeltViewController: BaseViewController, b2ContactListener {
     b2Locally {
       let bd = b2BodyDef()
       bd.position.set(-5.0, 5.0)
-      let body = world.createBody(bd)
+      let body = self.world.createBody(bd)
       
       var shape = b2PolygonShape()
       shape.setAsBox(halfWidth: 10.0, halfHeight: 0.5)

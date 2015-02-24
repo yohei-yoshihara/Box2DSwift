@@ -31,7 +31,7 @@ class VaryingFrictionViewController: BaseViewController {
   override func prepare() {
     b2Locally {
       let bd = b2BodyDef()
-      let ground = world.createBody(bd)
+      let ground = self.world.createBody(bd)
       
       let shape = b2EdgeShape()
       shape.set(vertex1: b2Vec2(-40.0, 0.0), vertex2: b2Vec2(40.0, 0.0))
@@ -46,7 +46,7 @@ class VaryingFrictionViewController: BaseViewController {
       bd.position.set(-4.0, 22.0)
       bd.angle = -0.25
       
-      let ground = world.createBody(bd)
+      let ground = self.world.createBody(bd)
       ground.createFixture(shape: shape, density: 0.0)
     }
     
@@ -57,7 +57,7 @@ class VaryingFrictionViewController: BaseViewController {
       let bd = b2BodyDef()
       bd.position.set(10.5, 19.0)
       
-      let ground = world.createBody(bd)
+      let ground = self.world.createBody(bd)
       ground.createFixture(shape: shape, density: 0.0)
     }
     
@@ -69,7 +69,7 @@ class VaryingFrictionViewController: BaseViewController {
       bd.position.set(4.0, 14.0)
       bd.angle = 0.25
       
-      let ground = world.createBody(bd)
+      let ground = self.world.createBody(bd)
       ground.createFixture(shape: shape, density: 0.0)
     }
     
@@ -80,7 +80,7 @@ class VaryingFrictionViewController: BaseViewController {
       let bd = b2BodyDef()
       bd.position.set(-10.5, 11.0)
       
-      let ground = world.createBody(bd)
+      let ground = self.world.createBody(bd)
       ground.createFixture(shape: shape, density: 0.0)
     }
     
@@ -92,7 +92,7 @@ class VaryingFrictionViewController: BaseViewController {
       bd.position.set(-4.0, 6.0)
       bd.angle = -0.25
       
-      let ground = world.createBody(bd)
+      let ground = self.world.createBody(bd)
       ground.createFixture(shape: shape, density: 0.0)
     }
     
@@ -110,7 +110,7 @@ class VaryingFrictionViewController: BaseViewController {
         let bd = b2BodyDef()
         bd.type = b2BodyType.dynamicBody
         bd.position.set(-15.0 + 4.0 * b2Float(i), 28.0)
-        let body = world.createBody(bd)
+        let body = self.world.createBody(bd)
         
         fd.friction = friction[i]
         body.createFixture(fd)

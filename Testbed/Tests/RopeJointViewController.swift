@@ -92,7 +92,7 @@ class RopeJointViewController: BaseViewController {
           bd.angularDamping = 0.4
         }
         
-        let body = world.createBody(bd)
+        let body = self.world.createBody(bd)
         
         body.createFixture(fd)
         

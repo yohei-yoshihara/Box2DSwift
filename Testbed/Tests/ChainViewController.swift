@@ -57,7 +57,7 @@ class ChainViewController: BaseViewController {
         let bd = b2BodyDef()
         bd.type = b2BodyType.dynamicBody
         bd.position.set(0.5 + b2Float(i), y)
-        let body = world.createBody(bd)
+        let body = self.world.createBody(bd)
         body.createFixture(fd)
         
         let anchor = b2Vec2(b2Float(i), y)

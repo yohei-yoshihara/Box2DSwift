@@ -71,11 +71,11 @@ class PulleysViewController: BaseViewController {
       
       //bd.fixedRotation = true;
       bd.position.set(-10.0, y)
-      let body1 = world.createBody(bd)
+      let body1 = self.world.createBody(bd)
       body1.createFixture(shape: shape, density: 5.0)
       
       bd.position.set(10.0, y)
-      let body2 = world.createBody(bd)
+      let body2 = self.world.createBody(bd)
       body2.createFixture(shape: shape, density: 5.0)
       
       let pulleyDef = b2PulleyJointDef()

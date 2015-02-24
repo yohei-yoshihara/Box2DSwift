@@ -53,7 +53,7 @@ class VaryingRestitutionViewController: BaseViewController {
         bd.type = b2BodyType.dynamicBody
         bd.position.set(-10.0 + 3.0 * b2Float(i), 20.0)
         
-        var body = world.createBody(bd)
+        var body = self.world.createBody(bd)
         
         fd.restitution = restitution[i]
         body.createFixture(fd)

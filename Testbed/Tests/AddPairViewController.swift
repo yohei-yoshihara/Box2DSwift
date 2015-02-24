@@ -45,7 +45,7 @@ class AddPairViewController: BaseViewController {
         let bd = b2BodyDef()
         bd.type = b2BodyType.dynamicBody
         bd.position = b2Vec2(RandomFloat(minX,maxX),RandomFloat(minY,maxY))
-        let body = world.createBody(bd)
+        let body = self.world.createBody(bd)
         body.createFixture(shape: shape, density: 0.01)
       }
     }
@@ -57,7 +57,7 @@ class AddPairViewController: BaseViewController {
       bd.type = b2BodyType.dynamicBody
       bd.position.set(-40.0, 5.0)
       bd.bullet = true
-      let body = world.createBody(bd)
+      let body = self.world.createBody(bd)
       body.createFixture(shape: shape, density: 1.0)
       body.setLinearVelocity(b2Vec2(150.0, 0.0))
     }

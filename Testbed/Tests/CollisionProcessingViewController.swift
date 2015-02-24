@@ -38,7 +38,7 @@ class CollisionProcessingViewController: BaseViewController {
       sd.shape = shape
       
       let bd = b2BodyDef()
-      let ground = world.createBody(bd)
+      let ground = self.world.createBody(bd)
       ground.createFixture(sd)
     }
     
