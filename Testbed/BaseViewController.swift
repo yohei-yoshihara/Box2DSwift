@@ -42,8 +42,8 @@ class BaseViewController: UIViewController, SettingViewControllerDelegate {
   var panGestureRecognizer: UIPanGestureRecognizer!
   var tapGestureRecognizer: UITapGestureRecognizer!
   
-  override init() {
-    super.init()
+  init() {
+    super.init(nibName: nil, bundle: nil)
   }
   
   required init(coder aDecoder: NSCoder) {

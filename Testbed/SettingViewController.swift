@@ -28,11 +28,12 @@ import UIKit
 import Box2D
 
 class IterationCell: UITableViewCell {
+  static let cellId = "IterationCell"
   @IBOutlet weak var propertyNameLabel: UILabel!
   @IBOutlet weak var stepper: UIStepper!
   
-  override init() {
-    super.init()
+  init() {
+    super.init(style: UITableViewCellStyle.Default, reuseIdentifier: IterationCell.cellId)
   }
 
   required init(coder aDecoder: NSCoder) {
@@ -41,11 +42,12 @@ class IterationCell: UITableViewCell {
 }
 
 class SwitchCell: UITableViewCell {
+  static let cellId = "SwitchCell"
   @IBOutlet weak var propertyNameLabel: UILabel!
   @IBOutlet weak var propertySwitch: UISwitch!
   
-  override init() {
-    super.init()
+  init() {
+    super.init(style: UITableViewCellStyle.Default, reuseIdentifier: SwitchCell.cellId)
   }
 
   required init(coder aDecoder: NSCoder) {
@@ -54,10 +56,11 @@ class SwitchCell: UITableViewCell {
 }
 
 class HertzCell: UITableViewCell {
+  static let cellId = "HertzCell"
   @IBOutlet weak var segmentedControl: UISegmentedControl!
   
-  override init() {
-    super.init()
+  init() {
+    super.init(style: UITableViewCellStyle.Default, reuseIdentifier: HertzCell.cellId)
   }
   
   required init(coder aDecoder: NSCoder) {
@@ -84,9 +87,6 @@ class SettingViewController: UINavigationController {
 }
 
 class SettingTableViewController: UITableViewController {
-  let iterationCellId = "IterationCell"
-  let switchCellId = "SwitchCell"
-  let hertzCellId = "HertzCell"
   var settings: Settings!
   var settingViewControllerDelegate: SettingViewControllerDelegate? = nil
   
@@ -95,12 +95,12 @@ class SettingTableViewController: UITableViewController {
     
     title = "Settings"
     
-    let interationCellNib = UINib(nibName: iterationCellId, bundle: nil)
-    self.tableView.registerNib(interationCellNib, forCellReuseIdentifier: iterationCellId)
-    let switchCellNib = UINib(nibName: switchCellId, bundle: nil)
-    self.tableView.registerNib(switchCellNib, forCellReuseIdentifier: switchCellId)
-    let hertzCellNib = UINib(nibName: hertzCellId, bundle: nil)
-    self.tableView.registerNib(hertzCellNib, forCellReuseIdentifier: hertzCellId)
+    let interationCellNib = UINib(nibName: IterationCell.cellId, bundle: nil)
+    self.tableView.registerNib(interationCellNib, forCellReuseIdentifier: IterationCell.cellId)
+    let switchCellNib = UINib(nibName: SwitchCell.cellId, bundle: nil)
+    self.tableView.registerNib(switchCellNib, forCellReuseIdentifier: SwitchCell.cellId)
+    let hertzCellNib = UINib(nibName: HertzCell.cellId, bundle: nil)
+    self.tableView.registerNib(hertzCellNib, forCellReuseIdentifier: HertzCell.cellId)
     
     self.tableView.dataSource = self
     
@@ -128,7 +128,7 @@ class SettingTableViewController: UITableViewController {
     var _cell: UITableViewCell! = nil
     if indexPath.section == 0 {
       if indexPath.row == 0 {
-        let cell = tableView.dequeueReusableCellWithIdentifier(iterationCellId, forIndexPath: indexPath) as! IterationCell
+        let cell = tableView.dequeueReusableCellWithIdentifier(IterationCell.cellId, forIndexPath: indexPath) as! IterationCell
         cell.propertyNameLabel.text = "Velocity Iterations \(settings.velocityIterations)"
         cell.stepper.value = Double(settings.velocityIterations)
         cell.stepper.minimumValue = 1
@@ -137,7 +137,7 @@ class SettingTableViewController: UITableViewController {
         _cell = cell
       }
       else if indexPath.row == 1 {
-        let cell = tableView.dequeueReusableCellWithIdentifier(iterationCellId, forIndexPath: indexPath) as! IterationCell
+        let cell = tableView.dequeueReusableCellWithIdentifier(IterationCell.cellId, forIndexPath: indexPath) as! IterationCell
         cell.propertyNameLabel.text = "Position Iterations \(settings.positionIterations)"
         cell.stepper.value = Double(settings.positionIterations)
         cell.stepper.minimumValue = 1
@@ -146,14 +146,14 @@ class SettingTableViewController: UITableViewController {
         _cell = cell
       }
       else if indexPath.row == 2 {
-        let cell = tableView.dequeueReusableCellWithIdentifier(hertzCellId, forIndexPath: indexPath) as! HertzCell
+        let cell = tableView.dequeueReusableCellWithIdentifier(HertzCell.cellId, forIndexPath: indexPath) as! HertzCell
         cell.segmentedControl.selectedSegmentIndex = settings.hz == 30.0 ? 0 : 1
         cell.segmentedControl.tag = 2
         cell.segmentedControl.addTarget(self, action: "onValueChanged:", forControlEvents: UIControlEvents.ValueChanged)
         _cell = cell
       }
       else if indexPath.row == 3 {
-        let cell = tableView.dequeueReusableCellWithIdentifier(switchCellId, forIndexPath: indexPath) as! SwitchCell
+        let cell = tableView.dequeueReusableCellWithIdentifier(SwitchCell.cellId, forIndexPath: indexPath) as! SwitchCell
         cell.propertyNameLabel.text = "Sleep"
         cell.propertySwitch.on = settings.enableSleep
         cell.propertySwitch.tag = 3
@@ -161,7 +161,7 @@ class SettingTableViewController: UITableViewController {
         _cell = cell
       }
       else if indexPath.row == 4 {
-        let cell = tableView.dequeueReusableCellWithIdentifier(switchCellId, forIndexPath: indexPath) as! SwitchCell
+        let cell = tableView.dequeueReusableCellWithIdentifier(SwitchCell.cellId, forIndexPath: indexPath) as! SwitchCell
         cell.propertyNameLabel.text = "Warm Starting"
         cell.propertySwitch.on = settings.enableWarmStarting
         cell.propertySwitch.tag = 4
@@ -169,7 +169,7 @@ class SettingTableViewController: UITableViewController {
         _cell = cell
       }
       else if indexPath.row == 5 {
-        let cell = tableView.dequeueReusableCellWithIdentifier(switchCellId, forIndexPath: indexPath) as! SwitchCell
+        let cell = tableView.dequeueReusableCellWithIdentifier(SwitchCell.cellId, forIndexPath: indexPath) as! SwitchCell
         cell.propertyNameLabel.text = "Time of Impact"
         cell.propertySwitch.on = settings.enableContinuous
         cell.propertySwitch.tag = 5
@@ -177,7 +177,7 @@ class SettingTableViewController: UITableViewController {
         _cell = cell
       }
       else if indexPath.row == 6 {
-        let cell = tableView.dequeueReusableCellWithIdentifier(switchCellId, forIndexPath: indexPath) as! SwitchCell
+        let cell = tableView.dequeueReusableCellWithIdentifier(SwitchCell.cellId, forIndexPath: indexPath) as! SwitchCell
         cell.propertyNameLabel.text = "Sub-Stepping"
         cell.propertySwitch.on = settings.enableSubStepping
         cell.propertySwitch.tag = 6
@@ -187,7 +187,7 @@ class SettingTableViewController: UITableViewController {
     }
     else {
       if indexPath.row == 0 {
-        let cell = tableView.dequeueReusableCellWithIdentifier(switchCellId, forIndexPath: indexPath) as! SwitchCell
+        let cell = tableView.dequeueReusableCellWithIdentifier(SwitchCell.cellId, forIndexPath: indexPath) as! SwitchCell
         cell.propertyNameLabel.text = "Shapes"
         cell.propertySwitch.on = settings.drawShapes
         cell.propertySwitch.tag = 7
@@ -195,7 +195,7 @@ class SettingTableViewController: UITableViewController {
         _cell = cell
       }
       else if indexPath.row == 1 {
-        let cell = tableView.dequeueReusableCellWithIdentifier(switchCellId, forIndexPath: indexPath) as! SwitchCell
+        let cell = tableView.dequeueReusableCellWithIdentifier(SwitchCell.cellId, forIndexPath: indexPath) as! SwitchCell
         cell.propertyNameLabel.text = "Joints"
         cell.propertySwitch.on = settings.drawJoints
         cell.propertySwitch.tag = 8
@@ -203,7 +203,7 @@ class SettingTableViewController: UITableViewController {
         _cell = cell
       }
       else if indexPath.row == 2 {
-        let cell = tableView.dequeueReusableCellWithIdentifier(switchCellId, forIndexPath: indexPath) as! SwitchCell
+        let cell = tableView.dequeueReusableCellWithIdentifier(SwitchCell.cellId, forIndexPath: indexPath) as! SwitchCell
         cell.propertyNameLabel.text = "AABBs"
         cell.propertySwitch.on = settings.drawAABBs
         cell.propertySwitch.tag = 9
@@ -211,7 +211,7 @@ class SettingTableViewController: UITableViewController {
         _cell = cell
       }
       else if indexPath.row == 3 {
-        let cell = tableView.dequeueReusableCellWithIdentifier(switchCellId, forIndexPath: indexPath) as! SwitchCell
+        let cell = tableView.dequeueReusableCellWithIdentifier(SwitchCell.cellId, forIndexPath: indexPath) as! SwitchCell
         cell.propertyNameLabel.text = "Contact Points"
         cell.propertySwitch.on = settings.drawContactPoints
         cell.propertySwitch.tag = 10
@@ -219,7 +219,7 @@ class SettingTableViewController: UITableViewController {
         _cell = cell
       }
       else if indexPath.row == 4 {
-        let cell = tableView.dequeueReusableCellWithIdentifier(switchCellId, forIndexPath: indexPath) as! SwitchCell
+        let cell = tableView.dequeueReusableCellWithIdentifier(SwitchCell.cellId, forIndexPath: indexPath) as! SwitchCell
         cell.propertyNameLabel.text = "Contact Normals"
         cell.propertySwitch.on = settings.drawContactNormals
         cell.propertySwitch.tag = 11
@@ -227,7 +227,7 @@ class SettingTableViewController: UITableViewController {
         _cell = cell
       }
       else if indexPath.row == 5 {
-        let cell = tableView.dequeueReusableCellWithIdentifier(switchCellId, forIndexPath: indexPath) as! SwitchCell
+        let cell = tableView.dequeueReusableCellWithIdentifier(SwitchCell.cellId, forIndexPath: indexPath) as! SwitchCell
         cell.propertyNameLabel.text = "Contact Impulses"
         cell.propertySwitch.on = settings.drawContactImpulse
         cell.propertySwitch.tag = 12
@@ -235,7 +235,7 @@ class SettingTableViewController: UITableViewController {
         _cell = cell
       }
       else if indexPath.row == 6 {
-        let cell = tableView.dequeueReusableCellWithIdentifier(switchCellId, forIndexPath: indexPath) as! SwitchCell
+        let cell = tableView.dequeueReusableCellWithIdentifier(SwitchCell.cellId, forIndexPath: indexPath) as! SwitchCell
         cell.propertyNameLabel.text = "Friction Impulses"
         cell.propertySwitch.on = settings.drawFrictionImpulse
         cell.propertySwitch.tag = 13
@@ -243,7 +243,7 @@ class SettingTableViewController: UITableViewController {
         _cell = cell
       }
       else if indexPath.row == 7 {
-        let cell = tableView.dequeueReusableCellWithIdentifier(switchCellId, forIndexPath: indexPath) as! SwitchCell
+        let cell = tableView.dequeueReusableCellWithIdentifier(SwitchCell.cellId, forIndexPath: indexPath) as! SwitchCell
         cell.propertyNameLabel.text = "Center of Masses"
         cell.propertySwitch.on = settings.drawCOMs
         cell.propertySwitch.tag = 14
@@ -251,7 +251,7 @@ class SettingTableViewController: UITableViewController {
         _cell = cell
       }
       else if indexPath.row == 8 {
-        let cell = tableView.dequeueReusableCellWithIdentifier(switchCellId, forIndexPath: indexPath) as! SwitchCell
+        let cell = tableView.dequeueReusableCellWithIdentifier(SwitchCell.cellId, forIndexPath: indexPath) as! SwitchCell
         cell.propertyNameLabel.text = "Statistics"
         cell.propertySwitch.on = settings.drawStats
         cell.propertySwitch.tag = 15
@@ -259,7 +259,7 @@ class SettingTableViewController: UITableViewController {
         _cell = cell
       }
       else if indexPath.row == 9 {
-        let cell = tableView.dequeueReusableCellWithIdentifier(switchCellId, forIndexPath: indexPath) as! SwitchCell
+        let cell = tableView.dequeueReusableCellWithIdentifier(SwitchCell.cellId, forIndexPath: indexPath) as! SwitchCell
         cell.propertyNameLabel.text = "Profile"
         cell.propertySwitch.on = settings.drawProfile
         cell.propertySwitch.tag = 16
