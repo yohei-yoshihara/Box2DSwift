@@ -167,7 +167,7 @@ public class b2RevoluteJoint : b2Joint {
   }
   
   /// Set the joint limits in radians.
-  public func setLimits(#lower: b2Float, upper: b2Float) {
+  public func setLimits(lower lower: b2Float, upper: b2Float) {
     assert(lower <= upper)
     
     if lower != m_lowerAngle || upper != m_upperAngle {
@@ -247,20 +247,20 @@ public class b2RevoluteJoint : b2Joint {
     let indexA = m_bodyA.m_islandIndex
     let indexB = m_bodyB.m_islandIndex
     
-    println("  b2RevoluteJointDef jd;")
-    println("  jd.bodyA = bodies[\(indexA)];")
-    println("  jd.bodyB = bodies[\(indexB)];")
-    println("  jd.collideConnected = bool(\(m_collideConnected));")
-    println("  jd.localAnchorA.set(\(m_localAnchorA.x), \(m_localAnchorA.y));")
-    println("  jd.localAnchorB.set(\(m_localAnchorB.x), \(m_localAnchorB.y));")
-    println("  jd.referenceAngle = \(m_referenceAngle);")
-    println("  jd.enableLimit = bool(\(m_enableLimit));")
-    println("  jd.lowerAngle = \(m_lowerAngle);")
-    println("  jd.upperAngle = \(m_upperAngle);")
-    println("  jd.enableMotor = bool(\(m_enableMotor));")
-    println("  jd.motorSpeed = \(m_motorSpeed);")
-    println("  jd.maxMotorTorque = \(m_maxMotorTorque);")
-    println("  joints[\(m_index)] = m_world->createJoint(&jd);")
+    print("  b2RevoluteJointDef jd;")
+    print("  jd.bodyA = bodies[\(indexA)];")
+    print("  jd.bodyB = bodies[\(indexB)];")
+    print("  jd.collideConnected = bool(\(m_collideConnected));")
+    print("  jd.localAnchorA.set(\(m_localAnchorA.x), \(m_localAnchorA.y));")
+    print("  jd.localAnchorB.set(\(m_localAnchorB.x), \(m_localAnchorB.y));")
+    print("  jd.referenceAngle = \(m_referenceAngle);")
+    print("  jd.enableLimit = bool(\(m_enableLimit));")
+    print("  jd.lowerAngle = \(m_lowerAngle);")
+    print("  jd.upperAngle = \(m_upperAngle);")
+    print("  jd.enableMotor = bool(\(m_enableMotor));")
+    print("  jd.motorSpeed = \(m_motorSpeed);")
+    print("  jd.maxMotorTorque = \(m_maxMotorTorque);")
+    print("  joints[\(m_index)] = m_world->createJoint(&jd);")
   }
   
   // MARK: private methods

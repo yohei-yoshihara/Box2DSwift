@@ -34,7 +34,7 @@ queries, and TOI queries.
 
 public let b2_nullFeature = UINT8_MAX
 
-public enum b2ContactFeatureType : UInt8, Printable {
+public enum b2ContactFeatureType : UInt8, CustomStringConvertible {
   case vertex = 0
   case face = 1
   public var description: String {
@@ -49,7 +49,7 @@ public enum b2ContactFeatureType : UInt8, Printable {
 The features that intersect to form the contact point
 This must be 4 bytes or less.
 */
-public struct b2ContactFeature : Printable {
+public struct b2ContactFeature : CustomStringConvertible {
   /**
   Feature index on shapeA
   */
@@ -95,7 +95,7 @@ This structure is stored across time steps, so we keep it small.
 Note: the impulses are used for internal caching and may not
 provide reliable contact forces, especially for high speed collisions.
 */
-public class b2ManifoldPoint : Printable {
+public class b2ManifoldPoint : CustomStringConvertible {
   /**
   usage depends on manifold type
   */
@@ -125,7 +125,7 @@ public class b2ManifoldPoint : Printable {
   }
 }
 
-public enum b2ManifoldType : Printable {
+public enum b2ManifoldType : CustomStringConvertible {
   case circles
   case faceA
   case faceB
@@ -156,7 +156,7 @@ account for movement, which is critical for continuous physics.
 All contact scenarios must be expressed in one of these types.
 This structure is stored across time steps, so we keep it small.
 */
-public class b2Manifold : Printable {
+public class b2Manifold : CustomStringConvertible {
   /**
   the points of contact
   */
@@ -210,7 +210,7 @@ public class b2Manifold : Printable {
 /**
 This is used to compute the current state of a contact manifold.
 */
-public class b2WorldManifold : Printable {
+public class b2WorldManifold : CustomStringConvertible {
   public init() {}
   /**
   world vector pointing from A to B
@@ -230,7 +230,7 @@ public class b2WorldManifold : Printable {
   point count, impulses, etc. The radii must come from the shapes
   that generated the manifold.
   */
-  public func initialize(#manifold: b2Manifold,
+  public func initialize(manifold manifold: b2Manifold,
       transformA xfA: b2Transform, radiusA: b2Float,
       transformB xfB: b2Transform, radiusB: b2Float) {
     if manifold.pointCount == 0 {
@@ -288,7 +288,7 @@ public class b2WorldManifold : Printable {
 /**
 This is used for determining the state of contact points.
 */
-public enum b2PointState : Printable {
+public enum b2PointState : CustomStringConvertible {
   /**
   point does not exist
   */
@@ -320,7 +320,7 @@ public enum b2PointState : Printable {
 Compute the point states given two manifolds. The states pertain to the transition from manifold1
 to manifold2. So state1 is either persist or remove while state2 is either add or persist.
 */
-public func b2GetPointStates(#manifold1: b2Manifold, #manifold2: b2Manifold)
+public func b2GetPointStates(manifold1 manifold1: b2Manifold, manifold2: b2Manifold)
             -> (state1: [b2PointState], state2: [b2PointState]) {
   var state1 = [b2PointState]()
   var state2 = [b2PointState]()
@@ -356,7 +356,7 @@ public func b2GetPointStates(#manifold1: b2Manifold, #manifold2: b2Manifold)
 /**
 Used for computing contact manifolds.
 */
-public struct b2ClipVertex : Printable {
+public struct b2ClipVertex : CustomStringConvertible {
   public init() {}
   public var v = b2Vec2()
   public var id = b2ContactFeature()
@@ -368,7 +368,7 @@ public struct b2ClipVertex : Printable {
 /**
 Ray-cast input data. The ray extends from p1 to p1 + maxFraction * (p2 - p1).
 */
-public struct b2RayCastInput : Printable {
+public struct b2RayCastInput : CustomStringConvertible {
   public init() {}
   public var p1 = b2Vec2(), p2 = b2Vec2()
   public var maxFraction: b2Float = 0
@@ -381,7 +381,7 @@ public struct b2RayCastInput : Printable {
 Ray-cast output data. The ray hits at p1 + fraction * (p2 - p1), where p1 and p2
 come from b2RayCastInput.
 */
-public struct b2RayCastOutput : Printable {
+public struct b2RayCastOutput : CustomStringConvertible {
   public init() {}
   public var normal = b2Vec2()
   public var fraction: b2Float = 0
@@ -393,7 +393,7 @@ public struct b2RayCastOutput : Printable {
 /**
 An axis aligned bounding box.
 */
-public struct b2AABB : Printable {
+public struct b2AABB : CustomStringConvertible {
   public var lowerBound = b2Vec2()	///< the lower vertex
   public var upperBound = b2Vec2()	///< the upper vertex
   
@@ -469,7 +469,7 @@ public struct b2AABB : Printable {
         }
       }
       else {
-        var inv_d = 1.0 / d[i]
+        let inv_d = 1.0 / d[i]
         var t1 = (lowerBound[i] - p[i]) * inv_d
         var t2 = (upperBound[i] - p[i]) * inv_d
         
@@ -517,7 +517,7 @@ public struct b2AABB : Printable {
 
 /// Clipping for contact manifolds.
 /// Sutherland-Hodgman clipping.
-public func b2ClipSegmentToLine(inputVertices vIn: [b2ClipVertex], #normal: b2Vec2, #offset: b2Float, #vertexIndexA: Int)
+public func b2ClipSegmentToLine(inputVertices vIn: [b2ClipVertex], normal: b2Vec2, offset: b2Float, vertexIndexA: Int)
             -> [b2ClipVertex] {
   assert(vIn.count == 2)
   var vOut = [b2ClipVertex]()
@@ -553,8 +553,8 @@ public func b2ClipSegmentToLine(inputVertices vIn: [b2ClipVertex], #normal: b2Ve
 }
 
 /// Determine if two generic shapes overlap.
-public func b2TestOverlap(#shapeA: b2Shape, #indexA: Int,
-                          #shapeB: b2Shape, #indexB: Int,
+public func b2TestOverlap(shapeA shapeA: b2Shape, indexA: Int,
+                          shapeB: b2Shape, indexB: Int,
                           transformA xfA: b2Transform, transformB xfB: b2Transform) -> Bool {
   var input = b2DistanceInput()
   input.proxyA.set(shapeA, indexA)
@@ -567,13 +567,13 @@ public func b2TestOverlap(#shapeA: b2Shape, #indexA: Int,
   cache.count = 0
 
   var output = b2DistanceOutput()
-  b2Distance(&output, &cache, input)
+  b2Distance(&output, cache: &cache, input: input)
   return output.distance < 10.0 * b2_epsilon
 }
 
-public func b2TestOverlap(a: b2AABB, b: b2AABB) -> Bool {
-  var d1 = b.lowerBound - a.upperBound
-  var d2 = a.lowerBound - b.upperBound
+public func b2TestOverlap(a: b2AABB, _ b: b2AABB) -> Bool {
+  let d1 = b.lowerBound - a.upperBound
+  let d2 = a.lowerBound - b.upperBound
   
   if d1.x > 0.0 || d1.y > 0.0 {
     return false

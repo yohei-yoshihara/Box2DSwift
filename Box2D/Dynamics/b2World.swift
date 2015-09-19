@@ -33,7 +33,7 @@ public class b2World {
   /**
   Construct a world object.
   
-  :param: gravity the world gravity vector.
+  - parameter gravity: the world gravity vector.
   */
   public init(gravity: b2Vec2) {
     m_destructionListener = nil
@@ -100,7 +100,7 @@ public class b2World {
       fatalError("world is locked")
     }
     
-    var b = b2Body(def, self)
+    let b = b2Body(def, self)
     
     // Add to world doubly linked list.
     b.m_prev = nil
@@ -269,8 +269,8 @@ public class b2World {
     }
     
     // Disconnect from island graph.
-    var bodyA = j.m_bodyA
-    var bodyB = j.m_bodyB
+    let bodyA = j.m_bodyA
+    let bodyB = j.m_bodyB
     
     // Wake up connected bodies.
     bodyA.setAwake(true)
@@ -332,9 +332,9 @@ public class b2World {
   Take a time step. This performs collision detection, integration,
   and constraint solution.
   
-  :param: timeStep the amount of time to simulate, this should not vary.
-  :param: velocityIterations for the velocity constraint solver.
-  :param: positionIterations for the position constraint solver.
+  - parameter timeStep: the amount of time to simulate, this should not vary.
+  - parameter velocityIterations: for the velocity constraint solver.
+  - parameter positionIterations: for the position constraint solver.
   */
   public func step(timeStep dt: b2Float, velocityIterations: Int, positionIterations: Int) {
     let stepTimer = b2Timer()
@@ -449,7 +449,7 @@ public class b2World {
     }
     
     if (flags & b2DrawFlags.pairBit) != 0 {
-      let color = b2Color(0.3, 0.9, 0.9)
+//      let color = b2Color(0.3, 0.9, 0.9)
       for (var c = m_contactManager.m_contactList; c != nil; c = c!.getNext()) {
         //let fixtureA = c!.fixtureA
         //let fixtureB = c!.fixtureB
@@ -463,7 +463,7 @@ public class b2World {
     
     if (flags & b2DrawFlags.aabbBit) != 0 {
       let color = b2Color(0.9, 0.3, 0.9)
-      var bp = m_contactManager.m_broadPhase
+      let bp = m_contactManager.m_broadPhase
       
       for (var b = m_bodyList; b != nil; b = b!.getNext()) {
         if b!.isActive == false {
@@ -499,10 +499,10 @@ public class b2World {
   Query the world for all fixtures that potentially overlap the
   provided AABB.
   
-  :param: callback a user implemented callback class.
-  :param: aabb the query box.
+  - parameter callback: a user implemented callback class.
+  - parameter aabb: the query box.
   */
-  public func queryAABB(#callback: b2QueryCallback, aabb: b2AABB) {
+  public func queryAABB(callback callback: b2QueryCallback, aabb: b2AABB) {
     var wrapper = b2WorldQueryWrapper()
     wrapper.broadPhase = m_contactManager.m_broadPhase
     wrapper.callback = callback
@@ -513,8 +513,8 @@ public class b2World {
   Query the world for all fixtures that potentially overlap the
   provided AABB.
   
-  :param: aabb the query box.
-  :param: callback a user implemented callback closure.
+  - parameter aabb: the query box.
+  - parameter callback: a user implemented callback closure.
   */
   public func queryAABB(aabb: b2AABB, callback: b2QueryCallbackFunction) {
     queryAABB(callback: b2QueryCallbackProxy(callback: callback), aabb: aabb)
@@ -525,11 +525,11 @@ public class b2World {
   controls whether you get the closest point, any point, or n-points.
   The ray-cast ignores shapes that contain the starting point.
   
-  :param: callback a user implemented callback class.
-  :param: point1 the ray starting point
-  :param: point2 the ray ending point
+  - parameter callback: a user implemented callback class.
+  - parameter point1: the ray starting point
+  - parameter point2: the ray ending point
   */
-  public func rayCast(#callback: b2RayCastCallback, point1: b2Vec2, point2: b2Vec2) {
+  public func rayCast(callback callback: b2RayCastCallback, point1: b2Vec2, point2: b2Vec2) {
     var wrapper = b2WorldRayCastWrapper()
     wrapper.broadPhase = m_contactManager.m_broadPhase
     wrapper.callback = callback
@@ -545,9 +545,9 @@ public class b2World {
   controls whether you get the closest point, any point, or n-points.
   The ray-cast ignores shapes that contain the starting point.
   
-  :param: point1 the ray starting point
-  :param: point2 the ray ending point
-  :param: callback a user implemented callback closure.
+  - parameter point1: the ray starting point
+  - parameter point2: the ray ending point
+  - parameter callback: a user implemented callback closure.
   */
   public func rayCast(point1: b2Vec2, point2: b2Vec2, callback: b2RayCastCallbackFunction) {
     rayCast(callback: b2RayCastCallbackProxy(callback: callback), point1: point1, point2: point2)
@@ -740,11 +740,11 @@ public class b2World {
       return
     }
     
-    println("b2Vec2 g(\(m_gravity.x), \(m_gravity.y));")
-    println("m_world->setGravity(g);")
+    print("b2Vec2 g(\(m_gravity.x), \(m_gravity.y));")
+    print("m_world->setGravity(g);")
     
-    println("b2Body** bodies = (b2Body**)b2Alloc(\(m_bodyCount) * sizeof(b2Body*));")
-    println("b2Joint** joints = (b2Joint**)b2Alloc(\(m_jointCount) * sizeof(b2Joint*));")
+    print("b2Body** bodies = (b2Body**)b2Alloc(\(m_bodyCount) * sizeof(b2Body*));")
+    print("b2Joint** joints = (b2Joint**)b2Alloc(\(m_jointCount) * sizeof(b2Joint*));")
     var i = 0
     for (var b = m_bodyList; b != nil; b = b!.m_next) {
       b!.m_islandIndex = i
@@ -764,9 +764,9 @@ public class b2World {
         continue
       }
       
-      println("{")
+      print("{")
       j!.dump()
-      println("}")
+      print("}")
     }
     
     // Second pass on joints, only gear joints.
@@ -775,15 +775,15 @@ public class b2World {
         continue
       }
       
-      println("{")
+      print("{")
       j!.dump()
-      println("}")
+      print("}")
     }
     
-    println("b2Free(joints);")
-    println("b2Free(bodies);")
-    println("joints = NULL;")
-    println("bodies = NULL;")
+    print("b2Free(joints);")
+    print("b2Free(bodies);")
+    print("joints = NULL;")
+    print("bodies = NULL;")
   }
   
   // MARK: - private methods
@@ -936,7 +936,7 @@ public class b2World {
 		  // Post solve cleanup.
 		  for i in 0 ..< island.m_bodyCount {
 			  // Allow static bodies to participate in other islands.
-			  var b = island.m_bodies[i]
+			  let b = island.m_bodies[i]
 			  if b.type == b2BodyType.staticBody {
 				  b.m_flags &= ~b2Body.Flags.islandFlag
 			  }
@@ -946,7 +946,7 @@ public class b2World {
 	  //m_stackAllocator.Free(stack)
     stack.removeAll()
 
-    var timer = b2Timer()
+    let timer = b2Timer()
     b2Locally {
 		  // Synchronize fixtures, check for out of range bodies.
 		  for (var b = self.m_bodyList; b != nil; b = b!.getNext()) {
@@ -1075,7 +1075,7 @@ public class b2World {
           input.tMax = 1.0
           
           var output = b2TOIOutput()
-          b2TimeOfImpact(&output, input)
+          b2TimeOfImpact(&output, input: input)
           
           // Beta is the fraction of the remaining portion of the .
           let beta = output.t
@@ -1234,7 +1234,7 @@ public class b2World {
       
       // Reset island flags and synchronize broad-phase proxies.
       for i in 0 ..< island.m_bodyCount {
-        var body = island.m_bodies[i]
+        let body = island.m_bodies[i]
         body.m_flags &= ~b2Body.Flags.islandFlag
         
         if body.m_type != b2BodyType.dynamicBody {
@@ -1388,7 +1388,7 @@ struct b2WorldQueryWrapper : b2QueryWrapper {
 
 struct b2WorldRayCastWrapper : b2RayCastWrapper {
   func rayCastCallback(input: b2RayCastInput, _ proxyId: Int) -> b2Float {
-    var proxy = broadPhase.getUserData(proxyId: proxyId)!
+    let proxy = broadPhase.getUserData(proxyId: proxyId)!
 		let fixture = proxy.fixture
 		let index = proxy.childIndex
     var output = b2RayCastOutput()

@@ -91,7 +91,7 @@ public class b2ContactSolver {
 		  let pointCount = manifold.pointCount
       assert(pointCount > 0)
 
-      var vc = b2ContactVelocityConstraint()
+      let vc = b2ContactVelocityConstraint()
 		  vc.friction = contact.m_friction
 		  vc.restitution = contact.m_restitution
 		  vc.tangentSpeed = contact.m_tangentSpeed
@@ -107,7 +107,7 @@ public class b2ContactSolver {
 		  vc.normalMass.setZero()
       m_velocityConstraints.append(vc)
 
-		  var pc = b2ContactPositionConstraint()
+		  let pc = b2ContactPositionConstraint()
 		  pc.indexA = bodyA.m_islandIndex
 		  pc.indexB = bodyB.m_islandIndex
 		  pc.invMassA = bodyA.m_invMass
@@ -127,7 +127,7 @@ public class b2ContactSolver {
       vc.points.reserveCapacity(pointCount)
 		  for j in 0 ..< pointCount {
 			  let cp = manifold.points[j]
-			  var vcp = b2VelocityConstraintPoint()
+			  let vcp = b2VelocityConstraintPoint()
 	
 			  if m_step.warmStarting {
 				  vcp.normalImpulse = m_step.dtRatio * cp.normalImpulse
@@ -152,8 +152,8 @@ public class b2ContactSolver {
   
   func initializeVelocityConstraints() {
     for i in 0 ..< m_count {
-      var vc = m_velocityConstraints[i]
-      var pc = m_positionConstraints[i]
+      let vc = m_velocityConstraints[i]
+      let pc = m_positionConstraints[i]
       
       let radiusA = pc.radiusA
       let radiusB = pc.radiusB
@@ -187,14 +187,14 @@ public class b2ContactSolver {
       xfA.p = cA - b2Mul(xfA.q, localCenterA)
       xfB.p = cB - b2Mul(xfB.q, localCenterB)
       
-      var worldManifold = b2WorldManifold()
+      let worldManifold = b2WorldManifold()
       worldManifold.initialize(manifold: manifold, transformA: xfA, radiusA: radiusA, transformB: xfB, radiusB: radiusB)
       
       vc.normal = worldManifold.normal
       
       let pointCount = vc.pointCount
       for j in 0 ..< pointCount {
-        var vcp = vc.points[j]
+        let vcp = vc.points[j]
         
         vcp.rA = worldManifold.points[j] - cA
         vcp.rB = worldManifold.points[j] - cB
@@ -257,7 +257,7 @@ public class b2ContactSolver {
   func warmStart() {
     // Warm start.
     for i in 0 ..< m_count {
-      var vc = m_velocityConstraints[i]
+      let vc = m_velocityConstraints[i]
       
       let indexA = vc.indexA
       let indexB = vc.indexB
@@ -276,7 +276,7 @@ public class b2ContactSolver {
       let tangent = b2Cross(normal, 1.0)
       
       for j in 0 ..< pointCount {
-        var vcp = vc.points[j]
+        let vcp = vc.points[j]
         let P = vcp.normalImpulse * normal + vcp.tangentImpulse * tangent
         wA -= iA * b2Cross(vcp.rA, P)
         vA -= mA * P
@@ -293,7 +293,7 @@ public class b2ContactSolver {
   
   func solveVelocityConstraints() {
     for i in 0 ..< m_count {
-      var vc = m_velocityConstraints[i]
+      let vc = m_velocityConstraints[i]
       
       let indexA = vc.indexA
       let indexB = vc.indexB
@@ -317,7 +317,7 @@ public class b2ContactSolver {
       // Solve tangent constraints first because non-penetration is more important
       // than friction.
       for j in 0 ..< pointCount {
-        var vcp = vc.points[j]
+        let vcp = vc.points[j]
         
         // Relative velocity at contact
         let dv = vB + b2Cross(wB, vcp.rB) - vA - b2Cross(wA, vcp.rA)
@@ -344,7 +344,7 @@ public class b2ContactSolver {
       
       // Solve normal constraints
       if vc.pointCount == 1 {
-        var vcp = vc.points[0]
+        let vcp = vc.points[0]
         
         // Relative velocity at contact
         let dv = vB + b2Cross(wB, vcp.rB) - vA - b2Cross(wA, vcp.rA)
@@ -403,7 +403,7 @@ public class b2ContactSolver {
         var cp1 = vc.points[0]
         var cp2 = vc.points[1]
         
-        var a = b2Vec2(cp1.normalImpulse, cp2.normalImpulse)
+        let a = b2Vec2(cp1.normalImpulse, cp2.normalImpulse)
         assert(a.x >= 0.0 && a.y >= 0.0)
         
         // Relative velocity at contact
@@ -594,7 +594,7 @@ public class b2ContactSolver {
   func storeImpulses() {
     for i in 0 ..< m_count {
       let vc = m_velocityConstraints[i]
-      var manifold = m_contacts[vc.contactIndex].manifold
+      let manifold = m_contacts[vc.contactIndex].manifold
       
       for j in 0 ..< vc.pointCount {
         manifold.points[j].normalImpulse = vc.points[j].normalImpulse
@@ -633,7 +633,7 @@ public class b2ContactSolver {
         xfA.p = cA - b2Mul(xfA.q, localCenterA)
         xfB.p = cB - b2Mul(xfB.q, localCenterB)
         
-        var psm = b2PositionSolverManifold()
+        let psm = b2PositionSolverManifold()
         psm.initialize(pc, xfA, xfB, j)
         let normal = psm.normal
         
@@ -682,7 +682,7 @@ public class b2ContactSolver {
     var minSeparation: b2Float = 0.0
     
     for i in 0 ..< m_count {
-      var pc = m_positionConstraints[i]
+      let pc = m_positionConstraints[i]
       
       let indexA = pc.indexA
       let indexB = pc.indexB
@@ -718,7 +718,7 @@ public class b2ContactSolver {
         xfA.p = cA - b2Mul(xfA.q, localCenterA)
         xfB.p = cB - b2Mul(xfB.q, localCenterB)
         
-        var psm = b2PositionSolverManifold()
+        let psm = b2PositionSolverManifold()
         psm.initialize(pc, xfA, xfB, j)
         let normal = psm.normal
         

@@ -28,7 +28,7 @@ import Foundation
 
 /// A distance proxy is used by the GJK algorithm.
 /// It encapsulates any shape.
-public class b2DistanceProxy: Printable {
+public class b2DistanceProxy: CustomStringConvertible {
   public init() {}
   public init(shape: b2Shape, index: Int) {
     set(shape, index)
@@ -128,7 +128,7 @@ public class b2DistanceProxy: Printable {
   public var m_radius: b2Float = 0
 }
 
-class b2SimplexVertex : Printable {
+class b2SimplexVertex : CustomStringConvertible {
   var wA = b2Vec2()		// support point in proxyA
   var wB = b2Vec2()		// support point in proxyB
   var w = b2Vec2()		// wB - wA
@@ -148,7 +148,7 @@ class b2SimplexVertex : Printable {
   }
 }
 
-struct b2Simplex : Printable {
+struct b2Simplex : CustomStringConvertible {
   init() {
     for _ in 0 ..< 3 {
       m_v.append(b2SimplexVertex())
@@ -164,7 +164,7 @@ struct b2Simplex : Printable {
     m_count = Int(cache.count)
     //var vertices = m_v
     for i in 0 ..< m_count {
-      var v = m_v[i]
+      let v = m_v[i]
       v.indexA = Int(cache.indexA[i])
       v.indexB = Int(cache.indexB[i])
       let wALocal = proxyA.getVertex(v.indexA)
@@ -188,7 +188,7 @@ struct b2Simplex : Printable {
     
     // If the cache is empty or invalid ...
     if m_count == 0 {
-      var v = m_v[0]
+      let v = m_v[0]
       v.indexA = 0
       v.indexB = 0
       let wALocal = proxyA.getVertex(0)
@@ -508,7 +508,7 @@ struct b2Simplex : Printable {
 
 /// Used to warm start b2Distance.
 /// Set count to zero on first call.
-public struct b2SimplexCache : Printable {
+public struct b2SimplexCache : CustomStringConvertible {
   public init() {}
   public var metric: b2Float = 0		///< length or area
   public var count = UInt16(0)
@@ -522,7 +522,7 @@ public struct b2SimplexCache : Printable {
 /// Input for b2Distance.
 /// You have to option to use the shape radii
 /// in the computation. Even
-public struct b2DistanceInput : Printable {
+public struct b2DistanceInput : CustomStringConvertible {
   public init() {}
   public var description: String {
     return "b2DistanceInput[proxyA=\(proxyA),proxyB=\(proxyB),transformA=\(transformA),transformB=\(transformB),useRadii=\(useRadii)]"
@@ -535,7 +535,7 @@ public struct b2DistanceInput : Printable {
 }
 
 /// Output for b2Distance.
-public struct b2DistanceOutput : Printable {
+public struct b2DistanceOutput : CustomStringConvertible {
   public init() {}
   public var description: String {
     return "b2DistanceOutput[pointA=\(pointA),pointB=\(pointB),distance=\(distance),iterations=\(iterations)]"
@@ -624,10 +624,10 @@ public func b2Distance(inout output: b2DistanceOutput, inout cache: b2SimplexCac
     }
   
     // Compute a tentative new simplex vertex using support points.
-    var vertex = simplex.m_v[simplex.m_count]
+    let vertex = simplex.m_v[simplex.m_count]
     vertex.indexA = proxyA.getSupport(b2MulT(transformA.q, -d))
     vertex.wA = b2Mul(transformA, proxyA.getVertex(vertex.indexA))
-    var wBLocal: b2Vec2
+//    var wBLocal: b2Vec2
     vertex.indexB = proxyB.getSupport(b2MulT(transformB.q, d))
     vertex.wB = b2Mul(transformB, proxyB.getVertex(vertex.indexB))
     vertex.w = vertex.wB - vertex.wA

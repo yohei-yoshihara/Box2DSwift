@@ -98,7 +98,7 @@ public class b2Contact {
     let shapeA = m_fixtureA.shape
     let shapeB = m_fixtureB.shape
     
-    var worldManifold = b2WorldManifold()
+    let worldManifold = b2WorldManifold()
     worldManifold.initialize(manifold: m_manifold,
       transformA: bodyA.transform, radiusA: shapeA.m_radius,
       transformB: bodyB.transform, radiusB: shapeB.m_radius)
@@ -171,7 +171,7 @@ public class b2Contact {
   
   /// Reset the friction mixture to the default value.
   public func resetFriction() {
-    m_friction = b2MixFriction(m_fixtureA.m_friction, m_fixtureB.m_friction)
+    m_friction = b2MixFriction(m_fixtureA.m_friction, friction2: m_fixtureB.m_friction)
   }
   
   /// Override the default restitution mixture. You can call this in b2ContactListener::PreSolve.
@@ -192,7 +192,7 @@ public class b2Contact {
   
   /// Reset the restitution to the default value.
   public func resetRestitution() {
-    m_restitution = b2MixRestitution(m_fixtureA.m_restitution, m_fixtureB.m_restitution)
+    m_restitution = b2MixRestitution(m_fixtureA.m_restitution, restitution2: m_fixtureB.m_restitution)
   }
   
   /// Set the desired tangent speed for a conveyor belt behavior. In meters per second.
@@ -333,8 +333,8 @@ public class b2Contact {
     
     m_toiCount = 0
     
-    m_friction = b2MixFriction(m_fixtureA.m_friction, m_fixtureB.m_friction)
-    m_restitution = b2MixRestitution(m_fixtureA.m_restitution, m_fixtureB.m_restitution)
+    m_friction = b2MixFriction(m_fixtureA.m_friction, friction2: m_fixtureB.m_friction)
+    m_restitution = b2MixRestitution(m_fixtureA.m_restitution, restitution2: m_fixtureB.m_restitution)
     
     m_tangentSpeed = 0.0
   }
@@ -375,7 +375,7 @@ public class b2Contact {
       // Match old contact ids to new contact ids and copy the
       // stored impulses to warm start the solver.
       for i in 0 ..< m_manifold.pointCount {
-        var mp2 = m_manifold.points[i]
+        let mp2 = m_manifold.points[i]
         mp2.normalImpulse = 0.0
         mp2.tangentImpulse = 0.0
         let id2 = mp2.id

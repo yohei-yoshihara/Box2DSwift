@@ -122,15 +122,15 @@ public class b2FrictionJoint : b2Joint {
     let indexA = m_bodyA.m_islandIndex
     let indexB = m_bodyB.m_islandIndex
       
-    println("  b2FrictionJointDef jd;\n")
-    println("  jd.bodyA = bodies[\(indexA)];")
-    println("  jd.bodyB = bodies[\(indexB)];")
-    println("  jd.collideConnected = bool(\(m_collideConnected));")
-    println("  jd.localAnchorA.set(\(m_localAnchorA.x), \(m_localAnchorA.y));")
-    println("  jd.localAnchorB.set(\(m_localAnchorB.x), \(m_localAnchorB.y));")
-    println("  jd.maxForce = \(m_maxForce);")
-    println("  jd.maxTorque = \(m_maxTorque);")
-    println("  joints[\(m_index)] = m_world->createJoint(&jd);")
+    print("  b2FrictionJointDef jd;\n")
+    print("  jd.bodyA = bodies[\(indexA)];")
+    print("  jd.bodyB = bodies[\(indexB)];")
+    print("  jd.collideConnected = bool(\(m_collideConnected));")
+    print("  jd.localAnchorA.set(\(m_localAnchorA.x), \(m_localAnchorA.y));")
+    print("  jd.localAnchorB.set(\(m_localAnchorB.x), \(m_localAnchorB.y));")
+    print("  jd.maxForce = \(m_maxForce);")
+    print("  jd.maxTorque = \(m_maxTorque);")
+    print("  joints[\(m_index)] = m_world->createJoint(&jd);")
   }
   
   // MARK: private methods

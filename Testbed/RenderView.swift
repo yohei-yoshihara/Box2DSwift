@@ -46,7 +46,7 @@ class RenderView: UIView, b2Draw {
     super.init(frame: frame)
     
     // Get the layer
-    var eaglLayer = self.layer as! CAEAGLLayer
+    let eaglLayer = self.layer as! CAEAGLLayer
     
     // set content scale
     self.contentScaleFactor = UIScreen.mainScreen().scale
@@ -62,7 +62,7 @@ class RenderView: UIView, b2Draw {
     renderer = Renderer()
   }
   
-  required init(coder aDecoder: NSCoder) {
+  required init?(coder aDecoder: NSCoder) {
     super.init(coder: aDecoder)
   }
   
@@ -82,7 +82,7 @@ class RenderView: UIView, b2Draw {
     renderer.postRender()
   }
   
-  func setOrtho2D(#left: b2Float, right: b2Float, bottom: b2Float, top: b2Float) {
+  func setOrtho2D(left left: b2Float, right: b2Float, bottom: b2Float, top: b2Float) {
     self.left = left
     self.right = right
     self.bottom = bottom
@@ -146,7 +146,7 @@ class RenderView: UIView, b2Draw {
     let k_increment: b2Float = b2Float(2.0 * 3.14159265) / b2Float(k_segments)
     var theta: b2Float = 0.0
     vertexData.removeAll(keepCapacity: true)
-    for i in 0 ..< k_segments {
+    for _ in 0 ..< k_segments {
       let v = center + radius * b2Vec2(cosf(theta), sinf(theta))
       vertexData.append(Vertex(x: v.x, y: v.y))
       theta += k_increment
@@ -162,7 +162,7 @@ class RenderView: UIView, b2Draw {
     let k_increment: b2Float = b2Float(2.0 * 3.14159265) / b2Float(k_segments)
     var theta: b2Float = 0.0
     vertexData.removeAll(keepCapacity: true)
-    for i in 0 ..< k_segments {
+    for _ in 0 ..< k_segments {
       let v = center + radius * b2Vec2(cosf(theta), sinf(theta))
       vertexData.append(Vertex(x: v.x, y: v.y))
       theta += k_increment

@@ -85,8 +85,8 @@ class DynamicTreeTestViewController: BaseViewController, b2QueryWrapper, b2RayCa
   }
   
   override func prepare() {
-    for i in 0 ..< self.actorCount {
-      var actor = Actor()
+    for _ in 0 ..< self.actorCount {
+      let actor = Actor()
       GetRandomAABB(&actor.aabb)
       actor.proxyId = tree.createProxy(aabb: actor.aabb, userData: actor)
       actors.append(actor)
@@ -117,7 +117,7 @@ class DynamicTreeTestViewController: BaseViewController, b2QueryWrapper, b2RayCa
     if automated {
       let actionCount = max(1, self.actorCount >> 2)
       
-      for i in 0 ..< actionCount {
+      for _ in 0 ..< actionCount {
         Action()
       }
     }
@@ -170,13 +170,13 @@ class DynamicTreeTestViewController: BaseViewController, b2QueryWrapper, b2RayCa
   }
   
   func queryCallback(proxyId: Int) -> Bool {
-    var actor = tree.getUserData(proxyId)! as Actor
+    let actor = tree.getUserData(proxyId)! as Actor
     actor.overlap = b2TestOverlap(queryAABB, actor.aabb)
     return true
   }
   
   func rayCastCallback(input: b2RayCastInput, _ proxyId: Int) -> b2Float {
-    var actor = tree.getUserData(proxyId)! as Actor
+    let actor = tree.getUserData(proxyId)! as Actor
     
     let output = actor.aabb.rayCast(input)
     
@@ -218,7 +218,7 @@ class DynamicTreeTestViewController: BaseViewController, b2QueryWrapper, b2RayCa
   }
   
   func CreateProxy() {
-    for i in 0 ..< self.actorCount {
+    for _ in 0 ..< self.actorCount {
       let j = Int(arc4random_uniform(UInt32(self.actorCount)))
       let actor = actors[j]
       if actor.proxyId == b2_nullNode {
@@ -230,7 +230,7 @@ class DynamicTreeTestViewController: BaseViewController, b2QueryWrapper, b2RayCa
   }
   
   func DestroyProxy() {
-    for i in 0 ..< self.actorCount {
+    for _ in 0 ..< self.actorCount {
       let j = Int(arc4random_uniform(UInt32(self.actorCount)))
       let actor = actors[j]
       if actor.proxyId != b2_nullNode {
@@ -242,7 +242,7 @@ class DynamicTreeTestViewController: BaseViewController, b2QueryWrapper, b2RayCa
   }
   
   func MoveProxy() {
-    for i in 0 ..< self.actorCount {
+    for _ in 0 ..< self.actorCount {
       let j = Int(arc4random_uniform(UInt32(self.actorCount)))
       let actor = actors[j]
       if actor.proxyId == b2_nullNode {

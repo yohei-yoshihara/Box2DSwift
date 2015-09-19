@@ -45,9 +45,9 @@ public class b2ChainShape : b2Shape {
   /**
   Create a loop. This automatically adjusts connectivity.
   
-  :param: vertices an array of vertices, these are copied
+  - parameter vertices: an array of vertices, these are copied
   */
-  public func createLoop(#vertices: [b2Vec2]) {
+  public func createLoop(vertices vertices: [b2Vec2]) {
     assert(m_vertices.count == 0)
     assert(vertices.count >= 3)
     for i in 1 ..< vertices.count {
@@ -71,9 +71,9 @@ public class b2ChainShape : b2Shape {
   /**
   Create a chain with isolated end vertices.
   
-  :param: vertices an array of vertices, these are copied
+  - parameter vertices: an array of vertices, these are copied
   */
-  public func createChain(#vertices: [b2Vec2]) {
+  public func createChain(vertices vertices: [b2Vec2]) {
     assert(m_vertices.count == 0)
     assert(vertices.count >= 2)
     for i in 1 ..< vertices.count {
@@ -110,7 +110,7 @@ public class b2ChainShape : b2Shape {
   
   /// Implement b2Shape. Vertices are cloned using b2Alloc.
   public override func clone() -> b2Shape {
-    var clone = b2ChainShape()
+    let clone = b2ChainShape()
     clone.createChain(vertices: m_vertices.array)
     clone.m_prevVertex = m_prevVertex
     clone.m_nextVertex = m_nextVertex
@@ -127,7 +127,7 @@ public class b2ChainShape : b2Shape {
   /// Get a child edge.
   public func getChildEdge(index : Int) -> b2EdgeShape {
     assert(0 <= index && index < m_vertices.count - 1)
-    var edge = b2EdgeShape()
+    let edge = b2EdgeShape()
     edge.m_type = b2ShapeType.edge
     edge.m_radius = m_radius
     
@@ -156,7 +156,7 @@ public class b2ChainShape : b2Shape {
   
   /// This always return false.
   /// @see b2Shape::TestPoint
-  public override func testPoint(#transform: b2Transform, point: b2Vec2) -> Bool {
+  public override func testPoint(transform transform: b2Transform, point: b2Vec2) -> Bool {
     return false
   }
   
@@ -164,7 +164,7 @@ public class b2ChainShape : b2Shape {
   public override func rayCast(inout output: b2RayCastOutput, input : b2RayCastInput, transform xf: b2Transform, childIndex : Int) -> Bool {
     assert(childIndex < m_vertices.count)
     
-    var edgeShape = b2EdgeShape()
+    let edgeShape = b2EdgeShape()
     
     let i1 = childIndex
     var i2 = childIndex + 1
@@ -197,7 +197,7 @@ public class b2ChainShape : b2Shape {
   
   /// Chains have zero mass.
   /// @see b2Shape::ComputeMass
-  public override func computeMass(#density: b2Float) -> b2MassData {
+  public override func computeMass(density density: b2Float) -> b2MassData {
     var massData = b2MassData()
     massData.mass = 0.0
     massData.center.setZero()

@@ -38,7 +38,7 @@ class ConveyorBeltViewController: BaseViewController, b2ContactListener {
       let bd = b2BodyDef()
       let ground = self.world.createBody(bd)
         
-      var shape = b2EdgeShape()
+      let shape = b2EdgeShape()
       shape.set(vertex1: b2Vec2(-20.0, 0.0), vertex2: b2Vec2(20.0, 0.0))
       ground.createFixture(shape: shape, density: 0.0)
     }
@@ -49,10 +49,10 @@ class ConveyorBeltViewController: BaseViewController, b2ContactListener {
       bd.position.set(-5.0, 5.0)
       let body = self.world.createBody(bd)
       
-      var shape = b2PolygonShape()
+      let shape = b2PolygonShape()
       shape.setAsBox(halfWidth: 10.0, halfHeight: 0.5)
       
-      var fd = b2FixtureDef()
+      let fd = b2FixtureDef()
       fd.shape = shape
       fd.friction = 0.8
       self.platform = body.createFixture(fd)
@@ -60,12 +60,12 @@ class ConveyorBeltViewController: BaseViewController, b2ContactListener {
     
     // Boxes
     for i in 0 ..< 5 {
-      var bd = b2BodyDef()
+      let bd = b2BodyDef()
       bd.type = b2BodyType.dynamicBody
       bd.position.set(-10.0 + 2.0 * b2Float(i), 7.0)
       let body = world.createBody(bd)
       
-      var shape = b2PolygonShape()
+      let shape = b2PolygonShape()
       shape.setAsBox(halfWidth: 0.5, halfHeight: 0.5)
       body.createFixture(shape: shape, density: 20.0)
     }

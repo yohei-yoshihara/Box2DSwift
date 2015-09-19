@@ -139,16 +139,16 @@ public class b2DistanceJoint : b2Joint {
     let indexA = m_bodyA.m_islandIndex
     let indexB = m_bodyB.m_islandIndex
       
-    println("  b2DistanceJointDef jd;")
-    println("  jd.bodyA = bodies[\(indexA)];")
-    println("  jd.bodyB = bodies[\(indexB)];")
-    println("  jd.collideConnected = bool(\(m_collideConnected));")
-    println("  jd.localAnchorA.set(\(m_localAnchorA.x), \(m_localAnchorA.y);")
-    println("  jd.localAnchorB.set(\(m_localAnchorB.x), \(m_localAnchorB.y);")
-    println("  jd.length = \(m_length);")
-    println("  jd.frequencyHz = \(m_frequencyHz);")
-    println("  jd.dampingRatio = \(m_dampingRatio);")
-    println("  joints[\(m_index)] = m_world->createJoint(&jd);")
+    print("  b2DistanceJointDef jd;")
+    print("  jd.bodyA = bodies[\(indexA)];")
+    print("  jd.bodyB = bodies[\(indexB)];")
+    print("  jd.collideConnected = bool(\(m_collideConnected));")
+    print("  jd.localAnchorA.set(\(m_localAnchorA.x), \(m_localAnchorA.y);")
+    print("  jd.localAnchorB.set(\(m_localAnchorB.x), \(m_localAnchorB.y);")
+    print("  jd.length = \(m_length);")
+    print("  jd.frequencyHz = \(m_frequencyHz);")
+    print("  jd.dampingRatio = \(m_dampingRatio);")
+    print("  joints[\(m_index)] = m_world->createJoint(&jd);")
   }
   
   // MARK: private methods

@@ -69,7 +69,7 @@ class PinballViewController: BaseViewController {
     
     // Flippers
     b2Locally {
-      var p1 = b2Vec2(-2.0, 0.0), p2 = b2Vec2(2.0, 0.0)
+      let p1 = b2Vec2(-2.0, 0.0), p2 = b2Vec2(2.0, 0.0)
       
       let bd = b2BodyDef()
       bd.type = b2BodyType.dynamicBody

@@ -149,7 +149,7 @@ public class b2Rope {
       m_ps[i] += h * m_vs[i]
     }
     
-    for i in 0 ..< iterations {
+    for _ in 0 ..< iterations {
       solveC2()
       solveC3()
       solveC2()

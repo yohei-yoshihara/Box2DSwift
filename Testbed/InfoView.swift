@@ -45,7 +45,7 @@ class InfoView: UIView {
     label = UILabel(frame: CGRect(x: 0, y: 0, width: 320, height: 320))
     label.numberOfLines = 0
     label.lineBreakMode = NSLineBreakMode.ByTruncatingHead
-    label.autoresizingMask = UIViewAutoresizing.FlexibleRightMargin | UIViewAutoresizing.FlexibleBottomMargin
+    label.autoresizingMask = [UIViewAutoresizing.FlexibleRightMargin, UIViewAutoresizing.FlexibleBottomMargin]
     label.backgroundColor = nil
     label.opaque = false
     label.textColor = UIColor.whiteColor()
@@ -54,7 +54,7 @@ class InfoView: UIView {
     lastTimestamp = CACurrentMediaTime()
   }
   
-  required init(coder aDecoder: NSCoder) {
+  required init?(coder aDecoder: NSCoder) {
     super.init(coder: aDecoder)
   }
   

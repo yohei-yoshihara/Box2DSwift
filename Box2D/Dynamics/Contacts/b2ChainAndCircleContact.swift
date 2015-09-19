@@ -40,8 +40,8 @@ public class b2ChainAndCircleContact : b2Contact {
   }
   
   override public func evaluate(inout manifold: b2Manifold, _ xfA: b2Transform, _ xfB: b2Transform) {
-    var chain = m_fixtureA.shape as! b2ChainShape
-    var edge = chain.getChildEdge(m_indexA)
+    let chain = m_fixtureA.shape as! b2ChainShape
+    let edge = chain.getChildEdge(m_indexA)
     b2CollideEdgeAndCircle(manifold: &manifold,
       edgeA: edge, transformA: xfA,
       circleB: m_fixtureB.shape as! b2CircleShape, transformB: xfB)

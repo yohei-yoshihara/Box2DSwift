@@ -30,7 +30,7 @@ import Foundation
 /// static: zero mass, zero velocity, may be manually moved
 /// kinematic: zero mass, non-zero velocity set by user, moved by solver
 /// dynamic: positive mass, non-zero velocity determined by forces, moved by solver
-public enum b2BodyType : Int, Printable {
+public enum b2BodyType : Int, CustomStringConvertible {
   case staticBody = 0
   case kinematicBody
   case dynamicBody
@@ -109,7 +109,7 @@ public class b2BodyDef {
 
 // MARK: -
 /// A rigid body. These are created via b2World::createBody.
-public class b2Body : Printable {
+public class b2Body : CustomStringConvertible {
   /**
   Creates a fixture and attach it to this body. Use this function if you need
   to set some fixture parameters, like friction. Otherwise you can create the
@@ -117,7 +117,7 @@ public class b2Body : Printable {
   If the density is non-zero, this function automatically updates the mass of the body.
   Contacts are not created until the next time step.
   
-  :param: def the fixture definition.
+  - parameter def: the fixture definition.
   
   warning) This function is locked during callbacks.
   */
@@ -127,7 +127,7 @@ public class b2Body : Printable {
       fatalError("world is locked")
     }
     
-    var fixture = b2Fixture(body: self, def: def)
+    let fixture = b2Fixture(body: self, def: def)
     //fixture.Create(self, def: def)
     
     if (m_flags & Flags.activeFlag) != 0 {
@@ -159,12 +159,12 @@ public class b2Body : Printable {
   like friction, restitution, user data, or filtering.
   If the density is non-zero, this function automatically updates the mass of the body.
 
-  :param: shape the shape to be cloned.
-  :param: density the shape density (set to zero for static bodies).
+  - parameter shape: the shape to be cloned.
+  - parameter density: the shape density (set to zero for static bodies).
   warning) This function is locked during callbacks.
   */
-  public func createFixture(#shape: b2Shape, density: b2Float) -> b2Fixture {
-    var def = b2FixtureDef()
+  public func createFixture(shape shape: b2Shape, density: b2Float) -> b2Fixture {
+    let def = b2FixtureDef()
     def.shape = shape
     def.density = density
     return createFixture(def)
@@ -177,7 +177,7 @@ public class b2Body : Printable {
   fixture has positive density.
   All fixtures attached to a body are implicitly destroyed when the body is destroyed.
 
-  :param: fixture the fixture to be removed.
+  - parameter fixture: the fixture to be removed.
   warning) This function is locked during callbacks.
   */
   public func destroyFixture(fixture: b2Fixture) {
@@ -211,7 +211,7 @@ public class b2Body : Printable {
     // Destroy any contacts associated with the fixture.
     var edge: b2ContactEdge? = m_contactList
     while edge != nil {
-      var c = edge!.contact
+      let c = edge!.contact
       edge = edge!.next
       
       let fixtureA = c.fixtureA
@@ -243,10 +243,10 @@ public class b2Body : Printable {
   Manipulating a body's transform may cause non-physical behavior.
   Note: contacts are updated on the next call to b2World::Step.
 
-  :param: position the world position of the body's local origin.
-  :param: angle the world rotation in radians.
+  - parameter position: the world position of the body's local origin.
+  - parameter angle: the world rotation in radians.
   */
-  public func setTransform(#position: b2Vec2, angle: b2Float) {
+  public func setTransform(position position: b2Vec2, angle: b2Float) {
     assert(m_world.isLocked == false)
     if m_world.isLocked == true {
       return
@@ -295,14 +295,14 @@ public class b2Body : Printable {
   /**
   Set the linear velocity of the center of mass.
 
-  :param: v the new linear velocity of the center of mass.
+  - parameter v: the new linear velocity of the center of mass.
   */
   public func setLinearVelocity(v: b2Vec2) {
     if m_type == b2BodyType.staticBody {
       return
     }
     
-    if b2Dot(v,v) > 0.0 {
+    if b2Dot(v, v) > 0.0 {
       setAwake(true)
     }
     
@@ -322,7 +322,7 @@ public class b2Body : Printable {
   /**
   Set the angular velocity.
   
-  :param: omega the new angular velocity in radians/second.
+  - parameter omega: the new angular velocity in radians/second.
   */
   public func setAngularVelocity(omega: b2Float) {
     if m_type == b2BodyType.staticBody {
@@ -351,9 +351,9 @@ public class b2Body : Printable {
   applied at the center of mass, it will generate a torque and
   affect the angular velocity. This wakes up the body.
   
-  :param: force the world force vector, usually in Newtons (N).
-  :param: point the world position of the point of application.
-  :param: wake also wake up the body
+  - parameter force: the world force vector, usually in Newtons (N).
+  - parameter point: the world position of the point of application.
+  - parameter wake: also wake up the body
   */
   public func applyForce(force: b2Vec2, point: b2Vec2, wake: Bool) {
     if m_type != b2BodyType.dynamicBody {
@@ -374,8 +374,8 @@ public class b2Body : Printable {
   /**
   Apply a force to the center of mass. This wakes up the body.
   
-  :param: force the world force vector, usually in Newtons (N).
-  :param: wake also wake up the body
+  - parameter force: the world force vector, usually in Newtons (N).
+  - parameter wake: also wake up the body
   */
   public func applyForceToCenter(force: b2Vec2, wake: Bool) {
     if m_type != b2BodyType.dynamicBody {
@@ -397,8 +397,8 @@ public class b2Body : Printable {
   without affecting the linear velocity of the center of mass.
   This wakes up the body.
   
-  :param: torque about the z-axis (out of the screen), usually in N-m.
-  :param: wake also wake up the body
+  - parameter torque: about the z-axis (out of the screen), usually in N-m.
+  - parameter wake: also wake up the body
   */
   public func applyTorque(torque: b2Float, wake: Bool) {
     if m_type != b2BodyType.dynamicBody {
@@ -420,9 +420,9 @@ public class b2Body : Printable {
   It also modifies the angular velocity if the point of application
   is not at the center of mass. This wakes up the body.
   
-  :param: impulse the world impulse vector, usually in N-seconds or kg-m/s.
-  :param: point the world position of the point of application.
-  :param: wake also wake up the body
+  - parameter impulse: the world impulse vector, usually in N-seconds or kg-m/s.
+  - parameter point: the world position of the point of application.
+  - parameter wake: also wake up the body
   */
   public func applyLinearImpulse(impulse: b2Vec2, point: b2Vec2, wake: Bool) {
     if m_type != b2BodyType.dynamicBody {
@@ -443,8 +443,8 @@ public class b2Body : Printable {
   /**
   Apply an angular impulse.
 
-  :param: impulse the angular impulse in units of kg*m*m/s
-  :param: wake also wake up the body
+  - parameter impulse: the angular impulse in units of kg*m*m/s
+  - parameter wake: also wake up the body
   */
   public func applyAngularImpulse(impulse: b2Float, wake: Bool) {
     if m_type != b2BodyType.dynamicBody {
@@ -491,7 +491,7 @@ public class b2Body : Printable {
   Note that creating or destroying fixtures can also alter the mass.
   This function has no effect if the body isn't dynamic.
   
-  :param: massData the mass properties.
+  - parameter massData: the mass properties.
   */
   public func setMassData(massData: b2MassData) {
     assert(m_world.isLocked == false)
@@ -558,7 +558,7 @@ public class b2Body : Printable {
         continue
       }
       
-      var massData = f!.massData
+      let massData = f!.massData
       m_mass += massData.mass
       localCenter += massData.mass * massData.center
       m_I += massData.I
@@ -599,8 +599,8 @@ public class b2Body : Printable {
   /**
   Get the world coordinates of a point given the local coordinates.
 
-  :param: localPoint a point on the body measured relative the the body's origin.
-  :returns: the same point expressed in world coordinates.
+  - parameter localPoint: a point on the body measured relative the the body's origin.
+  - returns: the same point expressed in world coordinates.
   */
   public func getWorldPoint(localPoint: b2Vec2) -> b2Vec2 {
     return b2Mul(m_xf, localPoint)
@@ -609,8 +609,8 @@ public class b2Body : Printable {
   /**
   Get the world coordinates of a vector given the local coordinates.
 
-  :param: localVector a vector fixed in the body.
-  :returns: the same vector expressed in world coordinates.
+  - parameter localVector: a vector fixed in the body.
+  - returns: the same vector expressed in world coordinates.
   */
   public func getWorldVector(localVector: b2Vec2) -> b2Vec2 {
     return b2Mul(m_xf.q, localVector)
@@ -619,8 +619,8 @@ public class b2Body : Printable {
   /**
   Gets a local point relative to the body's origin given a world point.
 
-  :param: a point in world coordinates.
-  :returns: the corresponding local point relative to the body's origin.
+  - parameter a: point in world coordinates.
+  - returns: the corresponding local point relative to the body's origin.
   */
   public func getLocalPoint(worldPoint: b2Vec2) -> b2Vec2 {
     return b2MulT(m_xf, worldPoint)
@@ -629,8 +629,8 @@ public class b2Body : Printable {
   /**
   Gets a local vector given a world vector.
   
-  :param: a vector in world coordinates.
-  :returns: the corresponding local vector.
+  - parameter a: vector in world coordinates.
+  - returns: the corresponding local vector.
   */
   public func getLocalVector(worldVector: b2Vec2) -> b2Vec2 {
     return b2MulT(m_xf.q, worldVector)
@@ -639,8 +639,8 @@ public class b2Body : Printable {
   /**
   Get the world linear velocity of a world point attached to this body.
   
-  :param: a point in world coordinates.
-  :returns: the world velocity of a point.
+  - parameter a: point in world coordinates.
+  - returns: the world velocity of a point.
   */
   public func getLinearVelocityFromWorldPoint(worldPoint: b2Vec2) -> b2Vec2 {
     return m_linearVelocity + b2Cross(m_angularVelocity, worldPoint - m_sweep.c)
@@ -649,8 +649,8 @@ public class b2Body : Printable {
   /**
   Get the world velocity of a local point.
 
-  :param: a point in local coordinates.
-  :returns: the world velocity of a point.
+  - parameter a: point in local coordinates.
+  - returns: the world velocity of a point.
   */
   public func getLinearVelocityFromLocalPoint(localPoint: b2Vec2) -> b2Vec2 {
       return getLinearVelocityFromWorldPoint(getWorldPoint(localPoint))
@@ -804,7 +804,7 @@ public class b2Body : Printable {
   Set the sleep state of the body. A sleeping body has very
   low CPU cost.
 
-  :param: flag set to true to wake the body, false to put it to sleep.
+  - parameter flag: set to true to wake the body, false to put it to sleep.
   */
   public func setAwake(flag: Bool) {
     if flag {
@@ -956,29 +956,29 @@ public class b2Body : Printable {
   public func dump() {
     let bodyIndex = m_islandIndex
     
-    println("{")
-    println("  b2BodyDef bd;")
-    println("  bd.type = b2BodyType(\(m_type));")
-    println("  bd.position.set(\(m_xf.p.x), \(m_xf.p.y));")
-    println("  bd.angle = \(m_sweep.a)")
-    println("  bd.linearVelocity.set(\(m_linearVelocity.x), \(m_linearVelocity.y));")
-    println("  bd.angularVelocity = \(m_angularVelocity);")
-    println("  bd.linearDamping = \(m_linearDamping);")
-    println("  bd.angularDamping = \(m_angularDamping);")
-    println("  bd.allowSleep = bool(\(m_flags & Flags.autoSleepFlag));")
-    println("  bd.awake = bool(\(m_flags & Flags.awakeFlag));")
-    println("  bd.fixedRotation = bool(\(m_flags & Flags.fixedRotationFlag));")
-    println("  bd.bullet = bool(\(m_flags & Flags.bulletFlag));")
-    println("  bd.active = bool(\(m_flags & Flags.activeFlag));")
-    println("  bd.gravityScale = \(m_gravityScale);")
-    println("  bodies[\(m_islandIndex)] = m_world->createBody(&bd);")
-    println("")
+    print("{")
+    print("  b2BodyDef bd;")
+    print("  bd.type = b2BodyType(\(m_type));")
+    print("  bd.position.set(\(m_xf.p.x), \(m_xf.p.y));")
+    print("  bd.angle = \(m_sweep.a)")
+    print("  bd.linearVelocity.set(\(m_linearVelocity.x), \(m_linearVelocity.y));")
+    print("  bd.angularVelocity = \(m_angularVelocity);")
+    print("  bd.linearDamping = \(m_linearDamping);")
+    print("  bd.angularDamping = \(m_angularDamping);")
+    print("  bd.allowSleep = bool(\(m_flags & Flags.autoSleepFlag));")
+    print("  bd.awake = bool(\(m_flags & Flags.awakeFlag));")
+    print("  bd.fixedRotation = bool(\(m_flags & Flags.fixedRotationFlag));")
+    print("  bd.bullet = bool(\(m_flags & Flags.bulletFlag));")
+    print("  bd.active = bool(\(m_flags & Flags.activeFlag));")
+    print("  bd.gravityScale = \(m_gravityScale);")
+    print("  bodies[\(m_islandIndex)] = m_world->createBody(&bd);")
+    print("")
     for (var f = m_fixtureList; f != nil; f = f!.m_next) {
-      println("  {")
+      print("  {")
       f!.dump(bodyIndex)
-      println("  }")
+      print("  }")
     }
-    println("}")
+    print("}")
   }
   
   public var description: String {

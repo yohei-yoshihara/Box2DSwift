@@ -51,13 +51,13 @@ class ApplyForceViewController: BaseViewController {
     
     var ground: b2Body!
     b2Locally {
-      var bd = b2BodyDef()
+      let bd = b2BodyDef()
       bd.position.set(0.0, 20.0)
       ground = self.world.createBody(bd)
      
-      var shape = b2EdgeShape()
+      let shape = b2EdgeShape()
       
-      var sd = b2FixtureDef()
+      let sd = b2FixtureDef()
       sd.shape = shape
       sd.density = 0.0
       sd.restitution = k_restitution
@@ -89,10 +89,10 @@ class ApplyForceViewController: BaseViewController {
       vertices.append(b2Mul(xf1, b2Vec2(1.0, 0.0)))
       vertices.append(b2Mul(xf1, b2Vec2(0.0, 0.5)))
       
-      var poly1 = b2PolygonShape()
+      let poly1 = b2PolygonShape()
       poly1.set(vertices: vertices)
       
-      var sd1 = b2FixtureDef()
+      let sd1 = b2FixtureDef()
       sd1.shape = poly1
       sd1.density = 4.0
       
@@ -104,14 +104,14 @@ class ApplyForceViewController: BaseViewController {
       vertices[1] = b2Mul(xf2, b2Vec2(1.0, 0.0))
       vertices[2] = b2Mul(xf2, b2Vec2(0.0, 0.5))
       
-      var poly2 = b2PolygonShape()
+      let poly2 = b2PolygonShape()
       poly2.set(vertices: vertices)
       
-      var sd2 = b2FixtureDef()
+      let sd2 = b2FixtureDef()
       sd2.shape = poly2
       sd2.density = 2.0
       
-      var bd = b2BodyDef()
+      let bd = b2BodyDef()
       bd.type = b2BodyType.dynamicBody
       bd.angularDamping = 2.0
       bd.linearDamping = 0.5
@@ -125,16 +125,16 @@ class ApplyForceViewController: BaseViewController {
     }
     
     b2Locally {
-      var shape = b2PolygonShape()
+      let shape = b2PolygonShape()
       shape.setAsBox(halfWidth: 0.5, halfHeight: 0.5)
       
-      var fd = b2FixtureDef()
+      let fd = b2FixtureDef()
       fd.shape = shape
       fd.density = 1.0
       fd.friction = 0.3
       
       for i in 0 ..< 10 {
-        var bd = b2BodyDef()
+        let bd = b2BodyDef()
         bd.type = b2BodyType.dynamicBody
         
         bd.position.set(0.0, 5.0 + 1.54 * b2Float(i))
@@ -149,7 +149,7 @@ class ApplyForceViewController: BaseViewController {
         // For a circle: I = 0.5 * m * r * r ==> r = sqrt(2 * I / m)
         let radius: b2Float = sqrt(2.0 * I / mass)
         
-        var jd = b2FrictionJointDef()
+        let jd = b2FrictionJointDef()
         jd.localAnchorA.setZero()
         jd.localAnchorB.setZero()
         jd.bodyA = ground

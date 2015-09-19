@@ -42,10 +42,10 @@ class DumpShellViewController: BaseViewController {
     let g = b2Vec2(0.000000000000000e+00, -1.000000000000000e+01)
     world.setGravity(g);
     var bodies = [b2Body]()
-    var joints = [b2Joint]()
+    _ = [b2Joint]()
     
     b2Locally {
-      var bd = b2BodyDef()
+      let bd = b2BodyDef()
       bd.type = b2BodyType.staticBody
       bd.position.set(2.587699890136719e-02, 5.515012264251709e+00)
       bd.angle = 0.000000000000000e+00
@@ -62,7 +62,7 @@ class DumpShellViewController: BaseViewController {
       bodies.append(self.world.createBody(bd))
       
       //{
-      var fd = b2FixtureDef()
+      let fd = b2FixtureDef()
       fd.friction = 2.000000029802322e-01
       fd.restitution = 0.000000000000000e+00
       fd.density = 1.000000000000000e+00
@@ -70,7 +70,7 @@ class DumpShellViewController: BaseViewController {
       fd.filter.categoryBits = UInt16(1)
       fd.filter.maskBits = UInt16(65535)
       fd.filter.groupIndex = Int16(0)
-      var shape = b2PolygonShape()
+      let shape = b2PolygonShape()
       var vs = [b2Vec2]()
       vs.append(b2Vec2(7.733039855957031e-01, -1.497260034084320e-01))
       vs.append(b2Vec2(-4.487270116806030e-01, 1.138330027461052e-01))
@@ -84,7 +84,7 @@ class DumpShellViewController: BaseViewController {
     }
     
     b2Locally {
-      var bd = b2BodyDef()
+      let bd = b2BodyDef()
       bd.type = b2BodyType.dynamicBody
       bd.position.set(-3.122138977050781e-02, 7.535382270812988e+00)
       bd.angle = -1.313644275069237e-02
@@ -100,7 +100,7 @@ class DumpShellViewController: BaseViewController {
       bd.gravityScale = 1.000000000000000e+00
       bodies.append(self.world.createBody(bd))
       
-      var fd = b2FixtureDef()
+      let fd = b2FixtureDef()
       fd.friction = 5.000000000000000e-01
       fd.restitution = 0.000000000000000e+00
       fd.density = 5.000000000000000e+00
@@ -108,7 +108,7 @@ class DumpShellViewController: BaseViewController {
       fd.filter.categoryBits = UInt16(1)
       fd.filter.maskBits = UInt16(65535)
       fd.filter.groupIndex = Int16(0)
-      var shape = b2PolygonShape()
+      let shape = b2PolygonShape()
       var vs = [b2Vec2]()
       vs.append(b2Vec2(3.473900079727173e+00, -2.009889930486679e-01))
       vs.append(b2Vec2(3.457079887390137e+00, 3.694039955735207e-02))
@@ -124,7 +124,7 @@ class DumpShellViewController: BaseViewController {
     }
     
     b2Locally {
-      var bd = b2BodyDef()
+      let bd = b2BodyDef()
       bd.type = b2BodyType.dynamicBody
       bd.position.set(-7.438077926635742e-01, 6.626811981201172e+00)
       bd.angle = -1.884713363647461e+01
@@ -140,7 +140,7 @@ class DumpShellViewController: BaseViewController {
       bd.gravityScale = 1.000000000000000e+00
       bodies.append(self.world.createBody(bd))
       
-      var fd = b2FixtureDef()
+      let fd = b2FixtureDef()
       fd.friction = 9.499999880790710e-01
       fd.restitution = 0.000000000000000e+00
       fd.density = 1.000000000000000e+01
@@ -148,7 +148,7 @@ class DumpShellViewController: BaseViewController {
       fd.filter.categoryBits = UInt16(1)
       fd.filter.maskBits = UInt16(65535)
       fd.filter.groupIndex = Int16(-3)
-      var shape = b2PolygonShape()
+      let shape = b2PolygonShape()
       var vs = [b2Vec2]()
       vs.append(b2Vec2(1.639146506786346e-01, 4.428443685173988e-02))
       vs.append(b2Vec2(-1.639146655797958e-01, 4.428443685173988e-02))

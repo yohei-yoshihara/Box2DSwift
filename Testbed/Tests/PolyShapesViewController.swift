@@ -125,7 +125,7 @@ class PolyShapesViewController: BaseViewController, TextListViewControllerDelega
   
   func onDropStuff(sender: UIBarButtonItem) {
     dropVC.modalPresentationStyle = UIModalPresentationStyle.Popover
-    var popPC = dropVC.popoverPresentationController
+    let popPC = dropVC.popoverPresentationController
     popPC?.barButtonItem = sender
     popPC?.permittedArrowDirections = UIPopoverArrowDirection.Any
     self.presentViewController(dropVC, animated: true, completion: nil)
@@ -273,7 +273,7 @@ class PolyShapesViewController: BaseViewController, TextListViewControllerDelega
     debugDraw.drawCircle(callback.circle.p, callback.circle.radius, color)
   }
  
-  func textListDidSelect(#name: String, index: Int) {
+  func textListDidSelect(name name: String, index: Int) {
     self.dismissViewControllerAnimated(true, completion: nil)
     if name == "Drop" {
       create(index)

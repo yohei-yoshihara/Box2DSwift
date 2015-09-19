@@ -29,7 +29,7 @@ import Foundation
 /**
 This holds the mass data computed for a shape.
 */
-public struct b2MassData : Printable {
+public struct b2MassData : CustomStringConvertible {
   /**
   The mass of the shape, usually in kilograms.
   */
@@ -48,7 +48,7 @@ public struct b2MassData : Printable {
   }
 }
 
-public enum b2ShapeType: Int, Printable {
+public enum b2ShapeType: Int, CustomStringConvertible {
   case circle = 0
   case edge = 1
   case polygon = 2
@@ -71,7 +71,7 @@ A shape is used for collision detection. You can create a shape however you like
 Shapes used for simulation in b2World are created automatically when a b2Fixture
 is created. Shapes may encapsulate a one or more child shapes.
 */
-public class b2Shape : Printable {
+public class b2Shape : CustomStringConvertible {
   
   public init() {
     m_type = b2ShapeType.circle
@@ -86,7 +86,7 @@ public class b2Shape : Printable {
   /**
   Get the type of this shape. You can use this to down cast to the concrete shape.
   
-  :returns: the shape type.
+  - returns: the shape type.
   */
   public var type: b2ShapeType {
     return m_type
@@ -100,19 +100,19 @@ public class b2Shape : Printable {
   /**
   Test a point for containment in this shape. This only works for convex shapes.
   
-  :param: transform the shape world transform.
-  :param: point a point in world coordinates.
+  - parameter transform: the shape world transform.
+  - parameter point: a point in world coordinates.
   */
-  public func testPoint(#transform: b2Transform, point: b2Vec2) -> Bool {
+  public func testPoint(transform transform: b2Transform, point: b2Vec2) -> Bool {
     fatalError("must override")
   }
   /**
   Cast a ray against a child shape.
   
-  :param: output the ray-cast results.
-  :param: input the ray-cast input parameters.
-  :param: transform the transform to be applied to the shape.
-  :param: childIndex the child shape index
+  - parameter output: the ray-cast results.
+  - parameter input: the ray-cast input parameters.
+  - parameter transform: the transform to be applied to the shape.
+  - parameter childIndex: the child shape index
   */
   public func rayCast(inout output: b2RayCastOutput, input: b2RayCastInput, transform: b2Transform, childIndex: Int) -> Bool {
     fatalError("must override")
@@ -120,9 +120,9 @@ public class b2Shape : Printable {
   /**
   Given a transform, compute the associated axis aligned bounding box for a child shape.
   
-  :param: aabb returns the axis aligned box.
-  :param: xf the world transform of the shape.
-  :param: childIndex the child shape
+  - parameter aabb: returns the axis aligned box.
+  - parameter xf: the world transform of the shape.
+  - parameter childIndex: the child shape
   */
   public func computeAABB(inout aabb: b2AABB, transform: b2Transform, childIndex: Int) {
     fatalError("must override")
@@ -131,10 +131,10 @@ public class b2Shape : Printable {
   Compute the mass properties of this shape using its dimensions and density.
   The inertia tensor is computed about the local origin.
   
-  :param: massData returns the mass data for this shape.
-  :param: density the density in kilograms per meter squared.
+  - parameter massData: returns the mass data for this shape.
+  - parameter density: the density in kilograms per meter squared.
   */
-  public func computeMass(#density: b2Float) -> b2MassData {
+  public func computeMass(density density: b2Float) -> b2MassData {
     fatalError("must override")
   }
   

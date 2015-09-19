@@ -45,7 +45,7 @@ public class b2MotorJointDef : b2JointDef {
   }
   
   /// Initialize the bodies and offsets using the current transforms.
-  public func initialize(#bodyA: b2Body, bodyB: b2Body) {
+  public func initialize(bodyA bodyA: b2Body, bodyB: b2Body) {
     self.bodyA = bodyA
     self.bodyB = bodyB
     let xB = bodyB.position
@@ -183,16 +183,16 @@ public class b2MotorJoint : b2Joint {
     let indexA = m_bodyA.m_islandIndex
     let indexB = m_bodyB.m_islandIndex
       
-    println("  b2MotorJointDef jd;")
-    println("  jd.bodyA = bodies[\(indexA)];")
-    println("  jd.bodyB = bodies[\(indexB)];")
-    println("  jd.collideConnected = bool(\(m_collideConnected));")
-    println("  jd.linearOffset.set(\(m_linearOffset.x), \(m_linearOffset.y));")
-    println("  jd.angularOffset = \(m_angularOffset);")
-    println("  jd.maxForce = \(m_maxForce);")
-    println("  jd.maxTorque = \(m_maxTorque);")
-    println("  jd.correctionFactor = \(m_correctionFactor);")
-    println("  joints[\(m_index)] = m_world->createJoint(&jd);\n")
+    print("  b2MotorJointDef jd;")
+    print("  jd.bodyA = bodies[\(indexA)];")
+    print("  jd.bodyB = bodies[\(indexB)];")
+    print("  jd.collideConnected = bool(\(m_collideConnected));")
+    print("  jd.linearOffset.set(\(m_linearOffset.x), \(m_linearOffset.y));")
+    print("  jd.angularOffset = \(m_angularOffset);")
+    print("  jd.maxForce = \(m_maxForce);")
+    print("  jd.maxTorque = \(m_maxTorque);")
+    print("  jd.correctionFactor = \(m_correctionFactor);")
+    print("  joints[\(m_index)] = m_world->createJoint(&jd);\n")
   }
   
   // MARK: private methods

@@ -36,7 +36,7 @@ class IterationCell: UITableViewCell {
     super.init(style: UITableViewCellStyle.Default, reuseIdentifier: IterationCell.cellId)
   }
 
-  required init(coder aDecoder: NSCoder) {
+  required init?(coder aDecoder: NSCoder) {
     super.init(coder: aDecoder)
   }
 }
@@ -50,7 +50,7 @@ class SwitchCell: UITableViewCell {
     super.init(style: UITableViewCellStyle.Default, reuseIdentifier: SwitchCell.cellId)
   }
 
-  required init(coder aDecoder: NSCoder) {
+  required init?(coder aDecoder: NSCoder) {
     super.init(coder: aDecoder)
   }
 }
@@ -63,7 +63,7 @@ class HertzCell: UITableViewCell {
     super.init(style: UITableViewCellStyle.Default, reuseIdentifier: HertzCell.cellId)
   }
   
-  required init(coder aDecoder: NSCoder) {
+  required init?(coder aDecoder: NSCoder) {
     super.init(coder: aDecoder)
   }
 }
@@ -287,14 +287,14 @@ class SettingTableViewController: UITableViewController {
       let stepper = sender as! UIStepper
       let value = Int(stepper.value)
       settings.velocityIterations = value
-      let indexPath = NSIndexPath(forRow: 0, inSection: 0)!
+      let indexPath = NSIndexPath(forRow: 0, inSection: 0)
       self.tableView.reloadRowsAtIndexPaths([indexPath], withRowAnimation: UITableViewRowAnimation.Automatic)
     }
     else if sender.tag == 1 {
       let stepper = sender as! UIStepper
       let value = Int(stepper.value)
       settings.positionIterations = value
-      let indexPath = NSIndexPath(forRow: 1, inSection: 0)!
+      let indexPath = NSIndexPath(forRow: 1, inSection: 0)
       self.tableView.reloadRowsAtIndexPaths([indexPath], withRowAnimation: UITableViewRowAnimation.Automatic)
     }
     else if sender.tag == 2 {

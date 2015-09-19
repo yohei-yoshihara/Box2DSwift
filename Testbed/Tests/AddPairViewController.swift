@@ -41,7 +41,7 @@ class AddPairViewController: BaseViewController {
       let minY: b2Float = 4.0
       let maxY: b2Float = 6.0
       
-      for i in 0 ..< 50 {
+      for _ in 0 ..< 50 {
         let bd = b2BodyDef()
         bd.type = b2BodyType.dynamicBody
         bd.position = b2Vec2(RandomFloat(minX,maxX),RandomFloat(minY,maxY))

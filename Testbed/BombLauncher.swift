@@ -44,13 +44,13 @@ class BombLauncher : NSObject {
   
   func onTap(gr: UITapGestureRecognizer) {
     let tp = gr.locationInView(self.debugDraw)
-    let p = ConvertScreenToWorld(tp, debugDraw.bounds.size, self.viewCenter)
+    let p = ConvertScreenToWorld(tp, size: debugDraw.bounds.size, viewCenter: self.viewCenter)
     LaunchBomb(p, b2Vec2(0.0, 0.0))
   }
   
   func onPan(gr: UIPanGestureRecognizer) {
     let tp = gr.locationInView(self.debugDraw)
-    let p = ConvertScreenToWorld(tp, debugDraw.bounds.size, self.viewCenter)
+    let p = ConvertScreenToWorld(tp, size: debugDraw.bounds.size, viewCenter: self.viewCenter)
     
     switch gr.state {
     case .Began:
@@ -84,17 +84,17 @@ class BombLauncher : NSObject {
       bomb = nil
     }
     
-    var bd = b2BodyDef()
+    let bd = b2BodyDef()
     bd.type = b2BodyType.dynamicBody
     bd.position = position
     bd.bullet = true
     bomb = world.createBody(bd)
     bomb!.setLinearVelocity(velocity)
     
-    var circle = b2CircleShape()
+    let circle = b2CircleShape()
     circle.radius = 0.3
     
-    var fd = b2FixtureDef()
+    let fd = b2FixtureDef()
     fd.shape = circle
     fd.density = 20.0
     fd.restitution = 0.0

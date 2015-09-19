@@ -26,7 +26,7 @@ the original C++ code written by Erin Catto.
 
 import Foundation
 
-public enum b2JointType : Printable {
+public enum b2JointType : CustomStringConvertible {
   case unknownJoint
   case revoluteJoint
   case prismaticJoint
@@ -57,7 +57,7 @@ public enum b2JointType : Printable {
   }
 }
 
-public enum b2LimitState : Printable {
+public enum b2LimitState : CustomStringConvertible {
   case inactiveLimit
   case atLowerLimit
   case atUpperLimit

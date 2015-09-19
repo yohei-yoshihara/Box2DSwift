@@ -33,8 +33,8 @@ func randomFloat() -> b2Float {
   return rand
 }
 
-func RandomFloat(low: b2Float, high: b2Float) -> b2Float {
-  var rand = (b2Float(arc4random_uniform(1000)) / b2Float(1000)) * (high - low) + low
+func RandomFloat(low: b2Float, _ high: b2Float) -> b2Float {
+  let rand = (b2Float(arc4random_uniform(1000)) / b2Float(1000)) * (high - low) + low
   return rand
 }
 
@@ -73,7 +73,7 @@ func checkBackButton(viewController: UIViewController) -> Bool {
   return false
 }
 
-class Settings : Printable {
+class Settings : CustomStringConvertible {
   init() {
     viewCenter = b2Vec2(0.0, 20.0)
     hz = b2Float(60.0)
@@ -260,7 +260,7 @@ class ContactListener : b2ContactListener {
     
     let fixtureA = contact.fixtureA
     let fixtureB = contact.fixtureB
-    let (state1, state2) = b2GetPointStates(manifold1: oldManifold, manifold2: manifold)
+    let (_/*state1*/, state2) = b2GetPointStates(manifold1: oldManifold, manifold2: manifold)
     let worldManifold = contact.worldManifold
     
     for (var i = 0; i < manifold.pointCount; ++i) {

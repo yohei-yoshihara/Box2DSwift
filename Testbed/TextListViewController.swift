@@ -27,7 +27,7 @@ the original C++ code written by Erin Catto.
 import UIKit
 
 protocol TextListViewControllerDelegate {
-  func textListDidSelect(#name: String, index: Int)
+  func textListDidSelect(name name: String, index: Int)
 }
 
 class TextListViewController: UINavigationController {
@@ -64,7 +64,7 @@ private class TextListTableViewController: UITableViewController {
   }
   
   override func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
-    var cell = self.tableView.dequeueReusableCellWithIdentifier(cellId)! as! UITableViewCell
+    let cell = self.tableView.dequeueReusableCellWithIdentifier(cellId)! 
     cell.textLabel!.text = textList[indexPath.row]
     return cell
   }

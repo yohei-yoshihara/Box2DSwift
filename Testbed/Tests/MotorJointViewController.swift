@@ -42,13 +42,13 @@ class MotorJointViewController: BaseViewController {
   override func prepare() {
     var ground: b2Body! = nil
     b2Locally {
-      var bd = b2BodyDef()
+      let bd = b2BodyDef()
       ground = self.world.createBody(bd)
       
-      var shape = b2EdgeShape()
+      let shape = b2EdgeShape()
       shape.set(vertex1: b2Vec2(-20.0, 0.0), vertex2: b2Vec2(20.0, 0.0))
       
-      var fd = b2FixtureDef()
+      let fd = b2FixtureDef()
       fd.shape = shape
       
       ground.createFixture(fd)
@@ -56,21 +56,21 @@ class MotorJointViewController: BaseViewController {
     
     // Define motorized body
     b2Locally {
-      var bd = b2BodyDef()
+      let bd = b2BodyDef()
       bd.type = b2BodyType.dynamicBody
       bd.position.set(0.0, 8.0)
-      var body = self.world.createBody(bd)
+      let body = self.world.createBody(bd)
       
-      var shape = b2PolygonShape()
+      let shape = b2PolygonShape()
       shape.setAsBox(halfWidth: 2.0, halfHeight: 0.5)
       
-      var fd = b2FixtureDef()
+      let fd = b2FixtureDef()
       fd.shape = shape
       fd.friction = 0.6
       fd.density = 2.0
       body.createFixture(fd)
       
-      var mjd = b2MotorJointDef()
+      let mjd = b2MotorJointDef()
       mjd.initialize(bodyA: ground, bodyB: body)
       mjd.maxForce = 1000.0
       mjd.maxTorque = 1000.0
@@ -95,7 +95,7 @@ class MotorJointViewController: BaseViewController {
     linearOffset.x = 6.0 * sin(2.0 * time)
     linearOffset.y = 8.0 + 4.0 * sin(1.0 * time)
     
-    var angularOffset = 4.0 * time
+    let angularOffset = 4.0 * time
     
     joint!.setLinearOffset(linearOffset)
     joint!.setAngularOffset(angularOffset)

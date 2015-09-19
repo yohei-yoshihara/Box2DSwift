@@ -55,7 +55,7 @@ public class b2WheelJointDef : b2JointDef {
   
   /// Initialize the bodies, anchors, axis, and reference angle using the world
   /// anchor and world axis.
-  public func initialize(#bodyA: b2Body, bodyB: b2Body, anchor: b2Vec2, axis: b2Vec2) {
+  public func initialize(bodyA bodyA: b2Body, bodyB: b2Body, anchor: b2Vec2, axis: b2Vec2) {
     self.bodyA = bodyA
     self.bodyB = bodyB
     self.localAnchorA = bodyA.getLocalPoint(anchor)
@@ -224,19 +224,19 @@ public class b2WheelJoint : b2Joint {
     let indexA = m_bodyA.m_islandIndex
     let indexB = m_bodyB.m_islandIndex
     
-    println("  b2WheelJointDef jd;")
-    println("  jd.bodyA = bodies[\(indexA)];")
-    println("  jd.bodyB = bodies[\(indexB)];")
-    println("  jd.collideConnected = bool(\(m_collideConnected));")
-    println("  jd.localAnchorA.set(\(m_localAnchorA.x), \(m_localAnchorA.y));")
-    println("  jd.localAnchorB.set(\(m_localAnchorB.x), \(m_localAnchorB.y));")
-    println("  jd.localAxisA.set(\(m_localXAxisA.x), \(m_localXAxisA.y));")
-    println("  jd.enableMotor = bool(\(m_enableMotor));")
-    println("  jd.motorSpeed = \(m_motorSpeed);")
-    println("  jd.maxMotorTorque = \(m_maxMotorTorque);")
-    println("  jd.frequencyHz = \(m_frequencyHz);")
-    println("  jd.dampingRatio = \(m_dampingRatio);")
-    println("  joints[\(m_index)] = m_world->createJoint(&jd);")
+    print("  b2WheelJointDef jd;")
+    print("  jd.bodyA = bodies[\(indexA)];")
+    print("  jd.bodyB = bodies[\(indexB)];")
+    print("  jd.collideConnected = bool(\(m_collideConnected));")
+    print("  jd.localAnchorA.set(\(m_localAnchorA.x), \(m_localAnchorA.y));")
+    print("  jd.localAnchorB.set(\(m_localAnchorB.x), \(m_localAnchorB.y));")
+    print("  jd.localAxisA.set(\(m_localXAxisA.x), \(m_localXAxisA.y));")
+    print("  jd.enableMotor = bool(\(m_enableMotor));")
+    print("  jd.motorSpeed = \(m_motorSpeed);")
+    print("  jd.maxMotorTorque = \(m_maxMotorTorque);")
+    print("  jd.frequencyHz = \(m_frequencyHz);")
+    print("  jd.dampingRatio = \(m_dampingRatio);")
+    print("  joints[\(m_index)] = m_world->createJoint(&jd);")
   }
   
   // MARK: private methods

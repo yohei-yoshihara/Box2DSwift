@@ -38,7 +38,7 @@ public struct b2TOIInput {
 
 // Output parameters for b2TimeOfImpact.
 public struct b2TOIOutput {
-  public enum State : Printable {
+  public enum State : CustomStringConvertible {
     case unknown
     case failed
     case overlapped
@@ -66,7 +66,7 @@ public struct b2TOIOutput {
 /// again.
 /// Note: use b2Distance to compute the contact point and normal at the time of impact.
 public func b2TimeOfImpact(inout output: b2TOIOutput, input: b2TOIInput) {
-  var timer = b2Timer()
+  let timer = b2Timer()
   
   ++b2_toiCalls
   
@@ -114,7 +114,7 @@ public func b2TimeOfImpact(inout output: b2TOIOutput, input: b2TOIInput) {
     distanceInput.transformA = xfA
     distanceInput.transformB = xfB
     var distanceOutput = b2DistanceOutput()
-    b2Distance(&distanceOutput, &cache, distanceInput)
+    b2Distance(&distanceOutput, cache: &cache, input: distanceInput)
     
     // If the shapes are overlapped, we give up on continuous collision.
     if distanceOutput.distance <= 0.0 {
@@ -282,7 +282,7 @@ public var b2_toiCalls = 0, b2_toiIters = 0, b2_toiMaxIters = 0
 public var b2_toiRootIters = 0, b2_toiMaxRootIters = 0
 
 private struct b2SeparationFunction {
-  enum TYPE : Printable {
+  enum TYPE : CustomStringConvertible {
     case points
     case faceA
     case faceB
@@ -424,11 +424,11 @@ private struct b2SeparationFunction {
       let separation = b2Dot(pointA - pointB, normal)
       return (separation, indexA, indexB)
       
-    default:
-      assert(false)
-      indexA = -1
-      indexB = -1
-      return (0.0, indexA, indexB)
+//    default:
+//      assert(false)
+//      indexA = -1
+//      indexB = -1
+//      return (0.0, indexA, indexB)
     }
   }
   
@@ -467,9 +467,9 @@ private struct b2SeparationFunction {
       let separation = b2Dot(pointA - pointB, normal)
       return separation
       
-    default:
-      assert(false)
-      return 0.0
+//    default:
+//      assert(false)
+//      return 0.0
     }
   }
   

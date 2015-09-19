@@ -62,9 +62,9 @@ public class b2Island {
     m_joints.removeAll(keepCapacity: true)
     m_joints.reserveCapacity(jointCapacity)
     
-    m_velocities.removeAll(keepCapacity: true)
+    m_velocities.removeAll(true)
     m_velocities.reserveCapacity(m_bodyCapacity)
-    m_positions.removeAll(keepCapacity: true)
+    m_positions.removeAll(true)
     m_positions.reserveCapacity(m_bodyCapacity)
   }
   
@@ -75,15 +75,15 @@ public class b2Island {
   }
   
   func solve(inout profile: b2Profile, _ step: b2TimeStep, _ gravity: b2Vec2, _ allowSleep: Bool) {
-    var timer = b2Timer()
+    let timer = b2Timer()
     
     let h = step.dt
     
     // Integrate velocities and apply damping. Initialize the body state.
-    m_positions.removeAll(keepCapacity: true)
-    m_velocities.removeAll(keepCapacity: true)
+    m_positions.removeAll(true)
+    m_velocities.removeAll(true)
     for i in 0 ..< m_bodyCount {
-      var b = m_bodies[i]
+      let b = m_bodies[i]
       
       let c = b.m_sweep.c
       let a = b.m_sweep.a
@@ -130,7 +130,7 @@ public class b2Island {
     contactSolverDef.positions = m_positions
     contactSolverDef.velocities = m_velocities
     
-    var contactSolver = b2ContactSolver(contactSolverDef)
+    let contactSolver = b2ContactSolver(contactSolverDef)
     contactSolver.initializeVelocityConstraints()
     
     if step.warmStarting {
@@ -145,7 +145,7 @@ public class b2Island {
     
     // Solve velocity constraints
     timer.reset()
-    for i in 0 ..< step.velocityIterations {
+    for _ in 0 ..< step.velocityIterations {
       for j in 0 ..< m_jointCount {
         m_joints[j].solveVelocityConstraints(&solverData)
       }
@@ -190,7 +190,7 @@ public class b2Island {
     // Solve position constraints
     timer.reset()
     var positionSolved = false
-    for i in 0 ..< step.positionIterations {
+    for _ in 0 ..< step.positionIterations {
       let contactsOkay = contactSolver.solvePositionConstraints()
       
       var jointsOkay = true
@@ -208,7 +208,7 @@ public class b2Island {
     
     // Copy state buffers back to the bodies
     for i in 0 ..< m_bodyCount {
-      var body = m_bodies[i]
+      let body = m_bodies[i]
       body.m_sweep.c = m_positions[i].c
       body.m_sweep.a = m_positions[i].a
       body.m_linearVelocity = m_velocities[i].v
@@ -246,7 +246,7 @@ public class b2Island {
       
       if minSleepTime >= b2_timeToSleep && positionSolved {
         for i in 0 ..< m_bodyCount {
-          var b = m_bodies[i]
+          let b = m_bodies[i]
           b.setAwake(false)
         }
       }
@@ -258,8 +258,8 @@ public class b2Island {
     assert(toiIndexB < m_bodyCount)
     
     // Initialize the body state.
-    m_positions.removeAll(keepCapacity: true)
-    m_velocities.removeAll(keepCapacity: true)
+    m_positions.removeAll(true)
+    m_velocities.removeAll(true)
     for i in 0 ..< m_bodyCount {
       let b = m_bodies[i]
       m_positions.append(b2Position(b.m_sweep.c, b.m_sweep.a))
@@ -272,10 +272,10 @@ public class b2Island {
     contactSolverDef.step = subStep
     contactSolverDef.positions = m_positions
     contactSolverDef.velocities = m_velocities
-    var contactSolver = b2ContactSolver(contactSolverDef)
+    let contactSolver = b2ContactSolver(contactSolverDef)
     
     // Solve position constraints.
-    for i in 0 ..< subStep.positionIterations {
+    for _ in 0 ..< subStep.positionIterations {
       let contactsOkay = contactSolver.solveTOIPositionConstraints(toiIndexA, toiIndexB)
       if contactsOkay {
         break
@@ -324,7 +324,7 @@ public class b2Island {
     contactSolver.initializeVelocityConstraints()
     
     // Solve velocity constraints.
-    for i in 0 ..< subStep.velocityIterations {
+    for _ in 0 ..< subStep.velocityIterations {
       contactSolver.solveVelocityConstraints()
     }
     
@@ -363,7 +363,7 @@ public class b2Island {
       m_velocities[i].w = w
       
       // Sync bodies
-      var body = m_bodies[i]
+      let body = m_bodies[i]
       body.m_sweep.c = c
       body.m_sweep.a = a
       body.m_linearVelocity = v

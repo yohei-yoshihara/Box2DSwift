@@ -26,7 +26,7 @@ the original C++ code written by Erin Catto.
 
 import Foundation
 
-public class b2PolygonShape : b2Shape, Printable {
+public class b2PolygonShape : b2Shape {
   public override init() {
     m_centroid = b2Vec2(0.0, 0.0)
     super.init()
@@ -36,7 +36,7 @@ public class b2PolygonShape : b2Shape, Printable {
   
   /// Implement b2Shape.
   public override func clone() -> b2Shape {
-    var clone = b2PolygonShape()
+    let clone = b2PolygonShape()
     clone.m_centroid = m_centroid
     clone.m_vertices = m_vertices.clone()
     clone.m_normals = m_normals.clone()
@@ -54,7 +54,7 @@ public class b2PolygonShape : b2Shape, Printable {
   /// @warning the points may be re-ordered, even if they form a convex polygon
   /// @warning collinear points are handled but not removed. Collinear points
   /// may lead to poor stacking behavior.
-  public func set(#vertices: [b2Vec2]) {
+  public func set(vertices vertices: [b2Vec2]) {
     assert(3 <= vertices.count && vertices.count <= b2_maxPolygonVertices)
     if vertices.count < 3 {
       setAsBox(halfWidth: 1.0, halfHeight: 1.0)
@@ -64,7 +64,7 @@ public class b2PolygonShape : b2Shape, Printable {
     var n = min(vertices.count, b2_maxPolygonVertices)
     
     // Perform welding and copy vertices into local buffer.
-    var ps = b2Array<b2Vec2>()
+    let ps = b2Array<b2Vec2>()
     //int32 tempCount = 0
     for i in 0 ..< n {
       let v = vertices[i]
@@ -164,8 +164,8 @@ public class b2PolygonShape : b2Shape, Printable {
   /**
   Build vertices to represent an axis-aligned box centered on the local origin.
   
-  :param: halfWidth the half-width.
-  :param: halfHeight the half-height.
+  - parameter halfWidth: the half-width.
+  - parameter halfHeight: the half-height.
   */
   public func setAsBox(halfWidth hx: b2Float, halfHeight hy: b2Float) {
     m_vertices.removeAll()
@@ -184,10 +184,10 @@ public class b2PolygonShape : b2Shape, Printable {
   /**
   Build vertices to represent an oriented box.
   
-  :param: hx the half-width.
-  :param: hy the half-height.
-  :param: center the center of the box in local coordinates.
-  :param: angle the rotation of the box in local coordinates.
+  - parameter hx: the half-width.
+  - parameter hy: the half-height.
+  - parameter center: the center of the box in local coordinates.
+  - parameter angle: the rotation of the box in local coordinates.
   */
   public func setAsBox(halfWidth hx: b2Float, halfHeight hy: b2Float, center: b2Vec2, angle: b2Float) {
     m_vertices.removeAll()
@@ -214,7 +214,7 @@ public class b2PolygonShape : b2Shape, Printable {
   }
   
   /// @see b2Shape::TestPoint
-  public override func testPoint(#transform: b2Transform, point p: b2Vec2) -> Bool {
+  public override func testPoint(transform transform: b2Transform, point p: b2Vec2) -> Bool {
     let pLocal = b2MulT(transform.q, p - transform.p)
     
     for i in 0 ..< m_count {
@@ -305,7 +305,7 @@ public class b2PolygonShape : b2Shape, Printable {
   }
   
   /// @see b2Shape::ComputeMass
-  public override func computeMass(#density: b2Float) -> b2MassData {
+  public override func computeMass(density density: b2Float) -> b2MassData {
     // Polygon mass, centroid, and inertia.
     // Let rho be the polygon density in mass per unit area.
     // Then:

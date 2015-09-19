@@ -170,8 +170,8 @@ class RayCastViewController: BaseViewController, TextListViewControllerDelegate 
   override func prepare() {
     // Ground body
     let bd = b2BodyDef()
-    var ground = world.createBody(bd)
-    var shape = b2EdgeShape()
+    let ground = world.createBody(bd)
+    let shape = b2EdgeShape()
     shape.set(vertex1: b2Vec2(-40.0, 0.0), vertex2: b2Vec2(40.0, 0.0))
     ground.createFixture(shape: shape, density: 0.0)
     
@@ -191,7 +191,7 @@ class RayCastViewController: BaseViewController, TextListViewControllerDelegate 
       b2Vec2(0.1, 0.0),
       b2Vec2(0.0, 1.5)
     ]
-    var polygon1 = b2PolygonShape()
+    let polygon1 = b2PolygonShape()
     polygon1.set(vertices: vertices1)
     polygons.append(polygon1)
     
@@ -210,12 +210,12 @@ class RayCastViewController: BaseViewController, TextListViewControllerDelegate 
     vertices2[6].set(-0.5 * w, b)
     vertices2[7].set(-0.5 * s, 0.0)
     
-    var polygon2 = b2PolygonShape()
+    let polygon2 = b2PolygonShape()
     polygon2.set(vertices: vertices2)
     polygons.append(polygon2)
     
     // polygon 3
-    var polygon3 = b2PolygonShape()
+    let polygon3 = b2PolygonShape()
     polygon3.setAsBox(halfWidth: 0.5, halfHeight: 0.5)
     polygons.append(polygon3)
     
@@ -232,14 +232,14 @@ class RayCastViewController: BaseViewController, TextListViewControllerDelegate 
   
   override func step() {
     // RayCast
-    var advanceRay = !settings.pause || settings.singleStep
+    let advanceRay = !settings.pause || settings.singleStep
     let L: b2Float = 11.0
     let point1 = b2Vec2(0.0, 10.0)
     let d = b2Vec2(L * cosf(angle), L * sinf(angle))
     let point2 = point1 + d
     
     if mode == Mode.closest {
-      var callback = RayCastClosestCallback()
+      let callback = RayCastClosestCallback()
       world.rayCast(callback: callback, point1: point1, point2: point2)
       if callback.hit {
         debugDraw.drawPoint(callback.point, 5.0, b2Color(0.4, 0.9, 0.4))
@@ -252,7 +252,7 @@ class RayCastViewController: BaseViewController, TextListViewControllerDelegate 
       }
     }
     else if mode == Mode.any {
-      var callback = RayCastAnyCallback()
+      let callback = RayCastAnyCallback()
       world.rayCast(callback: callback, point1: point1, point2: point2)
       
       if callback.hit {
@@ -266,7 +266,7 @@ class RayCastViewController: BaseViewController, TextListViewControllerDelegate 
       }
     }
     else if mode == Mode.multiple {
-      var callback = RayCastMultipleCallback()
+      let callback = RayCastMultipleCallback()
       world.rayCast(callback: callback, point1: point1, point2: point2)
       debugDraw.drawSegment(point1, point2, b2Color(0.8, 0.8, 0.8))
       
@@ -286,7 +286,7 @@ class RayCastViewController: BaseViewController, TextListViewControllerDelegate 
   }
   
   func create(index: Int) {
-    var bd = b2BodyDef()
+    let bd = b2BodyDef()
     let x = RandomFloat(-10.0, 10.0)
     assert(x >= -10.0 && x <= 10.0)
     let y = RandomFloat(0.0, 20.0)
@@ -297,21 +297,21 @@ class RayCastViewController: BaseViewController, TextListViewControllerDelegate 
     if index == 4 {
       bd.angularDamping = 0.02
     }
-    var body = world.createBody(bd)
+    let body = world.createBody(bd)
     if index < 4 {
-      var fd = b2FixtureDef()
+      let fd = b2FixtureDef()
       fd.shape = polygons[index]
       fd.friction = 0.3
       body.createFixture(fd)
     }
     else if index < 5 {
-      var fd = b2FixtureDef()
+      let fd = b2FixtureDef()
       fd.shape = circle
       fd.friction = 0.3
       body.createFixture(fd)
     }
     else {
-      var fd = b2FixtureDef()
+      let fd = b2FixtureDef()
       fd.shape = edge
       fd.friction = 0.3
       body.createFixture(fd)
@@ -322,7 +322,7 @@ class RayCastViewController: BaseViewController, TextListViewControllerDelegate 
   
   func onDropStuff(sender: UIBarButtonItem) {
     dropVC.modalPresentationStyle = UIModalPresentationStyle.Popover
-    var popPC = dropVC.popoverPresentationController
+    let popPC = dropVC.popoverPresentationController
     popPC?.barButtonItem = sender
     popPC?.permittedArrowDirections = UIPopoverArrowDirection.Any
     self.presentViewController(dropVC, animated: true, completion: nil)
@@ -330,7 +330,7 @@ class RayCastViewController: BaseViewController, TextListViewControllerDelegate 
   
   func onChangeMode(sender: UIBarButtonItem) {
     modeVC.modalPresentationStyle = UIModalPresentationStyle.Popover
-    var popPC = modeVC.popoverPresentationController
+    let popPC = modeVC.popoverPresentationController
     popPC?.barButtonItem = sender
     popPC?.permittedArrowDirections = UIPopoverArrowDirection.Any
     self.presentViewController(modeVC, animated: true, completion: nil)
@@ -345,7 +345,7 @@ class RayCastViewController: BaseViewController, TextListViewControllerDelegate 
     bodies.removeAtIndex(0)
   }
   
-  func textListDidSelect(#name: String, index: Int) {
+  func textListDidSelect(name name: String, index: Int) {
     self.dismissViewControllerAnimated(true, completion: nil)
     if name == "Drop" {
       create(index)

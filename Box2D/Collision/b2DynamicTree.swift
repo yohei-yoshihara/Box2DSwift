@@ -29,7 +29,7 @@ import Foundation
 public let b2_nullNode = -1
 
 /// A node in the dynamic tree. The client does not interact with this directly.
-public class b2TreeNode<T> : Printable {
+public class b2TreeNode<T> : CustomStringConvertible {
   /// Enlarged AABB
   public var aabb = b2AABB()
   
@@ -59,7 +59,7 @@ public class b2TreeNode<T> : Printable {
 /// object to move by small amounts without triggering a tree update.
 ///
 /// Nodes are pooled and relocatable, so we use node indices rather than pointers.
-public class b2DynamicTree<T> : Printable {
+public class b2DynamicTree<T> : CustomStringConvertible {
   var m_root: Int
   
   var m_nodes: [b2TreeNode<T>]
@@ -101,7 +101,7 @@ public class b2DynamicTree<T> : Printable {
   }
   
   /// Create a proxy. Provide a tight fitting AABB and a userData pointer.
-  public func createProxy(#aabb: b2AABB, userData: T?) -> Int {
+  public func createProxy(aabb aabb: b2AABB, userData: T?) -> Int {
     let proxyId = allocateNode()
     
     // Fatten the aabb.
@@ -130,7 +130,7 @@ public class b2DynamicTree<T> : Printable {
   then the proxy is removed from the tree and re-inserted. Otherwise
   the function returns immediately.
 
-  :returns: true if the proxy was re-inserted.
+  - returns: true if the proxy was re-inserted.
   */
   public func moveProxy(proxyId: Int, aabb: b2AABB, displacement: b2Vec2) -> Bool {
     assert(0 <= proxyId && proxyId < m_nodes.count)
@@ -175,7 +175,7 @@ public class b2DynamicTree<T> : Printable {
   /**
   Get proxy user data.
   
-  :returns: the proxy user data or 0 if the id is invalid.
+  - returns: the proxy user data or 0 if the id is invalid.
   */
   public func getUserData(proxyId: Int) -> T? {
     assert(0 <= proxyId && proxyId < m_nodes.count)
@@ -190,7 +190,7 @@ public class b2DynamicTree<T> : Printable {
   
   /// Query an AABB for overlapping proxies. The callback class
   /// is called for each proxy that overlaps the supplied AABB.
-  public func query<T: b2QueryWrapper>(#callback: T, aabb: b2AABB) {
+  public func query<T: b2QueryWrapper>(callback callback: T, aabb: b2AABB) {
     var stack = b2GrowableStack<Int>(capacity: 256)
     stack.push(m_root)
     
@@ -224,7 +224,7 @@ public class b2DynamicTree<T> : Printable {
   /// number of proxies in the tree.
   /// @param input the ray-cast input data. The ray extends from p1 to p1 + maxFraction * (p2 - p1).
   /// @param callback a callback class that is called for each proxy that is hit by the ray.
-  public func rayCast<T: b2RayCastWrapper>(#callback: T, input: b2RayCastInput) {
+  public func rayCast<T: b2RayCastWrapper>(callback callback: T, input: b2RayCastInput) {
     let p1 = input.p1
     let p2 = input.p2
     var r = p2 - p1
@@ -411,11 +411,11 @@ public class b2DynamicTree<T> : Printable {
       
       let index1 = nodes[iMin]
       let index2 = nodes[jMin]
-      var child1 = m_nodes[index1]
-      var child2 = m_nodes[index2]
+      let child1 = m_nodes[index1]
+      let child2 = m_nodes[index2]
       
       let parentIndex = allocateNode()
-      var parent = m_nodes[parentIndex]
+      let parent = m_nodes[parentIndex]
       parent.child1 = index1
       parent.child2 = index2
       parent.height = 1 + max(child1.height, child2.height)
@@ -449,7 +449,7 @@ public class b2DynamicTree<T> : Printable {
   
   private func allocateNode() -> Int {
     if m_freeList == b2_nullNode {
-      var node = b2TreeNode<T>()
+      let node = b2TreeNode<T>()
       node.parentOrNext = b2_nullNode
       node.height = -1
       m_nodes.append(node)
@@ -652,7 +652,7 @@ public class b2DynamicTree<T> : Printable {
   func balance(iA : Int) -> Int {
     assert(iA != b2_nullNode)
     
-    var A = m_nodes[iA]
+    let A = m_nodes[iA]
     if A.IsLeaf() || A.height < 2 {
       return iA
     }
@@ -662,8 +662,8 @@ public class b2DynamicTree<T> : Printable {
     assert(0 <= iB && iB < m_nodes.count)
     assert(0 <= iC && iC < m_nodes.count)
     
-    var B = m_nodes[iB]
-    var C = m_nodes[iC]
+    let B = m_nodes[iB]
+    let C = m_nodes[iC]
     
     let balance = C.height - B.height
     
@@ -671,8 +671,8 @@ public class b2DynamicTree<T> : Printable {
     if balance > 1 {
       let iF = C.child1
       let iG = C.child2
-      var F = m_nodes[iF]
-      var G = m_nodes[iG]
+      let F = m_nodes[iF]
+      let G = m_nodes[iG]
       assert(0 <= iF && iF < m_nodes.count)
       assert(0 <= iG && iG < m_nodes.count)
       
@@ -724,8 +724,8 @@ public class b2DynamicTree<T> : Printable {
     if balance < -1 {
       let iD = B.child1
       let iE = B.child2
-      var D = m_nodes[iD]
-      var E = m_nodes[iE]
+      let D = m_nodes[iD]
+      let E = m_nodes[iE]
       assert(0 <= iD && iD < m_nodes.count)
       assert(0 <= iE && iE < m_nodes.count)
       

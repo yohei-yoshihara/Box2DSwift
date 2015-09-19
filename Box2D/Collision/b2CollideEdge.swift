@@ -28,9 +28,9 @@ import Foundation
 
 // Compute contact points for edge versus circle.
 // This accounts for edge connectivity.
-public func b2CollideEdgeAndCircle(inout #manifold: b2Manifold,
-  #edgeA: b2EdgeShape, transformA xfA: b2Transform,
-  #circleB: b2CircleShape, transformB xfB: b2Transform)
+public func b2CollideEdgeAndCircle(inout manifold manifold: b2Manifold,
+  edgeA: b2EdgeShape, transformA xfA: b2Transform,
+  circleB: b2CircleShape, transformB xfB: b2Transform)
 {
   manifold.points.removeAll(keepCapacity: true)
   
@@ -78,7 +78,7 @@ public func b2CollideEdgeAndCircle(inout #manifold: b2Manifold,
     manifold.type = b2ManifoldType.circles
     manifold.localNormal.setZero()
     manifold.localPoint = P
-    var cp = b2ManifoldPoint()
+    let cp = b2ManifoldPoint()
     cp.id.setZero()
     cp.id = cf
     cp.localPoint = circleB.m_p
@@ -113,7 +113,7 @@ public func b2CollideEdgeAndCircle(inout #manifold: b2Manifold,
     manifold.type = b2ManifoldType.circles
     manifold.localNormal.setZero()
     manifold.localPoint = P
-    var cp = b2ManifoldPoint()
+    let cp = b2ManifoldPoint()
     cp.id.setZero()
     cp.id = cf
     cp.localPoint = circleB.m_p
@@ -142,7 +142,7 @@ public func b2CollideEdgeAndCircle(inout #manifold: b2Manifold,
   manifold.type = b2ManifoldType.faceA
   manifold.localNormal = n
   manifold.localPoint = A
-  var cp = b2ManifoldPoint()
+  let cp = b2ManifoldPoint()
   cp.id.setZero()
   cp.id = cf
   cp.localPoint = circleB.m_p
@@ -150,7 +150,7 @@ public func b2CollideEdgeAndCircle(inout #manifold: b2Manifold,
   return
 }
 
-enum b2EPAxisType : Printable {
+enum b2EPAxisType : CustomStringConvertible {
   case unknown
   case edgeA
   case edgeB
@@ -164,7 +164,7 @@ enum b2EPAxisType : Printable {
 }
 
 // This structure is used to keep track of the best separating axis.
-struct b2EPAxis : Printable {
+struct b2EPAxis : CustomStringConvertible {
   var type = b2EPAxisType.unknown
   var index = 0
   var separation: b2Float = 0
@@ -207,7 +207,7 @@ class b2EPCollider {
   // 7. Return if _any_ axis indicates separation
   // 8. Clip
   func Collide(edgeA: b2EdgeShape, _ xfA: b2Transform, _ polygonB: b2PolygonShape, _ xfB: b2Transform) -> b2Manifold {
-    var manifold = b2Manifold()
+    let manifold = b2Manifold()
     m_xf = b2MulT(xfA, xfB)
     
     m_centroidB = b2Mul(m_xf, polygonB.m_centroid)
@@ -223,7 +223,7 @@ class b2EPCollider {
     var edge1 = m_v2 - m_v1
     edge1.normalize()
     m_normal1.set(edge1.y, -edge1.x)
-    var offset1 = b2Dot(m_normal1, m_centroidB - m_v1)
+    let offset1 = b2Dot(m_normal1, m_centroidB - m_v1)
     var offset0: b2Float = 0.0, offset2: b2Float = 0.0
     var convex1 = false, convex2 = false
     
@@ -429,8 +429,8 @@ class b2EPCollider {
         }
       }
       
-      var i1 = bestIndex
-      var i2 = i1 + 1 < m_polygonB.count ? i1 + 1 : 0
+      let i1 = bestIndex
+      let i2 = i1 + 1 < m_polygonB.count ? i1 + 1 : 0
       
       ie[0].v = m_polygonB.vertices[i1]
       ie[0].id.indexA = 0
@@ -516,7 +516,7 @@ class b2EPCollider {
       let separation = b2Dot(rf.normal, clipPoints2[i].v - rf.v1)
       
       if separation <= m_radius {
-        var cp = b2ManifoldPoint() //manifold.points[pointCount]
+        let cp = b2ManifoldPoint() //manifold.points[pointCount]
         
         if primaryAxis.type == b2EPAxisType.edgeA {
           cp.localPoint = b2MulT(m_xf, clipPoints2[i].v)
@@ -558,7 +558,7 @@ class b2EPCollider {
     axis.index = -1
     axis.separation = -FLT_MAX
     
-    var perp = b2Vec2(-m_normal.y, m_normal.x)
+    let perp = b2Vec2(-m_normal.y, m_normal.x)
     
     for i in 0 ..< m_polygonB.count {
       let n = -m_polygonB.normals[i]
@@ -597,7 +597,7 @@ class b2EPCollider {
     return axis
   }
   
-  enum VertexType : Printable {
+  enum VertexType : CustomStringConvertible {
     case isolated
     case concave
     case convex
@@ -625,11 +625,11 @@ class b2EPCollider {
 
 /// Compute the collision manifold between an edge and a circle.
 public func b2CollideEdgeAndPolygon(
-  inout #manifold: b2Manifold,
-  #edgeA: b2EdgeShape, transformA xfA: b2Transform,
-  #polygonB: b2PolygonShape, transformB xfB: b2Transform)
+  inout manifold manifold: b2Manifold,
+  edgeA: b2EdgeShape, transformA xfA: b2Transform,
+  polygonB: b2PolygonShape, transformB xfB: b2Transform)
 {
-  var collider = b2EPCollider()
+  let collider = b2EPCollider()
   manifold = collider.Collide(edgeA, xfA, polygonB, xfB)
 }
 

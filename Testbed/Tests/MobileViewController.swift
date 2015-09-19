@@ -35,7 +35,7 @@ class MobileViewController: BaseViewController {
     
     // Create ground body.
     b2Locally {
-      var bodyDef = b2BodyDef()
+      let bodyDef = b2BodyDef()
       bodyDef.position.set(0.0, 20.0)
       ground = self.world.createBody(bodyDef)
     }
@@ -45,7 +45,7 @@ class MobileViewController: BaseViewController {
     
     let root = addNode(ground, b2Vec2_zero, 0, 3.0, a)
     
-    var jointDef = b2RevoluteJointDef()
+    let jointDef = b2RevoluteJointDef()
     jointDef.bodyA = ground
     jointDef.bodyB = root
     jointDef.localAnchorA.setZero()
@@ -59,12 +59,12 @@ class MobileViewController: BaseViewController {
     
     let p = parent.position + localAnchor - h
     
-    var bodyDef = b2BodyDef()
+    let bodyDef = b2BodyDef()
     bodyDef.type = b2BodyType.dynamicBody
     bodyDef.position = p
-    var body = world.createBody(bodyDef)
+    let body = world.createBody(bodyDef)
     
-    var shape = b2PolygonShape()
+    let shape = b2PolygonShape()
     shape.setAsBox(halfWidth: 0.25 * a, halfHeight: a)
     body.createFixture(shape: shape, density: density)
     
@@ -77,7 +77,7 @@ class MobileViewController: BaseViewController {
     let body1 = addNode(body, a1, depth + 1, 0.5 * offset, a)
     let body2 = addNode(body, a2, depth + 1, 0.5 * offset, a)
     
-    var jointDef = b2RevoluteJointDef()
+    let jointDef = b2RevoluteJointDef()
     jointDef.bodyA = body
     jointDef.localAnchorB = h
     

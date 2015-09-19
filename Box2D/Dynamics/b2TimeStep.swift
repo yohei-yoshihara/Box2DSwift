@@ -48,7 +48,7 @@ public struct b2TimeStep {
   var warmStarting: Bool = false
 }
 
-public class b2Array<T> : Printable {
+public class b2Array<T> : CustomStringConvertible {
   var array = [T]()
   
   public init() {
@@ -92,7 +92,7 @@ public class b2Array<T> : Printable {
   }
   
   public func clone() -> b2Array {
-    var clone = b2Array()
+    let clone = b2Array()
     clone.reserveCapacity(self.count)
     for e in self.array {
       clone.array.append(e)

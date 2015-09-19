@@ -104,14 +104,14 @@ public class b2RopeJoint : b2Joint {
     let indexA = m_bodyA.m_islandIndex
     let indexB = m_bodyB.m_islandIndex
     
-    println("  b2RopeJointDef jd;")
-    println("  jd.bodyA = bodies[\(indexA)];")
-    println("  jd.bodyB = bodies[\(indexB)];")
-    println("  jd.collideConnected = bool(\(m_collideConnected));")
-    println("  jd.localAnchorA.set(\(m_localAnchorA.x), \(m_localAnchorA.y));")
-    println("  jd.localAnchorB.set(\(m_localAnchorB.x), \(m_localAnchorB.y));")
-    println("  jd.maxLength = \(m_maxLength);")
-    println("  joints[\(m_index)] = m_world->createJoint(&jd);")
+    print("  b2RopeJointDef jd;")
+    print("  jd.bodyA = bodies[\(indexA)];")
+    print("  jd.bodyB = bodies[\(indexB)];")
+    print("  jd.collideConnected = bool(\(m_collideConnected));")
+    print("  jd.localAnchorA.set(\(m_localAnchorA.x), \(m_localAnchorA.y));")
+    print("  jd.localAnchorB.set(\(m_localAnchorB.x), \(m_localAnchorB.y));")
+    print("  jd.maxLength = \(m_maxLength);")
+    print("  joints[\(m_index)] = m_world->createJoint(&jd);")
   }
   
   // MARK: private methods

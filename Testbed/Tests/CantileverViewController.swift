@@ -37,27 +37,27 @@ class CantileverViewController: BaseViewController {
       let bd = b2BodyDef()
       ground = self.world.createBody(bd)
       
-      var shape = b2EdgeShape()
+      let shape = b2EdgeShape()
       shape.set(vertex1: b2Vec2(-40.0, 0.0), vertex2: b2Vec2(40.0, 0.0))
       ground.createFixture(shape: shape, density: 0.0)
     }
     
     b2Locally {
-      var shape = b2PolygonShape()
+      let shape = b2PolygonShape()
       shape.setAsBox(halfWidth: 0.5, halfHeight: 0.125)
       
-      var fd = b2FixtureDef()
+      let fd = b2FixtureDef()
       fd.shape = shape
       fd.density = 20.0
       
-      var jd = b2WeldJointDef()
+      let jd = b2WeldJointDef()
       
       var prevBody = ground
       for i in 0 ..< self.count {
-        var bd = b2BodyDef()
+        let bd = b2BodyDef()
         bd.type = b2BodyType.dynamicBody
         bd.position.set(-14.5 + 1.0 * b2Float(i), 5.0)
-        var body = self.world.createBody(bd)
+        let body = self.world.createBody(bd)
         body.createFixture(fd)
         
         let anchor = b2Vec2(-15.0 + 1.0 * b2Float(i), 5.0)
@@ -69,23 +69,23 @@ class CantileverViewController: BaseViewController {
     }
     
     b2Locally {
-      var shape = b2PolygonShape()
+      let shape = b2PolygonShape()
       shape.setAsBox(halfWidth: 1.0, halfHeight: 0.125)
       
-      var fd = b2FixtureDef()
+      let fd = b2FixtureDef()
       fd.shape = shape
       fd.density = 20.0
       
-      var jd = b2WeldJointDef()
+      let jd = b2WeldJointDef()
       jd.frequencyHz = 5.0
       jd.dampingRatio = 0.7
       
       var prevBody = ground
       for i in 0 ..< 3 {
-        var bd = b2BodyDef()
+        let bd = b2BodyDef()
         bd.type = b2BodyType.dynamicBody
         bd.position.set(-14.0 + 2.0 * b2Float(i), 15.0)
-        var body = self.world.createBody(bd)
+        let body = self.world.createBody(bd)
         body.createFixture(fd)
         
         let anchor = b2Vec2(-15.0 + 2.0 * b2Float(i), 15.0)
@@ -97,21 +97,21 @@ class CantileverViewController: BaseViewController {
     }
     
     b2Locally {
-      var shape = b2PolygonShape()
+      let shape = b2PolygonShape()
       shape.setAsBox(halfWidth: 0.5, halfHeight: 0.125)
       
-      var fd = b2FixtureDef()
+      let fd = b2FixtureDef()
       fd.shape = shape
       fd.density = 20.0
       
-      var jd = b2WeldJointDef()
+      let jd = b2WeldJointDef()
       
       var prevBody = ground
       for i in 0 ..< self.count {
-        var bd = b2BodyDef()
+        let bd = b2BodyDef()
         bd.type = b2BodyType.dynamicBody
         bd.position.set(-4.5 + 1.0 * b2Float(i), 5.0)
-        var body = self.world.createBody(bd)
+        let body = self.world.createBody(bd)
         body.createFixture(fd)
         
         if i > 0 {
@@ -125,23 +125,23 @@ class CantileverViewController: BaseViewController {
     }
     
     b2Locally {
-      var shape = b2PolygonShape()
+      let shape = b2PolygonShape()
       shape.setAsBox(halfWidth: 0.5, halfHeight: 0.125)
       
-      var fd = b2FixtureDef()
+      let fd = b2FixtureDef()
       fd.shape = shape
       fd.density = 20.0
       
-      var jd = b2WeldJointDef()
+      let jd = b2WeldJointDef()
       jd.frequencyHz = 8.0
       jd.dampingRatio = 0.7
       
       var prevBody = ground
       for i in 0 ..< self.count {
-        var bd = b2BodyDef()
+        let bd = b2BodyDef()
         bd.type = b2BodyType.dynamicBody
         bd.position.set(5.5 + 1.0 * b2Float(i), 10.0)
-        var body = self.world.createBody(bd)
+        let body = self.world.createBody(bd)
         body.createFixture(fd)
         
         if i > 0 {
@@ -160,32 +160,32 @@ class CantileverViewController: BaseViewController {
       vertices.append(b2Vec2(0.5, 0.0))
       vertices.append(b2Vec2(0.0, 1.5))
       
-      var shape = b2PolygonShape()
+      let shape = b2PolygonShape()
       shape.set(vertices: vertices)
       
-      var fd = b2FixtureDef()
+      let fd = b2FixtureDef()
       fd.shape = shape
       fd.density = 1.0
       
-      var bd = b2BodyDef()
+      let bd = b2BodyDef()
       bd.type = b2BodyType.dynamicBody
       bd.position.set(-8.0 + 8.0 * b2Float(i), 12.0)
-      var body = world.createBody(bd)
+      let body = world.createBody(bd)
       body.createFixture(fd)
     }
     
     for i in 0 ..< 2 {
-      var shape = b2CircleShape()
+      let shape = b2CircleShape()
       shape.radius = 0.5
       
-      var fd = b2FixtureDef()
+      let fd = b2FixtureDef()
       fd.shape = shape
       fd.density = 1.0
       
-      var bd = b2BodyDef()
+      let bd = b2BodyDef()
       bd.type = b2BodyType.dynamicBody
       bd.position.set(-6.0 + 6.0 * b2Float(i), 10.0)
-      var body = world.createBody(bd)
+      let body = world.createBody(bd)
       body.createFixture(fd)
     }
   }

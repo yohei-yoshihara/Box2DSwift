@@ -28,7 +28,7 @@ import Foundation
 
 /// Color for debug drawing. Each value has the range [0,1].
 // type checked
-public struct b2Color : Printable {
+public struct b2Color : CustomStringConvertible {
   public var r: Float, g: Float, b: Float
   public init() {
     r = 0.0
@@ -88,7 +88,7 @@ public protocol b2Draw {
   /**
   Draw a transform. Choose your own length scale.
   
-  :param: xf a transform.
+  - parameter xf: a transform.
   */
   func drawTransform(xf: b2Transform)
 }

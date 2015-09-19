@@ -28,9 +28,9 @@ import Foundation
 
 /// Compute the collision manifold between two circles.
 public func b2CollideCircles(
-  inout #manifold: b2Manifold,
-  #circleA: b2CircleShape, transformA xfA: b2Transform,
-  #circleB: b2CircleShape, transformB xfB: b2Transform)
+  inout manifold manifold: b2Manifold,
+  circleA: b2CircleShape, transformA xfA: b2Transform,
+  circleB: b2CircleShape, transformB xfB: b2Transform)
 {
   manifold.points.removeAll(keepCapacity: true)
   
@@ -49,7 +49,7 @@ public func b2CollideCircles(
   manifold.type = b2ManifoldType.circles
   manifold.localPoint = circleA.m_p
   manifold.localNormal.setZero()
-  var cp = b2ManifoldPoint()
+  let cp = b2ManifoldPoint()
   cp.localPoint = circleB.m_p
   cp.id.setZero()
   manifold.points.append(cp)
@@ -57,9 +57,9 @@ public func b2CollideCircles(
 
 /// Compute the collision manifold between a polygon and a circle.
 public func b2CollidePolygonAndCircle(
-  inout #manifold: b2Manifold,
-  #polygonA: b2PolygonShape, transformA xfA: b2Transform,
-  #circleB: b2CircleShape, transformB xfB: b2Transform)
+  inout manifold manifold: b2Manifold,
+  polygonA: b2PolygonShape, transformA xfA: b2Transform,
+  circleB: b2CircleShape, transformB xfB: b2Transform)
 {
   manifold.points.removeAll(keepCapacity: true)
   
@@ -100,7 +100,7 @@ public func b2CollidePolygonAndCircle(
     manifold.type = b2ManifoldType.faceA
     manifold.localNormal = normals[normalIndex]
     manifold.localPoint = 0.5 * (v1 + v2)
-    var cp = b2ManifoldPoint()
+    let cp = b2ManifoldPoint()
     cp.localPoint = circleB.m_p
     cp.id.setZero()
     manifold.points.append(cp)
@@ -119,7 +119,7 @@ public func b2CollidePolygonAndCircle(
     manifold.localNormal = cLocal - v1
     manifold.localNormal.normalize()
     manifold.localPoint = v1
-    var cp = b2ManifoldPoint()
+    let cp = b2ManifoldPoint()
     cp.localPoint = circleB.m_p
     cp.id.setZero()
     manifold.points.append(cp)
@@ -133,7 +133,7 @@ public func b2CollidePolygonAndCircle(
     manifold.localNormal = cLocal - v2
     manifold.localNormal.normalize()
     manifold.localPoint = v2
-    var cp = b2ManifoldPoint()
+    let cp = b2ManifoldPoint()
     cp.localPoint = circleB.m_p
     cp.id.setZero()
     manifold.points.append(cp)
@@ -148,7 +148,7 @@ public func b2CollidePolygonAndCircle(
     manifold.type = b2ManifoldType.faceA
     manifold.localNormal = normals[vertIndex1]
     manifold.localPoint = faceCenter
-    var cp = b2ManifoldPoint()
+    let cp = b2ManifoldPoint()
     cp.localPoint = circleB.m_p
     cp.id.setZero()
     manifold.points.append(cp)

@@ -66,7 +66,7 @@ class PolyCollisionViewController: BaseViewController {
       polygonA: polygonA, transformA: transformA,
       polygonB: polygonB, transformB: transformB)
     
-    var worldManifold = b2WorldManifold()
+    let worldManifold = b2WorldManifold()
     worldManifold.initialize(manifold: manifold,
       transformA: transformA, radiusA: polygonA.radius,
       transformB: transformB, radiusB: polygonB.radius)

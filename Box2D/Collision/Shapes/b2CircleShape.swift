@@ -37,7 +37,7 @@ public class b2CircleShape : b2Shape {
   
   /// Implement b2Shape.
   public override func clone() -> b2Shape {
-    var clone = b2CircleShape()
+    let clone = b2CircleShape()
     clone.m_radius = m_radius
     clone.m_p = m_p
     return clone
@@ -49,7 +49,7 @@ public class b2CircleShape : b2Shape {
   }
   
   /// Implement b2Shape.
-  public override func testPoint(#transform: b2Transform, point: b2Vec2) -> Bool {
+  public override func testPoint(transform transform: b2Transform, point: b2Vec2) -> Bool {
     let center = transform.p + b2Mul(transform.q, m_p)
     let d = p - center
     return b2Dot(d, d) <= m_radius * m_radius
@@ -98,7 +98,7 @@ public class b2CircleShape : b2Shape {
   }
   
   /// @see b2Shape::ComputeMass
-  public override func computeMass(#density: b2Float) -> b2MassData {
+  public override func computeMass(density density: b2Float) -> b2MassData {
     var massData = b2MassData()
     massData.mass = density * b2_pi * m_radius * m_radius
     massData.center = m_p
@@ -109,12 +109,12 @@ public class b2CircleShape : b2Shape {
   }
   
   /// Get the supporting vertex index in the given direction.
-  public func getSupport(#direction: b2Vec2) -> Int {
+  public func getSupport(direction direction: b2Vec2) -> Int {
     return 0
   }
   
   /// Get the supporting vertex in the given direction.
-  public func getSupportVertex(#direction: b2Vec2) -> b2Vec2 {
+  public func getSupportVertex(direction direction: b2Vec2) -> b2Vec2 {
     return m_p
   }
   
@@ -122,7 +122,7 @@ public class b2CircleShape : b2Shape {
   public var vertexCount: Int { return 1 }
   
   /// Get a vertex by index. Used by b2Distance.
-  public func vertex(#index: Int) -> b2Vec2 {
+  public func vertex(index index: Int) -> b2Vec2 {
     assert(index == 0)
     return m_p
   }

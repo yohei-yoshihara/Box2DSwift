@@ -37,9 +37,9 @@ class ContinuousTestViewController: BaseViewController {
   override func viewDidLoad() {
     super.viewDidLoad()
     
-    let size = self.view.bounds.size
+//    let size = self.view.bounds.size
     label = UILabel(frame: CGRect(x: 0, y: 0, width: 1, height: 1))
-    label.autoresizingMask = UIViewAutoresizing.FlexibleBottomMargin | UIViewAutoresizing.FlexibleRightMargin
+    label.autoresizingMask = [UIViewAutoresizing.FlexibleBottomMargin, UIViewAutoresizing.FlexibleRightMargin]
     label.numberOfLines = 0
     label.backgroundColor = UIColor.blackColor()
     label.textColor = UIColor.whiteColor()
@@ -49,28 +49,28 @@ class ContinuousTestViewController: BaseViewController {
 
   override func prepare() {
     b2Locally {
-      var bd = b2BodyDef()
+      let bd = b2BodyDef()
       bd.position.set(0.0, 0.0)
-      var body = self.world.createBody(bd)
+      let body = self.world.createBody(bd)
       
-      var edge = b2EdgeShape()
+      let edge = b2EdgeShape()
       
       edge.set(vertex1: b2Vec2(-10.0, 0.0), vertex2: b2Vec2(10.0, 0.0))
       body.createFixture(shape: edge, density: 0.0)
       
-      var shape = b2PolygonShape()
+      let shape = b2PolygonShape()
       shape.setAsBox(halfWidth: 0.2, halfHeight: 1.0, center: b2Vec2(0.5, 1.0), angle: 0.0)
       body.createFixture(shape: shape, density: 0.0)
     }
     
 #if true
     b2Locally {
-      var bd = b2BodyDef()
+      let bd = b2BodyDef()
       bd.type = b2BodyType.dynamicBody
       bd.position.set(0.0, 20.0)
       //bd.angle = 0.1f;
       
-      var shape = b2PolygonShape()
+      let shape = b2PolygonShape()
       shape.setAsBox(halfWidth: 2.0, halfHeight: 0.1)
       
       self.body = self.world.createBody(bd)

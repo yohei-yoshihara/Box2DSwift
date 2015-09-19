@@ -51,7 +51,7 @@ public class b2PulleyJointDef : b2JointDef {
   }
   
   /// Initialize the bodies, anchors, lengths, max lengths, and ratio using the world anchors.
-  public func initialize(#bodyA: b2Body, bodyB: b2Body, groundAnchorA: b2Vec2, groundAnchorB: b2Vec2, anchorA: b2Vec2, anchorB: b2Vec2, ratio: b2Float) {
+  public func initialize(bodyA bodyA: b2Body, bodyB: b2Body, groundAnchorA: b2Vec2, groundAnchorB: b2Vec2, anchorA: b2Vec2, anchorB: b2Vec2, ratio: b2Float) {
     self.bodyA = bodyA
     self.bodyB = bodyB
     self.groundAnchorA = groundAnchorA
@@ -159,18 +159,18 @@ public class b2PulleyJoint : b2Joint {
     let indexA = m_bodyA.m_islandIndex
     let indexB = m_bodyB.m_islandIndex
     
-    println("  b2PulleyJointDef jd;")
-    println("  jd.bodyA = bodies[\(indexA)];")
-    println("  jd.bodyB = bodies[\(indexB)];")
-    println("  jd.collideConnected = bool(\(m_collideConnected));")
-    println("  jd.groundAnchorA.set(\(m_groundAnchorA.x), \(m_groundAnchorA.y));")
-    println("  jd.groundAnchorB.set(\(m_groundAnchorB.x), \(m_groundAnchorB.y));")
-    println("  jd.localAnchorA.set(\(m_localAnchorA.x), \(m_localAnchorA.y));")
-    println("  jd.localAnchorB.set(\(m_localAnchorB.x), \(m_localAnchorB.y));")
-    println("  jd.lengthA = \(m_lengthA);")
-    println("  jd.lengthB = \(m_lengthB);")
-    println("  jd.ratio = \(m_ratio);")
-    println("  joints[\(m_index)] = m_world->createJoint(&jd);")
+    print("  b2PulleyJointDef jd;")
+    print("  jd.bodyA = bodies[\(indexA)];")
+    print("  jd.bodyB = bodies[\(indexB)];")
+    print("  jd.collideConnected = bool(\(m_collideConnected));")
+    print("  jd.groundAnchorA.set(\(m_groundAnchorA.x), \(m_groundAnchorA.y));")
+    print("  jd.groundAnchorB.set(\(m_groundAnchorB.x), \(m_groundAnchorB.y));")
+    print("  jd.localAnchorA.set(\(m_localAnchorA.x), \(m_localAnchorA.y));")
+    print("  jd.localAnchorB.set(\(m_localAnchorB.x), \(m_localAnchorB.y));")
+    print("  jd.lengthA = \(m_lengthA);")
+    print("  jd.lengthB = \(m_lengthB);")
+    print("  jd.ratio = \(m_ratio);")
+    print("  joints[\(m_index)] = m_world->createJoint(&jd);")
   }
   
   /// Implement b2Joint::ShiftOrigin

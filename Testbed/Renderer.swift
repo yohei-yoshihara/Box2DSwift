@@ -100,10 +100,10 @@ class Renderer {
     m_context.presentRenderbuffer(Int(GL_RENDERBUFFER))
   }
   
-  func setOrtho2D(#left: GLfloat, right: GLfloat, bottom: GLfloat, top: GLfloat) {
-    let zNear: GLfloat = -1.0
-    let zFar: GLfloat = 1.0
-    let inv_z: GLfloat = 1.0 / (zFar - zNear)
+  func setOrtho2D(left left: GLfloat, right: GLfloat, bottom: GLfloat, top: GLfloat) {
+//    let zNear: GLfloat = -1.0
+//    let zFar: GLfloat = 1.0
+//    let inv_z: GLfloat = 1.0 / (zFar - zNear)
     let inv_y: GLfloat = 1.0 / (top - bottom)
     let inv_x: GLfloat = 1.0 / (right - left)
     var mat33: [GLfloat] = [
@@ -122,7 +122,7 @@ class Renderer {
     glUniformMatrix3fv(m_mvpUniform, 1, GLboolean(GL_FALSE), &mat33)
   }
   
-  func setColor(#red: GLfloat, green: GLfloat, blue: GLfloat, alpha: GLfloat) {
+  func setColor(red red: GLfloat, green: GLfloat, blue: GLfloat, alpha: GLfloat) {
     glUniform4f(m_colorUniform, red, green, blue, alpha)
   }
   
@@ -156,13 +156,13 @@ class Renderer {
     glGetRenderbufferParameteriv(GLenum(GL_RENDERBUFFER), GLenum(GL_RENDERBUFFER_WIDTH), &m_backingWidth)
     glGetRenderbufferParameteriv(GLenum(GL_RENDERBUFFER), GLenum(GL_RENDERBUFFER_HEIGHT), &m_backingHeight)
     if glCheckFramebufferStatus(GLenum(GL_FRAMEBUFFER)) != GLenum(GL_FRAMEBUFFER_COMPLETE) {
-      println("ERROR: failed to make complete framebuffer object")
+      print("ERROR: failed to make complete framebuffer object")
       return false
     }
     return true
   }
   
-  func loadShaders(#vertexShaderName: String, fragmentShaderName: String) -> Bool {
+  func loadShaders(vertexShaderName vertexShaderName: String, fragmentShaderName: String) -> Bool {
     m_program = glCreateProgram()
     var vertexShader: GLuint = 0
     var fragmentShader: GLuint = 0
@@ -199,9 +199,15 @@ class Renderer {
   
   class func compileShader(inout shader: GLuint, type: GLenum, file: String) -> Bool {
     var error: NSError? = nil
-    let s = NSString(contentsOfFile: file, encoding: NSUTF8StringEncoding, error: &error)
+    let s: NSString?
+    do {
+      s = try NSString(contentsOfFile: file, encoding: NSUTF8StringEncoding)
+    } catch let error1 as NSError {
+      error = error1
+      s = nil
+    }
     if s == nil || error != nil {
-      println("ERROR: shader load error")
+      print("ERROR: shader load error")
       return false
     }
     var shaderStringUTF8: UnsafePointer<Int8> = s!.UTF8String
@@ -212,7 +218,7 @@ class Renderer {
     var status: GLint = 0
     glGetShaderiv(shader, GLenum(GL_COMPILE_STATUS), &status)
     if status == GL_FALSE {
-      println("ERROR: failed to compile shader")
+      print("ERROR: failed to compile shader")
       return false
     }
     return true
@@ -223,13 +229,13 @@ class Renderer {
     var status: GLint = 0
     glGetProgramiv(program, GLenum(GL_LINK_STATUS), &status)
     if status == GL_FALSE {
-      println("ERROR: failed to link prrogram")
+      print("ERROR: failed to link prrogram")
       return false
     }
     return true
   }
   
-  class func destroyShaders(#vertexShader: GLuint, fragmentShader: GLuint, program: GLuint?) {
+  class func destroyShaders(vertexShader vertexShader: GLuint, fragmentShader: GLuint, program: GLuint?) {
     if vertexShader != 0 {
       glDeleteShader(vertexShader)
     }

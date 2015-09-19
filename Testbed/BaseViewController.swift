@@ -46,7 +46,7 @@ class BaseViewController: UIViewController, SettingViewControllerDelegate {
     super.init(nibName: nil, bundle: nil)
   }
   
-  required init(coder aDecoder: NSCoder) {
+  required init?(coder aDecoder: NSCoder) {
     super.init(coder: aDecoder)
   }
   
@@ -65,7 +65,7 @@ class BaseViewController: UIViewController, SettingViewControllerDelegate {
     self.view.addSubview(debugDraw)
     
     infoView = InfoView(frame: CGRect(x: 0, y: 0, width: self.view.bounds.size.width, height: self.view.bounds.size.height))
-    infoView.autoresizingMask = UIViewAutoresizing.FlexibleWidth | UIViewAutoresizing.FlexibleHeight
+    infoView.autoresizingMask = [UIViewAutoresizing.FlexibleWidth, UIViewAutoresizing.FlexibleHeight]
     self.view.addSubview(infoView)
 
     let pauseButton = UIBarButtonItem(barButtonSystemItem: UIBarButtonSystemItem.Pause,
@@ -87,8 +87,8 @@ class BaseViewController: UIViewController, SettingViewControllerDelegate {
     debugDraw.addGestureRecognizer(tapGestureRecognizer)
   }
 
-  func addToolbarItems(additionalToolbarItems: [AnyObject]) {
-    var toolbarItems = [AnyObject]()
+  func addToolbarItems(additionalToolbarItems: [UIBarButtonItem]) {
+    var toolbarItems = [UIBarButtonItem]()
     toolbarItems += self.toolbarItems!
     toolbarItems += additionalToolbarItems
     self.toolbarItems = toolbarItems
@@ -98,7 +98,7 @@ class BaseViewController: UIViewController, SettingViewControllerDelegate {
     super.viewWillAppear(animated)
     
     // World
-    var gravity = b2Vec2(0.0, -10.0)
+    let gravity = b2Vec2(0.0, -10.0)
     world = b2World(gravity: gravity)
     contactListener = ContactListener()
     world.setContactListener(contactListener)
@@ -176,7 +176,7 @@ class BaseViewController: UIViewController, SettingViewControllerDelegate {
     settingsVC.settings = settings
     settingsVC.settingViewControllerDelegate = self
     settingsVC.modalPresentationStyle = UIModalPresentationStyle.Popover
-    var popPC = settingsVC.popoverPresentationController
+    let popPC = settingsVC.popoverPresentationController
     popPC?.barButtonItem = sender
     popPC?.permittedArrowDirections = UIPopoverArrowDirection.Any
     self.presentViewController(settingsVC, animated: true, completion: nil)
@@ -192,7 +192,7 @@ class BaseViewController: UIViewController, SettingViewControllerDelegate {
 
   func onPan(gr: UIPanGestureRecognizer) {
     let p = gr.locationInView(debugDraw)
-    let wp = ConvertScreenToWorld(p, debugDraw.bounds.size, settings.viewCenter)
+    let wp = ConvertScreenToWorld(p, size: debugDraw.bounds.size, viewCenter: settings.viewCenter)
     
     switch gr.state {
     case .Began:
@@ -200,11 +200,11 @@ class BaseViewController: UIViewController, SettingViewControllerDelegate {
       var aabb = b2AABB()
       aabb.lowerBound = wp - d
       aabb.upperBound = wp + d
-      var callback = QueryCallback(point: wp)
+      let callback = QueryCallback(point: wp)
       world.queryAABB(callback: callback, aabb: aabb)
       if callback.fixture != nil {
         let body = callback.fixture!.body
-        var md = b2MouseJointDef()
+        let md = b2MouseJointDef()
         md.bodyA = groundBody
         md.bodyB = body
         md.target = wp

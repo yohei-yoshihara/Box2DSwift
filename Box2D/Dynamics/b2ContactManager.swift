@@ -94,7 +94,7 @@ public class b2ContactManager: b2BroadPhaseWrapper {
     }
     
     // Call the factory.
-    var c = b2Contact.create(fixtureA, indexA, fixtureB, indexB)
+    let c = b2Contact.create(fixtureA, indexA, fixtureB, indexB)
     if c == nil {
       return
     }

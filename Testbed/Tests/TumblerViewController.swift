@@ -40,13 +40,13 @@ class TumblerViewController: BaseViewController {
     }
     
     b2Locally {
-      var bd = b2BodyDef()
+      let bd = b2BodyDef()
       bd.type = b2BodyType.dynamicBody
       bd.allowSleep = false
       bd.position.set(0.0, 10.0)
       let body = self.world.createBody(bd)
       
-      var shape = b2PolygonShape()
+      let shape = b2PolygonShape()
       shape.setAsBox(halfWidth: 0.5, halfHeight: 10.0, center: b2Vec2( 10.0, 0.0), angle: 0.0)
       body.createFixture(shape: shape, density: 5.0)
       shape.setAsBox(halfWidth: 0.5, halfHeight: 10.0, center: b2Vec2(-10.0, 0.0), angle: 0.0)
@@ -56,7 +56,7 @@ class TumblerViewController: BaseViewController {
       shape.setAsBox(halfWidth: 10.0, halfHeight: 0.5, center: b2Vec2(0.0, -10.0), angle: 0.0)
       body.createFixture(shape: shape, density: 5.0)
       
-      var jd = b2RevoluteJointDef()
+      let jd = b2RevoluteJointDef()
       jd.bodyA = ground
       jd.bodyB = body
       jd.localAnchorA.set(0.0, 10.0)
@@ -73,12 +73,12 @@ class TumblerViewController: BaseViewController {
   
   override func step() {
     if count < maxCount {
-      var bd = b2BodyDef()
+      let bd = b2BodyDef()
       bd.type = b2BodyType.dynamicBody
       bd.position.set(0.0, 10.0)
-      var body = world.createBody(bd)
+      let body = world.createBody(bd)
       
-      var shape = b2PolygonShape()
+      let shape = b2PolygonShape()
       shape.setAsBox(halfWidth: 0.125, halfHeight: 0.125)
       body.createFixture(shape: shape, density: 1.0)
       

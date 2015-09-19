@@ -58,7 +58,7 @@ class DistanceTestViewController: BaseViewController {
     var cache = b2SimplexCache()
     cache.count = 0
     var output = b2DistanceOutput()
-    b2Distance(&output, &cache, input)
+    b2Distance(&output, cache: &cache, input: input)
     
 //    debugDraw.DrawString(5, m_textLine, "distance = %g", output.distance)
 //    m_textLine += DRAW_STRING_NEW_LINE

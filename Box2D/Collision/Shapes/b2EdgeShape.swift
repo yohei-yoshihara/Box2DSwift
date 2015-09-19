@@ -50,7 +50,7 @@ public class b2EdgeShape : b2Shape {
   
   /// Implement b2Shape.
   public override func clone() -> b2Shape {
-    var clone = b2EdgeShape()
+    let clone = b2EdgeShape()
     clone.m_radius = m_radius
     clone.m_vertices = m_vertices.clone()
     clone.m_vertex0 = m_vertex0
@@ -66,7 +66,7 @@ public class b2EdgeShape : b2Shape {
   }
   
   /// @see b2Shape::TestPoint
-  public override func testPoint(#transform: b2Transform, point: b2Vec2) -> Bool {
+  public override func testPoint(transform transform: b2Transform, point: b2Vec2) -> Bool {
     return false
   }
   
@@ -140,7 +140,7 @@ public class b2EdgeShape : b2Shape {
   }
   
   /// @see b2Shape::ComputeMass
-  public override func computeMass(#density: b2Float) -> b2MassData {
+  public override func computeMass(density density: b2Float) -> b2MassData {
     var massData = b2MassData()
     massData.mass = 0.0
     massData.center = 0.5 * (m_vertex1 + m_vertex2)

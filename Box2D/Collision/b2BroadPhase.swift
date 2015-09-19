@@ -26,7 +26,7 @@ the original C++ code written by Erin Catto.
 
 import Foundation
 
-public struct b2Pair : Printable {
+public struct b2Pair : CustomStringConvertible {
   public var proxyIdA: Int = -1
   public var proxyIdB: Int = -1
   
@@ -55,7 +55,7 @@ public class b2BroadPhase : b2QueryWrapper {
   
   /// Create a proxy with an initial AABB. Pairs are not reported until
   /// UpdatePairs is called.
-  public func createProxy(#aabb: b2AABB, userData: b2FixtureProxy) -> Int {
+  public func createProxy(aabb aabb: b2AABB, userData: b2FixtureProxy) -> Int {
     let proxyId = m_tree.createProxy(aabb: aabb, userData: userData)
     ++m_proxyCount
     bufferMove(proxyId)
@@ -84,17 +84,17 @@ public class b2BroadPhase : b2QueryWrapper {
   }
   
   /// Get the fat AABB for a proxy.
-  public func getFatAABB(#proxyId: Int) -> b2AABB {
+  public func getFatAABB(proxyId proxyId: Int) -> b2AABB {
     return m_tree.getFatAABB(proxyId)
   }
   
   /// Get user data from a proxy. Returns NULL if the id is invalid.
-  public func getUserData(#proxyId : Int) -> b2FixtureProxy? {
+  public func getUserData(proxyId proxyId : Int) -> b2FixtureProxy? {
     return m_tree.getUserData(proxyId)
   }
   
   /// Test overlap of fat AABBs.
-  public func testOverlap(#proxyIdA : Int, proxyIdB : Int) -> Bool {
+  public func testOverlap(proxyIdA proxyIdA : Int, proxyIdB : Int) -> Bool {
     let aabbA = m_tree.getFatAABB(proxyIdA)
     let aabbB = m_tree.getFatAABB(proxyIdB)
     return b2TestOverlap(aabbA, aabbB)
@@ -106,7 +106,7 @@ public class b2BroadPhase : b2QueryWrapper {
   }
   
   /// Update the pairs. This results in pair callbacks. This can only add pairs.
-  public func updatePairs<T: b2BroadPhaseWrapper>(#callback: T) {
+  public func updatePairs<T: b2BroadPhaseWrapper>(callback callback: T) {
     // Reset pair buffer
     m_pairBuffer.removeAll(keepCapacity: true)
     
@@ -128,7 +128,7 @@ public class b2BroadPhase : b2QueryWrapper {
     m_moveBuffer.removeAll(keepCapacity: true)
     
     // Sort the pair buffer to expose duplicates.
-    m_pairBuffer.sort {
+    m_pairBuffer.sortInPlace {
       if $0.proxyIdA < $1.proxyIdA {
         return true
       }
@@ -150,7 +150,7 @@ public class b2BroadPhase : b2QueryWrapper {
       
       // Skip any duplicate pairs.
       while i < m_pairBuffer.count {
-        var pair = m_pairBuffer[i]
+        let pair = m_pairBuffer[i]
         if pair.proxyIdA != primaryPair.proxyIdA || pair.proxyIdB != primaryPair.proxyIdB {
           break
         }
@@ -164,7 +164,7 @@ public class b2BroadPhase : b2QueryWrapper {
   
   /// Query an AABB for overlapping proxies. The callback class
   /// is called for each proxy that overlaps the supplied AABB.
-  public func query<T: b2QueryWrapper>(#callback : T, aabb: b2AABB) {
+  public func query<T: b2QueryWrapper>(callback callback : T, aabb: b2AABB) {
     m_tree.query(callback: callback, aabb: aabb)
   }
   
@@ -175,10 +175,10 @@ public class b2BroadPhase : b2QueryWrapper {
   roughly equal to k * log(n), where k is the number of collisions and n is the
   number of proxies in the tree.
 
-  :param: input the ray-cast input data. The ray extends from p1 to p1 + maxFraction * (p2 - p1).
-  :param: callback a callback class that is called for each proxy that is hit by the ray.
+  - parameter input: the ray-cast input data. The ray extends from p1 to p1 + maxFraction * (p2 - p1).
+  - parameter callback: a callback class that is called for each proxy that is hit by the ray.
   */
-  public func rayCast<T: b2RayCastWrapper>(#callback: T, input: b2RayCastInput) {
+  public func rayCast<T: b2RayCastWrapper>(callback callback: T, input: b2RayCastInput) {
     m_tree.rayCast(callback: callback, input: input)
   }
   
@@ -201,7 +201,7 @@ public class b2BroadPhase : b2QueryWrapper {
   Shift the world origin. Useful for large worlds.
   The shift formula is: position -= newOrigin
 
-  :param: newOrigin the new origin with respect to the old origin
+  - parameter newOrigin: the new origin with respect to the old origin
   */
   public func shiftOrigin(newOrigin: b2Vec2) {
     m_tree.shiftOrigin(newOrigin)

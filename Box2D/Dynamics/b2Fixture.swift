@@ -101,7 +101,7 @@ public struct b2FixtureProxy {
 /// such as friction, collision filters, etc.
 /// Fixtures are created via b2Body::CreateFixture.
 /// @warning you cannot reuse fixtures.
-public class b2Fixture : Printable {
+public class b2Fixture : CustomStringConvertible {
   /// Get the type of the child shape. You can use this to down cast to the concrete shape.
   /// @return the shape type.
   public var type: b2ShapeType {
@@ -158,23 +158,23 @@ public class b2Fixture : Printable {
     // Flag associated contacts for filtering.
     var edge = m_body.getContactList()
     while edge != nil {
-      var contact = edge!.contact
-      var fixtureA = contact.fixtureA
-      var fixtureB = contact.fixtureB
+      let contact = edge!.contact
+      let fixtureA = contact.fixtureA
+      let fixtureB = contact.fixtureB
       if fixtureA === self || fixtureB === self {
         contact.flagForFiltering()
       }
       edge = edge!.next
     }
     
-    var world = m_body.world
+    let world = m_body.world
     
     if world == nil {
       return
     }
     
     // Touch each proxy so that new pairs may be created
-    var broadPhase = world!.m_contactManager.m_broadPhase
+    let broadPhase = world!.m_contactManager.m_broadPhase
     for i in 0 ..< m_proxyCount {
       broadPhase.touchProxy(m_proxies[i].proxyId)
     }
@@ -213,7 +213,7 @@ public class b2Fixture : Printable {
   /**
   Test a point for containment in this fixture.
   
-  :param: p a point in world coordinates.
+  - parameter p: a point in world coordinates.
   */
   public func testPoint(p: b2Vec2) -> Bool {
     return m_shape.testPoint(transform: m_body.transform, point: p)
@@ -222,8 +222,8 @@ public class b2Fixture : Printable {
   /**
   Cast a ray against this shape.
   
-  :param: output the ray-cast results.
-  :param: input the ray-cast input parameters.
+  - parameter output: the ray-cast results.
+  - parameter input: the ray-cast input parameters.
   */
   public func rayCast(inout output: b2RayCastOutput,input: b2RayCastInput, childIndex: Int) -> Bool {
     return m_shape.rayCast(&output, input: input, transform: m_body.transform, childIndex: childIndex)
@@ -288,70 +288,70 @@ public class b2Fixture : Printable {
   /// Get the fixture's AABB. This AABB may be enlarge and/or stale.
   /// If you need a more accurate AABB, compute it using the shape and
   /// the body transform.
-  public func getAABB(#childIndex: Int) -> b2AABB {
+  public func getAABB(childIndex childIndex: Int) -> b2AABB {
     assert(0 <= childIndex && childIndex < m_proxyCount)
     return m_proxies[childIndex].aabb
   }
   
   /// Dump this fixture to the log file.
   public func dump(bodyIndex: Int) {
-    println("    b2FixtureDef fd;")
-    println("    fd.friction = \(m_friction);")
-    println("    fd.restitution = \(m_restitution);")
-    println("    fd.density = \(m_density);")
-    println("    fd.isSensor = bool(\(m_isSensor))")
-    println("    fd.filter.categoryBits = uint16(\(m_filter.categoryBits))")
-    println("    fd.filter.maskBits = uint16(\(m_filter.maskBits))")
-    println("    fd.filter.groupIndex = int16(\(m_filter.groupIndex))")
+    print("    b2FixtureDef fd;")
+    print("    fd.friction = \(m_friction);")
+    print("    fd.restitution = \(m_restitution);")
+    print("    fd.density = \(m_density);")
+    print("    fd.isSensor = bool(\(m_isSensor))")
+    print("    fd.filter.categoryBits = uint16(\(m_filter.categoryBits))")
+    print("    fd.filter.maskBits = uint16(\(m_filter.maskBits))")
+    print("    fd.filter.groupIndex = int16(\(m_filter.groupIndex))")
     
     switch m_shape.m_type {
     case b2ShapeType.circle:
       let s = m_shape as! b2CircleShape
-      println("    b2CircleShape shape;")
-      println("    shape.m_radius = \(s.m_radius);")
-      println("    shape.m_p.set(\(s.m_p.x), \(s.m_p.y))")
+      print("    b2CircleShape shape;")
+      print("    shape.m_radius = \(s.m_radius);")
+      print("    shape.m_p.set(\(s.m_p.x), \(s.m_p.y))")
       
     case b2ShapeType.edge:
       let s = m_shape as! b2EdgeShape
-      println("    b2EdgeShape shape;")
-      println("    shape.m_radius = \(s.m_radius);")
-      println("    shape.m_vertex0.set(\(s.m_vertex0.x), \(s.m_vertex0.y))")
-      println("    shape.m_vertex1.set(\(s.m_vertex1.x), \(s.m_vertex1.y))")
-      println("    shape.m_vertex2.set(\(s.m_vertex2.x), \(s.m_vertex2.y))")
-      println("    shape.m_vertex3.set(\(s.m_vertex3.x), \(s.m_vertex3.y))")
-      println("    shape.m_hasVertex0 = bool(\(s.m_hasVertex0))")
-      println("    shape.m_hasVertex3 = bool(\(s.m_hasVertex3))")
+      print("    b2EdgeShape shape;")
+      print("    shape.m_radius = \(s.m_radius);")
+      print("    shape.m_vertex0.set(\(s.m_vertex0.x), \(s.m_vertex0.y))")
+      print("    shape.m_vertex1.set(\(s.m_vertex1.x), \(s.m_vertex1.y))")
+      print("    shape.m_vertex2.set(\(s.m_vertex2.x), \(s.m_vertex2.y))")
+      print("    shape.m_vertex3.set(\(s.m_vertex3.x), \(s.m_vertex3.y))")
+      print("    shape.m_hasVertex0 = bool(\(s.m_hasVertex0))")
+      print("    shape.m_hasVertex3 = bool(\(s.m_hasVertex3))")
       
     case b2ShapeType.polygon:
       let s = m_shape as! b2PolygonShape
-      println("    b2PolygonShape shape;")
-      println("    b2Vec2 vs[\(b2_maxPolygonVertices)];")
+      print("    b2PolygonShape shape;")
+      print("    b2Vec2 vs[\(b2_maxPolygonVertices)];")
       for i in 0 ..< s.m_count {
-        println("    vs[\(i)].set(\(s.m_vertices[i].x), \(s.m_vertices[i].y))")
+        print("    vs[\(i)].set(\(s.m_vertices[i].x), \(s.m_vertices[i].y))")
       }
-      println("    shape.set(vs, \(s.m_count))")
+      print("    shape.set(vs, \(s.m_count))")
       
     case b2ShapeType.chain:
       let s = m_shape as! b2ChainShape
-      println("    b2ChainShape shape;")
-      println("    b2Vec2 vs[\(s.m_count)];")
+      print("    b2ChainShape shape;")
+      print("    b2Vec2 vs[\(s.m_count)];")
       for i in 0 ..< s.m_count {
-        println("    vs[\(i)].set(\(s.m_vertices[i].x), \(s.m_vertices[i].y))")
+        print("    vs[\(i)].set(\(s.m_vertices[i].x), \(s.m_vertices[i].y))")
       }
-      println("    shape.CreateChain(vs, \(s.m_count))")
-      println("    shape.m_prevVertex.set(\(s.m_prevVertex.x), \(s.m_prevVertex.y))")
-      println("    shape.m_nextVertex.set(\(s.m_nextVertex.x), \(s.m_nextVertex.y))")
-      println("    shape.m_hasPrevVertex = bool(\(s.m_hasPrevVertex))")
-      println("    shape.m_hasNextVertex = bool(\(s.m_hasNextVertex))")
+      print("    shape.CreateChain(vs, \(s.m_count))")
+      print("    shape.m_prevVertex.set(\(s.m_prevVertex.x), \(s.m_prevVertex.y))")
+      print("    shape.m_nextVertex.set(\(s.m_nextVertex.x), \(s.m_nextVertex.y))")
+      print("    shape.m_hasPrevVertex = bool(\(s.m_hasPrevVertex))")
+      print("    shape.m_hasNextVertex = bool(\(s.m_hasNextVertex))")
       
     default:
       return
     }
     
-    println("")
-    println("    fd.shape = &shape;")
-    println("")
-    println("    bodies[\(bodyIndex)]->createFixture(&fd)")
+    print("")
+    print("    fd.shape = &shape;")
+    print("")
+    print("    bodies[\(bodyIndex)]->createFixture(&fd)")
   }
   
   public var description: String {
@@ -392,7 +392,7 @@ public class b2Fixture : Printable {
     assert(m_proxyCount == 0)
     
     // Free the proxy array.
-    let childCount = m_shape.childCount
+//    let childCount = m_shape.childCount
     m_proxies.removeAll()
     
     // Free the child shape.
@@ -417,7 +417,7 @@ public class b2Fixture : Printable {
   func destroyProxies(broadPhase: b2BroadPhase) {
     // Destroy proxies in the broad-phase.
     for i in 0 ..< m_proxyCount {
-      var proxy = m_proxies[i]
+      let proxy = m_proxies[i]
       broadPhase.destroyProxy(proxy.proxyId)
     }
     

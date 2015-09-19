@@ -93,7 +93,7 @@ class MenuViewController: UITableViewController {
   }
   
   override func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
-    var cell = self.tableView.dequeueReusableCellWithIdentifier(cellId)! as! UITableViewCell
+    let cell = self.tableView.dequeueReusableCellWithIdentifier(cellId)! 
     cell.textLabel!.text = list[indexPath.row].label
     return cell
   }

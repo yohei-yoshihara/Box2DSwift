@@ -42,11 +42,11 @@ class TilesViewController: BaseViewController {
 
   override func prepare() {
     fixtureCount = 0
-    var timer = b2Timer()
+    let timer = b2Timer()
     
     b2Locally {
       let a: b2Float = 0.5
-      var bd = b2BodyDef()
+      let bd = b2BodyDef()
       bd.position.y = -a
       var ground = self.world.createBody(bd)
       
@@ -55,10 +55,10 @@ class TilesViewController: BaseViewController {
       let M = 10
       var position = b2Vec2()
       position.y = 0.0
-      for j in 0 ..< M {
+      for _ in 0 ..< M {
         position.x = b2Float(-N) * a
-        for i in 0 ..< N {
-          var shape = b2PolygonShape()
+        for _ in 0 ..< N {
+          let shape = b2PolygonShape()
           shape.setAsBox(halfWidth: a, halfHeight: a, center: position, angle: 0.0)
           ground.createFixture(shape: shape, density: 0.0)
           ++self.fixtureCount
@@ -86,7 +86,7 @@ class TilesViewController: BaseViewController {
     
     b2Locally {
       let a: b2Float = 0.5
-      var shape = b2PolygonShape()
+      let shape = b2PolygonShape()
       shape.setAsBox(halfWidth: a, halfHeight: a)
       
       var x = b2Vec2(-7.0, 0.75)
@@ -98,7 +98,7 @@ class TilesViewController: BaseViewController {
         y = x
         
         for (var j = i; j < self.count; ++j) {
-          var bd = b2BodyDef()
+          let bd = b2BodyDef()
           bd.type = b2BodyType.dynamicBody
           bd.position = y
           
@@ -111,7 +111,7 @@ class TilesViewController: BaseViewController {
           //	bd.allowSleep = true;
           //}
           
-          var body = self.world.createBody(bd)
+          let body = self.world.createBody(bd)
           body.createFixture(shape: shape, density: 5.0)
           ++self.fixtureCount
           y += deltaY

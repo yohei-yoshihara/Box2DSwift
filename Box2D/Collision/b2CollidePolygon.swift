@@ -114,19 +114,19 @@ func b2FindIncidentEdge(poly1: b2PolygonShape, xf1: b2Transform, edge1: Int,
 // Clip
 // The normal points from 1 to 2
 public func b2CollidePolygons(
-  inout #manifold: b2Manifold,
+  inout manifold manifold: b2Manifold,
   polygonA polyA: b2PolygonShape, transformA xfA: b2Transform,
   polygonB polyB: b2PolygonShape, transformB xfB: b2Transform)
 {
   manifold.points.removeAll(keepCapacity: true)
   let totalRadius = polyA.m_radius + polyB.m_radius
 
-  let (edgeA, separationA) = b2FindMaxSeparation(polyA, xfA, polyB, xfB)
+  let (edgeA, separationA) = b2FindMaxSeparation(polyA, xf1: xfA, poly2: polyB, xf2: xfB)
   if separationA > totalRadius {
     return
   }
 
-  let (edgeB, separationB) = b2FindMaxSeparation(polyB, xfB, polyA, xfA)
+  let (edgeB, separationB) = b2FindMaxSeparation(polyB, xf1: xfB, poly2: polyA, xf2: xfA)
   if separationB > totalRadius {
     return
   }
@@ -157,7 +157,7 @@ public func b2CollidePolygons(
     flip = false
   }
 
-  var incidentEdge = b2FindIncidentEdge(poly1, xf1, edge1, poly2, xf2)
+  let incidentEdge = b2FindIncidentEdge(poly1, xf1: xf1, edge1: edge1, poly2: poly2, xf2: xf2)
 
   let count1 = poly1.m_count
   let vertices1 = poly1.m_vertices
@@ -211,12 +211,12 @@ public func b2CollidePolygons(
     let separation = b2Dot(normal, clipPoints2[i].v) - frontOffset
 
     if separation <= totalRadius {
-      var cp = b2ManifoldPoint() // manifold.points[pointCount]
+      let cp = b2ManifoldPoint() // manifold.points[pointCount]
       cp.localPoint = b2MulT(xf2, clipPoints2[i].v)
       cp.id = clipPoints2[i].id
       if flip {
         // Swap features
-        var cf = cp.id
+        let cf = cp.id
         cp.id.indexA = cf.indexB
         cp.id.indexB = cf.indexA
         cp.id.typeA = cf.typeB

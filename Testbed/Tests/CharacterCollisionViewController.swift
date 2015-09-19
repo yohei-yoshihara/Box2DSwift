@@ -36,7 +36,7 @@ class CharacterCollisionViewController: BaseViewController {
       let bd = b2BodyDef()
       let ground = self.world.createBody(bd)
       
-      var shape = b2EdgeShape()
+      let shape = b2EdgeShape()
       shape.set(vertex1: b2Vec2(-20.0, 0.0), vertex2: b2Vec2(20.0, 0.0))
       ground.createFixture(shape: shape, density: 0.0)
     }
@@ -177,7 +177,7 @@ class CharacterCollisionViewController: BaseViewController {
       var angle: b2Float = 0.0
       let delta: b2Float = b2_pi / 3.0
       var vertices = [b2Vec2]()
-      for i in 0 ..< 6 {
+      for _ in 0 ..< 6 {
         vertices.append(b2Vec2(0.5 * cos(angle), 0.5 * sin(angle)))
         angle += delta
       }

@@ -192,7 +192,7 @@ public class b2PrismaticJoint : b2Joint {
   }
   
   /// Set the joint limits, usually in meters.
-  public func setLimits(#lower: b2Float, upper: b2Float) {
+  public func setLimits(lower lower: b2Float, upper: b2Float) {
     assert(lower <= upper)
     if lower != m_lowerTranslation || upper != m_upperTranslation {
       m_bodyA.setAwake(true)
@@ -262,21 +262,21 @@ public class b2PrismaticJoint : b2Joint {
     let indexA = m_bodyA.m_islandIndex
     let indexB = m_bodyB.m_islandIndex
     
-    println("  b2PrismaticJointDef jd;")
-    println("  jd.bodyA = bodies[\(indexA)];")
-    println("  jd.bodyB = bodies[\(indexB)];")
-    println("  jd.collideConnected = bool(\(m_collideConnected));")
-    println("  jd.localAnchorA.set(\(m_localAnchorA.x), \(m_localAnchorA.y));")
-    println("  jd.localAnchorB.set(\(m_localAnchorB.x), \(m_localAnchorB.y)")
-    println("  jd.localAxisA.set(\(m_localXAxisA.x), \(m_localXAxisA.y));")
-    println("  jd.referenceAngle = \(m_referenceAngle);")
-    println("  jd.enableLimit = bool(\(m_enableLimit));")
-    println("  jd.lowerTranslation = \(m_lowerTranslation);")
-    println("  jd.upperTranslation = \(m_upperTranslation);")
-    println("  jd.enableMotor = bool(\(m_enableMotor));")
-    println("  jd.motorSpeed = \(m_motorSpeed);")
-    println("  jd.maxMotorForce = \(m_maxMotorForce);")
-    println("  joints[\(m_index)] = m_world->createJoint(&jd);")
+    print("  b2PrismaticJointDef jd;")
+    print("  jd.bodyA = bodies[\(indexA)];")
+    print("  jd.bodyB = bodies[\(indexB)];")
+    print("  jd.collideConnected = bool(\(m_collideConnected));")
+    print("  jd.localAnchorA.set(\(m_localAnchorA.x), \(m_localAnchorA.y));")
+    print("  jd.localAnchorB.set(\(m_localAnchorB.x), \(m_localAnchorB.y)")
+    print("  jd.localAxisA.set(\(m_localXAxisA.x), \(m_localXAxisA.y));")
+    print("  jd.referenceAngle = \(m_referenceAngle);")
+    print("  jd.enableLimit = bool(\(m_enableLimit));")
+    print("  jd.lowerTranslation = \(m_lowerTranslation);")
+    print("  jd.upperTranslation = \(m_upperTranslation);")
+    print("  jd.enableMotor = bool(\(m_enableMotor));")
+    print("  jd.motorSpeed = \(m_motorSpeed);")
+    print("  jd.maxMotorForce = \(m_maxMotorForce);")
+    print("  joints[\(m_index)] = m_world->createJoint(&jd);")
   }
   
   // MARK: private methods
@@ -546,7 +546,7 @@ public class b2PrismaticJoint : b2Joint {
     C1.y = aB - aA - m_referenceAngle
     
     var linearError = abs(C1.x)
-    var angularError = abs(C1.y)
+    let angularError = abs(C1.y)
     
     var active = false
     var C2: b2Float = 0.0
@@ -608,7 +608,7 @@ public class b2PrismaticJoint : b2Joint {
       K.ex.set(k11, k12)
       K.ey.set(k12, k22)
       
-      var impulse1 = K.solve(-C1)
+      let impulse1 = K.solve(-C1)
       impulse.x = impulse1.x
       impulse.y = impulse1.y
       impulse.z = 0.0

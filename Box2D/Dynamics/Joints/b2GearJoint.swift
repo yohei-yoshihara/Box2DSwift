@@ -109,14 +109,14 @@ public class b2GearJoint : b2Joint {
     let index1 = m_joint1.m_index
     let index2 = m_joint2.m_index
     
-    println("  b2GearJointDef jd;")
-    println("  jd.bodyA = bodies[\(indexA)];")
-    println("  jd.bodyB = bodies[\(indexB)];")
-    println("  jd.collideConnected = bool(\(m_collideConnected));")
-    println("  jd.joint1 = joints[\(index1)];")
-    println("  jd.joint2 = joints[\(index2)];")
-    println("  jd.ratio = \(m_ratio);")
-    println("  joints[\(m_index)] = m_world->createJoint(&jd);")
+    print("  b2GearJointDef jd;")
+    print("  jd.bodyA = bodies[\(indexA)];")
+    print("  jd.bodyB = bodies[\(indexB)];")
+    print("  jd.collideConnected = bool(\(m_collideConnected));")
+    print("  jd.joint1 = joints[\(index1)];")
+    print("  jd.joint2 = joints[\(index2)];")
+    print("  jd.ratio = \(m_ratio);")
+    print("  joints[\(m_index)] = m_world->createJoint(&jd);")
   }
   
   // MARK: private methods
@@ -237,7 +237,7 @@ public class b2GearJoint : b2Joint {
     var vD = data.velocities[m_indexD].v
     var wD = data.velocities[m_indexD].w
     
-    var qA = b2Rot(aA), qB = b2Rot(aB), qC = b2Rot(aC), qD = b2Rot(aD)
+    let qA = b2Rot(aA), qB = b2Rot(aB), qC = b2Rot(aC), qD = b2Rot(aD)
     
     m_mass = 0.0
     

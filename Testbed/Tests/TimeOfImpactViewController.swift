@@ -65,7 +65,7 @@ class TimeOfImpactViewController: BaseViewController {
     
     var output = b2TOIOutput()
     
-    b2TimeOfImpact(&output, input)
+    b2TimeOfImpact(&output, input: input)
     /*
     debugDraw.DrawString(5, textLine, "toi = %g", output.t);
     textLine += DRAW_STRING_NEW_LINE;
@@ -76,7 +76,7 @@ class TimeOfImpactViewController: BaseViewController {
     */
     var vertices = [b2Vec2]() // [b2_maxPolygonVertices];
     
-    var transformA = sweepA.getTransform(beta: 0.0)
+    let transformA = sweepA.getTransform(beta: 0.0)
     
     for i in 0 ..< shapeA.count {
       vertices.append(b2Mul(transformA, shapeA.vertices[i]))
@@ -85,7 +85,7 @@ class TimeOfImpactViewController: BaseViewController {
     vertices.removeAll(keepCapacity: true)
     
     var transformB = sweepB.getTransform(beta: 0.0)
-    let localPoint = b2Vec2(2.0, -0.1)
+    _ = b2Vec2(2.0, -0.1)
     
     for i in 0 ..< shapeB.count {
       vertices.append(b2Mul(transformB, shapeB.vertices[i]))

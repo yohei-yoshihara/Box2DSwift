@@ -33,27 +33,27 @@ class VaryingRestitutionViewController: BaseViewController {
       let bd = b2BodyDef()
       let ground = self.world.createBody(bd)
       
-      var shape = b2EdgeShape()
+      let shape = b2EdgeShape()
       shape.set(vertex1: b2Vec2(-40.0, 0.0), vertex2: b2Vec2(40.0, 0.0))
       ground.createFixture(shape: shape, density: 0.0)
     }
     
     b2Locally {
-      var shape = b2CircleShape()
+      let shape = b2CircleShape()
       shape.radius = 1.0
       
-      var fd = b2FixtureDef()
+      let fd = b2FixtureDef()
       fd.shape = shape;
       fd.density = 1.0
       
       let restitution: [b2Float] = [0.0, 0.1, 0.3, 0.5, 0.75, 0.9, 1.0]
       
       for i in 0 ..< 7 {
-        var bd = b2BodyDef()
+        let bd = b2BodyDef()
         bd.type = b2BodyType.dynamicBody
         bd.position.set(-10.0 + 3.0 * b2Float(i), 20.0)
         
-        var body = self.world.createBody(bd)
+        let body = self.world.createBody(bd)
         
         fd.restitution = restitution[i]
         body.createFixture(fd)

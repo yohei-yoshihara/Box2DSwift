@@ -139,7 +139,7 @@ public class b2MouseJoint : b2Joint {
   }
   
   /// The mouse joint does not support dumping.
-  public override func dump() { println("Mouse joint dumping is not supported.") }
+  public override func dump() { print("Mouse joint dumping is not supported.") }
   
   /// Implement b2Joint::ShiftOrigin
   public override func shiftOrigin(newOrigin: b2Vec2) {

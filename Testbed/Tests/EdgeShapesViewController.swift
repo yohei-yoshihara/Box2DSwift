@@ -76,7 +76,7 @@ class EdgeShapesViewController: BaseViewController, TextListViewControllerDelega
       
       var x1: b2Float = -20.0
       var y1: b2Float = 2.0 * cos(x1 / 10.0 * b2_pi)
-      for i in 0 ..< 80 {
+      for _ in 0 ..< 80 {
         let x2 = x1 + 0.5
         let y2 = 2.0 * cos(x2 / 10.0 * b2_pi)
         
@@ -219,7 +219,7 @@ class EdgeShapesViewController: BaseViewController, TextListViewControllerDelega
 
   func onDropStuff(sender: UIBarButtonItem) {
     dropVC.modalPresentationStyle = UIModalPresentationStyle.Popover
-    var popPC = dropVC.popoverPresentationController
+    let popPC = dropVC.popoverPresentationController
     popPC?.barButtonItem = sender
     popPC?.permittedArrowDirections = UIPopoverArrowDirection.Any
     self.presentViewController(dropVC, animated: true, completion: nil)
@@ -229,7 +229,7 @@ class EdgeShapesViewController: BaseViewController, TextListViewControllerDelega
     destroyBody()
   }
 
-  func textListDidSelect(#name: String, index: Int) {
+  func textListDidSelect(name name: String, index: Int) {
     self.dismissViewControllerAnimated(true, completion: nil)
     if name == "Drop" {
       create(index)
