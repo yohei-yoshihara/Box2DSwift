@@ -530,7 +530,7 @@ class b2EPCollider {
           cp.id.indexB = clipPoints2[i].id.indexA
         }
         manifold.points.append(cp)
-        ++pointCount
+        pointCount += 1
       }
     }
     return manifold

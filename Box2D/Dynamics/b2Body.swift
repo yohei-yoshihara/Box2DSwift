@@ -137,7 +137,7 @@ public class b2Body : CustomStringConvertible {
     
     fixture.m_next = m_fixtureList
     m_fixtureList = fixture
-    ++m_fixtureCount
+    m_fixtureCount += 1
     
     fixture.m_body = self
     
@@ -192,7 +192,8 @@ public class b2Body : CustomStringConvertible {
     assert(m_fixtureCount > 0)
     var found = false
     var prev: b2Fixture? = nil
-    for (var f = m_fixtureList; f != nil; f = f!.m_next) {
+    var f = m_fixtureList
+    while f != nil {
       if f === fixture {
         if let prev = prev {
           prev.m_next = f!.m_next
@@ -203,6 +204,7 @@ public class b2Body : CustomStringConvertible {
         found = true
       }
       prev = f
+      f = f!.m_next
     }
     
     // You tried to remove a shape that is not attached to this body.
@@ -232,7 +234,7 @@ public class b2Body : CustomStringConvertible {
     fixture.destroy()
     fixture.m_next = nil
     
-    --m_fixtureCount
+    m_fixtureCount -= 1
     
     // Reset the mass data.
     resetMassData()
@@ -262,8 +264,10 @@ public class b2Body : CustomStringConvertible {
     m_sweep.a0 = angle
     
     let broadPhase = m_world.m_contactManager.m_broadPhase
-    for (var f: b2Fixture? = m_fixtureList; f != nil; f = f!.m_next) {
+    var f: b2Fixture? = m_fixtureList
+    while f != nil {
       f!.synchronize(broadPhase, m_xf, m_xf)
+      f = f!.m_next
     }
   }
   
@@ -553,8 +557,10 @@ public class b2Body : CustomStringConvertible {
         
     // Accumulate mass over all fixtures.
     var localCenter = b2Vec2_zero
-    for (var f: b2Fixture? = m_fixtureList; f != nil; f = f!.m_next) {
+    var f: b2Fixture? = m_fixtureList
+    while f != nil {
       if f!.m_density == 0.0 {
+        f = f!.m_next
         continue
       }
       
@@ -562,6 +568,7 @@ public class b2Body : CustomStringConvertible {
       m_mass += massData.mass
       localCenter += massData.mass * massData.center
       m_I += massData.I
+      f = f!.m_next
     }
         
     // Compute center of mass.
@@ -740,11 +747,13 @@ public class b2Body : CustomStringConvertible {
       
     // Touch the proxies so that new contacts will be created (when appropriate)
     let broadPhase = m_world.m_contactManager.m_broadPhase
-    for (var f: b2Fixture? = m_fixtureList; f != nil; f = f!.m_next) {
+    var f: b2Fixture? = m_fixtureList
+    while f != nil {
       let proxyCount = f!.m_proxyCount
       for i in 0 ..< proxyCount {
         broadPhase.touchProxy(f!.m_proxies[i].proxyId)
       }
+      f = f!.m_next
     }
   }
   
@@ -854,8 +863,10 @@ public class b2Body : CustomStringConvertible {
       
       // Create all proxies.
       let broadPhase = m_world.m_contactManager.m_broadPhase
-      for (var f: b2Fixture? = m_fixtureList; f != nil; f = f!.m_next) {
+      var f: b2Fixture? = m_fixtureList
+      while f != nil {
         f!.createProxies(broadPhase, xf: m_xf)
+        f = f!.m_next
       }
       
       // Contacts are created the next time step.
@@ -865,8 +876,10 @@ public class b2Body : CustomStringConvertible {
       
       // Destroy all proxies.
       let broadPhase = m_world.m_contactManager.m_broadPhase
-      for (var f: b2Fixture? = m_fixtureList; f != nil; f = f!.m_next) {
+      var f: b2Fixture? = m_fixtureList
+      while f != nil {
         f!.destroyProxies(broadPhase)
+        f = f!.m_next
       }
       
       // Destroy the attached contacts.
@@ -973,10 +986,12 @@ public class b2Body : CustomStringConvertible {
     print("  bd.gravityScale = \(m_gravityScale);")
     print("  bodies[\(m_islandIndex)] = m_world->createBody(&bd);")
     print("")
-    for (var f = m_fixtureList; f != nil; f = f!.m_next) {
+    var f = m_fixtureList
+    while f != nil {
       print("  {")
       f!.dump(bodyIndex)
       print("  }")
+      f = f!.m_next
     }
     print("}")
   }
@@ -1079,8 +1094,10 @@ public class b2Body : CustomStringConvertible {
     xf1.p = m_sweep.c0 - b2Mul(xf1.q, m_sweep.localCenter)
       
     let broadPhase = m_world.m_contactManager.m_broadPhase
-    for (var f: b2Fixture? = m_fixtureList; f != nil; f = f!.m_next) {
+    var f: b2Fixture? = m_fixtureList
+    while f != nil {
       f!.synchronize(broadPhase, xf1, m_xf)
+      f = f!.m_next
     }
   }
   func synchronizeTransform() {
@@ -1097,12 +1114,14 @@ public class b2Body : CustomStringConvertible {
     }
       
     // Does a joint prevent collision?
-    for (var jn: b2JointEdge? = m_jointList; jn != nil; jn = jn!.next) {
+    var jn: b2JointEdge? = m_jointList
+    while jn != nil {
       if jn!.other === other {
         if jn!.joint.m_collideConnected == false {
 				  return false
         }
       }
+      jn = jn!.next
     }
       
     return true

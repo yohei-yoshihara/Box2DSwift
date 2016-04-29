@@ -35,8 +35,8 @@ class SliderCrankViewController: BaseViewController {
   override func viewDidLoad() {
     super.viewDidLoad()
     
-    let friction = UIBarButtonItem(title: "Friction", style: UIBarButtonItemStyle.Plain, target: self, action: "onFriction:")
-    let motor = UIBarButtonItem(title: "Motor", style: UIBarButtonItemStyle.Plain, target: self, action: "onMotor:")
+    let friction = UIBarButtonItem(title: "Friction", style: UIBarButtonItemStyle.Plain, target: self, action: #selector(SliderCrankViewController.onFriction(_:)))
+    let motor = UIBarButtonItem(title: "Motor", style: UIBarButtonItemStyle.Plain, target: self, action: #selector(SliderCrankViewController.onMotor(_:)))
     let flexible = UIBarButtonItem(barButtonSystemItem: UIBarButtonSystemItem.FlexibleSpace, target: nil, action: nil)
     self.addToolbarItems([
       friction, flexible,

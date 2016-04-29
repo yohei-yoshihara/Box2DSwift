@@ -223,7 +223,7 @@ public func b2CollidePolygons(
         cp.id.typeB = cf.typeA
       }
       manifold.points.append(cp)
-      ++pointCount
+      pointCount += 1
     }
   }
   return

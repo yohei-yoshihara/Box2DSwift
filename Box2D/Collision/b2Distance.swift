@@ -550,7 +550,7 @@ public struct b2DistanceOutput : CustomStringConvertible {
 /// b2CircleShape, b2PolygonShape, b2EdgeShape. The simplex cache is input/output.
 /// On the first call set b2SimplexCache.count to zero.
 public func b2Distance(inout output: b2DistanceOutput, inout cache: b2SimplexCache, input: b2DistanceInput) {
-  ++b2_gjkCalls
+  b2_gjkCalls += 1
   
   let proxyA = input.proxyA
   let proxyB = input.proxyB
@@ -633,8 +633,8 @@ public func b2Distance(inout output: b2DistanceOutput, inout cache: b2SimplexCac
     vertex.w = vertex.wB - vertex.wA
   
     // Iteration count is equated to the number of support point calls.
-    ++iter
-    ++b2_gjkIters
+    iter += 1
+    b2_gjkIters += 1
   
     // Check for duplicate support points. This is the main termination criteria.
     var duplicate = false
@@ -651,7 +651,7 @@ public func b2Distance(inout output: b2DistanceOutput, inout cache: b2SimplexCac
     }
   
     // New vertex is ok and needed.
-    ++simplex.m_count
+    simplex.m_count += 1
   }
   
   b2_gjkMaxIters = max(b2_gjkMaxIters, iter)

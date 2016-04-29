@@ -406,7 +406,7 @@ public class b2Fixture : CustomStringConvertible {
     // Create proxies in the broad-phase.
     let proxyCount = m_shape.childCount
     
-    for var i = 0; i < proxyCount; ++i {
+    for i in 0 ..< proxyCount {
       var proxy = b2FixtureProxy(self)
       m_shape.computeAABB(&proxy.aabb, transform: xf, childIndex: i)
       proxy.childIndex = i

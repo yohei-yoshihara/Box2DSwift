@@ -35,9 +35,9 @@ class ShapeEditingViewController: BaseViewController {
 
   override func viewDidLoad() {
     super.viewDidLoad()
-    let createButton = UIBarButtonItem(title: "Create", style: UIBarButtonItemStyle.Plain, target: self, action: "onCreate:")
-    let destroyButton = UIBarButtonItem(title: "Destroy", style: UIBarButtonItemStyle.Plain, target: self, action: "onDestroy:")
-    let sensorButton = UIBarButtonItem(title: "Sensor", style: UIBarButtonItemStyle.Plain, target: self, action: "onSensor:")
+    let createButton = UIBarButtonItem(title: "Create", style: UIBarButtonItemStyle.Plain, target: self, action: #selector(ShapeEditingViewController.onCreate(_:)))
+    let destroyButton = UIBarButtonItem(title: "Destroy", style: UIBarButtonItemStyle.Plain, target: self, action: #selector(ShapeEditingViewController.onDestroy(_:)))
+    let sensorButton = UIBarButtonItem(title: "Sensor", style: UIBarButtonItemStyle.Plain, target: self, action: #selector(ShapeEditingViewController.onSensor(_:)))
     let flexible = UIBarButtonItem(barButtonSystemItem: UIBarButtonSystemItem.FlexibleSpace, target: nil, action: nil)
     self.addToolbarItems([
       createButton, flexible,

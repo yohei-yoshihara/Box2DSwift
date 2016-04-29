@@ -59,8 +59,8 @@ class EdgeShapesViewController: BaseViewController, TextListViewControllerDelega
     dropVC.textList = ["1", "2", "3", "4", "5", "6"]
     dropVC.textListDelegate = self
     
-    let dropStuffButton = UIBarButtonItem(title: "Drop", style: UIBarButtonItemStyle.Plain, target: self, action: "onDropStuff:")
-    let deleteStuffButton = UIBarButtonItem(barButtonSystemItem: UIBarButtonSystemItem.Trash, target: self, action: "onDeleteStuff:")
+    let dropStuffButton = UIBarButtonItem(title: "Drop", style: UIBarButtonItemStyle.Plain, target: self, action: #selector(EdgeShapesViewController.onDropStuff(_:)))
+    let deleteStuffButton = UIBarButtonItem(barButtonSystemItem: UIBarButtonSystemItem.Trash, target: self, action: #selector(EdgeShapesViewController.onDeleteStuff(_:)))
     let flexibleButton = UIBarButtonItem(barButtonSystemItem: UIBarButtonSystemItem.FlexibleSpace, target: nil, action: nil)
     addToolbarItems([
       dropStuffButton, flexibleButton,

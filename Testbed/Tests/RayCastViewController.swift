@@ -111,7 +111,7 @@ class RayCastMultipleCallback : b2RayCastCallback {
     
     self.points.append(point)
     self.normals.append(normal)
-    ++self.count;
+    self.count += 1;
     
     if count == maxCount {
       // At this point the buffer is full.
@@ -156,9 +156,9 @@ class RayCastViewController: BaseViewController, TextListViewControllerDelegate 
     modeVC.textList = ["Closest", "Any", "Multiple"]
     modeVC.textListDelegate = self
     
-    let dropStuffButton = UIBarButtonItem(title: "Drop", style: UIBarButtonItemStyle.Plain, target: self, action: "onDropStuff:")
-    let modeChangeButton = UIBarButtonItem(title: "Mode", style: UIBarButtonItemStyle.Plain, target: self, action: "onChangeMode:")
-    let deleteStuffButton = UIBarButtonItem(barButtonSystemItem: UIBarButtonSystemItem.Trash, target: self, action: "onDeleteStuff:")
+    let dropStuffButton = UIBarButtonItem(title: "Drop", style: UIBarButtonItemStyle.Plain, target: self, action: #selector(RayCastViewController.onDropStuff(_:)))
+    let modeChangeButton = UIBarButtonItem(title: "Mode", style: UIBarButtonItemStyle.Plain, target: self, action: #selector(RayCastViewController.onChangeMode(_:)))
+    let deleteStuffButton = UIBarButtonItem(barButtonSystemItem: UIBarButtonSystemItem.Trash, target: self, action: #selector(RayCastViewController.onDeleteStuff(_:)))
     let flexibleButton = UIBarButtonItem(barButtonSystemItem: UIBarButtonSystemItem.FlexibleSpace, target: nil, action: nil)
     addToolbarItems([
       dropStuffButton, flexibleButton,

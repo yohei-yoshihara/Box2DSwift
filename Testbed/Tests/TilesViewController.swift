@@ -61,7 +61,7 @@ class TilesViewController: BaseViewController {
           let shape = b2PolygonShape()
           shape.setAsBox(halfWidth: a, halfHeight: a, center: position, angle: 0.0)
           ground.createFixture(shape: shape, density: 0.0)
-          ++self.fixtureCount
+          self.fixtureCount += 1
           position.x += 2.0 * a
         }
         position.y -= 2.0 * a
@@ -97,7 +97,7 @@ class TilesViewController: BaseViewController {
       for i in 0 ..< self.count {
         y = x
         
-        for (var j = i; j < self.count; ++j) {
+        for j in i ..< self.count {
           let bd = b2BodyDef()
           bd.type = b2BodyType.dynamicBody
           bd.position = y
@@ -113,7 +113,7 @@ class TilesViewController: BaseViewController {
           
           let body = self.world.createBody(bd)
           body.createFixture(shape: shape, density: 5.0)
-          ++self.fixtureCount
+          self.fixtureCount += 1
           y += deltaY
         }
         

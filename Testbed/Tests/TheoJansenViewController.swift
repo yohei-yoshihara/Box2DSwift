@@ -38,10 +38,10 @@ class TheoJansenViewController: BaseViewController {
   override func viewDidLoad() {
     super.viewDidLoad()
     
-    let left = UIBarButtonItem(title: "Left", style: UIBarButtonItemStyle.Plain, target: self, action: "onLeft:")
-    let brake = UIBarButtonItem(title: "Brake", style: UIBarButtonItemStyle.Plain, target: self, action: "onBrake:")
-    let right = UIBarButtonItem(title: "Right", style: UIBarButtonItemStyle.Plain, target: self, action: "onRight:")
-    let motor = UIBarButtonItem(title: "Motor", style: UIBarButtonItemStyle.Plain, target: self, action: "onMotor:")
+    let left = UIBarButtonItem(title: "Left", style: UIBarButtonItemStyle.Plain, target: self, action: #selector(TheoJansenViewController.onLeft(_:)))
+    let brake = UIBarButtonItem(title: "Brake", style: UIBarButtonItemStyle.Plain, target: self, action: #selector(TheoJansenViewController.onBrake(_:)))
+    let right = UIBarButtonItem(title: "Right", style: UIBarButtonItemStyle.Plain, target: self, action: #selector(TheoJansenViewController.onRight(_:)))
+    let motor = UIBarButtonItem(title: "Motor", style: UIBarButtonItemStyle.Plain, target: self, action: #selector(TheoJansenViewController.onMotor(_:)))
     let flexible = UIBarButtonItem(barButtonSystemItem: UIBarButtonSystemItem.FlexibleSpace, target: nil, action: nil)
     self.addToolbarItems([
       left, flexible,

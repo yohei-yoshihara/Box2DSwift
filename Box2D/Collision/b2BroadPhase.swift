@@ -57,7 +57,7 @@ public class b2BroadPhase : b2QueryWrapper {
   /// UpdatePairs is called.
   public func createProxy(aabb aabb: b2AABB, userData: b2FixtureProxy) -> Int {
     let proxyId = m_tree.createProxy(aabb: aabb, userData: userData)
-    ++m_proxyCount
+    m_proxyCount += 1
     bufferMove(proxyId)
     return proxyId
   }
@@ -65,7 +65,7 @@ public class b2BroadPhase : b2QueryWrapper {
   /// Destroy a proxy. It is up to the client to remove any pairs.
   public func destroyProxy(proxyId: Int) {
     unBufferMove(proxyId)
-    --m_proxyCount
+    m_proxyCount -= 1
     m_tree.destroyProxy(proxyId)
   }
   
@@ -146,7 +146,7 @@ public class b2BroadPhase : b2QueryWrapper {
       var userDataB = m_tree.getUserData(primaryPair.proxyIdB)!
       
       callback.addPair(&userDataA, &userDataB)
-      ++i
+      i += 1
       
       // Skip any duplicate pairs.
       while i < m_pairBuffer.count {
@@ -154,7 +154,7 @@ public class b2BroadPhase : b2QueryWrapper {
         if pair.proxyIdA != primaryPair.proxyIdA || pair.proxyIdB != primaryPair.proxyIdB {
           break
         }
-        ++i
+        i += 1
       }
     }
     

@@ -145,7 +145,7 @@ public class b2ContactManager: b2BroadPhaseWrapper {
       bodyB.setAwake(true)
     }
     
-    ++m_contactCount
+    m_contactCount += 1
   }
   
   func findNewContacts() {
@@ -203,7 +203,7 @@ public class b2ContactManager: b2BroadPhaseWrapper {
     
     // Call the factory.
     b2Contact.destroy(c)
-    --m_contactCount
+    m_contactCount -= 1
   }
   
   // This is the top level collision call for the time step. Here
