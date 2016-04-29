@@ -33,9 +33,9 @@ class ApplyForceViewController: BaseViewController {
   override func viewDidLoad() {
     super.viewDidLoad()
     
-    let leftButton = UIBarButtonItem(title: "Left", style: UIBarButtonItemStyle.Plain, target: self, action: "onLeft:")
-    let upButton = UIBarButtonItem(title: "Up", style: UIBarButtonItemStyle.Plain, target: self, action: "onUp:")
-    let rightButton = UIBarButtonItem(title: "Right", style: UIBarButtonItemStyle.Plain, target: self, action: "onRight:")
+    let leftButton = UIBarButtonItem(title: "Left", style: UIBarButtonItemStyle.Plain, target: self, action: #selector(ApplyForceViewController.onLeft(_:)))
+    let upButton = UIBarButtonItem(title: "Up", style: UIBarButtonItemStyle.Plain, target: self, action: #selector(ApplyForceViewController.onUp(_:)))
+    let rightButton = UIBarButtonItem(title: "Right", style: UIBarButtonItemStyle.Plain, target: self, action: #selector(ApplyForceViewController.onRight(_:)))
     let flexible = UIBarButtonItem(barButtonSystemItem: UIBarButtonSystemItem.FlexibleSpace, target: nil, action: nil)
     self.addToolbarItems([
       leftButton, flexible,

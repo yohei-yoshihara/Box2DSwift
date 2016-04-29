@@ -87,7 +87,7 @@ class PolyShapesCallback: b2QueryCallback {
     
     if overlap {
       DrawFixture(fixture)
-      ++count
+      count += 1
     }
     
     return true
@@ -112,9 +112,9 @@ class PolyShapesViewController: BaseViewController, TextListViewControllerDelega
     dropVC.textList = ["1 (filtered)", "2", "3", "4", "5", "6"]
     dropVC.textListDelegate = self
 
-    let dropStuffButton = UIBarButtonItem(title: "Drop", style: UIBarButtonItemStyle.Plain, target: self, action: "onDropStuff:")
-    let modeChangeButton = UIBarButtonItem(title: "Activate", style: UIBarButtonItemStyle.Plain, target: self, action: "onActivate:")
-    let deleteStuffButton = UIBarButtonItem(barButtonSystemItem: UIBarButtonSystemItem.Trash, target: self, action: "onDeleteStuff:")
+    let dropStuffButton = UIBarButtonItem(title: "Drop", style: UIBarButtonItemStyle.Plain, target: self, action: #selector(PolyShapesViewController.onDropStuff(_:)))
+    let modeChangeButton = UIBarButtonItem(title: "Activate", style: UIBarButtonItemStyle.Plain, target: self, action: #selector(PolyShapesViewController.onActivate(_:)))
+    let deleteStuffButton = UIBarButtonItem(barButtonSystemItem: UIBarButtonSystemItem.Trash, target: self, action: #selector(PolyShapesViewController.onDeleteStuff(_:)))
     let flexibleButton = UIBarButtonItem(barButtonSystemItem: UIBarButtonSystemItem.FlexibleSpace, target: nil, action: nil)
     addToolbarItems([
       dropStuffButton, flexibleButton,
@@ -132,11 +132,15 @@ class PolyShapesViewController: BaseViewController, TextListViewControllerDelega
   }
 
   func onActivate(sender: UIBarButtonItem) {
-    for (var i = 0; i < Const.maxBodies; i += 2) {
-      if bodies[i] != nil {
-        let active = bodies[i]!.isActive
-        bodies[i]!.setActive(!active)
-      }
+    var i = 0
+    while i < Const.maxBodies
+    {
+        if bodies[i] != nil {
+            let active = bodies[i]!.isActive
+            bodies[i]!.setActive(!active)
+        }
+
+        i += 2
     }
   }
   

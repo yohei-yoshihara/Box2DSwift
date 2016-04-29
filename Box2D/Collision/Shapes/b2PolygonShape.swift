@@ -71,7 +71,7 @@ public class b2PolygonShape : b2Shape {
       
       var unique = true
       for j in 0 ..< ps.count {
-        if b2DistanceSquared(v, ps[j]) < 0.5 * b2_linearSlop {
+        if b2DistanceSquared(v, ps[j]) < ((0.5 * b2_linearSlop) * (0.5 * b2_linearSlop)) {
           unique = false
           break
         }

@@ -69,9 +69,9 @@ class BaseViewController: UIViewController, SettingViewControllerDelegate {
     self.view.addSubview(infoView)
 
     let pauseButton = UIBarButtonItem(barButtonSystemItem: UIBarButtonSystemItem.Pause,
-      target: self, action: "onPause:")
+      target: self, action: #selector(BaseViewController.onPause(_:)))
     let singleStepButton = UIBarButtonItem(barButtonSystemItem: UIBarButtonSystemItem.Play,
-      target: self, action: "onSingleStep:")
+      target: self, action: #selector(BaseViewController.onSingleStep(_:)))
     let flexibleButton = UIBarButtonItem(barButtonSystemItem: UIBarButtonSystemItem.FlexibleSpace, target: nil, action: nil)
     self.toolbarItems = [
       flexibleButton, pauseButton,
@@ -79,11 +79,11 @@ class BaseViewController: UIViewController, SettingViewControllerDelegate {
       flexibleButton
     ]
     
-    self.navigationItem.rightBarButtonItem = UIBarButtonItem(title: "Settings", style: UIBarButtonItemStyle.Plain, target: self, action: "onSettings:")
+    self.navigationItem.rightBarButtonItem = UIBarButtonItem(title: "Settings", style: UIBarButtonItemStyle.Plain, target: self, action: #selector(BaseViewController.onSettings(_:)))
     
-    panGestureRecognizer = UIPanGestureRecognizer(target: self, action: "onPan:")
+    panGestureRecognizer = UIPanGestureRecognizer(target: self, action: #selector(BaseViewController.onPan(_:)))
     debugDraw.addGestureRecognizer(panGestureRecognizer)
-    tapGestureRecognizer = UITapGestureRecognizer(target: self, action: "onTap:")
+    tapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(BaseViewController.onTap(_:)))
     debugDraw.addGestureRecognizer(tapGestureRecognizer)
   }
 
@@ -114,7 +114,7 @@ class BaseViewController: UIViewController, SettingViewControllerDelegate {
   
   override func viewDidAppear(animated: Bool) {
     super.viewDidAppear(animated)
-    displayLink = CADisplayLink(target: self, selector: "simulationLoop")
+    displayLink = CADisplayLink(target: self, selector: #selector(BaseViewController.simulationLoop))
     displayLink.frameInterval = 60 / Int(settings.hz)
     displayLink.addToRunLoop(NSRunLoop.currentRunLoop(), forMode: NSRunLoopCommonModes)
   }
@@ -149,7 +149,7 @@ class BaseViewController: UIViewController, SettingViewControllerDelegate {
     world.drawDebugData()
     
     if timeStep > 0.0 {
-      ++stepCount
+      stepCount += 1
     }
     
     infoView.updateProfile(stepCount)

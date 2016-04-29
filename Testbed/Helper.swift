@@ -263,7 +263,7 @@ class ContactListener : b2ContactListener {
     let (_/*state1*/, state2) = b2GetPointStates(manifold1: oldManifold, manifold2: manifold)
     let worldManifold = contact.worldManifold
     
-    for (var i = 0; i < manifold.pointCount; ++i) {
+    for i in 0 ..< manifold.pointCount {
       var cp = ContactPoint()
       cp.fixtureA = fixtureA
       cp.fixtureB = fixtureB

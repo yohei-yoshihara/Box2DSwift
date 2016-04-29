@@ -309,7 +309,7 @@ public class b2DynamicTree<T> : CustomStringConvertible {
     while freeIndex != b2_nullNode {
       assert(0 <= freeIndex && freeIndex < m_nodes.count)
       freeIndex = m_nodes[freeIndex].parentOrNext
-      ++freeCount
+      freeCount += 1
     }
     assert(getHeight() == computeHeight())
     //assert(m_nodeCount + freeCount == m_nodes.count)
@@ -383,7 +383,7 @@ public class b2DynamicTree<T> : CustomStringConvertible {
       if m_nodes[i].IsLeaf() {
         m_nodes[i].parentOrNext = b2_nullNode
         nodes[count] = i
-        ++count
+        count += 1
       }
       else {
         freeNode(i)
@@ -427,7 +427,7 @@ public class b2DynamicTree<T> : CustomStringConvertible {
       
       nodes[jMin] = nodes[count-1]
       nodes[iMin] = parentIndex
-      --count
+      count -= 1
     }
     
     m_root = nodes[0]
@@ -474,7 +474,7 @@ public class b2DynamicTree<T> : CustomStringConvertible {
   }
   
   func insertLeaf(leaf: Int) {
-    ++m_insertionCount
+    m_insertionCount += 1
     
     if m_root == b2_nullNode {
       m_root = leaf

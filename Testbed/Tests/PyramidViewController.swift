@@ -53,7 +53,7 @@ class PyramidViewController: BaseViewController {
       for i in 0 ..< self.count {
         y = x
         
-        for (var j = i; j < self.count; ++j) {
+        for j in i ..< self.count {
           let bd = b2BodyDef()
           bd.type = b2BodyType.dynamicBody
           bd.position = y

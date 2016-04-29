@@ -36,7 +36,7 @@ class PinballViewController: BaseViewController {
   override func viewDidLoad() {
     super.viewDidLoad()
     
-    let switchButton = UIBarButtonItem(title: "On/Off", style: UIBarButtonItemStyle.Plain, target: self, action: "onSwitch:")
+    let switchButton = UIBarButtonItem(title: "On/Off", style: UIBarButtonItemStyle.Plain, target: self, action: #selector(PinballViewController.onSwitch(_:)))
     let flexible = UIBarButtonItem(barButtonSystemItem: UIBarButtonSystemItem.FlexibleSpace, target: nil, action: nil)
     self.addToolbarItems([switchButton, flexible])
   }

@@ -82,7 +82,7 @@ class TumblerViewController: BaseViewController {
       shape.setAsBox(halfWidth: 0.125, halfHeight: 0.125)
       body.createFixture(shape: shape, density: 1.0)
       
-      ++count
+      count += 1
     }
   }
   

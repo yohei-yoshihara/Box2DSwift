@@ -104,7 +104,7 @@ class SettingTableViewController: UITableViewController {
     
     self.tableView.dataSource = self
     
-    self.navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: UIBarButtonSystemItem.Done, target: self, action: "onDone:")
+    self.navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: UIBarButtonSystemItem.Done, target: self, action: #selector(SettingTableViewController.onDone(_:)))
   }
   
   func onDone(sender: UIBarButtonItem) {
@@ -133,7 +133,7 @@ class SettingTableViewController: UITableViewController {
         cell.stepper.value = Double(settings.velocityIterations)
         cell.stepper.minimumValue = 1
         cell.stepper.tag = 0
-        cell.stepper.addTarget(self, action: "onValueChanged:", forControlEvents: UIControlEvents.ValueChanged)
+        cell.stepper.addTarget(self, action: #selector(SettingTableViewController.onValueChanged(_:)), forControlEvents: UIControlEvents.ValueChanged)
         _cell = cell
       }
       else if indexPath.row == 1 {
@@ -142,14 +142,14 @@ class SettingTableViewController: UITableViewController {
         cell.stepper.value = Double(settings.positionIterations)
         cell.stepper.minimumValue = 1
         cell.stepper.tag = 1
-        cell.stepper.addTarget(self, action: "onValueChanged:", forControlEvents: UIControlEvents.ValueChanged)
+        cell.stepper.addTarget(self, action: #selector(SettingTableViewController.onValueChanged(_:)), forControlEvents: UIControlEvents.ValueChanged)
         _cell = cell
       }
       else if indexPath.row == 2 {
         let cell = tableView.dequeueReusableCellWithIdentifier(HertzCell.cellId, forIndexPath: indexPath) as! HertzCell
         cell.segmentedControl.selectedSegmentIndex = settings.hz == 30.0 ? 0 : 1
         cell.segmentedControl.tag = 2
-        cell.segmentedControl.addTarget(self, action: "onValueChanged:", forControlEvents: UIControlEvents.ValueChanged)
+        cell.segmentedControl.addTarget(self, action: #selector(SettingTableViewController.onValueChanged(_:)), forControlEvents: UIControlEvents.ValueChanged)
         _cell = cell
       }
       else if indexPath.row == 3 {
@@ -157,7 +157,7 @@ class SettingTableViewController: UITableViewController {
         cell.propertyNameLabel.text = "Sleep"
         cell.propertySwitch.on = settings.enableSleep
         cell.propertySwitch.tag = 3
-        cell.propertySwitch.addTarget(self, action: "onValueChanged:", forControlEvents: UIControlEvents.ValueChanged)
+        cell.propertySwitch.addTarget(self, action: #selector(SettingTableViewController.onValueChanged(_:)), forControlEvents: UIControlEvents.ValueChanged)
         _cell = cell
       }
       else if indexPath.row == 4 {
@@ -165,7 +165,7 @@ class SettingTableViewController: UITableViewController {
         cell.propertyNameLabel.text = "Warm Starting"
         cell.propertySwitch.on = settings.enableWarmStarting
         cell.propertySwitch.tag = 4
-        cell.propertySwitch.addTarget(self, action: "onValueChanged:", forControlEvents: UIControlEvents.ValueChanged)
+        cell.propertySwitch.addTarget(self, action: #selector(SettingTableViewController.onValueChanged(_:)), forControlEvents: UIControlEvents.ValueChanged)
         _cell = cell
       }
       else if indexPath.row == 5 {
@@ -173,7 +173,7 @@ class SettingTableViewController: UITableViewController {
         cell.propertyNameLabel.text = "Time of Impact"
         cell.propertySwitch.on = settings.enableContinuous
         cell.propertySwitch.tag = 5
-        cell.propertySwitch.addTarget(self, action: "onValueChanged:", forControlEvents: UIControlEvents.ValueChanged)
+        cell.propertySwitch.addTarget(self, action: #selector(SettingTableViewController.onValueChanged(_:)), forControlEvents: UIControlEvents.ValueChanged)
         _cell = cell
       }
       else if indexPath.row == 6 {
@@ -181,7 +181,7 @@ class SettingTableViewController: UITableViewController {
         cell.propertyNameLabel.text = "Sub-Stepping"
         cell.propertySwitch.on = settings.enableSubStepping
         cell.propertySwitch.tag = 6
-        cell.propertySwitch.addTarget(self, action: "onValueChanged:", forControlEvents: UIControlEvents.ValueChanged)
+        cell.propertySwitch.addTarget(self, action: #selector(SettingTableViewController.onValueChanged(_:)), forControlEvents: UIControlEvents.ValueChanged)
         _cell = cell
       }
     }
@@ -191,7 +191,7 @@ class SettingTableViewController: UITableViewController {
         cell.propertyNameLabel.text = "Shapes"
         cell.propertySwitch.on = settings.drawShapes
         cell.propertySwitch.tag = 7
-        cell.propertySwitch.addTarget(self, action: "onValueChanged:", forControlEvents: UIControlEvents.ValueChanged)
+        cell.propertySwitch.addTarget(self, action: #selector(SettingTableViewController.onValueChanged(_:)), forControlEvents: UIControlEvents.ValueChanged)
         _cell = cell
       }
       else if indexPath.row == 1 {
@@ -199,7 +199,7 @@ class SettingTableViewController: UITableViewController {
         cell.propertyNameLabel.text = "Joints"
         cell.propertySwitch.on = settings.drawJoints
         cell.propertySwitch.tag = 8
-        cell.propertySwitch.addTarget(self, action: "onValueChanged:", forControlEvents: UIControlEvents.ValueChanged)
+        cell.propertySwitch.addTarget(self, action: #selector(SettingTableViewController.onValueChanged(_:)), forControlEvents: UIControlEvents.ValueChanged)
         _cell = cell
       }
       else if indexPath.row == 2 {
@@ -207,7 +207,7 @@ class SettingTableViewController: UITableViewController {
         cell.propertyNameLabel.text = "AABBs"
         cell.propertySwitch.on = settings.drawAABBs
         cell.propertySwitch.tag = 9
-        cell.propertySwitch.addTarget(self, action: "onValueChanged:", forControlEvents: UIControlEvents.ValueChanged)
+        cell.propertySwitch.addTarget(self, action: #selector(SettingTableViewController.onValueChanged(_:)), forControlEvents: UIControlEvents.ValueChanged)
         _cell = cell
       }
       else if indexPath.row == 3 {
@@ -215,7 +215,7 @@ class SettingTableViewController: UITableViewController {
         cell.propertyNameLabel.text = "Contact Points"
         cell.propertySwitch.on = settings.drawContactPoints
         cell.propertySwitch.tag = 10
-        cell.propertySwitch.addTarget(self, action: "onValueChanged:", forControlEvents: UIControlEvents.ValueChanged)
+        cell.propertySwitch.addTarget(self, action: #selector(SettingTableViewController.onValueChanged(_:)), forControlEvents: UIControlEvents.ValueChanged)
         _cell = cell
       }
       else if indexPath.row == 4 {
@@ -223,7 +223,7 @@ class SettingTableViewController: UITableViewController {
         cell.propertyNameLabel.text = "Contact Normals"
         cell.propertySwitch.on = settings.drawContactNormals
         cell.propertySwitch.tag = 11
-        cell.propertySwitch.addTarget(self, action: "onValueChanged:", forControlEvents: UIControlEvents.ValueChanged)
+        cell.propertySwitch.addTarget(self, action: #selector(SettingTableViewController.onValueChanged(_:)), forControlEvents: UIControlEvents.ValueChanged)
         _cell = cell
       }
       else if indexPath.row == 5 {
@@ -231,7 +231,7 @@ class SettingTableViewController: UITableViewController {
         cell.propertyNameLabel.text = "Contact Impulses"
         cell.propertySwitch.on = settings.drawContactImpulse
         cell.propertySwitch.tag = 12
-        cell.propertySwitch.addTarget(self, action: "onValueChanged:", forControlEvents: UIControlEvents.ValueChanged)
+        cell.propertySwitch.addTarget(self, action: #selector(SettingTableViewController.onValueChanged(_:)), forControlEvents: UIControlEvents.ValueChanged)
         _cell = cell
       }
       else if indexPath.row == 6 {
@@ -239,7 +239,7 @@ class SettingTableViewController: UITableViewController {
         cell.propertyNameLabel.text = "Friction Impulses"
         cell.propertySwitch.on = settings.drawFrictionImpulse
         cell.propertySwitch.tag = 13
-        cell.propertySwitch.addTarget(self, action: "onValueChanged:", forControlEvents: UIControlEvents.ValueChanged)
+        cell.propertySwitch.addTarget(self, action: #selector(SettingTableViewController.onValueChanged(_:)), forControlEvents: UIControlEvents.ValueChanged)
         _cell = cell
       }
       else if indexPath.row == 7 {
@@ -247,7 +247,7 @@ class SettingTableViewController: UITableViewController {
         cell.propertyNameLabel.text = "Center of Masses"
         cell.propertySwitch.on = settings.drawCOMs
         cell.propertySwitch.tag = 14
-        cell.propertySwitch.addTarget(self, action: "onValueChanged:", forControlEvents: UIControlEvents.ValueChanged)
+        cell.propertySwitch.addTarget(self, action: #selector(SettingTableViewController.onValueChanged(_:)), forControlEvents: UIControlEvents.ValueChanged)
         _cell = cell
       }
       else if indexPath.row == 8 {
@@ -255,7 +255,7 @@ class SettingTableViewController: UITableViewController {
         cell.propertyNameLabel.text = "Statistics"
         cell.propertySwitch.on = settings.drawStats
         cell.propertySwitch.tag = 15
-        cell.propertySwitch.addTarget(self, action: "onValueChanged:", forControlEvents: UIControlEvents.ValueChanged)
+        cell.propertySwitch.addTarget(self, action: #selector(SettingTableViewController.onValueChanged(_:)), forControlEvents: UIControlEvents.ValueChanged)
         _cell = cell
       }
       else if indexPath.row == 9 {
@@ -263,7 +263,7 @@ class SettingTableViewController: UITableViewController {
         cell.propertyNameLabel.text = "Profile"
         cell.propertySwitch.on = settings.drawProfile
         cell.propertySwitch.tag = 16
-        cell.propertySwitch.addTarget(self, action: "onValueChanged:", forControlEvents: UIControlEvents.ValueChanged)
+        cell.propertySwitch.addTarget(self, action: #selector(SettingTableViewController.onValueChanged(_:)), forControlEvents: UIControlEvents.ValueChanged)
         _cell = cell
       }
     }

@@ -109,7 +109,7 @@ public class b2World {
       m_bodyList!.m_prev = b
     }
     m_bodyList = b
-    ++m_bodyCount
+    m_bodyCount += 1
     
     return b
   }
@@ -182,7 +182,7 @@ public class b2World {
       m_bodyList = b.m_next
     }
     
-    --m_bodyCount
+    m_bodyCount -= 1
   }
   
   /// Create a joint to constrain bodies together. No reference to the definition
@@ -203,7 +203,7 @@ public class b2World {
       m_jointList!.m_prev = j
     }
     m_jointList = j
-    ++m_jointCount
+    m_jointCount += 1
     
     // Connect to the bodies' doubly linked lists.
     j.m_edgeA.joint = j
@@ -311,7 +311,7 @@ public class b2World {
     b2Joint.destroy(j)
     
     assert(m_jointCount > 0)
-    --m_jointCount
+    m_jointCount -= 1
     
     // If the joint prevents collisions, then flag any contacts for filtering.
     if collideConnected == false {
@@ -404,9 +404,12 @@ public class b2World {
   /// ClearForces after all sub-steps are complete in one pass of your game loop.
   /// @see SetAutoClearForces
   public func clearForces() {
-    for (var body = m_bodyList; body != nil; body = body!.getNext()) {
-      body!.m_force.setZero()
-      body!.m_torque = 0.0
+    var body = m_bodyList
+    while body != nil
+    {
+        body!.m_force.setZero()
+        body!.m_torque = 0.0
+        body = body!.getNext()
     }
   }
   
@@ -419,10 +422,12 @@ public class b2World {
     let flags = m_debugDraw!.flags
     
     if (flags & b2DrawFlags.shapeBit) != 0 {
-      for (var b = m_bodyList; b != nil; b = b!.getNext()) {
+      var b = m_bodyList
+      while b != nil
+      {
         let xf = b!.transform
-        for (var f = b!.getFixtureList(); f != nil; f = f!.getNext()) {
-          
+        var f = b!.getFixtureList()
+        while f != nil {
           if b!.isActive == false {
             drawShape(f!, xf, b2Color(0.5, 0.5, 0.3))
           }
@@ -438,19 +443,24 @@ public class b2World {
           else {
             drawShape(f!, xf, b2Color(0.9, 0.7, 0.7))
           }
+          f = f!.getNext()
         }
+        b = b!.getNext()
       }
     }
     
     if (flags & b2DrawFlags.jointBit) != 0 {
-      for (var j = m_jointList; j != nil; j = j!.getNext()) {
-        drawJoint(j!)
-      }
+        var j = m_jointList
+        while j != nil {
+            drawJoint(j!)
+            j = j!.getNext()
+        }
     }
     
     if (flags & b2DrawFlags.pairBit) != 0 {
 //      let color = b2Color(0.3, 0.9, 0.9)
-      for (var c = m_contactManager.m_contactList; c != nil; c = c!.getNext()) {
+        var c = m_contactManager.m_contactList
+        while c != nil {
         //let fixtureA = c!.fixtureA
         //let fixtureB = c!.fixtureB
         
@@ -458,19 +468,20 @@ public class b2World {
         //let cB = fixtureB.GetAABB().GetCenter()
         
         //m_debugDraw.drawSegment(cA, cB, color)
+        c = c!.getNext()
       }
     }
     
     if (flags & b2DrawFlags.aabbBit) != 0 {
       let color = b2Color(0.9, 0.3, 0.9)
       let bp = m_contactManager.m_broadPhase
-      
-      for (var b = m_bodyList; b != nil; b = b!.getNext()) {
+      var b = m_bodyList
+      while b != nil {
         if b!.isActive == false {
           continue
         }
-        
-        for (var f = b!.getFixtureList(); f != nil; f = f!.getNext()) {
+        var f = b!.getFixtureList()
+        while f != nil {
           for i in 0 ..< f!.m_proxyCount {
             let proxy = f!.m_proxies[i]
             let aabb = bp.getFatAABB(proxyId: proxy.proxyId)
@@ -482,15 +493,19 @@ public class b2World {
             
             m_debugDraw!.drawPolygon(vs, color)
           }
+          f = f!.getNext()
         }
+        b = b!.getNext()
       }
     }
     
     if (flags & b2DrawFlags.centerOfMassBit) != 0 {
-      for (var b = m_bodyList; b != nil; b = b!.getNext()) {
+      var b = m_bodyList
+      while b != nil {
         var xf = b!.transform
         xf.p = b!.worldCenter
         m_debugDraw!.drawTransform(xf)
+        b = b!.getNext()
       }
     }
   }
@@ -584,8 +599,10 @@ public class b2World {
     
     m_allowSleep = flag
     if m_allowSleep == false {
-      for (var b = m_bodyList; b != nil; b = b!.m_next) {
+      var b = m_bodyList
+      while b != nil {
         b!.setAwake(true)
+        b = b!.m_next
       }
     }
   }
@@ -710,15 +727,18 @@ public class b2World {
     if (m_flags & Flags.locked) == Flags.locked {
       return
     }
-    
-    for (var b = m_bodyList; b != nil; b = b!.m_next) {
+    var b = m_bodyList
+    while b != nil {
       b!.m_xf.p -= newOrigin
       b!.m_sweep.c0 -= newOrigin
       b!.m_sweep.c -= newOrigin
+      b = b!.m_next
     }
     
-    for (var j = m_jointList; j != nil; j = j!.m_next) {
+    var j = m_jointList
+    while j != nil {
       j!.shiftOrigin(newOrigin)
+      j = j!.m_next
     }
     
     m_contactManager.m_broadPhase.shiftOrigin(newOrigin)
@@ -746,32 +766,42 @@ public class b2World {
     print("b2Body** bodies = (b2Body**)b2Alloc(\(m_bodyCount) * sizeof(b2Body*));")
     print("b2Joint** joints = (b2Joint**)b2Alloc(\(m_jointCount) * sizeof(b2Joint*));")
     var i = 0
-    for (var b = m_bodyList; b != nil; b = b!.m_next) {
+    var b = m_bodyList
+    while b != nil {
       b!.m_islandIndex = i
       b!.dump()
-      ++i
+      i += 1
+      b = b!.m_next
     }
     
     i = 0
-    for (var j = m_jointList; j != nil; j = j!.m_next) {
+    
+    var j = m_jointList;
+    while j != nil {
       j!.m_index = i
-      ++i
+      i += 1
+      j = j!.m_next
     }
     
     // First pass on joints, skip gear joints.
-    for (var j = m_jointList; j != nil; j = j!.m_next) {
+    j = m_jointList
+    while j != nil {
       if j!.m_type == b2JointType.gearJoint {
+        j = j!.m_next
         continue
       }
       
       print("{")
       j!.dump()
       print("}")
+      j = j!.m_next
     }
     
     // Second pass on joints, only gear joints.
-    for (var j = m_jointList; j != nil; j = j!.m_next) {
+    j = m_jointList
+    while j != nil {
       if j!.m_type != b2JointType.gearJoint {
+        j = j!.m_next
         continue
       }
       
@@ -784,6 +814,7 @@ public class b2World {
     print("b2Free(bodies);")
     print("joints = NULL;")
     print("bodies = NULL;")
+    j = j!.m_next
   }
   
   // MARK: - private methods
@@ -816,31 +847,41 @@ public class b2World {
     let island = m_island
     
     // Clear all the island flags.
-    for (var b = m_bodyList; b != nil; b = b!.m_next) {
+    var b = m_bodyList
+    while b != nil {
       b!.m_flags &= ~b2Body.Flags.islandFlag
+      b = b!.m_next
     }
-    for (var c = m_contactManager.m_contactList; c != nil; c = c!.m_next) {
+    var c = m_contactManager.m_contactList
+    while c != nil {
       c!.m_flags &= ~b2Contact.Flags.islandFlag
+      c = c!.m_next
     }
-    for (var j = m_jointList; j != nil; j = j!.m_next) {
+    var j = m_jointList
+    while j != nil {
       j!.m_islandFlag = false
+      j = j!.m_next
     }
     
     // Build and simulate all awake islands.
     let stackSize = m_bodyCount
     var stack = [b2Body]()
     stack.reserveCapacity(stackSize)
-    for (var seed = m_bodyList; seed != nil; seed = seed!.m_next) {
+    var seed = m_bodyList
+    while seed != nil {
       if (seed!.m_flags & b2Body.Flags.islandFlag) != 0 {
+        seed = seed!.m_next
         continue
       }
       
       if seed!.isAwake == false || seed!.isActive == false {
+        seed = seed!.m_next
         continue
       }
       
       // The seed can be dynamic or kinematic.
       if seed!.type == b2BodyType.staticBody {
+        seed = seed!.m_next
         continue
       }
       
@@ -866,16 +907,19 @@ public class b2World {
         }
         
         // Search all contacts connected to this body.
-        for (var ce = b.m_contactList; ce != nil; ce = ce!.next) {
+        var ce = b.m_contactList
+        while ce != nil {
           let contact = ce!.contact
           
           // Has this contact already been added to an island?
           if (contact.m_flags & b2Contact.Flags.islandFlag) != 0 {
+            ce = ce!.next
             continue
           }
           
           // Is this contact solid and touching?
           if contact.isEnabled == false || contact.isTouching == false {
+            ce = ce!.next
             continue
           }
           
@@ -883,6 +927,7 @@ public class b2World {
           let sensorA = contact.m_fixtureA.m_isSensor
           let sensorB = contact.m_fixtureB.m_isSensor
           if sensorA || sensorB {
+            ce = ce!.next
             continue
           }
           
@@ -893,17 +938,21 @@ public class b2World {
           
           // Was the other body already added to this island?
           if (other.m_flags & b2Body.Flags.islandFlag) != 0 {
+            ce = ce!.next
             continue
           }
           
           assert(stack.count < stackSize)
           stack.append(other)
           other.m_flags |= b2Body.Flags.islandFlag
+          ce = ce!.next
         }
         
         // Search all joints connect to this body.
-        for (var je = b.m_jointList; je != nil; je = je!.next) {
+        var je = b.m_jointList
+        while je != nil {
           if je!.joint.m_islandFlag == true {
+            je = je!.next
             continue
           }
           
@@ -911,6 +960,7 @@ public class b2World {
           
 				  // Don't simulate joints connected to inactive bodies.
 				  if other.isActive == false {
+                      je = je!.next
 					  continue
 				  }
 
@@ -918,6 +968,7 @@ public class b2World {
 				  je!.joint.m_islandFlag = true
 
 				  if (other.m_flags & b2Body.Flags.islandFlag) != 0 {
+                      je = je!.next
 					  continue
 				  }
 
@@ -941,6 +992,7 @@ public class b2World {
 				  b.m_flags &= ~b2Body.Flags.islandFlag
 			  }
 		  }
+        seed = seed!.m_next
 	  }
 
 	  //m_stackAllocator.Free(stack)
@@ -949,18 +1001,22 @@ public class b2World {
     let timer = b2Timer()
     b2Locally {
 		  // Synchronize fixtures, check for out of range bodies.
-		  for (var b = self.m_bodyList; b != nil; b = b!.getNext()) {
+          var b = self.m_bodyList;
+          while b != nil {
 			  // If a body was not in an island then it did not move.
 			  if (b!.m_flags & b2Body.Flags.islandFlag) == 0 {
-				  continue
+				  b = b!.getNext()
+                  continue
 			  }
 
 			  if b!.type == b2BodyType.staticBody {
+                  b = b!.getNext()
 			 	  continue
 			  }
 
 			  // Update fixtures (for broad-phase).
 			  b!.synchronizeFixtures()
+              b = b!.getNext()
       }
     }
 
@@ -981,16 +1037,19 @@ public class b2World {
     let island = m_TOIIsland
     
     if m_stepComplete {
-      for (var b = m_bodyList; b != nil; b = b!.m_next) {
+      var b = m_bodyList
+      while b != nil {
         b!.m_flags &= ~b2Body.Flags.islandFlag
         b!.m_sweep.alpha0 = 0.0
+        b = b!.m_next
       }
-      
-      for (var c = m_contactManager.m_contactList; c != nil; c = c!.m_next) {
+      var c = m_contactManager.m_contactList
+      while c != nil {
         // Invalidate TOI
         c!.m_flags &= ~(b2Contact.Flags.toiFlag | b2Contact.Flags.islandFlag)
         c!.m_toiCount = 0
         c!.m_toi = 1.0
+        c = c!.m_next
       }
     }
     
@@ -999,15 +1058,18 @@ public class b2World {
       // Find the first TOI.
       var minContact: b2Contact? = nil
       var minAlpha: b2Float = 1.0
-      
-      for (var c = m_contactManager.m_contactList; c != nil; c = c!.m_next) {
+      var c = m_contactManager.m_contactList
+      while c != nil {
+      //for (var c = m_contactManager.m_contactList; c != nil; c = c!.m_next) {
         // Is this contact disabled?
         if c!.isEnabled == false {
+          c = c!.m_next
           continue
         }
         
         // Prevent excessive sub-stepping.
         if c!.m_toiCount > b2_maxSubSteps {
+          c = c!.m_next
           continue
         }
         
@@ -1022,6 +1084,7 @@ public class b2World {
           
           // Is there a sensor?
           if fA.isSensor || fB.isSensor {
+            c = c!.m_next
             continue
           }
           
@@ -1037,6 +1100,7 @@ public class b2World {
           
           // Is at least one body active (awake and dynamic or kinematic)?
           if activeA == false && activeB == false {
+            c = c!.m_next
             continue
           }
           
@@ -1045,6 +1109,7 @@ public class b2World {
           
           // Are these two non-bullet dynamic bodies?
           if collideA == false && collideB == false {
+            c = c!.m_next
             continue
           }
           
@@ -1095,6 +1160,7 @@ public class b2World {
           minContact = c
           minAlpha = alpha
         }
+        c = c!.m_next
       }
       
       if minContact == nil || 1.0 - 10.0 * b2_epsilon < minAlpha {
@@ -1118,7 +1184,7 @@ public class b2World {
       // The TOI contact likely has some new contact points.
       minContact!.update(m_contactManager.m_contactListener)
       minContact!.m_flags &= ~b2Contact.Flags.toiFlag
-      ++minContact!.m_toiCount
+      minContact!.m_toiCount += 1
       
       // Is the contact solid?
       if minContact!.isEnabled == false || minContact!.isTouching == false {
@@ -1149,7 +1215,8 @@ public class b2World {
       for i in 0 ..< 2 {
         let body = bodies[i]
         if body.m_type == b2BodyType.dynamicBody {
-          for (var ce = body.m_contactList; ce != nil; ce = ce!.next) {
+          var ce = body.m_contactList
+          while ce != nil {
             if island.m_bodyCount == island.m_bodyCapacity {
               break
             }
@@ -1162,6 +1229,7 @@ public class b2World {
             
             // Has this contact already been added to the island?
             if (contact.m_flags & b2Contact.Flags.islandFlag) != 0 {
+              ce = ce!.next
               continue
             }
             
@@ -1169,6 +1237,7 @@ public class b2World {
             let other = ce!.other
             if other.m_type == b2BodyType.dynamicBody &&
                body.isBullet == false && other.isBullet == false {
+              ce = ce!.next
               continue
             }
             
@@ -1176,6 +1245,7 @@ public class b2World {
             let sensorA = contact.m_fixtureA.m_isSensor
             let sensorB = contact.m_fixtureB.m_isSensor
             if sensorA || sensorB {
+              ce = ce!.next
               continue
             }
             
@@ -1192,6 +1262,7 @@ public class b2World {
             if contact.isEnabled == false {
               other.m_sweep = backup
               other.synchronizeTransform()
+              ce = ce!.next
               continue
             }
             
@@ -1199,6 +1270,7 @@ public class b2World {
             if contact.isTouching == false {
               other.m_sweep = backup
               other.synchronizeTransform()
+              ce = ce!.next
               continue
             }
             
@@ -1208,6 +1280,7 @@ public class b2World {
             
             // Has the other body already been added to the island?
             if (other.m_flags & b2Body.Flags.islandFlag) != 0 {
+              ce = ce!.next
               continue
             }
             
@@ -1219,6 +1292,7 @@ public class b2World {
             }
             
             island.add(other)
+            ce = ce!.next
           }
         }
       }
@@ -1244,8 +1318,10 @@ public class b2World {
         body.synchronizeFixtures()
         
         // Invalidate all contact TOIs on this displaced body.
-        for (var ce = body.m_contactList; ce != nil; ce = ce!.next) {
+        var ce = body.m_contactList
+        while ce != nil {
           ce!.contact.m_flags &= ~(b2Contact.Flags.toiFlag | b2Contact.Flags.islandFlag)
+          ce = ce!.next
         }
       }
       

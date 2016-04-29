@@ -68,7 +68,7 @@ public struct b2TOIOutput {
 public func b2TimeOfImpact(inout output: b2TOIOutput, input: b2TOIInput) {
   let timer = b2Timer()
   
-  ++b2_toiCalls
+  b2_toiCalls += 1
   
   output.state = b2TOIOutput.State.unknown
   output.t = input.tMax
@@ -218,8 +218,8 @@ public func b2TimeOfImpact(inout output: b2TOIOutput, input: b2TOIInput) {
           t = 0.5 * (a1 + a2)
         }
         
-        ++rootIterCount
-        ++b2_toiRootIters
+        rootIterCount += 1
+        b2_toiRootIters += 1
         
         let s = fcn.evaluate(indexA, indexB, t)
         
@@ -246,15 +246,15 @@ public func b2TimeOfImpact(inout output: b2TOIOutput, input: b2TOIInput) {
       
       b2_toiMaxRootIters = max(b2_toiMaxRootIters, rootIterCount)
       
-      ++pushBackIter
+      pushBackIter += 1
       
       if pushBackIter == b2_maxPolygonVertices {
         break
       }
     }
     
-    ++iter
-    ++b2_toiIters
+    iter += 1
+    b2_toiIters += 1
     
     if done {
       break
