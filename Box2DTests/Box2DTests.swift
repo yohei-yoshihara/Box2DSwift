@@ -113,10 +113,10 @@ class Box2DTests: XCTestCase {
     let gravity = b2Vec2(0.0, -10.0)
     
     // Construct a world object, which will hold and simulate the rigid bodies.
-    var world = b2World(gravity: gravity)
+    let world = b2World(gravity: gravity)
     
     // Define the ground body.
-    var groundBodyDef = b2BodyDef()
+    let groundBodyDef = b2BodyDef()
     groundBodyDef.position.set(0.0, -10.0)
     
     // Call the body factory which allocates memory for the ground body
@@ -134,17 +134,17 @@ class Box2DTests: XCTestCase {
     groundBody.createFixture(shape: groundBox, density: 0.0)
     
     // Define the dynamic body. We set its position and call the body factory.
-    var bodyDef = b2BodyDef()
+    let bodyDef = b2BodyDef()
     bodyDef.type = b2BodyType.dynamicBody
     bodyDef.position.set(0.0, 4.0)
     let body = world.createBody(bodyDef)
     
     // Define another box shape for our dynamic body.
-    var dynamicBox = b2PolygonShape()
+    let dynamicBox = b2PolygonShape()
     dynamicBox.setAsBox(halfWidth: 1.0, halfHeight: 1.0)
     
     // Define the dynamic body fixture.
-    var fixtureDef = b2FixtureDef()
+    let fixtureDef = b2FixtureDef()
     fixtureDef.shape = dynamicBox
     
     // Set the box density to be non-zero, so it will be dynamic.
@@ -166,7 +166,7 @@ class Box2DTests: XCTestCase {
     // This is our little game loop.
     for i in 0 ..< 60 {
       if i == 45 {
-        println("stop")
+        print("stop")
       }
       // Instruct the world to perform a single step of simulation.
       // It is generally best to keep the time step and iterations fixed.
@@ -179,18 +179,18 @@ class Box2DTests: XCTestCase {
       let angle = body.angle
       
       //world.dump()
-      println("\(i): \(position.x) \(position.y) \(angle)")
+      print("\(i): \(position.x) \(position.y) \(angle)")
       
       let expectedX: b2Float = expected[i * 3 + 0]
       let expectedY: b2Float = expected[i * 3 + 1]
       let expectedAngle: b2Float = expected[i * 3 + 2]
-      XCTAssertEqualWithAccuracy(body.position.x, expectedX, 1e-5);
-      XCTAssertEqualWithAccuracy(body.position.y, expectedY, 1e-5);
-      XCTAssertEqualWithAccuracy(body.angle, expectedAngle, 1e-5);
+      XCTAssertEqualWithAccuracy(body.position.x, expectedX, accuracy: 1e-5);
+      XCTAssertEqualWithAccuracy(body.position.y, expectedY, accuracy: 1e-5);
+      XCTAssertEqualWithAccuracy(body.angle, expectedAngle, accuracy: 1e-5);
     }
-    XCTAssertEqualWithAccuracy(body.position.x, b2Float(0.0), 1e-4);
-    XCTAssertEqualWithAccuracy(body.position.y, b2Float(1.014966), 1e-4);
-    XCTAssertEqualWithAccuracy(body.angle, b2Float(0.0), 1e-4);
+    XCTAssertEqualWithAccuracy(body.position.x, b2Float(0.0), accuracy: 1e-4);
+    XCTAssertEqualWithAccuracy(body.position.y, b2Float(1.014966), accuracy: 1e-4);
+    XCTAssertEqualWithAccuracy(body.angle, b2Float(0.0), accuracy: 1e-4);
     // When the world destructor is called, all bodies and joints are freed. This can
     // When the world destructor is called, all bodies and joints are freed. This can
     // create orphaned pointers, so be careful about your world management.
