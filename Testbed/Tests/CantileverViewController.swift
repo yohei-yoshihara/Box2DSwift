@@ -52,7 +52,7 @@ class CantileverViewController: BaseViewController {
       
       let jd = b2WeldJointDef()
       
-      var prevBody = ground
+      var prevBody = ground!
       for i in 0 ..< self.count {
         let bd = b2BodyDef()
         bd.type = b2BodyType.dynamicBody
@@ -80,7 +80,7 @@ class CantileverViewController: BaseViewController {
       jd.frequencyHz = 5.0
       jd.dampingRatio = 0.7
       
-      var prevBody = ground
+      var prevBody = ground!
       for i in 0 ..< 3 {
         let bd = b2BodyDef()
         bd.type = b2BodyType.dynamicBody
@@ -106,7 +106,7 @@ class CantileverViewController: BaseViewController {
       
       let jd = b2WeldJointDef()
       
-      var prevBody = ground
+      var prevBody = ground!
       for i in 0 ..< self.count {
         let bd = b2BodyDef()
         bd.type = b2BodyType.dynamicBody
@@ -136,7 +136,7 @@ class CantileverViewController: BaseViewController {
       jd.frequencyHz = 8.0
       jd.dampingRatio = 0.7
       
-      var prevBody = ground
+      var prevBody = ground!
       for i in 0 ..< self.count {
         let bd = b2BodyDef()
         bd.type = b2BodyType.dynamicBody

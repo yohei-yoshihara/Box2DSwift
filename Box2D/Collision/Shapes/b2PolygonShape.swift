@@ -26,7 +26,7 @@ the original C++ code written by Erin Catto.
 
 import Foundation
 
-public class b2PolygonShape : b2Shape {
+open class b2PolygonShape : b2Shape {
   public override init() {
     m_centroid = b2Vec2(0.0, 0.0)
     super.init()
@@ -35,7 +35,7 @@ public class b2PolygonShape : b2Shape {
   }
   
   /// Implement b2Shape.
-  public override func clone() -> b2Shape {
+  open override func clone() -> b2Shape {
     let clone = b2PolygonShape()
     clone.m_centroid = m_centroid
     clone.m_vertices = m_vertices.clone()
@@ -45,7 +45,7 @@ public class b2PolygonShape : b2Shape {
   }
   
   /// @see b2Shape::GetChildCount
-  public override var childCount: Int {
+  open override var childCount: Int {
     return 1
   }
   
@@ -54,7 +54,7 @@ public class b2PolygonShape : b2Shape {
   /// @warning the points may be re-ordered, even if they form a convex polygon
   /// @warning collinear points are handled but not removed. Collinear points
   /// may lead to poor stacking behavior.
-  public func set(vertices vertices: [b2Vec2]) {
+  open func set(vertices: [b2Vec2]) {
     assert(3 <= vertices.count && vertices.count <= b2_maxPolygonVertices)
     if vertices.count < 3 {
       setAsBox(halfWidth: 1.0, halfHeight: 1.0)
@@ -167,7 +167,7 @@ public class b2PolygonShape : b2Shape {
   - parameter halfWidth: the half-width.
   - parameter halfHeight: the half-height.
   */
-  public func setAsBox(halfWidth hx: b2Float, halfHeight hy: b2Float) {
+  open func setAsBox(halfWidth hx: b2Float, halfHeight hy: b2Float) {
     m_vertices.removeAll()
     m_vertices.append(b2Vec2(-hx, -hy))
     m_vertices.append(b2Vec2( hx, -hy))
@@ -189,7 +189,7 @@ public class b2PolygonShape : b2Shape {
   - parameter center: the center of the box in local coordinates.
   - parameter angle: the rotation of the box in local coordinates.
   */
-  public func setAsBox(halfWidth hx: b2Float, halfHeight hy: b2Float, center: b2Vec2, angle: b2Float) {
+  open func setAsBox(halfWidth hx: b2Float, halfHeight hy: b2Float, center: b2Vec2, angle: b2Float) {
     m_vertices.removeAll()
     m_vertices.append(b2Vec2(-hx, -hy))
     m_vertices.append(b2Vec2( hx, -hy))
@@ -214,7 +214,7 @@ public class b2PolygonShape : b2Shape {
   }
   
   /// @see b2Shape::TestPoint
-  public override func testPoint(transform transform: b2Transform, point p: b2Vec2) -> Bool {
+  open override func testPoint(transform: b2Transform, point p: b2Vec2) -> Bool {
     let pLocal = b2MulT(transform.q, p - transform.p)
     
     for i in 0 ..< m_count {
@@ -228,7 +228,7 @@ public class b2PolygonShape : b2Shape {
   }
   
   /// Implement b2Shape.
-  public override func rayCast(inout output: b2RayCastOutput, input: b2RayCastInput, transform xf: b2Transform, childIndex: Int) -> Bool {
+  open override func rayCast(_ output: inout b2RayCastOutput, input: b2RayCastInput, transform xf: b2Transform, childIndex: Int) -> Bool {
     // Put the ray into the polygon's frame of reference.
     let p1 = b2MulT(xf.q, input.p1 - xf.p)
     let p2 = b2MulT(xf.q, input.p2 - xf.p)
@@ -289,7 +289,7 @@ public class b2PolygonShape : b2Shape {
   }
   
   /// @see b2Shape::ComputeAABB
-  public override func computeAABB(inout aabb: b2AABB, transform: b2Transform, childIndex: Int) {
+  open override func computeAABB(_ aabb: inout b2AABB, transform: b2Transform, childIndex: Int) {
     var lower = b2Mul(transform, m_vertices[0])
     var upper = lower
     
@@ -305,7 +305,7 @@ public class b2PolygonShape : b2Shape {
   }
   
   /// @see b2Shape::ComputeMass
-  public override func computeMass(density density: b2Float) -> b2MassData {
+  open override func computeMass(density: b2Float) -> b2MassData {
     // Polygon mass, centroid, and inertia.
     // Let rho be the polygon density in mass per unit area.
     // Then:
@@ -388,17 +388,17 @@ public class b2PolygonShape : b2Shape {
   }
   
   /// Get the vertex count.
-  public var vertexCount: Int { return m_count }
+  open var vertexCount: Int { return m_count }
   
   /// Get a vertex by index.
-  public func vertex(index : Int) -> b2Vec2 {
+  open func vertex(_ index : Int) -> b2Vec2 {
     assert(0 <= index && index < m_vertices.count)
     return m_vertices[index]
   }
   
   /// Validate convexity. This is a very time consuming operation.
   /// @returns true if valid
-  public func validate() -> Bool {
+  open func validate() -> Bool {
     for i in 0 ..< m_vertices.count {
     let i1 = i
     let i2 = i < m_vertices.count - 1 ? i1 + 1 : 0
@@ -421,15 +421,15 @@ public class b2PolygonShape : b2Shape {
     return true
   }
 
-  public var vertices: b2Array<b2Vec2> {
+  open var vertices: b2Array<b2Vec2> {
     return m_vertices
   }
 
-  public var count: Int {
+  open var count: Int {
     return m_count
   }
 
-  public override var description: String {
+  open override var description: String {
     var s = String()
     s += "b2PolygonShape["
     s += "m_centroid: \(m_centroid), "
@@ -446,7 +446,7 @@ public class b2PolygonShape : b2Shape {
   var m_count: Int { return m_vertices.count }
 }
 
-private func ComputeCentroid(vs: b2Array<b2Vec2>) -> b2Vec2 {
+private func ComputeCentroid(_ vs: b2Array<b2Vec2>) -> b2Vec2 {
   assert(vs.count >= 3)
   
   var c = b2Vec2(0.0, 0.0)

@@ -27,7 +27,7 @@ the original C++ code written by Erin Catto.
 import Foundation
 
 /// This is an internal class.
-public class b2Island {
+open class b2Island {
   init(_ bodyCapacity: Int, _ contactCapacity: Int, _ jointCapacity: Int, _ listener: b2ContactListener?) {
     m_bodyCapacity = bodyCapacity
     m_contactCapacity = contactCapacity
@@ -48,18 +48,18 @@ public class b2Island {
     m_positions.reserveCapacity(m_bodyCapacity)
   }
   
-  func reset(bodyCapacity: Int, _ contactCapacity: Int, _ jointCapacity: Int, _ listener: b2ContactListener?) {
+  func reset(_ bodyCapacity: Int, _ contactCapacity: Int, _ jointCapacity: Int, _ listener: b2ContactListener?) {
     m_bodyCapacity = bodyCapacity
     m_contactCapacity = contactCapacity
     m_jointCapacity	 = jointCapacity
     
     m_listener = listener
     
-    m_bodies.removeAll(keepCapacity: true)
+    m_bodies.removeAll(keepingCapacity: true)
     m_bodies.reserveCapacity(bodyCapacity)
-    m_contacts.removeAll(keepCapacity: true)
+    m_contacts.removeAll(keepingCapacity: true)
     m_contacts.reserveCapacity(contactCapacity)
-    m_joints.removeAll(keepCapacity: true)
+    m_joints.removeAll(keepingCapacity: true)
     m_joints.reserveCapacity(jointCapacity)
     
     m_velocities.removeAll(true)
@@ -69,12 +69,12 @@ public class b2Island {
   }
   
   func clear() {
-    m_bodies.removeAll(keepCapacity: true)
-    m_contacts.removeAll(keepCapacity: true)
-    m_joints.removeAll(keepCapacity: true)
+    m_bodies.removeAll(keepingCapacity: true)
+    m_contacts.removeAll(keepingCapacity: true)
+    m_joints.removeAll(keepingCapacity: true)
   }
   
-  func solve(inout profile: b2Profile, _ step: b2TimeStep, _ gravity: b2Vec2, _ allowSleep: Bool) {
+  func solve(_ profile: inout b2Profile, _ step: b2TimeStep, _ gravity: b2Vec2, _ allowSleep: Bool) {
     let timer = b2Timer()
     
     let h = step.dt
@@ -253,7 +253,7 @@ public class b2Island {
     }
   }
   
-  func solveTOI(subStep: b2TimeStep, _ toiIndexA: Int, _ toiIndexB: Int) {
+  func solveTOI(_ subStep: b2TimeStep, _ toiIndexA: Int, _ toiIndexB: Int) {
     assert(toiIndexA < m_bodyCount)
     assert(toiIndexB < m_bodyCount)
     
@@ -374,23 +374,23 @@ public class b2Island {
     report(contactSolver.m_velocityConstraints)
   }
   
-  func add(body: b2Body) {
+  func add(_ body: b2Body) {
     assert(m_bodyCount < m_bodyCapacity)
     body.m_islandIndex = m_bodyCount
     m_bodies.append(body)
   }
   
-  func add(contact: b2Contact) {
+  func add(_ contact: b2Contact) {
     assert(m_contactCount < m_contactCapacity)
     m_contacts.append(contact)
   }
   
-  func add(joint: b2Joint) {
+  func add(_ joint: b2Joint) {
     assert(m_jointCount < m_jointCapacity)
     m_joints.append(joint)
   }
   
-  func report(constraints: [b2ContactVelocityConstraint]) {
+  func report(_ constraints: [b2ContactVelocityConstraint]) {
     if m_listener == nil {
       return
     }

@@ -82,7 +82,7 @@ class TimeOfImpactViewController: BaseViewController {
       vertices.append(b2Mul(transformA, shapeA.vertices[i]))
     }
     debugDraw.drawPolygon(vertices, b2Color(0.9, 0.9, 0.9))
-    vertices.removeAll(keepCapacity: true)
+    vertices.removeAll(keepingCapacity: true)
     
     var transformB = sweepB.getTransform(beta: 0.0)
     _ = b2Vec2(2.0, -0.1)
@@ -91,21 +91,21 @@ class TimeOfImpactViewController: BaseViewController {
       vertices.append(b2Mul(transformB, shapeB.vertices[i]))
     }
     debugDraw.drawPolygon(vertices, b2Color(0.5, 0.9, 0.5))
-    vertices.removeAll(keepCapacity: true)
+    vertices.removeAll(keepingCapacity: true)
     
     transformB = sweepB.getTransform(beta: output.t)
     for i in 0 ..< shapeB.count {
       vertices.append(b2Mul(transformB, shapeB.vertices[i]))
     }
     debugDraw.drawPolygon(vertices, b2Color(0.5, 0.7, 0.9))
-    vertices.removeAll(keepCapacity: true)
+    vertices.removeAll(keepingCapacity: true)
     
     transformB = sweepB.getTransform(beta: 1.0)
     for i in 0 ..< shapeB.count {
       vertices.append(b2Mul(transformB, shapeB.vertices[i]))
     }
     debugDraw.drawPolygon(vertices, b2Color(0.9, 0.5, 0.5))
-    vertices.removeAll(keepCapacity: true)
+    vertices.removeAll(keepingCapacity: true)
     /*
     #if false
       for (float32 t = 0.0f; t < 1.0f; t += 0.1f)

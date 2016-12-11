@@ -35,7 +35,7 @@ public struct b2GrowableStack<T> {
     m_array.reserveCapacity(capacity)
   }
   
-  mutating func push(element: T) {
+  mutating func push(_ element: T) {
     m_array.append(element)
   }
   
@@ -47,5 +47,5 @@ public struct b2GrowableStack<T> {
     return m_array.count
   }
   
-  private var m_array = [T]()
+  fileprivate var m_array = [T]()
 }

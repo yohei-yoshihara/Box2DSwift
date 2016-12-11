@@ -32,7 +32,7 @@ import Foundation
 /// can violate the constraint slightly. The joint translation is zero
 /// when the local anchor points coincide in world space. Using local
 /// anchors and a local axis helps when saving and loading a game.
-public class b2PrismaticJointDef : b2JointDef {
+open class b2PrismaticJointDef : b2JointDef {
   public override init() {
     localAnchorA = b2Vec2()
     localAnchorB = b2Vec2()
@@ -57,7 +57,7 @@ public class b2PrismaticJointDef : b2JointDef {
   
   /// Initialize the bodies, anchors, axis, and reference angle using the world
   /// anchor and unit world axis.
-  public func initialize(bodyA bA: b2Body, bodyB bB: b2Body, anchor: b2Vec2, axis: b2Vec2) {
+  open func initialize(bodyA bA: b2Body, bodyB bB: b2Body, anchor: b2Vec2, axis: b2Vec2) {
     bodyA = bA
     bodyB = bB
     localAnchorA = bodyA.getLocalPoint(anchor)
@@ -67,34 +67,34 @@ public class b2PrismaticJointDef : b2JointDef {
   }
   
   /// The local anchor point relative to bodyA's origin.
-  public var localAnchorA: b2Vec2
+  open var localAnchorA: b2Vec2
   
   /// The local anchor point relative to bodyB's origin.
-  public var localAnchorB: b2Vec2
+  open var localAnchorB: b2Vec2
   
   /// The local translation unit axis in bodyA.
-  public var localAxisA: b2Vec2
+  open var localAxisA: b2Vec2
   
   /// The constrained angle between the bodies: bodyB_angle - bodyA_angle.
-  public var referenceAngle: b2Float
+  open var referenceAngle: b2Float
   
   /// Enable/disable the joint limit.
-  public var enableLimit: Bool
+  open var enableLimit: Bool
   
   /// The lower translation limit, usually in meters.
-  public var lowerTranslation: b2Float
+  open var lowerTranslation: b2Float
   
   /// The upper translation limit, usually in meters.
-  public var upperTranslation: b2Float
+  open var upperTranslation: b2Float
   
   /// Enable/disable the joint motor.
-  public var enableMotor: Bool
+  open var enableMotor: Bool
   
   /// The maximum motor torque, usually in N-m.
-  public var maxMotorForce: b2Float
+  open var maxMotorForce: b2Float
   
   /// The desired motor speed in radians per second.
-  public var motorSpeed: b2Float
+  open var motorSpeed: b2Float
 }
 
 // MARK: -
@@ -102,35 +102,35 @@ public class b2PrismaticJointDef : b2JointDef {
 /// along an axis fixed in bodyA. Relative rotation is prevented. You can
 /// use a joint limit to restrict the range of motion and a joint motor to
 /// drive the motion or to model joint friction.
-public class b2PrismaticJoint : b2Joint {
-  public override var anchorA: b2Vec2 {
+open class b2PrismaticJoint : b2Joint {
+  open override var anchorA: b2Vec2 {
     return m_bodyA.getWorldPoint(m_localAnchorA)
   }
-  public override var anchorB: b2Vec2 {
+  open override var anchorB: b2Vec2 {
     return m_bodyB.getWorldPoint(m_localAnchorB)
   }
   
-  public override func getReactionForce(inverseTimeStep inv_dt: b2Float) -> b2Vec2 {
+  open override func getReactionForce(inverseTimeStep inv_dt: b2Float) -> b2Vec2 {
     return inv_dt * (m_impulse.x * m_perp + (m_motorImpulse + m_impulse.z) * m_axis)
   }
-  public override func getReactionTorque(inverseTimeStep inv_dt: b2Float) -> b2Float {
+  open override func getReactionTorque(inverseTimeStep inv_dt: b2Float) -> b2Float {
     return inv_dt * m_impulse.y
   }
   
   /// The local anchor point relative to bodyA's origin.
-  public var localAnchorA: b2Vec2  { return m_localAnchorA }
+  open var localAnchorA: b2Vec2  { return m_localAnchorA }
   
   /// The local anchor point relative to bodyB's origin.
-  public var localAnchorB: b2Vec2  { return m_localAnchorB }
+  open var localAnchorB: b2Vec2  { return m_localAnchorB }
   
   /// The local joint axis relative to bodyA.
-  public var localAxisA: b2Vec2 { return m_localXAxisA }
+  open var localAxisA: b2Vec2 { return m_localXAxisA }
   
   /// Get the reference angle.
-  public var referenceAngle: b2Float { return m_referenceAngle }
+  open var referenceAngle: b2Float { return m_referenceAngle }
   
   /// Get the current joint translation, usually in meters.
-  public var jointTranslation: b2Float {
+  open var jointTranslation: b2Float {
     let pA = m_bodyA.getWorldPoint(m_localAnchorA)
     let pB = m_bodyB.getWorldPoint(m_localAnchorB)
     let d = pB - pA
@@ -141,7 +141,7 @@ public class b2PrismaticJoint : b2Joint {
   }
   
   /// Get the current joint translation speed, usually in meters per second.
-  public var jointSpeed: b2Float {
+  open var jointSpeed: b2Float {
     let bA = m_bodyA
     let bB = m_bodyB
       
@@ -162,7 +162,7 @@ public class b2PrismaticJoint : b2Joint {
   }
   
   /// Is the joint limit enabled?
-  public var isLimitEnabled: Bool {
+  open var isLimitEnabled: Bool {
     get {
       return m_enableLimit
     }
@@ -172,7 +172,7 @@ public class b2PrismaticJoint : b2Joint {
   }
   
   /// Enable/disable the joint limit.
-  public func enableLimit(flag: Bool) {
+  open func enableLimit(_ flag: Bool) {
     if flag != m_enableLimit {
       m_bodyA.setAwake(true)
       m_bodyB.setAwake(true)
@@ -182,17 +182,17 @@ public class b2PrismaticJoint : b2Joint {
   }
   
   /// Get the lower joint limit, usually in meters.
-  public var lowerLimit: b2Float {
+  open var lowerLimit: b2Float {
     return m_lowerTranslation
   }
   
   /// Get the upper joint limit, usually in meters.
-  public var upperLimit: b2Float {
+  open var upperLimit: b2Float {
     return m_upperTranslation
   }
   
   /// Set the joint limits, usually in meters.
-  public func setLimits(lower lower: b2Float, upper: b2Float) {
+  open func setLimits(lower: b2Float, upper: b2Float) {
     assert(lower <= upper)
     if lower != m_lowerTranslation || upper != m_upperTranslation {
       m_bodyA.setAwake(true)
@@ -204,7 +204,7 @@ public class b2PrismaticJoint : b2Joint {
   }
   
   /// Is the joint motor enabled?
-  public var isMotorEnabled: Bool {
+  open var isMotorEnabled: Bool {
     get {
       return m_enableMotor
     }
@@ -214,21 +214,21 @@ public class b2PrismaticJoint : b2Joint {
   }
   
   /// Enable/disable the joint motor.
-  public func enableMotor(flag: Bool) {
+  open func enableMotor(_ flag: Bool) {
     m_bodyA.setAwake(true)
     m_bodyB.setAwake(true)
     m_enableMotor = flag
   }
   
   /// Set the motor speed, usually in meters per second.
-  func setMotorSpeed(speed: b2Float) {
+  func setMotorSpeed(_ speed: b2Float) {
     m_bodyA.setAwake(true)
     m_bodyB.setAwake(true)
     m_motorSpeed = speed
   }
   
   /// Get the motor speed, usually in meters per second.
-  public var motorSpeed: b2Float {
+  open var motorSpeed: b2Float {
     get {
       return m_motorSpeed
     }
@@ -238,12 +238,12 @@ public class b2PrismaticJoint : b2Joint {
   }
   
   /// Set the maximum motor force, usually in N.
-  public func setMaxMotorForce(force: b2Float) {
+  open func setMaxMotorForce(_ force: b2Float) {
     m_bodyA.setAwake(true)
     m_bodyB.setAwake(true)
     m_maxMotorForce = force
   }
-  public var maxMotorForce: b2Float {
+  open var maxMotorForce: b2Float {
     get {
       return m_maxMotorForce
     }
@@ -253,12 +253,12 @@ public class b2PrismaticJoint : b2Joint {
   }
   
   /// Get the current motor force given the inverse time step, usually in N.
-  public func getMotorForce(inverseTimeStep inv_dt: b2Float) -> b2Float {
+  open func getMotorForce(inverseTimeStep inv_dt: b2Float) -> b2Float {
     return inv_dt * m_motorImpulse
   }
   
   /// Dump to println
-  public override func dump() {
+  open override func dump() {
     let indexA = m_bodyA.m_islandIndex
     let indexB = m_bodyB.m_islandIndex
     
@@ -305,7 +305,7 @@ public class b2PrismaticJoint : b2Joint {
     super.init(def)
   }
   
-  override func initVelocityConstraints(inout data: b2SolverData) {
+  override func initVelocityConstraints(_ data: inout b2SolverData) {
     m_indexA = m_bodyA.m_islandIndex
     m_indexB = m_bodyB.m_islandIndex
     m_localCenterA = m_bodyA.m_sweep.localCenter
@@ -426,7 +426,7 @@ public class b2PrismaticJoint : b2Joint {
     data.velocities[m_indexB].v = vB
     data.velocities[m_indexB].w = wB
   }
-  override func solveVelocityConstraints(inout data: b2SolverData) {
+  override func solveVelocityConstraints(_ data: inout b2SolverData) {
     var vA = data.velocities[m_indexA].v
     var wA = data.velocities[m_indexA].w
     var vB = data.velocities[m_indexB].v
@@ -516,7 +516,7 @@ public class b2PrismaticJoint : b2Joint {
     data.velocities[m_indexB].w = wB
   }
   
-  override func solvePositionConstraints(inout data: b2SolverData) -> Bool {
+  override func solvePositionConstraints(_ data: inout b2SolverData) -> Bool {
     var cA = data.positions[m_indexA].c
     var aA = data.positions[m_indexA].a
     var cB = data.positions[m_indexB].c

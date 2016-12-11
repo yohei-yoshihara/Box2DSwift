@@ -95,23 +95,23 @@ This structure is stored across time steps, so we keep it small.
 Note: the impulses are used for internal caching and may not
 provide reliable contact forces, especially for high speed collisions.
 */
-public class b2ManifoldPoint : CustomStringConvertible {
+open class b2ManifoldPoint : CustomStringConvertible {
   /**
   usage depends on manifold type
   */
-  public var localPoint = b2Vec2()
+  open var localPoint = b2Vec2()
   /**
   the non-penetration impulse
   */
-  public var normalImpulse: b2Float = 0.0
+  open var normalImpulse: b2Float = 0.0
   /**
   the friction impulse
   */
-  public var tangentImpulse: b2Float = 0.0
+  open var tangentImpulse: b2Float = 0.0
   /**
   uniquely identifies a contact point between two shapes
   */
-  public var id = b2ContactFeature()
+  open var id = b2ContactFeature()
   
   public init() {}
   public init(copyFrom: b2ManifoldPoint) {
@@ -120,7 +120,7 @@ public class b2ManifoldPoint : CustomStringConvertible {
     self.tangentImpulse = copyFrom.tangentImpulse
     self.id = copyFrom.id
   }
-  public var description: String {
+  open var description: String {
     return "b2ManifoldPoint[localPoint=\(localPoint), normalImpulse\(normalImpulse), tangentImpulse=\(tangentImpulse), id=\(id)]"
   }
 }
@@ -156,24 +156,24 @@ account for movement, which is critical for continuous physics.
 All contact scenarios must be expressed in one of these types.
 This structure is stored across time steps, so we keep it small.
 */
-public class b2Manifold : CustomStringConvertible {
+open class b2Manifold : CustomStringConvertible {
   /**
   the points of contact
   */
-  public var points = [b2ManifoldPoint]()
+  open var points = [b2ManifoldPoint]()
   /**
   not use for Type::e_points
   */
-  public var localNormal = b2Vec2()
+  open var localNormal = b2Vec2()
   /**
   usage depends on manifold type
   */
-  public var localPoint = b2Vec2()
-  public var type = b2ManifoldType.circles
+  open var localPoint = b2Vec2()
+  open var type = b2ManifoldType.circles
   /**
   the number of manifold points
   */
-  public var pointCount : Int { return points.count }
+  open var pointCount : Int { return points.count }
   
   public init() {
   }
@@ -187,7 +187,7 @@ public class b2Manifold : CustomStringConvertible {
     self.localPoint = copyFrom.localPoint
     self.type = copyFrom.type
   }
-  public var description: String {
+  open var description: String {
     var s = String()
     s += "b2Manifold["
     s += "pointCount=\(pointCount), "
@@ -210,27 +210,27 @@ public class b2Manifold : CustomStringConvertible {
 /**
 This is used to compute the current state of a contact manifold.
 */
-public class b2WorldManifold : CustomStringConvertible {
+open class b2WorldManifold : CustomStringConvertible {
   public init() {}
   /**
   world vector pointing from A to B
   */
-  public var normal = b2Vec2()
+  open var normal = b2Vec2()
   /**
   world contact point (point of intersection)
   */
-  public var points = [b2Vec2](count: b2_maxManifoldPoints, repeatedValue: b2Vec2(0, 0))
+  open var points = [b2Vec2](repeating: b2Vec2(0, 0), count: b2_maxManifoldPoints)
   /**
   a negative value indicates overlap, in meters
   */
-  public var separations = [Float](count: b2_maxManifoldPoints, repeatedValue: 0)
+  open var separations = [Float](repeating: 0, count: b2_maxManifoldPoints)
   /**
   Evaluate the manifold with supplied transforms. This assumes
   modest motion from the original state. This does not change the
   point count, impulses, etc. The radii must come from the shapes
   that generated the manifold.
   */
-  public func initialize(manifold manifold: b2Manifold,
+  open func initialize(manifold: b2Manifold,
       transformA xfA: b2Transform, radiusA: b2Float,
       transformB xfB: b2Transform, radiusB: b2Float) {
     if manifold.pointCount == 0 {
@@ -280,7 +280,7 @@ public class b2WorldManifold : CustomStringConvertible {
       normal = -normal
     }
   }
-  public var description: String {
+  open var description: String {
     return "b2WorldManifold[normal=\(normal), points=\(points), separations=\(separations)]"
   }
 }
@@ -308,10 +308,10 @@ public enum b2PointState : CustomStringConvertible {
   
   public var description: String {
     switch self {
-    case nullState: return "nullState"
-    case addState: return "addState"
-    case persistState: return "persistState"
-    case removeState: return "removeState"
+    case .nullState: return "nullState"
+    case .addState: return "addState"
+    case .persistState: return "persistState"
+    case .removeState: return "removeState"
     }
   }
 }
@@ -320,7 +320,7 @@ public enum b2PointState : CustomStringConvertible {
 Compute the point states given two manifolds. The states pertain to the transition from manifold1
 to manifold2. So state1 is either persist or remove while state2 is either add or persist.
 */
-public func b2GetPointStates(manifold1 manifold1: b2Manifold, manifold2: b2Manifold)
+public func b2GetPointStates(manifold1: b2Manifold, manifold2: b2Manifold)
             -> (state1: [b2PointState], state2: [b2PointState]) {
   var state1 = [b2PointState]()
   var state2 = [b2PointState]()
@@ -430,19 +430,19 @@ public struct b2AABB : CustomStringConvertible {
   }
   
   /// Combine an AABB into this one.
-  public mutating func combine(aabb: b2AABB) {
+  public mutating func combine(_ aabb: b2AABB) {
     lowerBound = b2Min(lowerBound, aabb.lowerBound)
     upperBound = b2Max(upperBound, aabb.upperBound)
   }
   
   /// Combine two AABBs into this one.
-  public mutating func combine(aabb1: b2AABB, _ aabb2: b2AABB) {
+  public mutating func combine(_ aabb1: b2AABB, _ aabb2: b2AABB) {
     lowerBound = b2Min(aabb1.lowerBound, aabb2.lowerBound)
     upperBound = b2Max(aabb1.upperBound, aabb2.upperBound)
   }
   
   /// Does this aabb contain the provided AABB.
-  public func contains(aabb: b2AABB) -> Bool {
+  public func contains(_ aabb: b2AABB) -> Bool {
     var result = true
     result = result && lowerBound.x <= aabb.lowerBound.x
     result = result && lowerBound.y <= aabb.lowerBound.y
@@ -451,7 +451,7 @@ public struct b2AABB : CustomStringConvertible {
     return result
   }
   
-  public func rayCast(input: b2RayCastInput) -> b2RayCastOutput? {
+  public func rayCast(_ input: b2RayCastInput) -> b2RayCastOutput? {
     var tmin = b2_minFloat
     var tmax = b2_maxFloat
     
@@ -553,7 +553,7 @@ public func b2ClipSegmentToLine(inputVertices vIn: [b2ClipVertex], normal: b2Vec
 }
 
 /// Determine if two generic shapes overlap.
-public func b2TestOverlap(shapeA shapeA: b2Shape, indexA: Int,
+public func b2TestOverlap(shapeA: b2Shape, indexA: Int,
                           shapeB: b2Shape, indexB: Int,
                           transformA xfA: b2Transform, transformB xfB: b2Transform) -> Bool {
   var input = b2DistanceInput()
@@ -571,7 +571,7 @@ public func b2TestOverlap(shapeA shapeA: b2Shape, indexA: Int,
   return output.distance < 10.0 * b2_epsilon
 }
 
-public func b2TestOverlap(a: b2AABB, _ b: b2AABB) -> Bool {
+public func b2TestOverlap(_ a: b2AABB, _ b: b2AABB) -> Bool {
   let d1 = b.lowerBound - a.upperBound
   let d2 = a.lowerBound - b.upperBound
   

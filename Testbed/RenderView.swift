@@ -38,7 +38,7 @@ class RenderView: UIView, b2Draw {
   var bottom: b2Float = -1
   var top: b2Float = 1
   
-  override class func layerClass() -> AnyClass {
+  override class var layerClass : AnyClass {
     return CAEAGLLayer.self
   }
   
@@ -49,12 +49,12 @@ class RenderView: UIView, b2Draw {
     let eaglLayer = self.layer as! CAEAGLLayer
     
     // set content scale
-    self.contentScaleFactor = UIScreen.mainScreen().scale
-    eaglLayer.contentsScale = UIScreen.mainScreen().scale
+    self.contentScaleFactor = UIScreen.main.scale
+    eaglLayer.contentsScale = UIScreen.main.scale
     
     // set opaque is NO
-    self.opaque = false
-    eaglLayer.opaque = false
+    self.isOpaque = false
+    eaglLayer.isOpaque = false
     
     // retained backing is YES
     eaglLayer.drawableProperties = [kEAGLDrawablePropertyColorFormat:kEAGLColorFormatRGBA8]
@@ -70,7 +70,9 @@ class RenderView: UIView, b2Draw {
   }
   
   override func layoutSubviews() {
-    renderer.resizeFromLayer(self.layer as! CAEAGLLayer)
+    if renderer.resizeFromLayer(self.layer as! CAEAGLLayer) == false {
+      Swift.print("resizeFromLayer failed")
+    }
   }
   
   func preRender() {
@@ -82,7 +84,7 @@ class RenderView: UIView, b2Draw {
     renderer.postRender()
   }
   
-  func setOrtho2D(left left: b2Float, right: b2Float, bottom: b2Float, top: b2Float) {
+  func setOrtho2D(left: b2Float, right: b2Float, bottom: b2Float, top: b2Float) {
     self.left = left
     self.right = right
     self.bottom = bottom
@@ -92,7 +94,7 @@ class RenderView: UIView, b2Draw {
   // MARK: - b2Draw
   
   /// Set the drawing flags.
-  func SetFlags(flags : UInt32) {
+  func SetFlags(_ flags : UInt32) {
     m_drawFlags = flags
   }
   
@@ -104,18 +106,18 @@ class RenderView: UIView, b2Draw {
   }
   
   /// Append flags to the current flags.
-  func AppendFlags(flags : UInt32) {
+  func AppendFlags(_ flags : UInt32) {
     m_drawFlags |= flags
   }
   
   /// Clear flags from the current flags.
-  func ClearFlags(flags : UInt32) {
+  func ClearFlags(_ flags : UInt32) {
     m_drawFlags &= ~flags
   }
   
   /// Draw a closed polygon provided in CCW order.
-  func drawPolygon(vertices: [b2Vec2], _ color: b2Color) {
-    vertexData.removeAll(keepCapacity: true)
+  func drawPolygon(_ vertices: [b2Vec2], _ color: b2Color) {
+    vertexData.removeAll(keepingCapacity: true)
     for v in vertices {
       vertexData.append(Vertex(x: v.x, y: v.y))
     }
@@ -125,8 +127,8 @@ class RenderView: UIView, b2Draw {
   }
   
   /// Draw a solid closed polygon provided in CCW order.
-  func drawSolidPolygon(vertices: [b2Vec2], _ color: b2Color) {
-    vertexData.removeAll(keepCapacity: true)
+  func drawSolidPolygon(_ vertices: [b2Vec2], _ color: b2Color) {
+    vertexData.removeAll(keepingCapacity: true)
     for v in vertices {
       vertexData.append(Vertex(x: v.x, y: v.y))
     }
@@ -141,11 +143,11 @@ class RenderView: UIView, b2Draw {
   }
   
   /// Draw a circle.
-  func drawCircle(center: b2Vec2, _ radius: b2Float, _ color: b2Color) {
+  func drawCircle(_ center: b2Vec2, _ radius: b2Float, _ color: b2Color) {
     let k_segments = 16
     let k_increment: b2Float = b2Float(2.0 * 3.14159265) / b2Float(k_segments)
     var theta: b2Float = 0.0
-    vertexData.removeAll(keepCapacity: true)
+    vertexData.removeAll(keepingCapacity: true)
     for _ in 0 ..< k_segments {
       let v = center + radius * b2Vec2(cosf(theta), sinf(theta))
       vertexData.append(Vertex(x: v.x, y: v.y))
@@ -157,11 +159,11 @@ class RenderView: UIView, b2Draw {
   }
   
   /// Draw a solid circle.
-  func drawSolidCircle(center: b2Vec2, _ radius: b2Float, _ axis: b2Vec2, _ color: b2Color) {
+  func drawSolidCircle(_ center: b2Vec2, _ radius: b2Float, _ axis: b2Vec2, _ color: b2Color) {
     let k_segments = 16
     let k_increment: b2Float = b2Float(2.0 * 3.14159265) / b2Float(k_segments)
     var theta: b2Float = 0.0
-    vertexData.removeAll(keepCapacity: true)
+    vertexData.removeAll(keepingCapacity: true)
     for _ in 0 ..< k_segments {
       let v = center + radius * b2Vec2(cosf(theta), sinf(theta))
       vertexData.append(Vertex(x: v.x, y: v.y))
@@ -178,7 +180,7 @@ class RenderView: UIView, b2Draw {
     renderer.draw(GL_LINE_LOOP, count: vertexData.count)
     
     let p = center + radius * axis
-    vertexData.removeAll(keepCapacity: true)
+    vertexData.removeAll(keepingCapacity: true)
     vertexData.append(Vertex(x: center.x, y: center.y))
     vertexData.append(Vertex(x: p.x, y: p.y))
     renderer.setVertexData(&vertexData)
@@ -188,8 +190,8 @@ class RenderView: UIView, b2Draw {
   }
   
   /// Draw a line segment.
-  func drawSegment(p1: b2Vec2, _ p2: b2Vec2, _ color: b2Color) {
-    vertexData.removeAll(keepCapacity: true)
+  func drawSegment(_ p1: b2Vec2, _ p2: b2Vec2, _ color: b2Color) {
+    vertexData.removeAll(keepingCapacity: true)
     vertexData.append(Vertex(x: p1.x, y: p1.y))
     vertexData.append(Vertex(x: p2.x, y: p2.y))
     renderer.setVertexData(&vertexData)
@@ -199,11 +201,11 @@ class RenderView: UIView, b2Draw {
   
   /// Draw a transform. Choose your own length scale.
   /// @param xf a transform.
-  func drawTransform(xf: b2Transform) {
+  func drawTransform(_ xf: b2Transform) {
     let p1 = xf.p
     var p2: b2Vec2
     let k_axisScale: b2Float = 0.4
-    vertexData.removeAll(keepCapacity: true)
+    vertexData.removeAll(keepingCapacity: true)
     vertexData.append(Vertex(x: p1.x, y: p1.y))
     p2 = p1 + k_axisScale * xf.q.xAxis
     vertexData.append(Vertex(x: p2.x, y: p2.y))
@@ -211,7 +213,7 @@ class RenderView: UIView, b2Draw {
     renderer.setColor(red: 1, green: 0, blue: 0, alpha: 1.0)
     renderer.draw(GL_LINES, count: vertexData.count)
     
-    vertexData.removeAll(keepCapacity: true)
+    vertexData.removeAll(keepingCapacity: true)
     vertexData.append(Vertex(x: p1.x, y: p1.y))
     p2 = p1 + k_axisScale * xf.q.yAxis
     vertexData.append(Vertex(x: p2.x, y: p2.y))
@@ -220,8 +222,8 @@ class RenderView: UIView, b2Draw {
     renderer.draw(GL_LINES, count: vertexData.count)
   }
   
-  func drawPoint(p: b2Vec2, _ size: b2Float, _ color: b2Color) {
-    vertexData.removeAll(keepCapacity: true)
+  func drawPoint(_ p: b2Vec2, _ size: b2Float, _ color: b2Color) {
+    vertexData.removeAll(keepingCapacity: true)
     vertexData.append(Vertex(x: p.x, y: p.y))
     renderer.setVertexData(&vertexData)
     renderer.setColor(red: color.r, green: color.g, blue: color.b, alpha: 1.0)
@@ -230,8 +232,8 @@ class RenderView: UIView, b2Draw {
     renderer.setPointSize(0)
   }
   
-  func drawAABB(aabb: b2AABB, _ color: b2Color) {
-    vertexData.removeAll(keepCapacity: true)
+  func drawAABB(_ aabb: b2AABB, _ color: b2Color) {
+    vertexData.removeAll(keepingCapacity: true)
     vertexData.append(Vertex(x: aabb.lowerBound.x, y: aabb.lowerBound.y))
     vertexData.append(Vertex(x: aabb.upperBound.x, y: aabb.lowerBound.y))
     vertexData.append(Vertex(x: aabb.upperBound.x, y: aabb.upperBound.y))

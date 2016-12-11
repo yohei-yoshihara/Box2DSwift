@@ -50,7 +50,7 @@ class BaseViewController: UIViewController, SettingViewControllerDelegate {
     super.init(coder: aDecoder)
   }
   
-  override init(nibName nibNameOrNil: String?, bundle nibBundleOrNil: NSBundle?) {
+  override init(nibName nibNameOrNil: String?, bundle nibBundleOrNil: Bundle?) {
     super.init(nibName: nibNameOrNil, bundle: nibBundleOrNil)
   }
   
@@ -60,26 +60,26 @@ class BaseViewController: UIViewController, SettingViewControllerDelegate {
     settingsVC = SettingViewController()
     
     debugDraw = RenderView(frame: CalculateRenderViewFrame(self.view))
-    debugDraw.autoresizingMask = UIViewAutoresizing.None
+    debugDraw.autoresizingMask = UIViewAutoresizing()
     debugDraw.SetFlags(settings.debugDrawFlag)
     self.view.addSubview(debugDraw)
     
     infoView = InfoView(frame: CGRect(x: 0, y: 0, width: self.view.bounds.size.width, height: self.view.bounds.size.height))
-    infoView.autoresizingMask = [UIViewAutoresizing.FlexibleWidth, UIViewAutoresizing.FlexibleHeight]
+    infoView.autoresizingMask = [UIViewAutoresizing.flexibleWidth, UIViewAutoresizing.flexibleHeight]
     self.view.addSubview(infoView)
 
-    let pauseButton = UIBarButtonItem(barButtonSystemItem: UIBarButtonSystemItem.Pause,
+    let pauseButton = UIBarButtonItem(barButtonSystemItem: UIBarButtonSystemItem.pause,
       target: self, action: #selector(BaseViewController.onPause(_:)))
-    let singleStepButton = UIBarButtonItem(barButtonSystemItem: UIBarButtonSystemItem.Play,
+    let singleStepButton = UIBarButtonItem(barButtonSystemItem: UIBarButtonSystemItem.play,
       target: self, action: #selector(BaseViewController.onSingleStep(_:)))
-    let flexibleButton = UIBarButtonItem(barButtonSystemItem: UIBarButtonSystemItem.FlexibleSpace, target: nil, action: nil)
+    let flexibleButton = UIBarButtonItem(barButtonSystemItem: UIBarButtonSystemItem.flexibleSpace, target: nil, action: nil)
     self.toolbarItems = [
       flexibleButton, pauseButton,
       flexibleButton, singleStepButton,
       flexibleButton
     ]
     
-    self.navigationItem.rightBarButtonItem = UIBarButtonItem(title: "Settings", style: UIBarButtonItemStyle.Plain, target: self, action: #selector(BaseViewController.onSettings(_:)))
+    self.navigationItem.rightBarButtonItem = UIBarButtonItem(title: "Settings", style: UIBarButtonItemStyle.plain, target: self, action: #selector(BaseViewController.onSettings(_:)))
     
     panGestureRecognizer = UIPanGestureRecognizer(target: self, action: #selector(BaseViewController.onPan(_:)))
     debugDraw.addGestureRecognizer(panGestureRecognizer)
@@ -87,14 +87,14 @@ class BaseViewController: UIViewController, SettingViewControllerDelegate {
     debugDraw.addGestureRecognizer(tapGestureRecognizer)
   }
 
-  func addToolbarItems(additionalToolbarItems: [UIBarButtonItem]) {
+  func addToolbarItems(_ additionalToolbarItems: [UIBarButtonItem]) {
     var toolbarItems = [UIBarButtonItem]()
     toolbarItems += self.toolbarItems!
     toolbarItems += additionalToolbarItems
     self.toolbarItems = toolbarItems
   }
   
-  override func viewWillAppear(animated: Bool) {
+  override func viewWillAppear(_ animated: Bool) {
     super.viewWillAppear(animated)
     
     // World
@@ -112,14 +112,14 @@ class BaseViewController: UIViewController, SettingViewControllerDelegate {
     prepare()
   }
   
-  override func viewDidAppear(animated: Bool) {
+  override func viewDidAppear(_ animated: Bool) {
     super.viewDidAppear(animated)
     displayLink = CADisplayLink(target: self, selector: #selector(BaseViewController.simulationLoop))
     displayLink.frameInterval = 60 / Int(settings.hz)
-    displayLink.addToRunLoop(NSRunLoop.currentRunLoop(), forMode: NSRunLoopCommonModes)
+    displayLink.add(to: RunLoop.current, forMode: RunLoopMode.commonModes)
   }
   
-  override func viewWillDisappear(animated: Bool) {
+  override func viewWillDisappear(_ animated: Bool) {
     if checkBackButton(self) {
       displayLink.invalidate()
       displayLink = nil
@@ -163,26 +163,26 @@ class BaseViewController: UIViewController, SettingViewControllerDelegate {
   func step() {
   }
   
-  func onPause(sender: UIBarButtonItem) {
+  func onPause(_ sender: UIBarButtonItem) {
     settings.pause = !settings.pause
   }
   
-  func onSingleStep(sender: UIBarButtonItem) {
+  func onSingleStep(_ sender: UIBarButtonItem) {
     settings.pause = true
     settings.singleStep = true
   }
   
-  func onSettings(sender: UIBarButtonItem) {
+  func onSettings(_ sender: UIBarButtonItem) {
     settingsVC.settings = settings
     settingsVC.settingViewControllerDelegate = self
-    settingsVC.modalPresentationStyle = UIModalPresentationStyle.Popover
+    settingsVC.modalPresentationStyle = UIModalPresentationStyle.popover
     let popPC = settingsVC.popoverPresentationController
     popPC?.barButtonItem = sender
-    popPC?.permittedArrowDirections = UIPopoverArrowDirection.Any
-    self.presentViewController(settingsVC, animated: true, completion: nil)
+    popPC?.permittedArrowDirections = UIPopoverArrowDirection.any
+    self.present(settingsVC, animated: true, completion: nil)
   }
 
-  func didSettingsChanged(settings: Settings) {
+  func didSettingsChanged(_ settings: Settings) {
     self.settings = settings
     infoView.enableProfile = settings.drawProfile
     infoView.enableStats = settings.drawStats
@@ -190,12 +190,12 @@ class BaseViewController: UIViewController, SettingViewControllerDelegate {
     debugDraw.SetFlags(settings.debugDrawFlag)
   }
 
-  func onPan(gr: UIPanGestureRecognizer) {
-    let p = gr.locationInView(debugDraw)
+  func onPan(_ gr: UIPanGestureRecognizer) {
+    let p = gr.location(in: debugDraw)
     let wp = ConvertScreenToWorld(p, size: debugDraw.bounds.size, viewCenter: settings.viewCenter)
     
     switch gr.state {
-    case .Began:
+    case .began:
       let d = b2Vec2(0.001, 0.001)
       var aabb = b2AABB()
       aabb.lowerBound = wp - d
@@ -216,7 +216,7 @@ class BaseViewController: UIViewController, SettingViewControllerDelegate {
         bombLauncher.onPan(gr)
       }
       
-    case .Changed:
+    case .changed:
       if mouseJoint != nil {
         mouseJoint!.setTarget(wp)
       }
@@ -235,7 +235,7 @@ class BaseViewController: UIViewController, SettingViewControllerDelegate {
     }
   }
   
-  func onTap(gr: UITapGestureRecognizer) {
+  func onTap(_ gr: UITapGestureRecognizer) {
     bombLauncher.onTap(gr)
   }
   

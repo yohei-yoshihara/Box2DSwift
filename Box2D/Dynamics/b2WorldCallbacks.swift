@@ -32,19 +32,19 @@ import Foundation
 public protocol b2DestructionListener {
   /// Called when any joint is about to be destroyed due
   /// to the destruction of one of its attached bodies.
-  func sayGoodbye(joint: b2Joint)
+  func sayGoodbye(_ joint: b2Joint)
   
   /// Called when any fixture is about to be destroyed due
   /// to the destruction of its parent body.
-  func sayGoodbye(fixture: b2Fixture)
+  func sayGoodbye(_ fixture: b2Fixture)
 }
 
 /// Implement this class to provide collision filtering. In other words, you can implement
 /// this class if you want finer control over contact creation.
-public class b2ContactFilter {
+open class b2ContactFilter {
   /// Return true if contact calculations should be performed between these two shapes.
   /// @warning for performance reasons this is only called when the AABBs begin to overlap.
-  func shouldCollide(fixtureA: b2Fixture, _ fixtureB: b2Fixture) -> Bool {
+  func shouldCollide(_ fixtureA: b2Fixture, _ fixtureB: b2Fixture) -> Bool {
     let filterA = fixtureA.filterData
     let filterB = fixtureB.filterData
     
@@ -61,8 +61,8 @@ public class b2ContactFilter {
 /// sub-step forces may approach infinity for rigid body collisions. These
 /// match up one-to-one with the contact points in b2Manifold.
 public struct b2ContactImpulse {
-  public var normalImpulses = [b2Float](count: b2_maxManifoldPoints, repeatedValue: 0)
-  public var tangentImpulses = [b2Float](count: b2_maxManifoldPoints, repeatedValue: 0)
+  public var normalImpulses = [b2Float](repeating: 0, count: b2_maxManifoldPoints)
+  public var tangentImpulses = [b2Float](repeating: 0, count: b2_maxManifoldPoints)
   public var count = 0
 }
 
@@ -76,10 +76,10 @@ public struct b2ContactImpulse {
 /// @warning You cannot create/destroy Box2D entities inside these callbacks.
 public protocol b2ContactListener {
   /// Called when two fixtures begin to touch.
-  func beginContact(contact: b2Contact)
+  func beginContact(_ contact: b2Contact)
   
   /// Called when two fixtures cease to touch.
-  func endContact(contact: b2Contact)
+  func endContact(_ contact: b2Contact)
   
   /// This is called after a contact is updated. This allows you to inspect a
   /// contact before it goes to the solver. If you are careful, you can modify the
@@ -91,7 +91,7 @@ public protocol b2ContactListener {
   /// Note: if you set the number of contact points to zero, you will not
   /// get an EndContact callback. However, you may get a BeginContact callback
   /// the next step.
-  func preSolve(contact: b2Contact, oldManifold: b2Manifold)
+  func preSolve(_ contact: b2Contact, oldManifold: b2Manifold)
 
   /// This lets you inspect a contact after the solver is finished. This is useful
   /// for inspecting impulses.
@@ -99,14 +99,14 @@ public protocol b2ContactListener {
   /// arbitrarily large if the sub-step is small. Hence the impulse is provided explicitly
   /// in a separate data structure.
   /// Note: this is only called for contacts that are touching, solid, and awake.
-  func postSolve(contact: b2Contact, impulse: b2ContactImpulse)
+  func postSolve(_ contact: b2Contact, impulse: b2ContactImpulse)
 }
 
-public class b2DefaultContactListener : b2ContactListener {
-  public func beginContact(contact : b2Contact) {}
-  public func endContact(contact: b2Contact) {}
-  public func preSolve(contact: b2Contact, oldManifold: b2Manifold) {}
-  public func postSolve(contact: b2Contact, impulse: b2ContactImpulse) {}
+open class b2DefaultContactListener : b2ContactListener {
+  open func beginContact(_ contact : b2Contact) {}
+  open func endContact(_ contact: b2Contact) {}
+  open func preSolve(_ contact: b2Contact, oldManifold: b2Manifold) {}
+  open func postSolve(_ contact: b2Contact, impulse: b2ContactImpulse) {}
 }
 
 /// Callback class for AABB queries.
@@ -117,18 +117,18 @@ public protocol b2QueryCallback {
   
   - returns: false to terminate the query.
   */
-  func reportFixture(fixture: b2Fixture) -> Bool
+  func reportFixture(_ fixture: b2Fixture) -> Bool
 }
 
-public typealias b2QueryCallbackFunction = (fixture: b2Fixture) -> Bool
+public typealias b2QueryCallbackFunction = (_ fixture: b2Fixture) -> Bool
 
 class b2QueryCallbackProxy: b2QueryCallback {
   var callback: b2QueryCallbackFunction
-  init(callback: b2QueryCallbackFunction) {
+  init(callback: @escaping b2QueryCallbackFunction) {
     self.callback = callback
   }
-  func reportFixture(fixture: b2Fixture) -> Bool {
-    return self.callback(fixture: fixture)
+  func reportFixture(_ fixture: b2Fixture) -> Bool {
+    return self.callback(fixture)
   }
 }
 
@@ -149,17 +149,17 @@ public protocol b2RayCastCallback {
   
   - returns: -1 to filter, 0 to terminate, fraction to clip the ray for closest hit, 1 to continue
   */
-  func reportFixture(fixture: b2Fixture, point: b2Vec2, normal: b2Vec2, fraction: b2Float) -> b2Float
+  func reportFixture(_ fixture: b2Fixture, point: b2Vec2, normal: b2Vec2, fraction: b2Float) -> b2Float
 }
 
-public typealias b2RayCastCallbackFunction = (fixture: b2Fixture, point: b2Vec2, normal: b2Vec2, fraction: b2Float) -> b2Float
+public typealias b2RayCastCallbackFunction = (_ fixture: b2Fixture, _ point: b2Vec2, _ normal: b2Vec2, _ fraction: b2Float) -> b2Float
 
 class b2RayCastCallbackProxy: b2RayCastCallback {
   var callback: b2RayCastCallbackFunction
-  init(callback: b2RayCastCallbackFunction) {
+  init(callback: @escaping b2RayCastCallbackFunction) {
     self.callback = callback
   }
-  func reportFixture(fixture: b2Fixture, point: b2Vec2, normal: b2Vec2, fraction: b2Float) -> b2Float {
-    return self.callback(fixture: fixture, point: point, normal: normal, fraction: fraction)
+  func reportFixture(_ fixture: b2Fixture, point: b2Vec2, normal: b2Vec2, fraction: b2Float) -> b2Float {
+    return self.callback(fixture, point, normal, fraction)
   }
 }

@@ -39,11 +39,11 @@ class ContinuousTestViewController: BaseViewController {
     
 //    let size = self.view.bounds.size
     label = UILabel(frame: CGRect(x: 0, y: 0, width: 1, height: 1))
-    label.autoresizingMask = [UIViewAutoresizing.FlexibleBottomMargin, UIViewAutoresizing.FlexibleRightMargin]
+    label.autoresizingMask = [UIViewAutoresizing.flexibleBottomMargin, UIViewAutoresizing.flexibleRightMargin]
     label.numberOfLines = 0
-    label.backgroundColor = UIColor.blackColor()
-    label.textColor = UIColor.whiteColor()
-    label.font = UIFont.systemFontOfSize(9)
+    label.backgroundColor = UIColor.black
+    label.textColor = UIColor.white
+    label.font = UIFont.systemFont(ofSize: 9)
     self.view.addSubview(label)
   }
 
@@ -110,7 +110,7 @@ class ContinuousTestViewController: BaseViewController {
     if CACurrentMediaTime() - lastUpdate < 0.3 {
       return
     }
-    s.removeAll(keepCapacity: true)
+    s.removeAll(keepingCapacity: true)
     
     if b2_gjkCalls > 0 {
       s += String(format: "gjk calls = %d, ave gjk iters = %3.1f, max gjk iters = %d", b2_gjkCalls, Float(b2_gjkIters) / Float(b2_gjkCalls), b2_gjkMaxIters)

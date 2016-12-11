@@ -34,12 +34,12 @@ class RopeJointViewController: BaseViewController {
   override func viewDidLoad() {
     super.viewDidLoad()
     
-    let jointButton = UIBarButtonItem(title: "Joint", style: UIBarButtonItemStyle.Plain, target: self, action: #selector(RopeJointViewController.onJoint(_:)))
-    let flexible = UIBarButtonItem(barButtonSystemItem: UIBarButtonSystemItem.FlexibleSpace, target: nil, action: nil)
+    let jointButton = UIBarButtonItem(title: "Joint", style: UIBarButtonItemStyle.plain, target: self, action: #selector(RopeJointViewController.onJoint(_:)))
+    let flexible = UIBarButtonItem(barButtonSystemItem: UIBarButtonSystemItem.flexibleSpace, target: nil, action: nil)
     self.addToolbarItems([jointButton, flexible])
   }
   
-  func onJoint(sender: UIBarButtonItem) {
+  func onJoint(_ sender: UIBarButtonItem) {
     if rope != nil {
       world.destroyJoint(rope!)
       rope = nil
@@ -69,7 +69,7 @@ class RopeJointViewController: BaseViewController {
       fd.density = 20.0
       fd.friction = 0.2
       fd.filter.categoryBits = 0x0001
-      fd.filter.maskBits = 0xFFFF & ~0x0002
+      fd.filter.maskBits = UInt16(0xFFFF) & ~UInt16(0x0002)
       
       let jd = b2RevoluteJointDef()
       jd.collideConnected = false
@@ -79,7 +79,7 @@ class RopeJointViewController: BaseViewController {
       self.ropeDef = b2RopeJointDef()
       self.ropeDef.localAnchorA.set(0.0, y)
       
-      var prevBody = ground
+      var prevBody = ground!
       for i in 0 ..< N {
         let bd = b2BodyDef()
         bd.type = b2BodyType.dynamicBody

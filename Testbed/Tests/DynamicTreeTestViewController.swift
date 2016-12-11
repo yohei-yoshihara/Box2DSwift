@@ -52,11 +52,11 @@ class DynamicTreeTestViewController: BaseViewController, b2QueryWrapper, b2RayCa
   override func viewDidLoad() {
     super.viewDidLoad()
     
-    let autoButton = UIBarButtonItem(title: "Auto", style: UIBarButtonItemStyle.Plain, target: self, action: #selector(DynamicTreeTestViewController.onAuto(_:)))
-    let createButton = UIBarButtonItem(title: "Create", style: UIBarButtonItemStyle.Plain, target: self, action: #selector(DynamicTreeTestViewController.onCreate(_:)))
-    let destroyButton = UIBarButtonItem(title: "Destroy", style: UIBarButtonItemStyle.Plain, target: self, action: #selector(DynamicTreeTestViewController.onDestroy(_:)))
-    let moveButton = UIBarButtonItem(title: "Move", style: UIBarButtonItemStyle.Plain, target: self, action: #selector(DynamicTreeTestViewController.onMove(_:)))
-    let flexible = UIBarButtonItem(barButtonSystemItem: UIBarButtonSystemItem.FlexibleSpace, target: nil, action: nil)
+    let autoButton = UIBarButtonItem(title: "Auto", style: UIBarButtonItemStyle.plain, target: self, action: #selector(DynamicTreeTestViewController.onAuto(_:)))
+    let createButton = UIBarButtonItem(title: "Create", style: UIBarButtonItemStyle.plain, target: self, action: #selector(DynamicTreeTestViewController.onCreate(_:)))
+    let destroyButton = UIBarButtonItem(title: "Destroy", style: UIBarButtonItemStyle.plain, target: self, action: #selector(DynamicTreeTestViewController.onDestroy(_:)))
+    let moveButton = UIBarButtonItem(title: "Move", style: UIBarButtonItemStyle.plain, target: self, action: #selector(DynamicTreeTestViewController.onMove(_:)))
+    let flexible = UIBarButtonItem(barButtonSystemItem: UIBarButtonSystemItem.flexibleSpace, target: nil, action: nil)
     self.addToolbarItems([
       autoButton, flexible,
       createButton, flexible,
@@ -68,19 +68,19 @@ class DynamicTreeTestViewController: BaseViewController, b2QueryWrapper, b2RayCa
     self.view.addSubview(additionalInfoView)
   }
   
-  func onAuto(sender: UIBarButtonItem) {
+  func onAuto(_ sender: UIBarButtonItem) {
     automated = !automated
   }
   
-  func onCreate(sender: UIBarButtonItem) {
+  func onCreate(_ sender: UIBarButtonItem) {
     CreateProxy()
   }
 
-  func onDestroy(sender: UIBarButtonItem) {
+  func onDestroy(_ sender: UIBarButtonItem) {
     DestroyProxy()
   }
 
-  func onMove(sender: UIBarButtonItem) {
+  func onMove(_ sender: UIBarButtonItem) {
     MoveProxy()
   }
   
@@ -169,13 +169,13 @@ class DynamicTreeTestViewController: BaseViewController, b2QueryWrapper, b2RayCa
     }
   }
   
-  func queryCallback(proxyId: Int) -> Bool {
+  func queryCallback(_ proxyId: Int) -> Bool {
     let actor = tree.getUserData(proxyId)! as Actor
     actor.overlap = b2TestOverlap(queryAABB, actor.aabb)
     return true
   }
   
-  func rayCastCallback(input: b2RayCastInput, _ proxyId: Int) -> b2Float {
+  func rayCastCallback(_ input: b2RayCastInput, _ proxyId: Int) -> b2Float {
     let actor = tree.getUserData(proxyId)! as Actor
     
     let output = actor.aabb.rayCast(input)
@@ -190,7 +190,7 @@ class DynamicTreeTestViewController: BaseViewController, b2QueryWrapper, b2RayCa
     return input.maxFraction
   }
   
-  func GetRandomAABB(inout aabb: b2AABB) {
+  func GetRandomAABB(_ aabb: inout b2AABB) {
     let w = b2Vec2(2.0 * proxyExtent, 2.0 * proxyExtent)
     //aabb->lowerBound.x = -proxyExtent;
     //aabb->lowerBound.y = -proxyExtent + worldExtent;
@@ -199,7 +199,7 @@ class DynamicTreeTestViewController: BaseViewController, b2QueryWrapper, b2RayCa
     aabb.upperBound = aabb.lowerBound + w
   }
   
-  func MoveAABB(inout aabb: b2AABB) {
+  func MoveAABB(_ aabb: inout b2AABB) {
     var d = b2Vec2()
     d.x = RandomFloat(-0.5, 0.5)
     d.y = RandomFloat(-0.5, 0.5)
@@ -252,7 +252,7 @@ class DynamicTreeTestViewController: BaseViewController, b2QueryWrapper, b2RayCa
       let aabb0 = actor.aabb
       MoveAABB(&actor.aabb)
       let displacement = actor.aabb.center - aabb0.center
-      tree.moveProxy(actor.proxyId, aabb: actor.aabb, displacement: displacement)
+      _ = tree.moveProxy(actor.proxyId, aabb: actor.aabb, displacement: displacement)
       return
     }
   }

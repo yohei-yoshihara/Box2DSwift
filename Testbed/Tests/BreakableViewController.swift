@@ -73,7 +73,7 @@ class BreakableViewController: BaseViewController, b2ContactListener {
     broke = false
   }
   
-  func postSolve(contact: b2Contact, impulse: b2ContactImpulse) {
+  func postSolve(_ contact: b2Contact, impulse: b2ContactImpulse) {
     contactListener.postSolve(contact, impulse: impulse)
   
     if broke {
@@ -140,9 +140,9 @@ class BreakableViewController: BaseViewController, b2ContactListener {
 		}
   }
   
-  func beginContact(contact : b2Contact) { contactListener.beginContact(contact) }
-  func endContact(contact: b2Contact) { contactListener.endContact(contact) }
-  func preSolve(contact: b2Contact, oldManifold: b2Manifold) {
+  func beginContact(_ contact : b2Contact) { contactListener.beginContact(contact) }
+  func endContact(_ contact: b2Contact) { contactListener.endContact(contact) }
+  func preSolve(_ contact: b2Contact, oldManifold: b2Manifold) {
     contactListener.preSolve(contact, oldManifold: oldManifold);
   }
   

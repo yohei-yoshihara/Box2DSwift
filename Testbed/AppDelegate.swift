@@ -31,32 +31,32 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
   var window: UIWindow?
 
-  func application(application: UIApplication, didFinishLaunchingWithOptions launchOptions: [NSObject: AnyObject]?) -> Bool {
-    self.window = UIWindow(frame: UIScreen.mainScreen().bounds)
+  func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey: Any]?) -> Bool {
+    self.window = UIWindow(frame: UIScreen.main.bounds)
     let vc = MenuViewController()
     let nav = UINavigationController(rootViewController: vc)
-    nav.toolbarHidden = false
-    nav.toolbar.translucent = false
-    nav.navigationBarHidden = false
-    nav.navigationBar.translucent = false
+    nav.isToolbarHidden = false
+    nav.toolbar.isTranslucent = false
+    nav.isNavigationBarHidden = false
+    nav.navigationBar.isTranslucent = false
     self.window!.rootViewController = nav
     self.window!.makeKeyAndVisible()
     return true
   }
 
-  func applicationWillResignActive(application: UIApplication) {
+  func applicationWillResignActive(_ application: UIApplication) {
   }
 
-  func applicationDidEnterBackground(application: UIApplication) {
+  func applicationDidEnterBackground(_ application: UIApplication) {
   }
 
-  func applicationWillEnterForeground(application: UIApplication) {
+  func applicationWillEnterForeground(_ application: UIApplication) {
   }
 
-  func applicationDidBecomeActive(application: UIApplication) {
+  func applicationDidBecomeActive(_ application: UIApplication) {
   }
 
-  func applicationWillTerminate(application: UIApplication) {
+  func applicationWillTerminate(_ application: UIApplication) {
   }
 }
 

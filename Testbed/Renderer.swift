@@ -49,8 +49,8 @@ class Renderer {
   var m_vertexBuffer: GLuint = 0
   
   init() {
-    m_context = EAGLContext(API: EAGLRenderingAPI.OpenGLES2)
-    EAGLContext.setCurrentContext(m_context)
+    m_context = EAGLContext(api: EAGLRenderingAPI.openGLES2)
+    EAGLContext.setCurrent(m_context)
     
     if loadShaders(vertexShaderName: "render", fragmentShaderName: "render") != true {
       fatalError("failed to load shaders")
@@ -80,14 +80,14 @@ class Renderer {
       glDeleteProgram(m_program)
     }
     
-    if EAGLContext.currentContext() == m_context {
-      EAGLContext.setCurrentContext(nil)
+    if EAGLContext.current() == m_context {
+      EAGLContext.setCurrent(nil)
     }
     m_context = nil
   }
   
   func preRender() {
-    EAGLContext.setCurrentContext(m_context)
+    EAGLContext.setCurrent(m_context)
     glBindFramebuffer(GLenum(GL_FRAMEBUFFER), m_framebuffer)
     glViewport(0, 0, m_backingWidth, m_backingHeight)
     glUseProgram(m_program)
@@ -100,7 +100,7 @@ class Renderer {
     m_context.presentRenderbuffer(Int(GL_RENDERBUFFER))
   }
   
-  func setOrtho2D(left left: GLfloat, right: GLfloat, bottom: GLfloat, top: GLfloat) {
+  func setOrtho2D(left: GLfloat, right: GLfloat, bottom: GLfloat, top: GLfloat) {
 //    let zNear: GLfloat = -1.0
 //    let zFar: GLfloat = 1.0
 //    let inv_z: GLfloat = 1.0 / (zFar - zNear)
@@ -122,17 +122,17 @@ class Renderer {
     glUniformMatrix3fv(m_mvpUniform, 1, GLboolean(GL_FALSE), &mat33)
   }
   
-  func setColor(red red: GLfloat, green: GLfloat, blue: GLfloat, alpha: GLfloat) {
+  func setColor(red: GLfloat, green: GLfloat, blue: GLfloat, alpha: GLfloat) {
     glUniform4f(m_colorUniform, red, green, blue, alpha)
   }
   
-  func setPointSize(pointSize: GLfloat) {
+  func setPointSize(_ pointSize: GLfloat) {
     glUniform1f(m_pointSizeUniform, pointSize)
   }
   
-  func setVertexData(inout vertexData: [Vertex]) {
+  func setVertexData(_ vertexData: inout [Vertex]) {
     glBindBuffer(GLenum(GL_ARRAY_BUFFER), m_vertexBuffer)
-    glBufferData(GLenum(GL_ARRAY_BUFFER), sizeof(Vertex) * vertexData.count, &vertexData, GLenum(GL_STATIC_DRAW))
+    glBufferData(GLenum(GL_ARRAY_BUFFER), MemoryLayout<Vertex>.size * vertexData.count, &vertexData, GLenum(GL_STATIC_DRAW))
     glEnableVertexAttribArray(VertexAttributeLocation)
     glVertexAttribPointer(0, 2, GLenum(GL_FLOAT), GLboolean(GL_FALSE), 0, UnsafePointer(bitPattern: 0))
   }
@@ -146,13 +146,13 @@ class Renderer {
     glDisable(GLenum(GL_BLEND))
   }
   
-  func draw(mode: Int32, count: Int) {
+  func draw(_ mode: Int32, count: Int) {
     glDrawArrays(GLenum(mode), 0, GLsizei(count))
   }
 
-  func resizeFromLayer(layer: CAEAGLLayer) -> Bool {
+  func resizeFromLayer(_ layer: CAEAGLLayer) -> Bool {
     glBindRenderbuffer(GLenum(GL_RENDERBUFFER), m_renderbuffer)
-    m_context.renderbufferStorage(Int(GL_RENDERBUFFER), fromDrawable: layer)
+    m_context.renderbufferStorage(Int(GL_RENDERBUFFER), from: layer)
     glGetRenderbufferParameteriv(GLenum(GL_RENDERBUFFER), GLenum(GL_RENDERBUFFER_WIDTH), &m_backingWidth)
     glGetRenderbufferParameteriv(GLenum(GL_RENDERBUFFER), GLenum(GL_RENDERBUFFER_HEIGHT), &m_backingHeight)
     if glCheckFramebufferStatus(GLenum(GL_FRAMEBUFFER)) != GLenum(GL_FRAMEBUFFER_COMPLETE) {
@@ -162,18 +162,18 @@ class Renderer {
     return true
   }
   
-  func loadShaders(vertexShaderName vertexShaderName: String, fragmentShaderName: String) -> Bool {
+  func loadShaders(vertexShaderName: String, fragmentShaderName: String) -> Bool {
     m_program = glCreateProgram()
     var vertexShader: GLuint = 0
     var fragmentShader: GLuint = 0
 
-    let vertexShaderPath = NSBundle.mainBundle().pathForResource(vertexShaderName, ofType: "vsh")
+    let vertexShaderPath = Bundle.main.path(forResource: vertexShaderName, ofType: "vsh")
     if Renderer.compileShader(&vertexShader, type: GLenum(GL_VERTEX_SHADER), file: vertexShaderPath!) != true {
       Renderer.destroyShaders(vertexShader: vertexShader, fragmentShader: fragmentShader, program: m_program)
       return false
     }
     
-    let fragmentShaderPath = NSBundle.mainBundle().pathForResource(fragmentShaderName, ofType: "fsh")
+    let fragmentShaderPath = Bundle.main.path(forResource: fragmentShaderName, ofType: "fsh")
     if Renderer.compileShader(&fragmentShader, type: GLenum(GL_FRAGMENT_SHADER), file: fragmentShaderPath!) != true {
       Renderer.destroyShaders(vertexShader: vertexShader, fragmentShader: fragmentShader, program: m_program)
       return false
@@ -182,26 +182,26 @@ class Renderer {
     glAttachShader(m_program, vertexShader)
     glAttachShader(m_program, fragmentShader)
     
-    glBindAttribLocation(m_program, VertexAttributeLocation, ("a_vertex" as NSString).UTF8String)
+    glBindAttribLocation(m_program, VertexAttributeLocation, ("a_vertex" as NSString).utf8String)
     
     if Renderer.linkProgram(m_program) != true {
       Renderer.destroyShaders(vertexShader: vertexShader, fragmentShader: fragmentShader, program: m_program)
       return false
     }
     
-    m_mvpUniform = glGetUniformLocation(m_program, ("u_mvp" as NSString).UTF8String)
-    m_colorUniform = glGetUniformLocation(m_program, ("u_color" as NSString).UTF8String)
-    m_pointSizeUniform = glGetUniformLocation(m_program, ("u_pointSize" as NSString).UTF8String)
+    m_mvpUniform = glGetUniformLocation(m_program, ("u_mvp" as NSString).utf8String)
+    m_colorUniform = glGetUniformLocation(m_program, ("u_color" as NSString).utf8String)
+    m_pointSizeUniform = glGetUniformLocation(m_program, ("u_pointSize" as NSString).utf8String)
     
     Renderer.destroyShaders(vertexShader: vertexShader, fragmentShader: fragmentShader, program: nil)
     return true
   }
   
-  class func compileShader(inout shader: GLuint, type: GLenum, file: String) -> Bool {
+  class func compileShader(_ shader: inout GLuint, type: GLenum, file: String) -> Bool {
     var error: NSError? = nil
     let s: NSString?
     do {
-      s = try NSString(contentsOfFile: file, encoding: NSUTF8StringEncoding)
+      s = try NSString(contentsOfFile: file, encoding: String.Encoding.utf8.rawValue)
     } catch let error1 as NSError {
       error = error1
       s = nil
@@ -210,7 +210,7 @@ class Renderer {
       print("ERROR: shader load error")
       return false
     }
-    var shaderStringUTF8: UnsafePointer<Int8> = s!.UTF8String
+    var shaderStringUTF8: UnsafePointer<GLchar>? = s!.utf8String!
     shader = glCreateShader(type)
     glShaderSource(shader, 1, &shaderStringUTF8, nil)
     glCompileShader(shader)
@@ -224,7 +224,7 @@ class Renderer {
     return true
   }
   
-  class func linkProgram(program: GLuint) -> Bool {
+  class func linkProgram(_ program: GLuint) -> Bool {
     glLinkProgram(program)
     var status: GLint = 0
     glGetProgramiv(program, GLenum(GL_LINK_STATUS), &status)
@@ -235,7 +235,7 @@ class Renderer {
     return true
   }
   
-  class func destroyShaders(vertexShader vertexShader: GLuint, fragmentShader: GLuint, program: GLuint?) {
+  class func destroyShaders(vertexShader: GLuint, fragmentShader: GLuint, program: GLuint?) {
     if vertexShader != 0 {
       glDeleteShader(vertexShader)
     }

@@ -30,7 +30,7 @@ let b2_minPulleyLength: b2Float = 2.0
 
 /// Pulley joint definition. This requires two ground anchors,
 /// two dynamic body anchor points, and a pulley ratio.
-public class b2PulleyJointDef : b2JointDef {
+open class b2PulleyJointDef : b2JointDef {
   public override init() {
     groundAnchorA = b2Vec2(-1.0, 1.0)
     groundAnchorB = b2Vec2(1.0, 1.0)
@@ -51,7 +51,7 @@ public class b2PulleyJointDef : b2JointDef {
   }
   
   /// Initialize the bodies, anchors, lengths, max lengths, and ratio using the world anchors.
-  public func initialize(bodyA bodyA: b2Body, bodyB: b2Body, groundAnchorA: b2Vec2, groundAnchorB: b2Vec2, anchorA: b2Vec2, anchorB: b2Vec2, ratio: b2Float) {
+  open func initialize(bodyA: b2Body, bodyB: b2Body, groundAnchorA: b2Vec2, groundAnchorB: b2Vec2, anchorA: b2Vec2, anchorB: b2Vec2, ratio: b2Float) {
     self.bodyA = bodyA
     self.bodyB = bodyB
     self.groundAnchorA = groundAnchorA
@@ -67,25 +67,25 @@ public class b2PulleyJointDef : b2JointDef {
   }
   
   /// The first ground anchor in world coordinates. This point never moves.
-  public var groundAnchorA: b2Vec2
+  open var groundAnchorA: b2Vec2
   
   /// The second ground anchor in world coordinates. This point never moves.
-  public var groundAnchorB: b2Vec2
+  open var groundAnchorB: b2Vec2
   
   /// The local anchor point relative to bodyA's origin.
-  public var localAnchorA: b2Vec2
+  open var localAnchorA: b2Vec2
   
   /// The local anchor point relative to bodyB's origin.
-  public var localAnchorB: b2Vec2
+  open var localAnchorB: b2Vec2
   
   /// The a reference length for the segment attached to bodyA.
-  public var lengthA: b2Float
+  open var lengthA: b2Float
   
   /// The a reference length for the segment attached to bodyB.
-  public var lengthB: b2Float
+  open var lengthB: b2Float
   
   /// The pulley ratio, used to simulate a block-and-tackle.
-  public var ratio: b2Float
+  open var ratio: b2Float
 }
 
 // MARK: -
@@ -97,49 +97,49 @@ public class b2PulleyJointDef : b2JointDef {
 /// work better when combined with prismatic joints. You should also cover the
 /// the anchor points with static shapes to prevent one side from going to
 /// zero length.
-public class b2PulleyJoint : b2Joint {
-  public override var anchorA: b2Vec2 {
+open class b2PulleyJoint : b2Joint {
+  open override var anchorA: b2Vec2 {
     return m_bodyA.getWorldPoint(m_localAnchorA)
   }
-  public override var anchorB: b2Vec2 {
+  open override var anchorB: b2Vec2 {
     return m_bodyB.getWorldPoint(m_localAnchorB)
   }
   
-  public override func getReactionForce(inverseTimeStep inv_dt: b2Float) -> b2Vec2 {
+  open override func getReactionForce(inverseTimeStep inv_dt: b2Float) -> b2Vec2 {
     let P = m_impulse * m_uB
     return inv_dt * P
   }
-  public override func getReactionTorque(inverseTimeStep inv_dt: b2Float) -> b2Float {
+  open override func getReactionTorque(inverseTimeStep inv_dt: b2Float) -> b2Float {
     return 0.0
   }
   
   /// Get the first ground anchor.
-  public var groundAnchorA: b2Vec2 {
+  open var groundAnchorA: b2Vec2 {
     return m_groundAnchorA
   }
   
   /// Get the second ground anchor.
-  public var groundAnchorB: b2Vec2 {
+  open var groundAnchorB: b2Vec2 {
     return m_groundAnchorB
   }
   
   /// Get the current length of the segment attached to bodyA.
-  public var lengthA: b2Float {
+  open var lengthA: b2Float {
     return m_lengthA
   }
   
   /// Get the current length of the segment attached to bodyB.
-  public var lengthB: b2Float {
+  open var lengthB: b2Float {
     return m_lengthB
   }
   
   /// Get the pulley ratio.
-  public var ratio: b2Float {
+  open var ratio: b2Float {
     return m_ratio
   }
   
   /// Get the current length of the segment attached to bodyA.
-  public var currentLengthA: b2Float {
+  open var currentLengthA: b2Float {
     let p = m_bodyA.getWorldPoint(m_localAnchorA)
     let s = m_groundAnchorA
     let d = p - s
@@ -147,7 +147,7 @@ public class b2PulleyJoint : b2Joint {
   }
   
   /// Get the current length of the segment attached to bodyB.
-  public var currentLengthB: b2Float {
+  open var currentLengthB: b2Float {
     let p = m_bodyB.getWorldPoint(m_localAnchorB)
     let s = m_groundAnchorB
     let d = p - s
@@ -155,7 +155,7 @@ public class b2PulleyJoint : b2Joint {
   }
   
   /// Dump joint to dmLog
-  public override func dump() {
+  open override func dump() {
     let indexA = m_bodyA.m_islandIndex
     let indexB = m_bodyB.m_islandIndex
     
@@ -174,7 +174,7 @@ public class b2PulleyJoint : b2Joint {
   }
   
   /// Implement b2Joint::ShiftOrigin
-  public override func shiftOrigin(newOrigin: b2Vec2) {
+  open override func shiftOrigin(_ newOrigin: b2Vec2) {
     m_groundAnchorA -= newOrigin
     m_groundAnchorB -= newOrigin
   }
@@ -199,7 +199,7 @@ public class b2PulleyJoint : b2Joint {
     super.init(def)
   }
   
-  override func initVelocityConstraints(inout data: b2SolverData) {
+  override func initVelocityConstraints(_ data: inout b2SolverData) {
     m_indexA = m_bodyA.m_islandIndex
     m_indexB = m_bodyB.m_islandIndex
     m_localCenterA = m_bodyA.m_sweep.localCenter
@@ -280,7 +280,7 @@ public class b2PulleyJoint : b2Joint {
     data.velocities[m_indexB].v = vB
     data.velocities[m_indexB].w = wB
   }
-  override func solveVelocityConstraints(inout data: b2SolverData) {
+  override func solveVelocityConstraints(_ data: inout b2SolverData) {
     var vA = data.velocities[m_indexA].v
     var wA = data.velocities[m_indexA].w
     var vB = data.velocities[m_indexB].v
@@ -305,7 +305,7 @@ public class b2PulleyJoint : b2Joint {
     data.velocities[m_indexB].v = vB
     data.velocities[m_indexB].w = wB
   }
-  override func solvePositionConstraints(inout data: b2SolverData) -> Bool {
+  override func solvePositionConstraints(_ data: inout b2SolverData) -> Bool {
     var cA = data.positions[m_indexA].c
     var aA = data.positions[m_indexA].a
     var cB = data.positions[m_indexB].c

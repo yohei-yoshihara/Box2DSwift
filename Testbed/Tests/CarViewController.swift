@@ -41,12 +41,12 @@ class CarViewController: BaseViewController {
   override func viewDidLoad() {
     super.viewDidLoad()
     
-    let leftButton = UIBarButtonItem(title: "Left", style: UIBarButtonItemStyle.Plain, target: self, action: #selector(CarViewController.onLeft(_:)))
-    let brakeButton = UIBarButtonItem(title: "Brake", style: UIBarButtonItemStyle.Plain, target: self, action: #selector(CarViewController.onBrake(_:)))
-    let rightButton = UIBarButtonItem(title: "Right", style: UIBarButtonItemStyle.Plain, target: self, action: #selector(CarViewController.onRight(_:)))
-    let hzDownButton = UIBarButtonItem(title: "Hz Down", style: UIBarButtonItemStyle.Plain, target: self, action: #selector(CarViewController.onHzDown(_:)))
-    let hzUpButton = UIBarButtonItem(title: "Hz Up", style: UIBarButtonItemStyle.Plain, target: self, action: #selector(CarViewController.onHzUp(_:)))
-    let flexible = UIBarButtonItem(barButtonSystemItem: UIBarButtonSystemItem.FlexibleSpace, target: nil, action: nil)
+    let leftButton = UIBarButtonItem(title: "Left", style: UIBarButtonItemStyle.plain, target: self, action: #selector(CarViewController.onLeft(_:)))
+    let brakeButton = UIBarButtonItem(title: "Brake", style: UIBarButtonItemStyle.plain, target: self, action: #selector(CarViewController.onBrake(_:)))
+    let rightButton = UIBarButtonItem(title: "Right", style: UIBarButtonItemStyle.plain, target: self, action: #selector(CarViewController.onRight(_:)))
+    let hzDownButton = UIBarButtonItem(title: "Hz Down", style: UIBarButtonItemStyle.plain, target: self, action: #selector(CarViewController.onHzDown(_:)))
+    let hzUpButton = UIBarButtonItem(title: "Hz Up", style: UIBarButtonItemStyle.plain, target: self, action: #selector(CarViewController.onHzUp(_:)))
+    let flexible = UIBarButtonItem(barButtonSystemItem: UIBarButtonSystemItem.flexibleSpace, target: nil, action: nil)
     self.addToolbarItems([
       leftButton, flexible,
       brakeButton, flexible,
@@ -56,25 +56,25 @@ class CarViewController: BaseViewController {
       ])
   }
   
-  func onLeft(sender: UIBarButtonItem) {
+  func onLeft(_ sender: UIBarButtonItem) {
     spring1.setMotorSpeed(speed)
   }
 
-  func onBrake(sender: UIBarButtonItem) {
+  func onBrake(_ sender: UIBarButtonItem) {
     spring1.setMotorSpeed(0.0)
   }
 
-  func onRight(sender: UIBarButtonItem) {
+  func onRight(_ sender: UIBarButtonItem) {
     spring1.setMotorSpeed(-speed)
   }
   
-  func onHzDown(sender: UIBarButtonItem) {
+  func onHzDown(_ sender: UIBarButtonItem) {
     hz = max(0.0, hz - 1.0)
     spring1.setSpringFrequencyHz(hz)
     spring2.setSpringFrequencyHz(hz)
   }
 
-  func onHzUp(sender: UIBarButtonItem) {
+  func onHzUp(_ sender: UIBarButtonItem) {
     hz += 1.0
     spring1.setSpringFrequencyHz(hz)
     spring2.setSpringFrequencyHz(hz)
@@ -172,7 +172,7 @@ class CarViewController: BaseViewController {
       
       let jd = b2RevoluteJointDef()
       
-      var prevBody = ground
+      var prevBody = ground!
       for i in 0 ..< N {
         let bd = b2BodyDef()
         bd.type = b2BodyType.dynamicBody

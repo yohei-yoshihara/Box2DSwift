@@ -33,12 +33,12 @@ func randomFloat() -> b2Float {
   return rand
 }
 
-func RandomFloat(low: b2Float, _ high: b2Float) -> b2Float {
+func RandomFloat(_ low: b2Float, _ high: b2Float) -> b2Float {
   let rand = (b2Float(arc4random_uniform(1000)) / b2Float(1000)) * (high - low) + low
   return rand
 }
 
-func ConvertScreenToWorld(tp: CGPoint, size: CGSize, viewCenter: b2Vec2) -> b2Vec2 {
+func ConvertScreenToWorld(_ tp: CGPoint, size: CGSize, viewCenter: b2Vec2) -> b2Vec2 {
   let u = b2Float(tp.x / size.width)
   let v = b2Float((size.height - tp.y) / size.height)
   let extents = b2Vec2(25.0, 25.0)
@@ -50,7 +50,7 @@ func ConvertScreenToWorld(tp: CGPoint, size: CGSize, viewCenter: b2Vec2) -> b2Ve
   return p
 }
 
-func CalculateRenderViewFrame(parentView: UIView) -> CGRect {
+func CalculateRenderViewFrame(_ parentView: UIView) -> CGRect {
   let margin: CGFloat = 8
   let d = min(parentView.bounds.size.width, parentView.bounds.size.height) - margin
   let x = (parentView.bounds.size.width - d) / 2.0
@@ -58,7 +58,7 @@ func CalculateRenderViewFrame(parentView: UIView) -> CGRect {
   return CGRect(x: x, y: y, width: d, height: d)
 }
 
-func checkBackButton(viewController: UIViewController) -> Bool {
+func checkBackButton(_ viewController: UIViewController) -> Bool {
   let vcs: [AnyObject]? = viewController.navigationController?.viewControllers
   if vcs != nil {
     var found = false
@@ -154,7 +154,7 @@ class Settings : CustomStringConvertible {
     return flags
   }
   
-  func apply(world: b2World) {
+  func apply(_ world: b2World) {
     world.setAllowSleeping(enableSleep)
     world.setWarmStarting(enableWarmStarting)
     world.setContinuousPhysics(enableContinuous)
@@ -183,7 +183,7 @@ class QueryCallback : b2QueryCallback {
     fixture = nil
   }
   
-  func reportFixture(fixture: b2Fixture) -> Bool {
+  func reportFixture(_ fixture: b2Fixture) -> Bool {
     let body = fixture.body
     if body.type == b2BodyType.dynamicBody {
       let inside = fixture.testPoint(self.point)
@@ -202,18 +202,18 @@ class QueryCallback : b2QueryCallback {
 }
 
 class DestructionListener : b2DestructionListener {
-  func sayGoodbye(fixture: Box2D.b2Fixture) {}
-  func sayGoodbye(joint: Box2D.b2Joint) {}
+  func sayGoodbye(_ fixture: Box2D.b2Fixture) {}
+  func sayGoodbye(_ joint: Box2D.b2Joint) {}
 }
 
 class ContactListener : b2ContactListener {
   var m_points = [ContactPoint]()
   
   func clearPoints() {
-    m_points.removeAll(keepCapacity: true)
+    m_points.removeAll(keepingCapacity: true)
   }
   
-  func drawContactPoints(settings: Settings, renderView: RenderView) {
+  func drawContactPoints(_ settings: Settings, renderView: RenderView) {
     if settings.drawContactPoints {
       let k_impulseScale: b2Float = 0.1
       let k_axisScale: b2Float = 0.3
@@ -249,10 +249,10 @@ class ContactListener : b2ContactListener {
     }
   }
   
-  func beginContact(contact : b2Contact) {}
-  func endContact(contact: b2Contact) {}
+  func beginContact(_ contact : b2Contact) {}
+  func endContact(_ contact: b2Contact) {}
   
-  func preSolve(contact: b2Contact, oldManifold: b2Manifold) {
+  func preSolve(_ contact: b2Contact, oldManifold: b2Manifold) {
     let manifold = contact.manifold
     if manifold.pointCount == 0 {
       return
@@ -277,7 +277,7 @@ class ContactListener : b2ContactListener {
     }
   }
   
-  func postSolve(contact: b2Contact, impulse: b2ContactImpulse) {}
+  func postSolve(_ contact: b2Contact, impulse: b2ContactImpulse) {}
 }
 
 

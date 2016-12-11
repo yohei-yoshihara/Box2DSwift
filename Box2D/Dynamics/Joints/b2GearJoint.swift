@@ -28,7 +28,7 @@ import Foundation
 
 /// Gear joint definition. This definition requires two existing
 /// revolute or prismatic joints (any combination will work).
-public class b2GearJointDef : b2JointDef {
+open class b2GearJointDef : b2JointDef {
   public override init() {
     joint1 = nil
     joint2 = nil
@@ -38,14 +38,14 @@ public class b2GearJointDef : b2JointDef {
   }
   
   /// The first revolute/prismatic joint attached to the gear joint.
-  public var joint1: b2Joint! = nil
+  open var joint1: b2Joint! = nil
   
   /// The second revolute/prismatic joint attached to the gear joint.
-  public var joint2: b2Joint! = nil
+  open var joint2: b2Joint! = nil
   
   /// The gear ratio.
   /// @see b2GearJoint for explanation.
-  public var ratio: b2Float = 1.0
+  open var ratio: b2Float = 1.0
 }
 
 // MARK: -
@@ -58,41 +58,41 @@ public class b2GearJointDef : b2JointDef {
 /// of length or units of 1/length.
 /// @warning You have to manually destroy the gear joint if joint1 or joint2
 /// is destroyed.
-public class b2GearJoint : b2Joint {
-  public override var anchorA: b2Vec2 {
+open class b2GearJoint : b2Joint {
+  open override var anchorA: b2Vec2 {
 	  return m_bodyA.getWorldPoint(m_localAnchorA)
   }
-  public override var anchorB: b2Vec2 {
+  open override var anchorB: b2Vec2 {
     return m_bodyB.getWorldPoint(m_localAnchorB)
   }
   
   /// Get the reaction force given the inverse time step.
   /// Unitoverride  is N.
-  public override func getReactionForce(inverseTimeStep inv_dt: b2Float) -> b2Vec2 {
+  open override func getReactionForce(inverseTimeStep inv_dt: b2Float) -> b2Vec2 {
     let P = m_impulse * m_JvAC
     return inv_dt * P
   }
   
   /// Get the reaction torque given the inverse time step.
   /// Unit is N*m. This is always zero for a distance joint.
-  public override func getReactionTorque(inverseTimeStep inv_dt: b2Float) -> b2Float {
+  open override func getReactionTorque(inverseTimeStep inv_dt: b2Float) -> b2Float {
     let L = m_impulse * m_JwA
     return inv_dt * L
   }
   
   /// Get the first joint.
-  public var joint1: b2Joint { return m_joint1 }
+  open var joint1: b2Joint { return m_joint1 }
   
   /// Get the second joint.
-  public var joint2: b2Joint { return m_joint2 }
+  open var joint2: b2Joint { return m_joint2 }
   
   /// Set/Get the gear ratio.
-  public func setRatio(ratio: b2Float) {
+  open func setRatio(_ ratio: b2Float) {
     assert(b2IsValid(ratio))
     m_ratio = ratio
   }
   
-  public var ratio: b2Float {
+  open var ratio: b2Float {
     get {
       return m_ratio
     }
@@ -102,7 +102,7 @@ public class b2GearJoint : b2Joint {
   }
   
   /// Dump joint to dmLog
-  public override func dump() {
+  open override func dump() {
     let indexA = m_bodyA.m_islandIndex
     let indexB = m_bodyB.m_islandIndex
     
@@ -203,7 +203,7 @@ public class b2GearJoint : b2Joint {
     
   }
   
-  override func initVelocityConstraints(inout data: b2SolverData) {
+  override func initVelocityConstraints(_ data: inout b2SolverData) {
     m_indexA = m_bodyA.m_islandIndex
     m_indexB = m_bodyB.m_islandIndex
     m_indexC = m_bodyC.m_islandIndex
@@ -303,7 +303,7 @@ public class b2GearJoint : b2Joint {
     data.velocities[m_indexD].w = wD
   }
   
-  override func solveVelocityConstraints(inout data: b2SolverData) {
+  override func solveVelocityConstraints(_ data: inout b2SolverData) {
     var vA = data.velocities[m_indexA].v
     var wA = data.velocities[m_indexA].w
     var vB = data.velocities[m_indexB].v
@@ -339,7 +339,7 @@ public class b2GearJoint : b2Joint {
   }
   
   // This returns true if the position errors are within tolerance.
-  override func solvePositionConstraints(inout data: b2SolverData) -> Bool {
+  override func solvePositionConstraints(_ data: inout b2SolverData) -> Bool {
     var cA = data.positions[m_indexA].c
     var aA = data.positions[m_indexA].a
     var cB = data.positions[m_indexB].c

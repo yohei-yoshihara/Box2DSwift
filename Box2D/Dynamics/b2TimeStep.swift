@@ -48,41 +48,41 @@ public struct b2TimeStep {
   var warmStarting: Bool = false
 }
 
-public class b2Array<T> : CustomStringConvertible {
+open class b2Array<T> : CustomStringConvertible {
   var array = [T]()
   
   public init() {
   }
   
   public init(count: Int, repeatedValue: T) {
-    array = [T](count: count, repeatedValue: repeatedValue)
+    array = [T](repeating: repeatedValue, count: count)
   }
 
-  public func reserveCapacity(minimumCapacity: Int) {
+  open func reserveCapacity(_ minimumCapacity: Int) {
     array.reserveCapacity(minimumCapacity)
   }
 
-  public func append(newElement: T) {
+  open func append(_ newElement: T) {
     array.append(newElement)
   }
   
-  public func insert(newElement: T, atIndex i: Int) {
-    array.insert(newElement, atIndex: i)
+  open func insert(_ newElement: T, atIndex i: Int) {
+    array.insert(newElement, at: i)
   }
   
-  public func removeAtIndex(index: Int) -> T {
-    return array.removeAtIndex(index)
+  open func removeAtIndex(_ index: Int) -> T {
+    return array.remove(at: index)
   }
   
-  public func removeLast() {
+  open func removeLast() {
     array.removeLast()
   }
   
-  public func removeAll(keepCapacity: Bool = true) {
-    array.removeAll(keepCapacity: keepCapacity)
+  open func removeAll(_ keepCapacity: Bool = true) {
+    array.removeAll(keepingCapacity: keepCapacity)
   }
 
-  public subscript(index: Int) -> T {
+  open subscript(index: Int) -> T {
     get {
       return array[index]
     }
@@ -91,7 +91,7 @@ public class b2Array<T> : CustomStringConvertible {
     }
   }
   
-  public func clone() -> b2Array {
+  open func clone() -> b2Array {
     let clone = b2Array()
     clone.reserveCapacity(self.count)
     for e in self.array {
@@ -100,13 +100,13 @@ public class b2Array<T> : CustomStringConvertible {
     return clone
   }
   
-  public var count : Int {
+  open var count : Int {
     get {
       return array.count
     }
   }
   
-  public var description: String {
+  open var description: String {
     var s = "b2Array["
     for i in 0 ..< array.count {
       s += "\(array[i])"

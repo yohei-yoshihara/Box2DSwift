@@ -38,8 +38,8 @@ class VerticalStackViewController: BaseViewController {
   override func viewDidLoad() {
     super.viewDidLoad()
     
-    let shootButton = UIBarButtonItem(title: "Shoot", style: UIBarButtonItemStyle.Plain, target: self, action: #selector(VerticalStackViewController.onShoot(_:)))
-    let flexible = UIBarButtonItem(barButtonSystemItem: UIBarButtonSystemItem.FlexibleSpace, target: nil, action: nil)
+    let shootButton = UIBarButtonItem(title: "Shoot", style: UIBarButtonItemStyle.plain, target: self, action: #selector(VerticalStackViewController.onShoot(_:)))
+    let flexible = UIBarButtonItem(barButtonSystemItem: UIBarButtonSystemItem.flexibleSpace, target: nil, action: nil)
     self.addToolbarItems([shootButton, flexible])
   }
 
@@ -74,7 +74,7 @@ class VerticalStackViewController: BaseViewController {
         let n = j * self.rowCount + i
         assert(n < self.rowCount * self.columnCount)
         indices.append(n)
-        bd.userData = NSNumber(integer: indices.last!)
+        bd.userData = NSNumber(value: indices.last! as Int)
         
         let x: b2Float = 0.0
         //float32 x = RandomFloat(-0.02f, 0.02f);
@@ -91,7 +91,7 @@ class VerticalStackViewController: BaseViewController {
     bullet = nil
   }
   
-  func onShoot(sender: UIBarButtonItem) {
+  func onShoot(_ sender: UIBarButtonItem) {
     if bullet != nil {
       world.destroyBody(bullet!)
       bullet = nil

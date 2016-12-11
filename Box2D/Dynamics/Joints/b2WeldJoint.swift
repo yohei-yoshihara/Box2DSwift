@@ -29,7 +29,7 @@ import Foundation
 /// Weld joint definition. You need to specify local anchor points
 /// where they are attached and the relative body angle. The position
 /// of the anchor points is important for computing the reaction torque.
-public class b2WeldJointDef : b2JointDef {
+open class b2WeldJointDef : b2JointDef {
   public override init() {
     localAnchorA = b2Vec2(0.0, 0.0)
     localAnchorB = b2Vec2(0.0, 0.0)
@@ -49,7 +49,7 @@ public class b2WeldJointDef : b2JointDef {
   
   /// Initialize the bodies, anchors, and reference angle using a world
   /// anchor point.
-  public func initialize(bodyA bodyA: b2Body, bodyB: b2Body, anchor: b2Vec2) {
+  open func initialize(bodyA: b2Body, bodyB: b2Body, anchor: b2Vec2) {
     self.bodyA = bodyA
     self.bodyB = bodyB
     self.localAnchorA = bodyA.getLocalPoint(anchor)
@@ -58,60 +58,60 @@ public class b2WeldJointDef : b2JointDef {
   }
   
   /// The local anchor point relative to bodyA's origin.
-  public var localAnchorA: b2Vec2
+  open var localAnchorA: b2Vec2
   
   /// The local anchor point relative to bodyB's origin.
-  public var localAnchorB: b2Vec2
+  open var localAnchorB: b2Vec2
   
   /// The bodyB angle minus bodyA angle in the reference state (radians).
-  public var referenceAngle: b2Float
+  open var referenceAngle: b2Float
   
   /// The mass-spring-damper frequency in Hertz. Rotation only.
   /// Disable softness with a value of 0.
-  public var frequencyHz: b2Float
+  open var frequencyHz: b2Float
   
   /// The damping ratio. 0 = no damping, 1 = critical damping.
-  public var dampingRatio: b2Float
+  open var dampingRatio: b2Float
 }
 
 // MARK: -
 /// A weld joint essentially glues two bodies together. A weld joint may
 /// distort somewhat because the island constraint solver is approximate.
-public class b2WeldJoint : b2Joint {
-  public override var anchorA: b2Vec2 {
+open class b2WeldJoint : b2Joint {
+  open override var anchorA: b2Vec2 {
     return m_bodyA.getWorldPoint(m_localAnchorA)
   }
-  public override var anchorB: b2Vec2 {
+  open override var anchorB: b2Vec2 {
     return m_bodyB.getWorldPoint(m_localAnchorB)
   }
   
-  public override func getReactionForce(inverseTimeStep inv_dt: b2Float) -> b2Vec2 {
+  open override func getReactionForce(inverseTimeStep inv_dt: b2Float) -> b2Vec2 {
     let P = b2Vec2(m_impulse.x, m_impulse.y)
     return inv_dt * P
   }
-  public override func getReactionTorque(inverseTimeStep inv_dt: b2Float) -> b2Float {
+  open override func getReactionTorque(inverseTimeStep inv_dt: b2Float) -> b2Float {
     return inv_dt * m_impulse.z
   }
   
   /// The local anchor point relative to bodyA's origin.
-  public var localAnchorA: b2Vec2  { return m_localAnchorA }
+  open var localAnchorA: b2Vec2  { return m_localAnchorA }
   
   /// The local anchor point relative to bodyB's origin.
-  public var localAnchorB: b2Vec2  { return m_localAnchorB }
+  open var localAnchorB: b2Vec2  { return m_localAnchorB }
   
   /// Get the reference angle.
-  public var referenceAngle: b2Float { return m_referenceAngle }
+  open var referenceAngle: b2Float { return m_referenceAngle }
   
   /// Set/get frequency in Hz.
-  public func setFrequency(hz: b2Float) { m_frequencyHz = hz }
-  public var frequency: b2Float { return m_frequencyHz }
+  open func setFrequency(_ hz: b2Float) { m_frequencyHz = hz }
+  open var frequency: b2Float { return m_frequencyHz }
   
   /// Set/get damping ratio.
-  public func setDampingRatio(ratio: b2Float) { m_dampingRatio = ratio }
-  public var dampingRatio: b2Float { return m_dampingRatio }
+  open func setDampingRatio(_ ratio: b2Float) { m_dampingRatio = ratio }
+  open var dampingRatio: b2Float { return m_dampingRatio }
   
   /// Dump to println
-  public override func dump() {
+  open override func dump() {
     let indexA = m_bodyA.m_islandIndex
     let indexB = m_bodyB.m_islandIndex
     
@@ -140,7 +140,7 @@ public class b2WeldJoint : b2Joint {
     super.init(def)
   }
   
-  override func initVelocityConstraints(inout data: b2SolverData) {
+  override func initVelocityConstraints(_ data: inout b2SolverData) {
     m_indexA = m_bodyA.m_islandIndex
     m_indexB = m_bodyB.m_islandIndex
     m_localCenterA = m_bodyA.m_sweep.localCenter
@@ -239,7 +239,7 @@ public class b2WeldJoint : b2Joint {
     data.velocities[m_indexB].v = vB
     data.velocities[m_indexB].w = wB
   }
-  override func solveVelocityConstraints(inout data: b2SolverData) {
+  override func solveVelocityConstraints(_ data: inout b2SolverData) {
     var vA = data.velocities[m_indexA].v
     var wA = data.velocities[m_indexA].w
     var vB = data.velocities[m_indexB].v
@@ -293,7 +293,7 @@ public class b2WeldJoint : b2Joint {
     data.velocities[m_indexB].v = vB
     data.velocities[m_indexB].w = wB
   }
-  override func solvePositionConstraints(inout data: b2SolverData) -> Bool {
+  override func solvePositionConstraints(_ data: inout b2SolverData) -> Bool {
     var cA = data.positions[m_indexA].c
     var aA = data.positions[m_indexA].a
     var cB = data.positions[m_indexB].c

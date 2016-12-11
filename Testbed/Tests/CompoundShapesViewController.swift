@@ -86,7 +86,7 @@ class CompoundShapesViewController: BaseViewController {
       xf1.q.set(0.3524 * b2_pi)
       xf1.p = xf1.q.xAxis
       
-      var vertices = [b2Vec2](count: 3, repeatedValue: b2Vec2())
+      var vertices = [b2Vec2](repeating: b2Vec2(), count: 3)
       
       let triangle1 = b2PolygonShape()
       vertices[0] = b2Mul(xf1, b2Vec2(-1.0, 0.0))

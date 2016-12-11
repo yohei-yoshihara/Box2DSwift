@@ -56,11 +56,11 @@ public enum b2ShapeType: Int, CustomStringConvertible {
   case typeCount = 4
   public var description: String {
     switch self {
-    case circle: return "circle"
-    case edge: return "edge"
-    case polygon: return "polygon"
-    case chain: return "chain"
-    case typeCount: return "typeCount"
+    case .circle: return "circle"
+    case .edge: return "edge"
+    case .polygon: return "polygon"
+    case .chain: return "chain"
+    case .typeCount: return "typeCount"
     }
   }
 }
@@ -71,7 +71,7 @@ A shape is used for collision detection. You can create a shape however you like
 Shapes used for simulation in b2World are created automatically when a b2Fixture
 is created. Shapes may encapsulate a one or more child shapes.
 */
-public class b2Shape : CustomStringConvertible {
+open class b2Shape : CustomStringConvertible {
   
   public init() {
     m_type = b2ShapeType.circle
@@ -80,7 +80,7 @@ public class b2Shape : CustomStringConvertible {
   /**
   Clone the concrete shape using the provided allocator.
   */
-  public func clone() -> b2Shape {
+  open func clone() -> b2Shape {
     fatalError("must override")
   }
   /**
@@ -88,13 +88,13 @@ public class b2Shape : CustomStringConvertible {
   
   - returns: the shape type.
   */
-  public var type: b2ShapeType {
+  open var type: b2ShapeType {
     return m_type
   }
   /**
   Get the number of child primitives.
   */
-  public var childCount: Int {
+  open var childCount: Int {
     fatalError("must override")
   }
   /**
@@ -103,7 +103,7 @@ public class b2Shape : CustomStringConvertible {
   - parameter transform: the shape world transform.
   - parameter point: a point in world coordinates.
   */
-  public func testPoint(transform transform: b2Transform, point: b2Vec2) -> Bool {
+  open func testPoint(transform: b2Transform, point: b2Vec2) -> Bool {
     fatalError("must override")
   }
   /**
@@ -114,7 +114,7 @@ public class b2Shape : CustomStringConvertible {
   - parameter transform: the transform to be applied to the shape.
   - parameter childIndex: the child shape index
   */
-  public func rayCast(inout output: b2RayCastOutput, input: b2RayCastInput, transform: b2Transform, childIndex: Int) -> Bool {
+  open func rayCast(_ output: inout b2RayCastOutput, input: b2RayCastInput, transform: b2Transform, childIndex: Int) -> Bool {
     fatalError("must override")
   }
   /**
@@ -124,7 +124,7 @@ public class b2Shape : CustomStringConvertible {
   - parameter xf: the world transform of the shape.
   - parameter childIndex: the child shape
   */
-  public func computeAABB(inout aabb: b2AABB, transform: b2Transform, childIndex: Int) {
+  open func computeAABB(_ aabb: inout b2AABB, transform: b2Transform, childIndex: Int) {
     fatalError("must override")
   }
   /**
@@ -134,11 +134,11 @@ public class b2Shape : CustomStringConvertible {
   - parameter massData: returns the mass data for this shape.
   - parameter density: the density in kilograms per meter squared.
   */
-  public func computeMass(density density: b2Float) -> b2MassData {
+  open func computeMass(density: b2Float) -> b2MassData {
     fatalError("must override")
   }
   
-  public var description: String {
+  open var description: String {
     return "b2Shape[type=\(m_type), radius=\(m_radius)]"
   }
   
@@ -146,7 +146,7 @@ public class b2Shape : CustomStringConvertible {
   
   var m_type: b2ShapeType
   var m_radius: b2Float
-  public var radius: b2Float {
+  open var radius: b2Float {
     get { return m_radius }
     set { m_radius = newValue }
   }

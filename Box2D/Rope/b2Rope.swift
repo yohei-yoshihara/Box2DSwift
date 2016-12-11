@@ -61,7 +61,7 @@ public struct b2RopeDef {
 }
 
 ///
-public class b2Rope {
+open class b2Rope {
   init() {
     m_count = 0
     m_ps = nil
@@ -79,13 +79,13 @@ public class b2Rope {
   }
   
   ///
-  func initialize(def: b2RopeDef) {
+  func initialize(_ def: b2RopeDef) {
     assert(def.count >= 3)
     m_count = def.count
-    m_ps = [b2Vec2](count: m_count, repeatedValue: b2Vec2())
-    m_p0s = [b2Vec2](count: m_count, repeatedValue: b2Vec2())
-    m_vs = [b2Vec2](count: m_count, repeatedValue: b2Vec2())
-    m_ims = [b2Float](count: m_count, repeatedValue: b2Float(0.0))
+    m_ps = [b2Vec2](repeating: b2Vec2(), count: m_count)
+    m_p0s = [b2Vec2](repeating: b2Vec2(), count: m_count)
+    m_vs = [b2Vec2](repeating: b2Vec2(), count: m_count)
+    m_ims = [b2Float](repeating: b2Float(0.0), count: m_count)
     
     for i in 0 ..< m_count {
       m_ps[i] = def.vertices[i]
@@ -103,8 +103,8 @@ public class b2Rope {
     
     let count2 = m_count - 1
     let count3 = m_count - 2
-    m_Ls = [b2Float](count: count2, repeatedValue: b2Float(0.0))
-    m_as = [b2Float](count: count3, repeatedValue: b2Float(0.0))
+    m_Ls = [b2Float](repeating: b2Float(0.0), count: count2)
+    m_as = [b2Float](repeating: b2Float(0.0), count: count3)
     
     for i in 0 ..< count2 {
       let p1 = m_ps[i]
@@ -172,7 +172,7 @@ public class b2Rope {
   }
   
   ///
-  func draw(draw: b2Draw) {
+  func draw(_ draw: b2Draw) {
     let c = b2Color(0.4, 0.5, 0.7)
     
     for i in 0 ..< m_count - 1 {
@@ -181,7 +181,7 @@ public class b2Rope {
   }
   
   ///
-  func setAngle(angle: b2Float) {
+  func setAngle(_ angle: b2Float) {
     let count3 = m_count - 2
     for i in 0 ..< count3 {
       m_as[i] = angle

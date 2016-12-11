@@ -29,19 +29,19 @@ import UIKit
 
 /// Timer for profiling. This has platform specific code and may
 /// not work on every platform.
-public class b2Timer {
+open class b2Timer {
   /// Constructor
   public init() {
     m_start = CACurrentMediaTime()
   }
   
   /// Reset the timer.
-  public func reset() {
+  open func reset() {
     m_start = CACurrentMediaTime()
   }
   
   /// Get the time since construction or the last reset.
-  public var milliseconds: b2Float {
+  open var milliseconds: b2Float {
     return b2Float(CACurrentMediaTime() - m_start) * b2Float(1000.0)
   }
   

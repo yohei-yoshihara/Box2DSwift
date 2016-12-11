@@ -29,11 +29,11 @@ import Foundation
 public let b2_nullNode = -1
 
 /// A node in the dynamic tree. The client does not interact with this directly.
-public class b2TreeNode<T> : CustomStringConvertible {
+open class b2TreeNode<T> : CustomStringConvertible {
   /// Enlarged AABB
-  public var aabb = b2AABB()
+  open var aabb = b2AABB()
   
-  public var userData: T? = nil
+  open var userData: T? = nil
   
   var parentOrNext: Int = b2_nullNode
   
@@ -46,7 +46,7 @@ public class b2TreeNode<T> : CustomStringConvertible {
   func IsLeaf() -> Bool {
     return child1 == b2_nullNode
   }
-  public var description: String {
+  open var description: String {
     return "{aabb=\(aabb), parentOrNext=\(parentOrNext), child1=\(child1), child2=\(child2), height=\(height)}"
   }
 }
@@ -59,7 +59,7 @@ public class b2TreeNode<T> : CustomStringConvertible {
 /// object to move by small amounts without triggering a tree update.
 ///
 /// Nodes are pooled and relocatable, so we use node indices rather than pointers.
-public class b2DynamicTree<T> : CustomStringConvertible {
+open class b2DynamicTree<T> : CustomStringConvertible {
   var m_root: Int
   
   var m_nodes: [b2TreeNode<T>]
@@ -101,7 +101,7 @@ public class b2DynamicTree<T> : CustomStringConvertible {
   }
   
   /// Create a proxy. Provide a tight fitting AABB and a userData pointer.
-  public func createProxy(aabb aabb: b2AABB, userData: T?) -> Int {
+  open func createProxy(aabb: b2AABB, userData: T?) -> Int {
     let proxyId = allocateNode()
     
     // Fatten the aabb.
@@ -117,7 +117,7 @@ public class b2DynamicTree<T> : CustomStringConvertible {
   }
   
   /// Destroy a proxy. This asserts if the id is invalid.
-  public func destroyProxy(proxyId: Int) {
+  open func destroyProxy(_ proxyId: Int) {
     assert(0 <= proxyId && proxyId < m_nodes.count)
     assert(m_nodes[proxyId].IsLeaf())
     
@@ -132,7 +132,7 @@ public class b2DynamicTree<T> : CustomStringConvertible {
 
   - returns: true if the proxy was re-inserted.
   */
-  public func moveProxy(proxyId: Int, aabb: b2AABB, displacement: b2Vec2) -> Bool {
+  open func moveProxy(_ proxyId: Int, aabb: b2AABB, displacement: b2Vec2) -> Bool {
     assert(0 <= proxyId && proxyId < m_nodes.count)
     
     assert(m_nodes[proxyId].IsLeaf())
@@ -177,20 +177,20 @@ public class b2DynamicTree<T> : CustomStringConvertible {
   
   - returns: the proxy user data or 0 if the id is invalid.
   */
-  public func getUserData(proxyId: Int) -> T? {
+  open func getUserData(_ proxyId: Int) -> T? {
     assert(0 <= proxyId && proxyId < m_nodes.count)
     return m_nodes[proxyId].userData
   }
   
   /// Get the fat AABB for a proxy.
-  public func getFatAABB(proxyId: Int) -> b2AABB {
+  open func getFatAABB(_ proxyId: Int) -> b2AABB {
     assert(0 <= proxyId && proxyId < m_nodes.count)
     return m_nodes[proxyId].aabb
   }
   
   /// Query an AABB for overlapping proxies. The callback class
   /// is called for each proxy that overlaps the supplied AABB.
-  public func query<T: b2QueryWrapper>(callback callback: T, aabb: b2AABB) {
+  open func query<T: b2QueryWrapper>(callback: T, aabb: b2AABB) {
     var stack = b2GrowableStack<Int>(capacity: 256)
     stack.push(m_root)
     
@@ -224,7 +224,7 @@ public class b2DynamicTree<T> : CustomStringConvertible {
   /// number of proxies in the tree.
   /// @param input the ray-cast input data. The ray extends from p1 to p1 + maxFraction * (p2 - p1).
   /// @param callback a callback class that is called for each proxy that is hit by the ray.
-  public func rayCast<T: b2RayCastWrapper>(callback callback: T, input: b2RayCastInput) {
+  open func rayCast<T: b2RayCastWrapper>(callback: T, input: b2RayCastInput) {
     let p1 = input.p1
     let p2 = input.p2
     var r = p2 - p1
@@ -300,7 +300,7 @@ public class b2DynamicTree<T> : CustomStringConvertible {
   }
   
   /// Validate this tree. For testing.
-  public func validate() {
+  open func validate() {
     validateStructure(m_root)
     validateMetrics(m_root)
     
@@ -317,7 +317,7 @@ public class b2DynamicTree<T> : CustomStringConvertible {
   
   /// Compute the height of the binary tree in O(N) time. Should not be
   /// called often.
-  public func getHeight() -> Int {
+  open func getHeight() -> Int {
     if m_root == b2_nullNode {
       return 0
     }
@@ -326,7 +326,7 @@ public class b2DynamicTree<T> : CustomStringConvertible {
   
   /// Get the maximum balance of an node in the tree. The balance is the difference
   /// in height of the two children of a node.
-  public func getMaxBalance() -> Int {
+  open func getMaxBalance() -> Int {
     var maxBalance = 0
     for i in 0 ..< m_nodes.count {
       let node = m_nodes[i]
@@ -345,7 +345,7 @@ public class b2DynamicTree<T> : CustomStringConvertible {
   }
   
   /// Get the ratio of the sum of the node areas to the root area.
-  public func getAreaRatio() -> b2Float {
+  open func getAreaRatio() -> b2Float {
     if m_root == b2_nullNode {
       return 0.0
     }
@@ -368,8 +368,8 @@ public class b2DynamicTree<T> : CustomStringConvertible {
   }
   
   /// Build an optimal tree. Very expensive. For testing.
-  public func rebuildBottomUp() {
-    var nodes = [Int](count: m_nodes.count, repeatedValue: 0)
+  open func rebuildBottomUp() {
+    var nodes = [Int](repeating: 0, count: m_nodes.count)
     //int32* nodes = (int32*)b2Alloc(m_nodeCount * sizeof(int32))
     var count = 0
     
@@ -439,7 +439,7 @@ public class b2DynamicTree<T> : CustomStringConvertible {
   /// Shift the world origin. Useful for large worlds.
   /// The shift formula is: position -= newOrigin
   /// @param newOrigin the new origin with respect to the old origin
-  public func shiftOrigin(newOrigin: b2Vec2) {
+  open func shiftOrigin(_ newOrigin: b2Vec2) {
     // Build array of leaves. Free the rest.
     for i in 0 ..< m_nodes.count {
       m_nodes[i].aabb.lowerBound -= newOrigin
@@ -447,7 +447,7 @@ public class b2DynamicTree<T> : CustomStringConvertible {
     }
   }
   
-  private func allocateNode() -> Int {
+  fileprivate func allocateNode() -> Int {
     if m_freeList == b2_nullNode {
       let node = b2TreeNode<T>()
       node.parentOrNext = b2_nullNode
@@ -465,7 +465,7 @@ public class b2DynamicTree<T> : CustomStringConvertible {
     m_nodes[nodeId].userData = nil
     return nodeId
   }
-  func freeNode(nodeId: Int) {
+  func freeNode(_ nodeId: Int) {
     assert(0 <= nodeId && nodeId < m_nodes.count)
     assert(0 < m_nodes.count)
     m_nodes[nodeId].parentOrNext = m_freeList
@@ -473,7 +473,7 @@ public class b2DynamicTree<T> : CustomStringConvertible {
     m_freeList = nodeId
   }
   
-  func insertLeaf(leaf: Int) {
+  func insertLeaf(_ leaf: Int) {
     m_insertionCount += 1
     
     if m_root == b2_nullNode {
@@ -597,7 +597,7 @@ public class b2DynamicTree<T> : CustomStringConvertible {
     
     //Validate()
   }
-  func removeLeaf(leaf: Int) {
+  func removeLeaf(_ leaf: Int) {
     if leaf == m_root {
       m_root = b2_nullNode
       return
@@ -649,7 +649,7 @@ public class b2DynamicTree<T> : CustomStringConvertible {
   
   // Perform a left or right rotation if node A is imbalanced.
   // Returns the new root index.
-  func balance(iA : Int) -> Int {
+  func balance(_ iA : Int) -> Int {
     assert(iA != b2_nullNode)
     
     let A = m_nodes[iA]
@@ -782,7 +782,7 @@ public class b2DynamicTree<T> : CustomStringConvertible {
   }
   
   // Compute the height of a sub-tree.
-  func computeHeight(nodeId : Int) -> Int {
+  func computeHeight(_ nodeId : Int) -> Int {
     assert(0 <= nodeId && nodeId < m_nodes.count)
     let node = m_nodes[nodeId]
     
@@ -795,7 +795,7 @@ public class b2DynamicTree<T> : CustomStringConvertible {
     return 1 + max(height1, height2)
   }
   
-  func validateStructure(index : Int) {
+  func validateStructure(_ index : Int) {
     if index == b2_nullNode {
       return
     }
@@ -826,7 +826,7 @@ public class b2DynamicTree<T> : CustomStringConvertible {
     validateStructure(child2)
   }
   
-  func validateMetrics(index : Int) {
+  func validateMetrics(_ index : Int) {
     if index == b2_nullNode {
       return
     }
@@ -861,7 +861,7 @@ public class b2DynamicTree<T> : CustomStringConvertible {
     validateMetrics(child2)
   }
   
-  public var description: String {
+  open var description: String {
     return "b2DynamicTree[root=\(m_root), nodes=\(m_nodes)]"
   }
 }

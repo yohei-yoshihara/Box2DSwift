@@ -39,7 +39,7 @@ public struct b2Pair : CustomStringConvertible {
 /// The broad-phase is used for computing pairs and performing volume queries and ray casts.
 /// This broad-phase does not persist pairs. Instead, this reports potentially new pairs.
 /// It is up to the client to consume the new pairs and to track subsequent overlap.
-public class b2BroadPhase : b2QueryWrapper {
+open class b2BroadPhase : b2QueryWrapper {
   public struct Const {
     public static let nullProxy = -1
   }
@@ -55,7 +55,7 @@ public class b2BroadPhase : b2QueryWrapper {
   
   /// Create a proxy with an initial AABB. Pairs are not reported until
   /// UpdatePairs is called.
-  public func createProxy(aabb aabb: b2AABB, userData: b2FixtureProxy) -> Int {
+  open func createProxy(aabb: b2AABB, userData: b2FixtureProxy) -> Int {
     let proxyId = m_tree.createProxy(aabb: aabb, userData: userData)
     m_proxyCount += 1
     bufferMove(proxyId)
@@ -63,7 +63,7 @@ public class b2BroadPhase : b2QueryWrapper {
   }
   
   /// Destroy a proxy. It is up to the client to remove any pairs.
-  public func destroyProxy(proxyId: Int) {
+  open func destroyProxy(_ proxyId: Int) {
     unBufferMove(proxyId)
     m_proxyCount -= 1
     m_tree.destroyProxy(proxyId)
@@ -71,7 +71,7 @@ public class b2BroadPhase : b2QueryWrapper {
   
   /// Call MoveProxy as many times as you like, then when you are done
   /// call UpdatePairs to finalized the proxy pairs (for your time step).
-  public func moveProxy(proxyId: Int, aabb: b2AABB, displacement: b2Vec2) {
+  open func moveProxy(_ proxyId: Int, aabb: b2AABB, displacement: b2Vec2) {
     let buffer = m_tree.moveProxy(proxyId, aabb: aabb, displacement: displacement)
     if buffer {
       bufferMove(proxyId)
@@ -79,36 +79,36 @@ public class b2BroadPhase : b2QueryWrapper {
   }
   
   /// Call to trigger a re-processing of it's pairs on the next call to UpdatePairs.
-  public func touchProxy(proxyId: Int) {
+  open func touchProxy(_ proxyId: Int) {
     bufferMove(proxyId)
   }
   
   /// Get the fat AABB for a proxy.
-  public func getFatAABB(proxyId proxyId: Int) -> b2AABB {
+  open func getFatAABB(proxyId: Int) -> b2AABB {
     return m_tree.getFatAABB(proxyId)
   }
   
   /// Get user data from a proxy. Returns NULL if the id is invalid.
-  public func getUserData(proxyId proxyId : Int) -> b2FixtureProxy? {
+  open func getUserData(proxyId : Int) -> b2FixtureProxy? {
     return m_tree.getUserData(proxyId)
   }
   
   /// Test overlap of fat AABBs.
-  public func testOverlap(proxyIdA proxyIdA : Int, proxyIdB : Int) -> Bool {
+  open func testOverlap(proxyIdA : Int, proxyIdB : Int) -> Bool {
     let aabbA = m_tree.getFatAABB(proxyIdA)
     let aabbB = m_tree.getFatAABB(proxyIdB)
     return b2TestOverlap(aabbA, aabbB)
   }
   
   /// Get the number of proxies.
-  public func getProxyCount() -> Int {
+  open func getProxyCount() -> Int {
     return m_proxyCount
   }
   
   /// Update the pairs. This results in pair callbacks. This can only add pairs.
-  public func updatePairs<T: b2BroadPhaseWrapper>(callback callback: T) {
+  open func updatePairs<T: b2BroadPhaseWrapper>(callback: T) {
     // Reset pair buffer
-    m_pairBuffer.removeAll(keepCapacity: true)
+    m_pairBuffer.removeAll(keepingCapacity: true)
     
     // Perform tree queries for all moving proxies.
     for i in 0 ..< m_moveBuffer.count {
@@ -125,10 +125,10 @@ public class b2BroadPhase : b2QueryWrapper {
     }
     
     // Reset move buffer
-    m_moveBuffer.removeAll(keepCapacity: true)
+    m_moveBuffer.removeAll(keepingCapacity: true)
     
     // Sort the pair buffer to expose duplicates.
-    m_pairBuffer.sortInPlace {
+    m_pairBuffer.sort {
       if $0.proxyIdA < $1.proxyIdA {
         return true
       }
@@ -164,7 +164,7 @@ public class b2BroadPhase : b2QueryWrapper {
   
   /// Query an AABB for overlapping proxies. The callback class
   /// is called for each proxy that overlaps the supplied AABB.
-  public func query<T: b2QueryWrapper>(callback callback : T, aabb: b2AABB) {
+  open func query<T: b2QueryWrapper>(callback : T, aabb: b2AABB) {
     m_tree.query(callback: callback, aabb: aabb)
   }
   
@@ -178,22 +178,22 @@ public class b2BroadPhase : b2QueryWrapper {
   - parameter input: the ray-cast input data. The ray extends from p1 to p1 + maxFraction * (p2 - p1).
   - parameter callback: a callback class that is called for each proxy that is hit by the ray.
   */
-  public func rayCast<T: b2RayCastWrapper>(callback callback: T, input: b2RayCastInput) {
+  open func rayCast<T: b2RayCastWrapper>(callback: T, input: b2RayCastInput) {
     m_tree.rayCast(callback: callback, input: input)
   }
   
   /// Get the height of the embedded tree.
-  public func getTreeHeight() -> Int {
+  open func getTreeHeight() -> Int {
     return m_tree.getHeight()
   }
   
   /// Get the balance of the embedded tree.
-  public func getTreeBalance() -> Int {
+  open func getTreeBalance() -> Int {
     return m_tree.getMaxBalance()
   }
   
   /// Get the quality metric of the embedded tree.
-  public func getTreeQuality() -> b2Float {
+  open func getTreeQuality() -> b2Float {
     return m_tree.getAreaRatio()
   }
   
@@ -203,15 +203,15 @@ public class b2BroadPhase : b2QueryWrapper {
 
   - parameter newOrigin: the new origin with respect to the old origin
   */
-  public func shiftOrigin(newOrigin: b2Vec2) {
+  open func shiftOrigin(_ newOrigin: b2Vec2) {
     m_tree.shiftOrigin(newOrigin)
   }
   
   // MARK: private methods
-  func bufferMove(proxyId: Int) {
+  func bufferMove(_ proxyId: Int) {
     m_moveBuffer.append(proxyId)
   }
-  func unBufferMove(proxyId: Int) {
+  func unBufferMove(_ proxyId: Int) {
     for i in 0 ..< m_moveBuffer.count {
       if m_moveBuffer[i] == proxyId {
         m_moveBuffer[i] = Const.nullProxy
@@ -219,7 +219,7 @@ public class b2BroadPhase : b2QueryWrapper {
     }
   }
   // This is called from b2DynamicTree::Query when we are gathering pairs.
-  public func queryCallback(proxyId: Int) -> Bool {
+  open func queryCallback(_ proxyId: Int) -> Bool {
     // A proxy cannot form a pair with itself.
     if proxyId == m_queryProxyId {
       return true

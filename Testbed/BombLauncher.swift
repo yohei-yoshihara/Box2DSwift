@@ -42,30 +42,30 @@ class BombLauncher : NSObject {
     super.init()
   }
   
-  func onTap(gr: UITapGestureRecognizer) {
-    let tp = gr.locationInView(self.debugDraw)
+  func onTap(_ gr: UITapGestureRecognizer) {
+    let tp = gr.location(in: self.debugDraw)
     let p = ConvertScreenToWorld(tp, size: debugDraw.bounds.size, viewCenter: self.viewCenter)
     LaunchBomb(p, b2Vec2(0.0, 0.0))
   }
   
-  func onPan(gr: UIPanGestureRecognizer) {
-    let tp = gr.locationInView(self.debugDraw)
+  func onPan(_ gr: UIPanGestureRecognizer) {
+    let tp = gr.location(in: self.debugDraw)
     let p = ConvertScreenToWorld(tp, size: debugDraw.bounds.size, viewCenter: self.viewCenter)
     
     switch gr.state {
-    case .Began:
+    case .began:
       drawLine = true
       lineStart = p
       lineEnd = p
-    case .Changed:
+    case .changed:
       lineEnd = p
-    case .Ended:
+    case .ended:
       drawLine = false
       let multiplier: b2Float = 30.0
       var vel = lineStart - p
       vel *= multiplier
       LaunchBomb(lineStart, vel)
-    case .Possible:
+    case .possible:
       break
     default:
       drawLine = false
@@ -78,7 +78,7 @@ class BombLauncher : NSObject {
     LaunchBomb(p, v)
   }
   
-  func LaunchBomb(position: b2Vec2, _ velocity: b2Vec2) {
+  func LaunchBomb(_ position: b2Vec2, _ velocity: b2Vec2) {
     if bomb != nil {
       world.destroyBody(bomb!)
       bomb = nil

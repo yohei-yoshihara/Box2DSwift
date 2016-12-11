@@ -28,18 +28,18 @@ import Foundation
 
 /// Friction mixing law. The idea is to allow either fixture to drive the restitution to zero.
 /// For example, anything slides on ice.
-public func b2MixFriction(friction1 : b2Float, friction2 : b2Float) -> b2Float {
+public func b2MixFriction(_ friction1 : b2Float, friction2 : b2Float) -> b2Float {
   return sqrt(friction1 * friction2)
 }
 
 /// Restitution mixing law. The idea is allow for anything to bounce off an inelastic surface.
 /// For example, a superball bounces on anything.
-public func b2MixRestitution(restitution1 : b2Float, restitution2 : b2Float) -> b2Float {
+public func b2MixRestitution(_ restitution1 : b2Float, restitution2 : b2Float) -> b2Float {
   return restitution1 > restitution2 ? restitution1 : restitution2
 }
 
-typealias b2ContactCreateFcn = (fixtureA: b2Fixture, indexA: Int, fixtureB: b2Fixture, indexB: Int) -> b2Contact
-typealias b2ContactDestroyFcn = (contact: b2Contact) -> Void
+typealias b2ContactCreateFcn = (_ fixtureA: b2Fixture, _ indexA: Int, _ fixtureB: b2Fixture, _ indexB: Int) -> b2Contact
+typealias b2ContactDestroyFcn = (_ contact: b2Contact) -> Void
 
 public struct b2ContactRegister {
   var createFcn: b2ContactCreateFcn? = nil
@@ -54,7 +54,7 @@ struct b2ContactRegisters {
   init(_ rows: b2ShapeType, _ columns: b2ShapeType) {
     self.rows = rows
     self.columns = columns
-    self.grid = [b2ContactRegister](count: rows.rawValue * columns.rawValue, repeatedValue: b2ContactRegister())
+    self.grid = [b2ContactRegister](repeating: b2ContactRegister(), count: rows.rawValue * columns.rawValue)
   }
   subscript(row: b2ShapeType, column: b2ShapeType) -> b2ContactRegister {
     get {
@@ -71,7 +71,7 @@ struct b2ContactRegisters {
 /// is an edge. A contact edge belongs to a doubly linked list
 /// maintained in each attached body. Each contact has two contact
 /// nodes, one for each attached body.
-public class b2ContactEdge {
+open class b2ContactEdge {
   init(contact: b2Contact) {
     self.contact = contact
   }
@@ -83,16 +83,16 @@ public class b2ContactEdge {
 
 /// AABB in the broad-phase (except if filtered). Therefore a contact object may exist
 /// that has no contact points.
-public class b2Contact {
+open class b2Contact {
   
   /// Get the contact manifold. Do not modify the manifold unless you understand the
   /// internals of Box2D.
-  public var manifold: b2Manifold {
+  open var manifold: b2Manifold {
     return m_manifold
   }
   
   /// Get the world manifold.
-  public var worldManifold: b2WorldManifold {
+  open var worldManifold: b2WorldManifold {
     let bodyA = m_fixtureA.body
     let bodyB = m_fixtureB.body
     let shapeA = m_fixtureA.shape
@@ -106,14 +106,14 @@ public class b2Contact {
   }
   
   /// Is this contact touching?
-  public var isTouching: Bool {
+  open var isTouching: Bool {
     return (m_flags & Flags.touchingFlag) == Flags.touchingFlag
   }
   
   /// Enable/disable this contact. This can be used inside the pre-solve
   /// contact listener. The contact is only disabled for the current
   /// time step (or sub-step in continuous collisions).
-  public func setEnabled(flag: Bool) {
+  open func setEnabled(_ flag: Bool) {
     if flag {
       m_flags |= Flags.enabledFlag
     }
@@ -123,44 +123,44 @@ public class b2Contact {
   }
   
   /// Has this contact been disabled?
-  public var isEnabled: Bool {
+  open var isEnabled: Bool {
     return (m_flags & Flags.enabledFlag) == Flags.enabledFlag
   }
   
   /// Get the next contact in the world's contact list.
-  public func getNext() -> b2Contact? {
+  open func getNext() -> b2Contact? {
     return m_next
   }
   
   /// Get fixture A in this contact.
-  public var fixtureA: b2Fixture {
+  open var fixtureA: b2Fixture {
     return m_fixtureA
   }
   
   /// Get the child primitive index for fixture A.
-  public var childIndexA: Int {
+  open var childIndexA: Int {
     return m_indexA
   }
   
   /// Get fixture B in this contact.
-  public var fixtureB: b2Fixture {
+  open var fixtureB: b2Fixture {
     return m_fixtureB
   }
   //const b2Fixture* GetFixtureB() const
   
   /// Get the child primitive index for fixture B.
-  public var childIndexB: Int {
+  open var childIndexB: Int {
     return m_indexB
   }
   
   /// Override the default friction mixture. You can call this in b2ContactListener::PreSolve.
   /// This value persists until set or reset.
-  public func setFriction(friction: b2Float) {
+  open func setFriction(_ friction: b2Float) {
     m_friction = friction
   }
   
   /// Get the friction.
-  public var friction: b2Float {
+  open var friction: b2Float {
     get {
       return m_friction
     }
@@ -170,18 +170,18 @@ public class b2Contact {
   }
   
   /// Reset the friction mixture to the default value.
-  public func resetFriction() {
+  open func resetFriction() {
     m_friction = b2MixFriction(m_fixtureA.m_friction, friction2: m_fixtureB.m_friction)
   }
   
   /// Override the default restitution mixture. You can call this in b2ContactListener::PreSolve.
   /// The value persists until you set or reset.
-  public func setRestitution(restitution: b2Float) {
+  open func setRestitution(_ restitution: b2Float) {
     m_restitution = restitution
   }
   
   /// Get the restitution.
-  public var restitution: b2Float {
+  open var restitution: b2Float {
     get {
       return m_restitution
     }
@@ -191,22 +191,22 @@ public class b2Contact {
   }
   
   /// Reset the restitution to the default value.
-  public func resetRestitution() {
+  open func resetRestitution() {
     m_restitution = b2MixRestitution(m_fixtureA.m_restitution, restitution2: m_fixtureB.m_restitution)
   }
   
   /// Set the desired tangent speed for a conveyor belt behavior. In meters per second.
-  public func setTangentSpeed(speed: b2Float) {
+  open func setTangentSpeed(_ speed: b2Float) {
     m_tangentSpeed = speed
   }
   
   /// Get the desired tangent speed. In meters per second.
-  public var tangentSpeed: b2Float {
+  open var tangentSpeed: b2Float {
       return m_tangentSpeed
   }
   
   /// Evaluate this contact with your own manifold and transforms.
-  public func evaluate(inout manifold: b2Manifold, _ xfA: b2Transform, _ xfB: b2Transform) {
+  open func evaluate(_ manifold: inout b2Manifold, _ xfA: b2Transform, _ xfB: b2Transform) {
     fatalError("must override")
   }
   
@@ -238,7 +238,7 @@ public class b2Contact {
     fatalError("must override")
   }
   
-  class func addType(createFcn: b2ContactCreateFcn, _ destoryFcn: b2ContactDestroyFcn, _ type1: b2ShapeType, _ type2: b2ShapeType) {
+  class func addType(_ createFcn: @escaping b2ContactCreateFcn, _ destoryFcn: @escaping b2ContactDestroyFcn, _ type1: b2ShapeType, _ type2: b2ShapeType) {
     assert(0 <= type1.rawValue && type1.rawValue < b2ShapeType.typeCount.rawValue)
     assert(0 <= type2.rawValue && type2.rawValue < b2ShapeType.typeCount.rawValue)
       
@@ -261,7 +261,7 @@ public class b2Contact {
     addType(b2ChainAndCircleContact.create, b2ChainAndCircleContact.destroy, b2ShapeType.chain, b2ShapeType.circle)
     addType(b2ChainAndPolygonContact.create, b2ChainAndPolygonContact.destroy, b2ShapeType.chain, b2ShapeType.polygon)
   }
-  class func create(fixtureA: b2Fixture, _ indexA: Int, _ fixtureB: b2Fixture, _ indexB: Int) -> b2Contact? {
+  class func create(_ fixtureA: b2Fixture, _ indexA: Int, _ fixtureB: b2Fixture, _ indexB: Int) -> b2Contact? {
     if StaticVars.s_initialized == false {
       initializeRegisters()
       StaticVars.s_initialized = true
@@ -276,35 +276,35 @@ public class b2Contact {
     let createFcn = StaticVars.s_registers[type1, type2].createFcn
     if createFcn != nil {
       if StaticVars.s_registers[type1, type2].primary {
-        return createFcn!(fixtureA: fixtureA, indexA: indexA, fixtureB: fixtureB, indexB: indexB)
+        return createFcn!(fixtureA, indexA, fixtureB, indexB)
       }
       else {
-        return createFcn!(fixtureA: fixtureB, indexA: indexB, fixtureB: fixtureA, indexB: indexA)
+        return createFcn!(fixtureB, indexB, fixtureA, indexA)
       }
     }
     else {
         return nil
     }
   }
-  class func destroy(contact: b2Contact) {
+  class func destroy(_ contact: b2Contact) {
     assert(StaticVars.s_initialized == true)
     
     let fixtureA = contact.m_fixtureA
     let fixtureB = contact.m_fixtureB
     
-    if contact.m_manifold.pointCount > 0 && fixtureA.isSensor == false && fixtureB.isSensor == false {
-      fixtureA.body.setAwake(true)
-      fixtureB.body.setAwake(true)
+    if contact.m_manifold.pointCount > 0 && fixtureA?.isSensor == false && fixtureB?.isSensor == false {
+      fixtureA?.body.setAwake(true)
+      fixtureB?.body.setAwake(true)
     }
     
-    let typeA = fixtureA.type
-    let typeB = fixtureB.type
+    let typeA = fixtureA?.type
+    let typeB = fixtureB?.type
     
-    assert(0 <= typeA.rawValue && typeB.rawValue < b2ShapeType.typeCount.rawValue)
-    assert(0 <= typeA.rawValue && typeB.rawValue < b2ShapeType.typeCount.rawValue)
+    assert(0 <= (typeA?.rawValue)! && (typeB?.rawValue)! < b2ShapeType.typeCount.rawValue)
+    assert(0 <= (typeA?.rawValue)! && (typeB?.rawValue)! < b2ShapeType.typeCount.rawValue)
     
-    let destroyFcn = StaticVars.s_registers[typeA, typeB].destroyFcn
-    destroyFcn!(contact: contact)
+    let destroyFcn = StaticVars.s_registers[typeA!, typeB!].destroyFcn
+    destroyFcn!(contact)
   }
   
   init(_ fixtureA: b2Fixture, _ indexA: Int, _ fixtureB: b2Fixture, _ indexB: Int) {
@@ -316,7 +316,7 @@ public class b2Contact {
     m_indexA = indexA
     m_indexB = indexB
     
-    m_manifold.points.removeAll(keepCapacity: true)
+    m_manifold.points.removeAll(keepingCapacity: true)
     
     m_prev = nil
     m_next = nil
@@ -339,7 +339,7 @@ public class b2Contact {
     m_tangentSpeed = 0.0
   }
   
-  func update(listener: b2ContactListener?) {
+  func update(_ listener: b2ContactListener?) {
     let oldManifold = b2Manifold(copyFrom: m_manifold)
     
     // Re-enable this contact.
@@ -366,7 +366,7 @@ public class b2Contact {
         transformA: xfA, transformB: xfB)
       
       // Sensors don't generate manifolds.
-      m_manifold.points.removeAll(keepCapacity: true)
+      m_manifold.points.removeAll(keepingCapacity: true)
     }
     else {
       evaluate(&m_manifold, xfA, xfB)

@@ -37,7 +37,7 @@ import Foundation
 /// 1. you might not know where the center of mass will be.
 /// 2. if you add/remove shapes from a body and recompute the mass,
 ///    the joints will be broken.
-public class b2RevoluteJointDef : b2JointDef {
+open class b2RevoluteJointDef : b2JointDef {
   public override init() {
     localAnchorA = b2Vec2(0.0, 0.0)
     localAnchorB = b2Vec2(0.0, 0.0)
@@ -61,7 +61,7 @@ public class b2RevoluteJointDef : b2JointDef {
   
   /// Initialize the bodies, anchors, and reference angle using a world
   /// anchor point.
-  public func initialize(bodyA: b2Body, bodyB: b2Body, anchor: b2Vec2) {
+  open func initialize(_ bodyA: b2Body, bodyB: b2Body, anchor: b2Vec2) {
     self.bodyA = bodyA
     self.bodyB = bodyB
     self.localAnchorA = bodyA.getLocalPoint(anchor)
@@ -70,32 +70,32 @@ public class b2RevoluteJointDef : b2JointDef {
   }
   
   /// The local anchor point relative to bodyA's origin.
-  public var localAnchorA: b2Vec2
+  open var localAnchorA: b2Vec2
   
   /// The local anchor point relative to bodyB's origin.
-  public var localAnchorB: b2Vec2
+  open var localAnchorB: b2Vec2
   
   /// The bodyB angle minus bodyA angle in the reference state (radians).
-  public var referenceAngle: b2Float
+  open var referenceAngle: b2Float
   
   /// A flag to enable joint limits.
-  public var enableLimit: Bool
+  open var enableLimit: Bool
   
   /// The lower angle for the joint limit (radians).
-  public var lowerAngle: b2Float
+  open var lowerAngle: b2Float
   
   /// The upper angle for the joint limit (radians).
-  public var upperAngle: b2Float
+  open var upperAngle: b2Float
   
   /// A flag to enable the joint motor.
-  public var enableMotor: Bool
+  open var enableMotor: Bool
   
   /// The desired motor speed. Usually in radians per second.
-  public var motorSpeed: b2Float
+  open var motorSpeed: b2Float
   
   /// The maximum motor torque used to achieve the desired motor speed.
   /// Usually in N-m.
-  public var maxMotorTorque: b2Float
+  open var maxMotorTorque: b2Float
 }
 
 // MARK: -
@@ -105,39 +105,39 @@ public class b2RevoluteJointDef : b2JointDef {
 /// a joint limit that specifies a lower and upper angle. You can use a motor
 /// to drive the relative rotation about the shared point. A maximum motor torque
 /// is provided so that infinite forces are not generated.
-public class b2RevoluteJoint : b2Joint {
-  public override var anchorA: b2Vec2 {
+open class b2RevoluteJoint : b2Joint {
+  open override var anchorA: b2Vec2 {
     return m_bodyA.getWorldPoint(m_localAnchorA)
   }
-  public override var anchorB: b2Vec2 {
+  open override var anchorB: b2Vec2 {
     return m_bodyB.getWorldPoint(m_localAnchorB)
   }
   
   /// The local anchor point relative to bodyA's origin.
-  public var localAnchorA: b2Vec2  { return m_localAnchorA }
+  open var localAnchorA: b2Vec2  { return m_localAnchorA }
   
   /// The local anchor point relative to bodyB's origin.
-  public var localAnchorB: b2Vec2  { return m_localAnchorB }
+  open var localAnchorB: b2Vec2  { return m_localAnchorB }
   
   /// Get the reference angle.
-  public var referenceAngle: b2Float { return m_referenceAngle }
+  open var referenceAngle: b2Float { return m_referenceAngle }
   
   /// Get the current joint angle in radians.
-  public var jointAngle: b2Float {
+  open var jointAngle: b2Float {
     let bA = m_bodyA
     let bB = m_bodyB
     return bB.m_sweep.a - bA.m_sweep.a - m_referenceAngle
   }
   
   /// Get the current joint angle speed in radians per second.
-  public var jointSpeed: b2Float {
+  open var jointSpeed: b2Float {
     let bA = m_bodyA
     let bB = m_bodyB
     return bB.m_angularVelocity - bA.m_angularVelocity
   }
   
   /// Is the joint limit enabled?
-  public var isLimitEnabled: Bool {
+  open var isLimitEnabled: Bool {
     get {
       return m_enableLimit
     }
@@ -147,7 +147,7 @@ public class b2RevoluteJoint : b2Joint {
   }
   
   /// Enable/disable the joint limit.
-  public func enableLimit(flag: Bool) {
+  open func enableLimit(_ flag: Bool) {
     if flag != m_enableLimit {
       m_bodyA.setAwake(true)
       m_bodyB.setAwake(true)
@@ -157,17 +157,17 @@ public class b2RevoluteJoint : b2Joint {
   }
   
   /// Get the lower joint limit in radians.
-  public var lowerLimit: b2Float {
+  open var lowerLimit: b2Float {
     return m_lowerAngle
   }
   
   /// Get the upper joint limit in radians.
-  public var upperLimit: b2Float {
+  open var upperLimit: b2Float {
     return m_upperAngle
   }
   
   /// Set the joint limits in radians.
-  public func setLimits(lower lower: b2Float, upper: b2Float) {
+  open func setLimits(lower: b2Float, upper: b2Float) {
     assert(lower <= upper)
     
     if lower != m_lowerAngle || upper != m_upperAngle {
@@ -180,26 +180,26 @@ public class b2RevoluteJoint : b2Joint {
   }
   
   /// Is the joint motor enabled?
-  public var isMotorEnabled: Bool {
+  open var isMotorEnabled: Bool {
     return m_enableMotor
   }
   
   /// Enable/disable the joint motor.
-  public func enableMotor(flag: Bool) {
+  open func enableMotor(_ flag: Bool) {
     m_bodyA.setAwake(true)
     m_bodyB.setAwake(true)
     m_enableMotor = flag
   }
   
   /// Set the motor speed in radians per second.
-  public func setMotorSpeed(speed: b2Float) {
+  open func setMotorSpeed(_ speed: b2Float) {
     m_bodyA.setAwake(true)
     m_bodyB.setAwake(true)
     m_motorSpeed = speed
   }
   
   /// Get the motor speed in radians per second.
-  public var motorSpeed: b2Float {
+  open var motorSpeed: b2Float {
     get {
       return m_motorSpeed
     }
@@ -209,12 +209,12 @@ public class b2RevoluteJoint : b2Joint {
   }
   
   /// Set the maximum motor torque, usually in N-m.
-  public func setMaxMotorTorque(torque: b2Float) {
+  open func setMaxMotorTorque(_ torque: b2Float) {
     m_bodyA.setAwake(true)
     m_bodyB.setAwake(true)
     m_maxMotorTorque = torque
   }
-  public var maxMotorTorque: b2Float {
+  open var maxMotorTorque: b2Float {
     get {
       return m_maxMotorTorque
     }
@@ -225,25 +225,25 @@ public class b2RevoluteJoint : b2Joint {
   
   /// Get the reaction force given the inverse time step.
   /// Unit is N.
-  public override func getReactionForce(inverseTimeStep inv_dt: b2Float) -> b2Vec2 {
+  open override func getReactionForce(inverseTimeStep inv_dt: b2Float) -> b2Vec2 {
     let P = b2Vec2(m_impulse.x, m_impulse.y)
     return inv_dt * P
   }
   
   /// Get the reaction torque due to the joint limit given the inverse time step.
   /// Unit is N*m.
-  public override func getReactionTorque(inverseTimeStep inv_dt: b2Float) -> b2Float {
+  open override func getReactionTorque(inverseTimeStep inv_dt: b2Float) -> b2Float {
     return inv_dt * m_impulse.z
   }
   
   /// Get the current motor torque given the inverse time step.
   /// Unit is N*m.
-  public func getMotorTorque(inv_dt: b2Float) -> b2Float {
+  open func getMotorTorque(_ inv_dt: b2Float) -> b2Float {
     return inv_dt * m_motorImpulse
   }
   
   /// Dump to println.
-  public override func dump() {
+  open override func dump() {
     let indexA = m_bodyA.m_islandIndex
     let indexB = m_bodyB.m_islandIndex
     
@@ -283,7 +283,7 @@ public class b2RevoluteJoint : b2Joint {
     super.init(def)
   }
   
-  override func initVelocityConstraints(inout data: b2SolverData) {
+  override func initVelocityConstraints(_ data: inout b2SolverData) {
     m_indexA = m_bodyA.m_islandIndex
     m_indexB = m_bodyB.m_islandIndex
     m_localCenterA = m_bodyA.m_sweep.localCenter
@@ -389,7 +389,7 @@ public class b2RevoluteJoint : b2Joint {
     data.velocities[m_indexB].w = wB
   }
   
-  override func solveVelocityConstraints(inout data: b2SolverData) {
+  override func solveVelocityConstraints(_ data: inout b2SolverData) {
     var vA = data.velocities[m_indexA].v
     var wA = data.velocities[m_indexA].w
     var vB = data.velocities[m_indexB].v
@@ -486,7 +486,7 @@ public class b2RevoluteJoint : b2Joint {
     data.velocities[m_indexB].w = wB
   }
   
-  override func solvePositionConstraints(inout data: b2SolverData) -> Bool {
+  override func solvePositionConstraints(_ data: inout b2SolverData) -> Bool {
     var cA = data.positions[m_indexA].c
     var aA = data.positions[m_indexA].a
     var cB = data.positions[m_indexB].c

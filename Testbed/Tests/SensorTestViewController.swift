@@ -74,14 +74,14 @@ class SensorTestViewController: BaseViewController, b2ContactListener {
         let bd = b2BodyDef()
         bd.type = b2BodyType.dynamicBody
         bd.position.set(-10.0 + 3.0 * b2Float(i), 20.0)
-        bd.userData = NSNumber(bool: false)
+        bd.userData = NSNumber(value: false as Bool)
         self.bodies.append(self.world.createBody(bd))
         self.bodies.last!.createFixture(shape: shape, density: 1.0)
       }
     }
   }
   
-  func beginContact(contact: b2Contact) {
+  func beginContact(_ contact: b2Contact) {
     contactListener.beginContact(contact)
 
     let fixtureA = contact.fixtureA
@@ -90,19 +90,19 @@ class SensorTestViewController: BaseViewController, b2ContactListener {
     if fixtureA === sensor {
       let userData: AnyObject? = fixtureB.body.userData
       if userData != nil {
-        fixtureB.body.setUserData(NSNumber(bool: true))
+        fixtureB.body.setUserData(NSNumber(value: true as Bool))
       }
     }
     
     if fixtureB === sensor {
       let userData: AnyObject? = fixtureA.body.userData
       if userData != nil {
-        fixtureA.body.setUserData(NSNumber(bool: true))
+        fixtureA.body.setUserData(NSNumber(value: true as Bool))
       }
     }
   }
   
-  func endContact(contact: b2Contact) {
+  func endContact(_ contact: b2Contact) {
     contactListener.endContact(contact)
 
     let fixtureA = contact.fixtureA
@@ -111,23 +111,23 @@ class SensorTestViewController: BaseViewController, b2ContactListener {
     if fixtureA === sensor {
       let userData: AnyObject? = fixtureB.body.userData
       if userData != nil {
-        fixtureB.body.setUserData(NSNumber(bool: false))
+        fixtureB.body.setUserData(NSNumber(value: false as Bool))
       }
     }
     
     if fixtureB === sensor {
       let userData: AnyObject? = fixtureA.body.userData
       if userData != nil {
-        fixtureA.body.setUserData(NSNumber(bool: false))
+        fixtureA.body.setUserData(NSNumber(value: false as Bool))
       }
     }
   }
   
-  func preSolve(contact: b2Contact, oldManifold: b2Manifold) {
+  func preSolve(_ contact: b2Contact, oldManifold: b2Manifold) {
     contactListener.preSolve(contact, oldManifold: oldManifold)
   }
   
-  func postSolve(contact: b2Contact, impulse: b2ContactImpulse) {
+  func postSolve(_ contact: b2Contact, impulse: b2ContactImpulse) {
     contactListener.postSolve(contact, impulse: impulse)
   }
   

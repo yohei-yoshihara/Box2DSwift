@@ -27,7 +27,7 @@ the original C++ code written by Erin Catto.
 import Foundation
 
 /// A circle shape.
-public class b2CircleShape : b2Shape {
+open class b2CircleShape : b2Shape {
   public override init() {
     super.init()
     m_type = b2ShapeType.circle
@@ -36,7 +36,7 @@ public class b2CircleShape : b2Shape {
   }
   
   /// Implement b2Shape.
-  public override func clone() -> b2Shape {
+  open override func clone() -> b2Shape {
     let clone = b2CircleShape()
     clone.m_radius = m_radius
     clone.m_p = m_p
@@ -44,12 +44,12 @@ public class b2CircleShape : b2Shape {
   }
   
   /// @see b2Shape::GetChildCount
-  public override var childCount: Int {
+  open override var childCount: Int {
     return 1
   }
   
   /// Implement b2Shape.
-  public override func testPoint(transform transform: b2Transform, point: b2Vec2) -> Bool {
+  open override func testPoint(transform: b2Transform, point: b2Vec2) -> Bool {
     let center = transform.p + b2Mul(transform.q, m_p)
     let d = p - center
     return b2Dot(d, d) <= m_radius * m_radius
@@ -59,7 +59,7 @@ public class b2CircleShape : b2Shape {
   // From Section 3.1.2
   // x = s + a * r
   // norm(x) = radius
-  public override func rayCast(inout output: b2RayCastOutput, input: b2RayCastInput, transform: b2Transform, childIndex: Int) -> Bool {
+  open override func rayCast(_ output: inout b2RayCastOutput, input: b2RayCastInput, transform: b2Transform, childIndex: Int) -> Bool {
     let position = transform.p + b2Mul(transform.q, m_p)
     let s = input.p1 - position
     let b = b2Dot(s, s) - m_radius * m_radius
@@ -91,14 +91,14 @@ public class b2CircleShape : b2Shape {
   }
   
   /// @see b2Shape::ComputeAABB
-  public override func computeAABB(inout aabb: b2AABB, transform: b2Transform, childIndex: Int) {
+  open override func computeAABB(_ aabb: inout b2AABB, transform: b2Transform, childIndex: Int) {
     let p = transform.p + b2Mul(transform.q, m_p)
     aabb.lowerBound.set(p.x - m_radius, p.y - m_radius)
     aabb.upperBound.set(p.x + m_radius, p.y + m_radius)
   }
   
   /// @see b2Shape::ComputeMass
-  public override func computeMass(density density: b2Float) -> b2MassData {
+  open override func computeMass(density: b2Float) -> b2MassData {
     var massData = b2MassData()
     massData.mass = density * b2_pi * m_radius * m_radius
     massData.center = m_p
@@ -109,25 +109,25 @@ public class b2CircleShape : b2Shape {
   }
   
   /// Get the supporting vertex index in the given direction.
-  public func getSupport(direction direction: b2Vec2) -> Int {
+  open func getSupport(direction: b2Vec2) -> Int {
     return 0
   }
   
   /// Get the supporting vertex in the given direction.
-  public func getSupportVertex(direction direction: b2Vec2) -> b2Vec2 {
+  open func getSupportVertex(direction: b2Vec2) -> b2Vec2 {
     return m_p
   }
   
   /// Get the vertex count.
-  public var vertexCount: Int { return 1 }
+  open var vertexCount: Int { return 1 }
   
   /// Get a vertex by index. Used by b2Distance.
-  public func vertex(index index: Int) -> b2Vec2 {
+  open func vertex(index: Int) -> b2Vec2 {
     assert(index == 0)
     return m_p
   }
 
-  public var p: b2Vec2 {
+  open var p: b2Vec2 {
     get {
       return m_p_[0]
     }

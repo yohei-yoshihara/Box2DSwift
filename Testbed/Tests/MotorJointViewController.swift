@@ -34,8 +34,8 @@ class MotorJointViewController: BaseViewController {
 
   override func viewDidLoad() {
     super.viewDidLoad()
-    let startButton = UIBarButtonItem(title: "Start", style: UIBarButtonItemStyle.Plain, target: self, action: #selector(MotorJointViewController.onStart(_:)))
-    let flexible = UIBarButtonItem(barButtonSystemItem: UIBarButtonSystemItem.FlexibleSpace, target: nil, action: nil)
+    let startButton = UIBarButtonItem(title: "Start", style: UIBarButtonItemStyle.plain, target: self, action: #selector(MotorJointViewController.onStart(_:)))
+    let flexible = UIBarButtonItem(barButtonSystemItem: UIBarButtonSystemItem.flexibleSpace, target: nil, action: nil)
     self.addToolbarItems([startButton, flexible])
   }
   
@@ -82,7 +82,7 @@ class MotorJointViewController: BaseViewController {
   }
   
 
-  func onStart(sender: UIBarButtonItem) {
+  func onStart(_ sender: UIBarButtonItem) {
     go = !go
   }
   

@@ -28,7 +28,7 @@ import Foundation
 
 // local scope
 // http://stackoverflow.com/questions/24011271/how-to-create-local-scopes-in-swift
-public func b2Locally(work: () -> ()) {
+public func b2Locally(_ work: () -> ()) {
   work()
 }
 

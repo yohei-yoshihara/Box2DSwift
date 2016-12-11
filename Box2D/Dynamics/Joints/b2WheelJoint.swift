@@ -32,7 +32,7 @@ import Foundation
 /// can violate the constraint slightly. The joint translation is zero
 /// when the local anchor points coincide in world space. Using local
 /// anchors and a local axis helps when saving and loading a game.
-public class b2WheelJointDef : b2JointDef {
+open class b2WheelJointDef : b2JointDef {
   public override init() {
     localAnchorA = b2Vec2()
     localAnchorB = b2Vec2()
@@ -55,7 +55,7 @@ public class b2WheelJointDef : b2JointDef {
   
   /// Initialize the bodies, anchors, axis, and reference angle using the world
   /// anchor and world axis.
-  public func initialize(bodyA bodyA: b2Body, bodyB: b2Body, anchor: b2Vec2, axis: b2Vec2) {
+  open func initialize(bodyA: b2Body, bodyB: b2Body, anchor: b2Vec2, axis: b2Vec2) {
     self.bodyA = bodyA
     self.bodyB = bodyB
     self.localAnchorA = bodyA.getLocalPoint(anchor)
@@ -64,28 +64,28 @@ public class b2WheelJointDef : b2JointDef {
   }
   
   /// The local anchor point relative to bodyA's origin.
-  public var localAnchorA: b2Vec2
+  open var localAnchorA: b2Vec2
   
   /// The local anchor point relative to bodyB's origin.
-  public var localAnchorB: b2Vec2
+  open var localAnchorB: b2Vec2
   
   /// The local translation axis in bodyA.
-  public var localAxisA: b2Vec2
+  open var localAxisA: b2Vec2
   
   /// Enable/disable the joint motor.
-  public var enableMotor: Bool
+  open var enableMotor: Bool
   
   /// The maximum motor torque, usually in N-m.
-  public var maxMotorTorque: b2Float
+  open var maxMotorTorque: b2Float
   
   /// The desired motor speed in radians per second.
-  public var motorSpeed: b2Float
+  open var motorSpeed: b2Float
   
   /// Suspension frequency, zero indicates no suspension
-  public var frequencyHz: b2Float
+  open var frequencyHz: b2Float
   
   /// Suspension damping ratio, one indicates critical damping
-  public var dampingRatio: b2Float
+  open var dampingRatio: b2Float
 }
 
 // MARK: -
@@ -94,32 +94,32 @@ public class b2WheelJointDef : b2JointDef {
 /// joint limit to restrict the range of motion and a joint motor to drive
 /// the rotation or to model rotational friction.
 /// This joint is designed for vehicle suspensions.
-public class b2WheelJoint : b2Joint {
-  public override var anchorA: b2Vec2 {
+open class b2WheelJoint : b2Joint {
+  open override var anchorA: b2Vec2 {
     return m_bodyA.getWorldPoint(m_localAnchorA)
   }
-  public override var anchorB: b2Vec2 {
+  open override var anchorB: b2Vec2 {
     return m_bodyB.getWorldPoint(m_localAnchorB)
   }
   
-  public override func getReactionForce(inverseTimeStep inv_dt: b2Float) -> b2Vec2 {
+  open override func getReactionForce(inverseTimeStep inv_dt: b2Float) -> b2Vec2 {
     return inv_dt * (m_impulse * m_ay + m_springImpulse * m_ax)
   }
-  public override func getReactionTorque(inverseTimeStep inv_dt: b2Float) -> b2Float {
+  open override func getReactionTorque(inverseTimeStep inv_dt: b2Float) -> b2Float {
     return inv_dt * m_motorImpulse
   }
   
   /// The local anchor point relative to bodyA's origin.
-  public var localAnchorA: b2Vec2  { return m_localAnchorA }
+  open var localAnchorA: b2Vec2  { return m_localAnchorA }
   
   /// The local anchor point relative to bodyB's origin.
-  public var localAnchorB: b2Vec2  { return m_localAnchorB }
+  open var localAnchorB: b2Vec2  { return m_localAnchorB }
   
   /// The local joint axis relative to bodyA.
-  public var localAxisA: b2Vec2 { return m_localXAxisA; }
+  open var localAxisA: b2Vec2 { return m_localXAxisA; }
   
   /// Get the current joint translation, usually in meters.
-  public var jointTranslation: b2Float {
+  open var jointTranslation: b2Float {
     let bA = m_bodyA
     let bB = m_bodyB
     
@@ -133,14 +133,14 @@ public class b2WheelJoint : b2Joint {
   }
   
   /// Get the current joint translation speed, usually in meters per second.
-  public var jointSpeed: b2Float {
+  open var jointSpeed: b2Float {
     let wA = m_bodyA.m_angularVelocity
     let wB = m_bodyB.m_angularVelocity
     return wB - wA
   }
   
   /// Is the joint motor enabled?
-  public var isMotorEnabled: Bool {
+  open var isMotorEnabled: Bool {
     get {
       return m_enableMotor
     }
@@ -150,21 +150,21 @@ public class b2WheelJoint : b2Joint {
   }
   
   /// Enable/disable the joint motor.
-  public func enableMotor(flag: Bool) {
+  open func enableMotor(_ flag: Bool) {
     m_bodyA.setAwake(true)
     m_bodyB.setAwake(true)
     m_enableMotor = flag
   }
   
   /// Set the motor speed, usually in radians per second.
-  public func setMotorSpeed(speed: b2Float) {
+  open func setMotorSpeed(_ speed: b2Float) {
     m_bodyA.setAwake(true)
     m_bodyB.setAwake(true)
     m_motorSpeed = speed
   }
   
   /// Get the motor speed, usually in radians per second.
-  public var motorSpeed: b2Float {
+  open var motorSpeed: b2Float {
     get {
       return m_motorSpeed
     }
@@ -174,12 +174,12 @@ public class b2WheelJoint : b2Joint {
   }
   
   /// Set/Get the maximum motor force, usually in N-m.
-  public func setMaxMotorTorque(torque: b2Float) {
+  open func setMaxMotorTorque(_ torque: b2Float) {
     m_bodyA.setAwake(true)
     m_bodyB.setAwake(true)
     m_maxMotorTorque = torque
   }
-  public var maxMotorTorque: b2Float {
+  open var maxMotorTorque: b2Float {
     get {
       return m_maxMotorTorque
     }
@@ -189,15 +189,15 @@ public class b2WheelJoint : b2Joint {
   }
   
   /// Get the current motor torque given the inverse time step, usually in N-m.
-  public func getMotorTorque(inverseTimeStamp inv_dt: b2Float) -> b2Float {
+  open func getMotorTorque(inverseTimeStamp inv_dt: b2Float) -> b2Float {
     return inv_dt * m_motorImpulse
   }
   
   /// Set/Get the spring frequency in hertz. Setting the frequency to zero disables the spring.
-  public func setSpringFrequencyHz(hz: b2Float) {
+  open func setSpringFrequencyHz(_ hz: b2Float) {
     m_frequencyHz = hz
   }
-  public var springFrequencyHz: b2Float {
+  open var springFrequencyHz: b2Float {
     get {
       return m_frequencyHz
     }
@@ -207,10 +207,10 @@ public class b2WheelJoint : b2Joint {
   }
   
   /// Set/Get the spring damping ratio
-  public func setSpringDampingRatio(ratio: b2Float) {
+  open func setSpringDampingRatio(_ ratio: b2Float) {
     m_dampingRatio = ratio
   }
-  public var springDampingRatio: b2Float {
+  open var springDampingRatio: b2Float {
     get {
       return m_dampingRatio
     }
@@ -220,7 +220,7 @@ public class b2WheelJoint : b2Joint {
   }
   
   /// Dump to println
-  public override func dump() {
+  open override func dump() {
     let indexA = m_bodyA.m_islandIndex
     let indexB = m_bodyB.m_islandIndex
     
@@ -269,7 +269,7 @@ public class b2WheelJoint : b2Joint {
     super.init(def)
   }
   
-  override func initVelocityConstraints(inout data: b2SolverData) {
+  override func initVelocityConstraints(_ data: inout b2SolverData) {
       m_indexA = m_bodyA.m_islandIndex
       m_indexB = m_bodyB.m_islandIndex
       m_localCenterA = m_bodyA.m_sweep.localCenter
@@ -395,7 +395,7 @@ public class b2WheelJoint : b2Joint {
       data.velocities[m_indexB].v = vB
       data.velocities[m_indexB].w = wB
   }
-  override func solveVelocityConstraints(inout data: b2SolverData) {
+  override func solveVelocityConstraints(_ data: inout b2SolverData) {
     let mA = m_invMassA, mB = m_invMassB
     let iA = m_invIA, iB = m_invIB
     
@@ -457,7 +457,7 @@ public class b2WheelJoint : b2Joint {
     data.velocities[m_indexB].v = vB
     data.velocities[m_indexB].w = wB
   }
-  override func solvePositionConstraints(inout data: b2SolverData) -> Bool {
+  override func solvePositionConstraints(_ data: inout b2SolverData) -> Bool {
     var cA = data.positions[m_indexA].c
     var aA = data.positions[m_indexA].a
     var cB = data.positions[m_indexB].c

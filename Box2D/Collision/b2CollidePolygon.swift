@@ -27,7 +27,7 @@ the original C++ code written by Erin Catto.
 import Foundation
 
 // Find the max separation between poly1 and poly2 using edge normals from poly1.
-func b2FindMaxSeparation(poly1: b2PolygonShape, xf1: b2Transform,
+func b2FindMaxSeparation(_ poly1: b2PolygonShape, xf1: b2Transform,
                          poly2: b2PolygonShape, xf2: b2Transform) -> (edgeIndex: Int, maxSeparation: b2Float)
 {
   let count1 = poly1.m_count
@@ -62,7 +62,7 @@ func b2FindMaxSeparation(poly1: b2PolygonShape, xf1: b2Transform,
   return (bestIndex, maxSeparation)
 }
 
-func b2FindIncidentEdge(poly1: b2PolygonShape, xf1: b2Transform, edge1: Int,
+func b2FindIncidentEdge(_ poly1: b2PolygonShape, xf1: b2Transform, edge1: Int,
                         poly2: b2PolygonShape, xf2: b2Transform) -> [b2ClipVertex]
 {
   let normals1 = poly1.m_normals
@@ -91,7 +91,7 @@ func b2FindIncidentEdge(poly1: b2PolygonShape, xf1: b2Transform, edge1: Int,
   let i1 = index
   let i2 = i1 + 1 < count2 ? i1 + 1 : 0
     
-  var c = [b2ClipVertex](count: 2, repeatedValue: b2ClipVertex())
+  var c = [b2ClipVertex](repeating: b2ClipVertex(), count: 2)
   c[0].v = b2Mul(xf2, vertices2[i1])
   c[0].id.indexA = UInt8(edge1)
   c[0].id.indexB = UInt8(i1)
@@ -114,11 +114,11 @@ func b2FindIncidentEdge(poly1: b2PolygonShape, xf1: b2Transform, edge1: Int,
 // Clip
 // The normal points from 1 to 2
 public func b2CollidePolygons(
-  inout manifold manifold: b2Manifold,
+  manifold: inout b2Manifold,
   polygonA polyA: b2PolygonShape, transformA xfA: b2Transform,
   polygonB polyB: b2PolygonShape, transformB xfB: b2Transform)
 {
-  manifold.points.removeAll(keepCapacity: true)
+  manifold.points.removeAll(keepingCapacity: true)
   let totalRadius = polyA.m_radius + polyB.m_radius
 
   let (edgeA, separationA) = b2FindMaxSeparation(polyA, xf1: xfA, poly2: polyB, xf2: xfB)

@@ -35,21 +35,21 @@ class SliderCrankViewController: BaseViewController {
   override func viewDidLoad() {
     super.viewDidLoad()
     
-    let friction = UIBarButtonItem(title: "Friction", style: UIBarButtonItemStyle.Plain, target: self, action: #selector(SliderCrankViewController.onFriction(_:)))
-    let motor = UIBarButtonItem(title: "Motor", style: UIBarButtonItemStyle.Plain, target: self, action: #selector(SliderCrankViewController.onMotor(_:)))
-    let flexible = UIBarButtonItem(barButtonSystemItem: UIBarButtonSystemItem.FlexibleSpace, target: nil, action: nil)
+    let friction = UIBarButtonItem(title: "Friction", style: UIBarButtonItemStyle.plain, target: self, action: #selector(SliderCrankViewController.onFriction(_:)))
+    let motor = UIBarButtonItem(title: "Motor", style: UIBarButtonItemStyle.plain, target: self, action: #selector(SliderCrankViewController.onMotor(_:)))
+    let flexible = UIBarButtonItem(barButtonSystemItem: UIBarButtonSystemItem.flexibleSpace, target: nil, action: nil)
     self.addToolbarItems([
       friction, flexible,
       motor, flexible,
       ])
   }
   
-  func onFriction(sender: UIBarButtonItem) {
+  func onFriction(_ sender: UIBarButtonItem) {
     joint2.enableMotor(!joint2.isMotorEnabled)
     joint2.bodyB.setAwake(true)
   }
   
-  func onMotor(sender: UIBarButtonItem) {
+  func onMotor(_ sender: UIBarButtonItem) {
     joint1.enableMotor(!joint1.isMotorEnabled)
     joint1.bodyB.setAwake(true)
   }

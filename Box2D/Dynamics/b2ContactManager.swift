@@ -30,7 +30,7 @@ var b2_defaultFilter = b2ContactFilter()
 var b2_defaultListener = b2DefaultContactListener()
 
 // Delegate of b2World.
-public class b2ContactManager: b2BroadPhaseWrapper {
+open class b2ContactManager: b2BroadPhaseWrapper {
   init() {
     m_contactList = nil
     m_contactCount = 0
@@ -39,7 +39,7 @@ public class b2ContactManager: b2BroadPhaseWrapper {
   }
   
   // Broad-phase callback.
-  public func addPair(inout proxyUserDataA: b2FixtureProxy, inout _ proxyUserDataB: b2FixtureProxy) {
+  open func addPair(_ proxyUserDataA: inout b2FixtureProxy, _ proxyUserDataB: inout b2FixtureProxy) {
     let proxyA = proxyUserDataA
     let proxyB = proxyUserDataB
     
@@ -152,7 +152,7 @@ public class b2ContactManager: b2BroadPhaseWrapper {
     m_broadPhase.updatePairs(callback: self)
   }
   
-  func destroy(c: b2Contact) {
+  func destroy(_ c: b2Contact) {
     let fixtureA = c.fixtureA
     let fixtureB = c.fixtureB
     let bodyA = fixtureA.body
@@ -269,7 +269,7 @@ public class b2ContactManager: b2BroadPhaseWrapper {
   }
   
   var m_broadPhase = b2BroadPhase()
-  public var broadPhase: b2BroadPhase {
+  open var broadPhase: b2BroadPhase {
     return m_broadPhase
   }
   var m_contactList: b2Contact? = nil // ** owner **

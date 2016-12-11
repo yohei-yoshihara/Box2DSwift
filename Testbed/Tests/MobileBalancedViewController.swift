@@ -53,7 +53,7 @@ class MobileBalancedViewController: BaseViewController {
     world.createJoint(jointDef)
   }
   
-  func addNode(parent: b2Body, _ localAnchor: b2Vec2, _ depth: Int, _ offset: b2Float, _ a: b2Float) -> b2Body {
+  func addNode(_ parent: b2Body, _ localAnchor: b2Vec2, _ depth: Int, _ offset: b2Float, _ a: b2Float) -> b2Body {
     let density: b2Float = 20.0
     let h = b2Vec2(0.0, a)
     

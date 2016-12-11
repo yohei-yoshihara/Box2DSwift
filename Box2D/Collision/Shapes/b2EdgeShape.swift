@@ -29,7 +29,7 @@ import Foundation
 /// A line segment (edge) shape. These can be connected in chains or loops
 /// to other edge shapes. The connectivity information is used to ensure
 /// correct contact normals.
-public class b2EdgeShape : b2Shape {
+open class b2EdgeShape : b2Shape {
   public override init() {
     m_vertex0 = b2Vec2(0.0, 0.0)
     m_vertex3 = b2Vec2(0.0, 0.0)
@@ -41,7 +41,7 @@ public class b2EdgeShape : b2Shape {
   }
   
   /// Set this as an isolated edge.
-  public func set(vertex1 v1: b2Vec2, vertex2 v2: b2Vec2) {
+  open func set(vertex1 v1: b2Vec2, vertex2 v2: b2Vec2) {
     m_vertex1 = v1
     m_vertex2 = v2
     m_hasVertex0 = false
@@ -49,7 +49,7 @@ public class b2EdgeShape : b2Shape {
   }
   
   /// Implement b2Shape.
-  public override func clone() -> b2Shape {
+  open override func clone() -> b2Shape {
     let clone = b2EdgeShape()
     clone.m_radius = m_radius
     clone.m_vertices = m_vertices.clone()
@@ -61,12 +61,12 @@ public class b2EdgeShape : b2Shape {
   }
   
   /// @see b2Shape::GetChildCount
-  public override var childCount: Int {
+  open override var childCount: Int {
     return 1
   }
   
   /// @see b2Shape::TestPoint
-  public override func testPoint(transform transform: b2Transform, point: b2Vec2) -> Bool {
+  open override func testPoint(transform: b2Transform, point: b2Vec2) -> Bool {
     return false
   }
   
@@ -74,7 +74,7 @@ public class b2EdgeShape : b2Shape {
   // v = v1 + s * e
   // p1 + t * d = v1 + s * e
   // s * e - t * d = p1 - v1
-  public override func rayCast(inout output: b2RayCastOutput, input: b2RayCastInput, transform xf: b2Transform, childIndex: Int) -> Bool {
+  open override func rayCast(_ output: inout b2RayCastOutput, input: b2RayCastInput, transform xf: b2Transform, childIndex: Int) -> Bool {
     // Put the ray into the edge's frame of reference.
     let p1 = b2MulT(xf.q, input.p1 - xf.p)
     let p2 = b2MulT(xf.q, input.p2 - xf.p)
@@ -127,7 +127,7 @@ public class b2EdgeShape : b2Shape {
   }
   
   /// @see b2Shape::ComputeAABB
-  public override func computeAABB(inout aabb: b2AABB, transform: b2Transform, childIndex: Int) {
+  open override func computeAABB(_ aabb: inout b2AABB, transform: b2Transform, childIndex: Int) {
     let v1 = b2Mul(transform, m_vertex1)
     let v2 = b2Mul(transform, m_vertex2)
     
@@ -140,7 +140,7 @@ public class b2EdgeShape : b2Shape {
   }
   
   /// @see b2Shape::ComputeMass
-  public override func computeMass(density density: b2Float) -> b2MassData {
+  open override func computeMass(density: b2Float) -> b2MassData {
     var massData = b2MassData()
     massData.mass = 0.0
     massData.center = 0.5 * (m_vertex1 + m_vertex2)
@@ -148,32 +148,32 @@ public class b2EdgeShape : b2Shape {
     return massData
   }
   
-  public var vertex1 : b2Vec2 {
+  open var vertex1 : b2Vec2 {
     get { return m_vertices[0] }
     set { m_vertices[0] = newValue }
   }
 
-  public var vertex2 : b2Vec2 {
+  open var vertex2 : b2Vec2 {
     get { return m_vertices[1] }
     set { m_vertices[1] = newValue }
   }
   
-  public var vertex0: b2Vec2 {
+  open var vertex0: b2Vec2 {
     get { return m_vertex0 }
     set { m_vertex0 = newValue }
   }
 
-  public var vertex3: b2Vec2 {
+  open var vertex3: b2Vec2 {
     get { return m_vertex3 }
     set { m_vertex3 = newValue }
   }
 
-  public var hasVertex0: Bool {
+  open var hasVertex0: Bool {
     get { return m_hasVertex0 }
     set { m_hasVertex0 = newValue }
   }
 
-  public var hasVertex3: Bool {
+  open var hasVertex3: Bool {
     get { return m_hasVertex3 }
     set { m_hasVertex3 = newValue }
   }

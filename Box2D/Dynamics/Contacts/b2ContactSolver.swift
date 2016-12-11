@@ -28,7 +28,7 @@ import Foundation
 
 let B2_DEBUG_SOLVER = true
 
-public class b2VelocityConstraintPoint {
+open class b2VelocityConstraintPoint {
   var rA = b2Vec2()
   var rB = b2Vec2()
   var normalImpulse: b2Float = 0.0
@@ -38,7 +38,7 @@ public class b2VelocityConstraintPoint {
   var velocityBias: b2Float = 0.0
 }
 
-public class b2ContactVelocityConstraint {
+open class b2ContactVelocityConstraint {
   var points = [b2VelocityConstraintPoint]()
   var normal = b2Vec2()
   var normalMass = b2Mat22()
@@ -62,7 +62,7 @@ public struct b2ContactSolverDef {
   var velocities = b2Array<b2Velocity>()
 }
 
-public class b2ContactSolver {
+open class b2ContactSolver {
   init(_ def : b2ContactSolverDef) {
     m_step = def.step
     m_count = def.count
@@ -80,12 +80,12 @@ public class b2ContactSolver {
       
 		  let fixtureA = contact.m_fixtureA
 		  let fixtureB = contact.m_fixtureB
-		  let shapeA = fixtureA.shape
-		  let shapeB = fixtureB.shape
-		  let radiusA = shapeA.m_radius
-		  let radiusB = shapeB.m_radius
-		  let bodyA = fixtureA.body
-		  let bodyB = fixtureB.body
+		  let shapeA = fixtureA?.shape
+		  let shapeB = fixtureB?.shape
+		  let radiusA = shapeA?.m_radius
+		  let radiusB = shapeB?.m_radius
+		  let bodyA = fixtureA?.body
+		  let bodyB = fixtureB?.body
 		  let manifold = contact.manifold
 
 		  let pointCount = manifold.pointCount
@@ -95,12 +95,12 @@ public class b2ContactSolver {
 		  vc.friction = contact.m_friction
 		  vc.restitution = contact.m_restitution
 		  vc.tangentSpeed = contact.m_tangentSpeed
-		  vc.indexA = bodyA.m_islandIndex
-		  vc.indexB = bodyB.m_islandIndex
-		  vc.invMassA = bodyA.m_invMass
-		  vc.invMassB = bodyB.m_invMass
-		  vc.invIA = bodyA.m_invI
-		  vc.invIB = bodyB.m_invI
+		  vc.indexA = (bodyA?.m_islandIndex)!
+		  vc.indexB = (bodyB?.m_islandIndex)!
+		  vc.invMassA = (bodyA?.m_invMass)!
+		  vc.invMassB = (bodyB?.m_invMass)!
+		  vc.invIA = (bodyA?.m_invI)!
+		  vc.invIB = (bodyB?.m_invI)!
 		  vc.contactIndex = i
 		  vc.pointCount = pointCount
 		  vc.K.setZero()
@@ -108,19 +108,19 @@ public class b2ContactSolver {
       m_velocityConstraints.append(vc)
 
 		  let pc = b2ContactPositionConstraint()
-		  pc.indexA = bodyA.m_islandIndex
-		  pc.indexB = bodyB.m_islandIndex
-		  pc.invMassA = bodyA.m_invMass
-		  pc.invMassB = bodyB.m_invMass
-		  pc.localCenterA = bodyA.m_sweep.localCenter
-		  pc.localCenterB = bodyB.m_sweep.localCenter
-		  pc.invIA = bodyA.m_invI
-		  pc.invIB = bodyB.m_invI
+		  pc.indexA = (bodyA?.m_islandIndex)!
+		  pc.indexB = (bodyB?.m_islandIndex)!
+		  pc.invMassA = (bodyA?.m_invMass)!
+		  pc.invMassB = (bodyB?.m_invMass)!
+		  pc.localCenterA = (bodyA?.m_sweep.localCenter)!
+		  pc.localCenterB = (bodyB?.m_sweep.localCenter)!
+		  pc.invIA = (bodyA?.m_invI)!
+		  pc.invIB = (bodyB?.m_invI)!
 		  pc.localNormal = manifold.localNormal
 		  pc.localPoint = manifold.localPoint
 		  pc.pointCount = pointCount
-		  pc.radiusA = radiusA
-		  pc.radiusB = radiusB
+		  pc.radiusA = radiusA!
+		  pc.radiusB = radiusB!
 		  pc.type = manifold.type
       m_positionConstraints.append(pc)
 
@@ -678,7 +678,7 @@ public class b2ContactSolver {
     return minSeparation >= -3.0 * b2_linearSlop
   }
   
-  func solveTOIPositionConstraints(toiIndexA: Int, _ toiIndexB: Int) -> Bool {
+  func solveTOIPositionConstraints(_ toiIndexA: Int, _ toiIndexB: Int) -> Bool {
     var minSeparation: b2Float = 0.0
     
     for i in 0 ..< m_count {
@@ -772,8 +772,8 @@ public class b2ContactSolver {
   var m_count : Int
 }
 
-public class b2ContactPositionConstraint {
-  var localPoints = [b2Vec2](count: b2_maxManifoldPoints, repeatedValue: b2Vec2())
+open class b2ContactPositionConstraint {
+  var localPoints = [b2Vec2](repeating: b2Vec2(), count: b2_maxManifoldPoints)
   var localNormal = b2Vec2()
   var localPoint = b2Vec2()
   var indexA = 0
@@ -787,7 +787,7 @@ public class b2ContactPositionConstraint {
 }
 
 internal class b2PositionSolverManifold {
-  func initialize(pc: b2ContactPositionConstraint, _ xfA: b2Transform, _ xfB: b2Transform, _ index: Int) {
+  func initialize(_ pc: b2ContactPositionConstraint, _ xfA: b2Transform, _ xfB: b2Transform, _ index: Int) {
 		assert(pc.pointCount > 0)
   
 		switch pc.type {

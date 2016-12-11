@@ -27,7 +27,7 @@ the original C++ code written by Erin Catto.
 import Foundation
 
 /// Friction joint definition.
-public class b2FrictionJointDef : b2JointDef {
+open class b2FrictionJointDef : b2JointDef {
   public override init() {
     localAnchorA = b2Vec2()
     localAnchorB = b2Vec2()
@@ -46,7 +46,7 @@ public class b2FrictionJointDef : b2JointDef {
   
   /// Initialize the bodies, anchors, axis, and reference angle using the world
   /// anchor and world axis.
-  public func initialize(bodyA bA: b2Body, bodyB bB: b2Body, anchor: b2Vec2) {
+  open func initialize(bodyA bA: b2Body, bodyB bB: b2Body, anchor: b2Vec2) {
     bodyA = bA
     bodyB = bB
     localAnchorA = bodyA.getLocalPoint(anchor)
@@ -54,71 +54,71 @@ public class b2FrictionJointDef : b2JointDef {
   }
   
   /// The local anchor point relative to bodyA's origin.
-  public var localAnchorA: b2Vec2
+  open var localAnchorA: b2Vec2
   
   /// The local anchor point relative to bodyB's origin.
-  public var localAnchorB: b2Vec2
+  open var localAnchorB: b2Vec2
   
   /// The maximum friction force in N.
-  public var maxForce: b2Float
+  open var maxForce: b2Float
   
   /// The maximum friction torque in N-m.
-  public var maxTorque: b2Float
+  open var maxTorque: b2Float
 }
 
 // MARK: -
 /// Friction joint. This is used for top-down friction.
 /// It provides 2D translational friction and angular friction.
-public class b2FrictionJoint : b2Joint {
-  public override var anchorA: b2Vec2 {
+open class b2FrictionJoint : b2Joint {
+  open override var anchorA: b2Vec2 {
     return m_bodyA.getWorldPoint(m_localAnchorA)
   }
-  public override var anchorB: b2Vec2 {
+  open override var anchorB: b2Vec2 {
     return m_bodyB.getWorldPoint(m_localAnchorB)
   }
   
   /// Get the reaction force given the inverse time step.
   /// Unitoverride  is N.
-  public override func getReactionForce(inverseTimeStep inv_dt: b2Float) -> b2Vec2 {
+  open override func getReactionForce(inverseTimeStep inv_dt: b2Float) -> b2Vec2 {
     return inv_dt * m_linearImpulse
   }
   
   /// Get the reaction torque given the inverse time step.
   /// Unit is N*m. This is always zero for a distance joint.
-  public override func getReactionTorque(inverseTimeStep inv_dt: b2Float) -> b2Float {
+  open override func getReactionTorque(inverseTimeStep inv_dt: b2Float) -> b2Float {
     return inv_dt * m_angularImpulse
   }
   
   /// The local anchor point relative to bodyA's origin.
-  public var localAnchorA: b2Vec2  { return m_localAnchorA }
+  open var localAnchorA: b2Vec2  { return m_localAnchorA }
   
   /// The local anchor point relative to bodyB's origin.
-  public var localAnchorB: b2Vec2  { return m_localAnchorB }
+  open var localAnchorB: b2Vec2  { return m_localAnchorB }
   
   /// Set the maximum friction force in N.
-  public func setMaxForce(force: b2Float) {
+  open func setMaxForce(_ force: b2Float) {
     assert(b2IsValid(force) && force >= 0.0)
     m_maxForce = force
   }
   
   /// Get the maximum friction force in N.
-  public var maxForce: b2Float {
+  open var maxForce: b2Float {
     return m_maxForce
   }
   
   /// Set the maximum friction torque in N*m.
-  public func setMaxTorque(torque: b2Float) {
+  open func setMaxTorque(_ torque: b2Float) {
     assert(b2IsValid(torque) && torque >= 0.0)
     m_maxTorque = torque
   }
   
   /// Get the maximum friction torque in N*m.
-  public var maxTorque: b2Float {
+  open var maxTorque: b2Float {
     return m_maxTorque
   }
   
   /// Dump joint to dmLog
-  public override func dump() {
+  open override func dump() {
     let indexA = m_bodyA.m_islandIndex
     let indexB = m_bodyB.m_islandIndex
       
@@ -146,7 +146,7 @@ public class b2FrictionJoint : b2Joint {
     super.init(def)
   }
   
-  override func initVelocityConstraints(inout data: b2SolverData) {
+  override func initVelocityConstraints(_ data: inout b2SolverData) {
     m_indexA = m_bodyA.m_islandIndex
     m_indexB = m_bodyB.m_islandIndex
     m_localCenterA = m_bodyA.m_sweep.localCenter
@@ -216,7 +216,7 @@ public class b2FrictionJoint : b2Joint {
     data.velocities[m_indexB].v = vB
     data.velocities[m_indexB].w = wB
   }
-  override func solveVelocityConstraints(inout data: b2SolverData) {
+  override func solveVelocityConstraints(_ data: inout b2SolverData) {
     var vA = data.velocities[m_indexA].v
     var wA = data.velocities[m_indexA].w
     var vB = data.velocities[m_indexB].v
@@ -272,7 +272,7 @@ public class b2FrictionJoint : b2Joint {
   }
   
   // This returns true if the position errors are within tolerance.
-  override func solvePositionConstraints(inout data: b2SolverData) -> Bool {
+  override func solvePositionConstraints(_ data: inout b2SolverData) -> Bool {
     return true
   }
   

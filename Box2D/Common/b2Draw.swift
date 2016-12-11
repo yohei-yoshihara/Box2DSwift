@@ -40,7 +40,7 @@ public struct b2Color : CustomStringConvertible {
     self.g = g
     self.b = b
   }
-  public mutating func set(r: Float, _ g: Float, _ b: Float) {
+  public mutating func set(_ r: Float, _ g: Float, _ b: Float) {
     self.r = r
     self.g = g
     self.b = b
@@ -71,25 +71,25 @@ public protocol b2Draw {
   var flags: UInt32 { get }
   
   /// Draw a closed polygon provided in CCW order.
-  func drawPolygon(vertices: [b2Vec2], _ color: b2Color)
+  func drawPolygon(_ vertices: [b2Vec2], _ color: b2Color)
   
   /// Draw a solid closed polygon provided in CCW order.
-  func drawSolidPolygon(vertices: [b2Vec2], _ color: b2Color)
+  func drawSolidPolygon(_ vertices: [b2Vec2], _ color: b2Color)
   
   /// Draw a circle.
-  func drawCircle(center: b2Vec2, _ radius: b2Float, _ color: b2Color)
+  func drawCircle(_ center: b2Vec2, _ radius: b2Float, _ color: b2Color)
   
   /// Draw a solid circle.
-  func drawSolidCircle(center: b2Vec2, _ radius: b2Float, _ axis: b2Vec2, _ color: b2Color)
+  func drawSolidCircle(_ center: b2Vec2, _ radius: b2Float, _ axis: b2Vec2, _ color: b2Color)
   
   /// Draw a line segment.
-  func drawSegment(p1: b2Vec2, _ p2: b2Vec2, _ color: b2Color)
+  func drawSegment(_ p1: b2Vec2, _ p2: b2Vec2, _ color: b2Color)
   
   /**
   Draw a transform. Choose your own length scale.
   
   - parameter xf: a transform.
   */
-  func drawTransform(xf: b2Transform)
+  func drawTransform(_ xf: b2Transform)
 }
 

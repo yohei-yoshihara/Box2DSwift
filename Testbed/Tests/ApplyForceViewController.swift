@@ -33,10 +33,10 @@ class ApplyForceViewController: BaseViewController {
   override func viewDidLoad() {
     super.viewDidLoad()
     
-    let leftButton = UIBarButtonItem(title: "Left", style: UIBarButtonItemStyle.Plain, target: self, action: #selector(ApplyForceViewController.onLeft(_:)))
-    let upButton = UIBarButtonItem(title: "Up", style: UIBarButtonItemStyle.Plain, target: self, action: #selector(ApplyForceViewController.onUp(_:)))
-    let rightButton = UIBarButtonItem(title: "Right", style: UIBarButtonItemStyle.Plain, target: self, action: #selector(ApplyForceViewController.onRight(_:)))
-    let flexible = UIBarButtonItem(barButtonSystemItem: UIBarButtonSystemItem.FlexibleSpace, target: nil, action: nil)
+    let leftButton = UIBarButtonItem(title: "Left", style: UIBarButtonItemStyle.plain, target: self, action: #selector(ApplyForceViewController.onLeft(_:)))
+    let upButton = UIBarButtonItem(title: "Up", style: UIBarButtonItemStyle.plain, target: self, action: #selector(ApplyForceViewController.onUp(_:)))
+    let rightButton = UIBarButtonItem(title: "Right", style: UIBarButtonItemStyle.plain, target: self, action: #selector(ApplyForceViewController.onRight(_:)))
+    let flexible = UIBarButtonItem(barButtonSystemItem: UIBarButtonSystemItem.flexibleSpace, target: nil, action: nil)
     self.addToolbarItems([
       leftButton, flexible,
       upButton, flexible,
@@ -166,17 +166,17 @@ class ApplyForceViewController: BaseViewController {
   override func step() {
   }
   
-  func onLeft(sender: UIBarButtonItem) {
+  func onLeft(_ sender: UIBarButtonItem) {
     body.applyTorque(50.0, wake: true)
   }
   
-  func onUp(sender: UIBarButtonItem) {
+  func onUp(_ sender: UIBarButtonItem) {
     let f = body.getWorldVector(b2Vec2(0.0, -200.0))
     let p = body.getWorldPoint(b2Vec2(0.0, 2.0))
     body.applyForce(f, point: p, wake: true)
   }
 
-  func onRight(sender: UIBarButtonItem) {
+  func onRight(_ sender: UIBarButtonItem) {
     body.applyTorque(-50.0, wake: true)
   }
 }

@@ -28,7 +28,7 @@ import Foundation
 
 /// Mouse joint definition. This requires a world target point,
 /// tuning parameters, and the time step.
-public class b2MouseJointDef : b2JointDef {
+open class b2MouseJointDef : b2JointDef {
   public override init() {
     target = b2Vec2()
     maxForce = 0.0
@@ -40,18 +40,18 @@ public class b2MouseJointDef : b2JointDef {
   
   /// The initial world target point. This is assumed
   /// to coincide with the body anchor initially.
-  public var target: b2Vec2
+  open var target: b2Vec2
   
   /// The maximum constraint force that can be exerted
   /// to move the candidate body. Usually you will express
   /// as some multiple of the weight (multiplier * mass * gravity).
-  public var maxForce: b2Float
+  open var maxForce: b2Float
   
   /// The response speed.
-  public var frequencyHz: b2Float
+  open var frequencyHz: b2Float
   
   /// The damping ratio. 0 = no damping, 1 = critical damping.
-  public var dampingRatio: b2Float
+  open var dampingRatio: b2Float
 }
 
 // MARK: -
@@ -62,35 +62,35 @@ public class b2MouseJointDef : b2JointDef {
 /// NOTE: this joint is not documented in the manual because it was
 /// developed to be used in the testbed. If you want to learn how to
 /// use the mouse joint, look at the testbed.
-public class b2MouseJoint : b2Joint {
+open class b2MouseJoint : b2Joint {
   /// Implements b2Joint.
-  public override var anchorA: b2Vec2 {
+  open override var anchorA: b2Vec2 {
     return m_targetA
   }
   
   /// Implements b2Joint.
-  public override var anchorB: b2Vec2 {
+  open override var anchorB: b2Vec2 {
     return m_bodyB.getWorldPoint(m_localAnchorB)
   }
   
   /// Implements b2Joint.
-  public override func getReactionForce(inverseTimeStep inv_dt: b2Float) -> b2Vec2 {
+  open override func getReactionForce(inverseTimeStep inv_dt: b2Float) -> b2Vec2 {
     return inv_dt * m_impulse
   }
   
   /// Implements b2Joint.
-  public override func getReactionTorque(inverseTimeStep inv_dt: b2Float) -> b2Float {
+  open override func getReactionTorque(inverseTimeStep inv_dt: b2Float) -> b2Float {
     return inv_dt * 0.0
   }
   
   /// Use this to update the target point.
-  public func setTarget(target: b2Vec2) {
+  open func setTarget(_ target: b2Vec2) {
     if m_bodyB.isAwake == false {
       m_bodyB.setAwake(true)
     }
     m_targetA = target
   }
-  public var target: b2Vec2 {
+  open var target: b2Vec2 {
     get {
       return m_targetA
     }
@@ -100,10 +100,10 @@ public class b2MouseJoint : b2Joint {
   }
   
   /// Set/get the maximum force in Newtons.
-  public func setMaxForce(force: b2Float) {
+  open func setMaxForce(_ force: b2Float) {
     m_maxForce = force
   }
-  public var maxForce: b2Float {
+  open var maxForce: b2Float {
     get {
       return m_maxForce
     }
@@ -113,10 +113,10 @@ public class b2MouseJoint : b2Joint {
   }
   
   /// Set/get the frequency in Hertz.
-  public func setFrequency(hz: b2Float) {
+  open func setFrequency(_ hz: b2Float) {
     m_frequencyHz = hz
   }
-  public var frequency: b2Float {
+  open var frequency: b2Float {
     get {
       return m_frequencyHz
     }
@@ -126,10 +126,10 @@ public class b2MouseJoint : b2Joint {
   }
   
   /// Set/get the damping ratio (dimensionless).
-  public func setDampingRatio(ratio: b2Float) {
+  open func setDampingRatio(_ ratio: b2Float) {
     m_dampingRatio = ratio
   }
-  public var dampingRatio: b2Float {
+  open var dampingRatio: b2Float {
     get {
       return m_dampingRatio
     }
@@ -139,10 +139,10 @@ public class b2MouseJoint : b2Joint {
   }
   
   /// The mouse joint does not support dumping.
-  public override func dump() { print("Mouse joint dumping is not supported.") }
+  open override func dump() { print("Mouse joint dumping is not supported.") }
   
   /// Implement b2Joint::ShiftOrigin
-  public override func shiftOrigin(newOrigin: b2Vec2) {
+  open override func shiftOrigin(_ newOrigin: b2Vec2) {
     m_targetA -= newOrigin
   }
   
@@ -167,7 +167,7 @@ public class b2MouseJoint : b2Joint {
     m_localAnchorB = b2MulT(m_bodyB.transform, m_targetA)
   }
   
-  override func initVelocityConstraints(inout data: b2SolverData) {
+  override func initVelocityConstraints(_ data: inout b2SolverData) {
     m_indexB = m_bodyB.m_islandIndex
 	  m_localCenterB = m_bodyB.m_sweep.localCenter
 	  m_invMassB = m_bodyB.m_invMass
@@ -234,7 +234,7 @@ public class b2MouseJoint : b2Joint {
 	  data.velocities[m_indexB].v = vB
 	  data.velocities[m_indexB].w = wB
   }
-  override func solveVelocityConstraints(inout data: b2SolverData) {
+  override func solveVelocityConstraints(_ data: inout b2SolverData) {
     var vB = data.velocities[m_indexB].v
     var wB = data.velocities[m_indexB].w
     
@@ -256,7 +256,7 @@ public class b2MouseJoint : b2Joint {
     data.velocities[m_indexB].v = vB
     data.velocities[m_indexB].w = wB
   }
-  override func solvePositionConstraints(inout data: b2SolverData) -> Bool {
+  override func solvePositionConstraints(_ data: inout b2SolverData) -> Bool {
     return true
   }
   

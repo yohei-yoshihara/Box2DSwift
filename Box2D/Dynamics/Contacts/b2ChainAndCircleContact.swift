@@ -26,11 +26,11 @@ the original C++ code written by Erin Catto.
 
 import Foundation
 
-public class b2ChainAndCircleContact : b2Contact {
-  override class func create(fixtureA: b2Fixture, _ indexA: Int, _ fixtureB: b2Fixture, _ indexB: Int) -> b2Contact {
+open class b2ChainAndCircleContact : b2Contact {
+  override class func create(_ fixtureA: b2Fixture, _ indexA: Int, _ fixtureB: b2Fixture, _ indexB: Int) -> b2Contact {
     return b2ChainAndCircleContact(fixtureA, indexA, fixtureB, indexB)
   }
-  override class func destroy(contact: b2Contact) {
+  override class func destroy(_ contact: b2Contact) {
   }
   
   override init(_ fixtureA: b2Fixture, _ indexA: Int, _ fixtureB: b2Fixture, _ indexB: Int) {
@@ -39,7 +39,7 @@ public class b2ChainAndCircleContact : b2Contact {
     assert(m_fixtureB.type == b2ShapeType.circle)
   }
   
-  override public func evaluate(inout manifold: b2Manifold, _ xfA: b2Transform, _ xfB: b2Transform) {
+  override open func evaluate(_ manifold: inout b2Manifold, _ xfA: b2Transform, _ xfB: b2Transform) {
     let chain = m_fixtureA.shape as! b2ChainShape
     let edge = chain.getChildEdge(m_indexA)
     b2CollideEdgeAndCircle(manifold: &manifold,

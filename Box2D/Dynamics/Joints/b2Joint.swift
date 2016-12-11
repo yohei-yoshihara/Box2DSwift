@@ -41,18 +41,18 @@ public enum b2JointType : CustomStringConvertible {
   case motorJoint
   public var description: String {
     switch self {
-    case unknownJoint: return "unknownJoint"
-    case revoluteJoint: return "revoluteJoint"
-    case prismaticJoint: return "prismaticJoint"
-    case distanceJoint: return "distanceJoint"
-    case pulleyJoint: return "pulleyJoint"
-    case mouseJoint: return "mouseJoint"
-    case gearJoint: return "gearJoint"
-    case wheelJoint: return "wheelJoint"
-    case weldJoint: return "weldJoint"
-    case frictionJoint: return "frictionJoint"
-    case ropeJoint: return "ropeJoint"
-    case motorJoint: return "motorJoint"
+    case .unknownJoint: return "unknownJoint"
+    case .revoluteJoint: return "revoluteJoint"
+    case .prismaticJoint: return "prismaticJoint"
+    case .distanceJoint: return "distanceJoint"
+    case .pulleyJoint: return "pulleyJoint"
+    case .mouseJoint: return "mouseJoint"
+    case .gearJoint: return "gearJoint"
+    case .wheelJoint: return "wheelJoint"
+    case .weldJoint: return "weldJoint"
+    case .frictionJoint: return "frictionJoint"
+    case .ropeJoint: return "ropeJoint"
+    case .motorJoint: return "motorJoint"
     }
   }
 }
@@ -64,10 +64,10 @@ public enum b2LimitState : CustomStringConvertible {
   case equalLimits
   public var description: String {
     switch self {
-    case inactiveLimit: return "inactiveLimit"
-    case atLowerLimit: return "atLowerLimit"
-    case atUpperLimit: return "atUpperLimit"
-    case equalLimits: return "equalLimits"
+    case .inactiveLimit: return "inactiveLimit"
+    case .atLowerLimit: return "atLowerLimit"
+    case .atUpperLimit: return "atUpperLimit"
+    case .equalLimits: return "equalLimits"
     }
   }
 }
@@ -84,7 +84,7 @@ public struct b2Jacobian {
 /// is an edge. A joint edge belongs to a doubly linked list
 /// maintained in each attached body. Each joint has two joint
 /// nodes, one for each attached body.
-public class b2JointEdge {
+open class b2JointEdge {
   init(joint: b2Joint) {
     self.joint = joint
   }
@@ -96,7 +96,7 @@ public class b2JointEdge {
 
 // MARK: -
 /// Joint definitions are used to construct joints.
-public class b2JointDef {
+open class b2JointDef {
   public init() {
     type = b2JointType.unknownJoint
     userData = nil
@@ -106,66 +106,66 @@ public class b2JointDef {
   }
   
   /// The joint type is set automatically for concrete joint types.
-  public var type: b2JointType
+  open var type: b2JointType
   
   /// Use this to attach application specific data to your joints.
-  public var userData: AnyObject?
+  open var userData: AnyObject?
   
   /// The first attached body.
-  public var bodyA: b2Body!
+  open var bodyA: b2Body!
   
   /// The second attached body.
-  public var bodyB: b2Body!
+  open var bodyB: b2Body!
   
   /// Set this flag to true if the attached bodies should collide.
-  public var collideConnected: Bool
+  open var collideConnected: Bool
 }
 
 // MARK: -
 /// various fashions. Some joints also feature limits and motors.
-public class b2Joint {
+open class b2Joint {
   /// Get the type of the concrete joint.
-  public var type: b2JointType {
+  open var type: b2JointType {
     return m_type
   }
   
   /// Get the first body attached to this joint.
-  public var bodyA: b2Body {
+  open var bodyA: b2Body {
     return m_bodyA
   }
   
   /// Get the second body attached to this joint.
-  public var bodyB: b2Body {
+  open var bodyB: b2Body {
     return m_bodyB
   }
   
   /// Get the anchor point on bodyA in world coordinates.
-  public var anchorA: b2Vec2 {
+  open var anchorA: b2Vec2 {
     fatalError("must override")
   }
   
   /// Get the anchor point on bodyB in world coordinates.
-  public var anchorB: b2Vec2 {
+  open var anchorB: b2Vec2 {
     fatalError("must override")
   }
   
   /// Get the reaction force on bodyB at the joint anchor in Newtons.
-  public func getReactionForce(inverseTimeStep inv_dt: b2Float) -> b2Vec2 {
+  open func getReactionForce(inverseTimeStep inv_dt: b2Float) -> b2Vec2 {
     fatalError("must override")
   }
   
   /// Get the reaction torque on bodyB in N*m.
-  public func getReactionTorque(inverseTimeStep inv_dt: b2Float) -> b2Float {
+  open func getReactionTorque(inverseTimeStep inv_dt: b2Float) -> b2Float {
     fatalError("must override")
   }
   
   /// Get the next joint the world joint list.
-  public func getNext() -> b2Joint? {
+  open func getNext() -> b2Joint? {
     return m_next
   }
   
   /// Get the user data pointer.
-  public var userData: AnyObject? {
+  open var userData: AnyObject? {
     get {
       return m_userData
     }
@@ -175,31 +175,31 @@ public class b2Joint {
   }
   
   /// Set the user data pointer.
-  public func setUserData(data: AnyObject?) {
+  open func setUserData(_ data: AnyObject?) {
       m_userData = data
   }
   
   /// Short-cut function to determine if either body is inactive.
-  public var isActive: Bool {
+  open var isActive: Bool {
     return m_bodyA.isActive && m_bodyB.isActive
   }
   
   /// Get collide connected.
   /// Note: modifying the collide connect flag won't work correctly because
   /// the flag is only checked when fixture AABBs begin to overlap.
-  public var collideConnected: Bool {
+  open var collideConnected: Bool {
     return m_collideConnected
   }
   
   /// Dump this joint to the log file.
-  public func dump() { NSLog("// Dump is not supported for this joint type."); }
+  open func dump() { NSLog("// Dump is not supported for this joint type."); }
   
   /// Shift the origin for any points stored in world coordinates.
-  public func shiftOrigin(newOrigin: b2Vec2) { }
+  open func shiftOrigin(_ newOrigin: b2Vec2) { }
   
   // MARK: private methods
   
-  class func create(def: b2JointDef) -> b2Joint {
+  class func create(_ def: b2JointDef) -> b2Joint {
     var joint: b2Joint
     
     switch def.type {
@@ -242,7 +242,7 @@ public class b2Joint {
     
     return joint
   }
-  class func destroy(joint: b2Joint) {
+  class func destroy(_ joint: b2Joint) {
   }
   
   init(_ def: b2JointDef) {
@@ -269,15 +269,15 @@ public class b2Joint {
     m_edgeB.next = nil
   }
   
-  func initVelocityConstraints(inout data: b2SolverData) {
+  func initVelocityConstraints(_ data: inout b2SolverData) {
     fatalError("must override")
   }
-  func solveVelocityConstraints(inout data: b2SolverData) {
+  func solveVelocityConstraints(_ data: inout b2SolverData) {
     fatalError("must override")
   }
   
   // This returns true if the position errors are within tolerance.
-  func solvePositionConstraints(inout data: b2SolverData) -> Bool {
+  func solvePositionConstraints(_ data: inout b2SolverData) -> Bool {
     fatalError("must override")
   }
   
@@ -287,8 +287,8 @@ public class b2Joint {
   var m_next: b2Joint? = nil // ** linked list **
   var m_edgeA : b2JointEdge! // ** owner **
   var m_edgeB : b2JointEdge! // ** owner **
-  var m_bodyA: b2Body!
-  var m_bodyB: b2Body! 
+  var m_bodyA: b2Body
+  var m_bodyB: b2Body 
   
   var m_index: Int = 0
   

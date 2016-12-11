@@ -33,17 +33,17 @@ class AdditionalInfoView: UIView {
 
   override init(frame: CGRect) {
     super.init(frame: frame)
-    self.autoresizingMask = [UIViewAutoresizing.FlexibleWidth, UIViewAutoresizing.FlexibleHeight]
-    self.userInteractionEnabled = false
+    self.autoresizingMask = [UIViewAutoresizing.flexibleWidth, UIViewAutoresizing.flexibleHeight]
+    self.isUserInteractionEnabled = false
     
     let size = self.bounds.size
     label = UILabel(frame: CGRect(x: 0, y: size.height - 1, width: 1, height: 1))
-    label.autoresizingMask = [UIViewAutoresizing.FlexibleTopMargin, UIViewAutoresizing.FlexibleRightMargin]
+    label.autoresizingMask = [UIViewAutoresizing.flexibleTopMargin, UIViewAutoresizing.flexibleRightMargin]
     label.numberOfLines = 0
-    label.backgroundColor = UIColor.clearColor()
-    label.opaque = false
-    label.textColor = UIColor.whiteColor()
-    label.font = UIFont.systemFontOfSize(10)
+    label.backgroundColor = UIColor.clear
+    label.isOpaque = false
+    label.textColor = UIColor.white
+    label.font = UIFont.systemFont(ofSize: 10)
     self.addSubview(label)
   }
 
@@ -52,10 +52,10 @@ class AdditionalInfoView: UIView {
   }
   
   func begin() {
-    s.removeAll(keepCapacity: true)
+    s.removeAll(keepingCapacity: true)
   }
   
-  func append(str: String) {
+  func append(_ str: String) {
     s += str
   }
  

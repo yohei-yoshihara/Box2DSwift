@@ -26,11 +26,11 @@ the original C++ code written by Erin Catto.
 
 import Foundation
 
-public class b2PolygonAndCircleContact : b2Contact {
-  override class func create(fixtureA: b2Fixture, _ indexA: Int, _ fixtureB: b2Fixture, _ indexB: Int) -> b2Contact {
+open class b2PolygonAndCircleContact : b2Contact {
+  override class func create(_ fixtureA: b2Fixture, _ indexA: Int, _ fixtureB: b2Fixture, _ indexB: Int) -> b2Contact {
     return b2PolygonAndCircleContact(fixtureA, fixtureB)
   }
-  override class func destroy(contact: b2Contact) {
+  override class func destroy(_ contact: b2Contact) {
   }
   
   init(_ fixtureA : b2Fixture, _ fixtureB : b2Fixture) {
@@ -39,7 +39,7 @@ public class b2PolygonAndCircleContact : b2Contact {
     assert(m_fixtureB.type == b2ShapeType.circle)
   }
 
-  override public func evaluate(inout manifold: b2Manifold, _ xfA: b2Transform, _ xfB: b2Transform) {
+  override open func evaluate(_ manifold: inout b2Manifold, _ xfA: b2Transform, _ xfB: b2Transform) {
     b2CollidePolygonAndCircle(manifold: &manifold,
       polygonA: m_fixtureA.shape as! b2PolygonShape, transformA: xfA,
       circleB: m_fixtureB.shape as! b2CircleShape, transformB: xfB)

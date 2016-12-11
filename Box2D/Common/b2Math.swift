@@ -31,7 +31,7 @@ public typealias b2Float = Float32
 /**
 This function is used to ensure that a floating point number is not a NaN or infinity.
 */
-func b2IsValid(x: b2Float) -> Bool {
+func b2IsValid(_ x: b2Float) -> Bool {
   return x.isNaN == false && x.isInfinite == false
 }
 
@@ -39,15 +39,15 @@ func b2IsValid(x: b2Float) -> Bool {
 This is a approximate yet fast inverse square-root.
 TODO: implement actual fast inverse square-root
 */
-func b2InvSqrt(x: b2Float) -> b2Float {
+func b2InvSqrt(_ x: b2Float) -> b2Float {
   return 1.0 / sqrt(x)
 }
 
-func b2Sqrt(x: b2Float) -> b2Float {
+func b2Sqrt(_ x: b2Float) -> b2Float {
   return sqrt(x)
 }
 
-func b2Atan2(y: b2Float, _ x: b2Float) -> b2Float {
+func b2Atan2(_ y: b2Float, _ x: b2Float) -> b2Float {
   return atan2(y, x)
 }
 
@@ -79,7 +79,7 @@ public struct b2Vec2 : Equatable, CustomStringConvertible {
   /**
   Set this vector to some specified coordinates.
   */
-  public mutating func set(x_ : b2Float, _ y_ : b2Float) {
+  public mutating func set(_ x_ : b2Float, _ y_ : b2Float) {
     x = x_
     y = y_
   }
@@ -125,7 +125,7 @@ public struct b2Vec2 : Equatable, CustomStringConvertible {
   /**
   Convert this vector into a unit vector. Returns the length.
   */
-  public mutating func normalize() -> b2Float {
+  @discardableResult public mutating func normalize() -> b2Float {
     let length = self.length()
     if length < b2_epsilon {
       return 0.0
@@ -170,7 +170,7 @@ public prefix func - (v: b2Vec2) -> b2Vec2 {
 /**
 Add a vector to this vector.
 */
-public func += (inout a: b2Vec2, b: b2Vec2) {
+public func += (a: inout b2Vec2, b: b2Vec2) {
   a.x += b.x
   a.y += b.y
 }
@@ -178,7 +178,7 @@ public func += (inout a: b2Vec2, b: b2Vec2) {
 /**
 Subtract a vector from this vector.
 */
-public func -= (inout a: b2Vec2, b: b2Vec2) {
+public func -= (a: inout b2Vec2, b: b2Vec2) {
   a.x -= b.x
   a.y -= b.y
 }
@@ -186,7 +186,7 @@ public func -= (inout a: b2Vec2, b: b2Vec2) {
 /**
 Multiply this vector by a scalar.
 */
-public func *= (inout a: b2Vec2, b: b2Vec2) {
+public func *= (a: inout b2Vec2, b: b2Vec2) {
   a.x *= b.x
   a.y *= b.y
 }
@@ -194,7 +194,7 @@ public func *= (inout a: b2Vec2, b: b2Vec2) {
 /**
 Multiply this vector by a scalar.
 */
-public func *= (inout a: b2Vec2, b: b2Float) {
+public func *= (a: inout b2Vec2, b: b2Float) {
   a.x *= b
   a.y *= b
 }
@@ -229,7 +229,7 @@ public struct b2Vec3 : CustomStringConvertible {
   /**
   Set this vector to some specified coordinates.
   */
-  mutating func set(x_: b2Float, _ y_: b2Float, _ z_: b2Float) {
+  mutating func set(_ x_: b2Float, _ y_: b2Float, _ z_: b2Float) {
     x = x_
     y = y_
     z = z_
@@ -256,7 +256,7 @@ public prefix func - (v: b2Vec3) -> b2Vec3 {
 /**
 Add a vector to this vector.
 */
-public func += (inout a: b2Vec3, b: b2Vec3) {
+public func += (a: inout b2Vec3, b: b2Vec3) {
   a.x += b.x
   a.y += b.y
   a.z += b.z
@@ -264,7 +264,7 @@ public func += (inout a: b2Vec3, b: b2Vec3) {
 /**
 Subtract a vector from this vector.
 */
-public func -= (inout a: b2Vec3, b: b2Vec3) {
+public func -= (a: inout b2Vec3, b: b2Vec3) {
   a.x -= b.x
   a.y -= b.y
   a.z -= b.z
@@ -272,7 +272,7 @@ public func -= (inout a: b2Vec3, b: b2Vec3) {
 /**
 Multiply this vector by a vecto.
 */
-public func *= (inout a: b2Vec3, b: b2Vec3) {
+public func *= (a: inout b2Vec3, b: b2Vec3) {
   a.x *= b.x
   a.y *= b.y
   a.z *= b.z
@@ -281,7 +281,7 @@ public func *= (inout a: b2Vec3, b: b2Vec3) {
 /**
 Multiply this vector by a scalar.
 */
-public func *= (inout a: b2Vec3, b: b2Float) {
+public func *= (a: inout b2Vec3, b: b2Float) {
   a.x *= b
   a.y *= b
   a.z *= b
@@ -315,7 +315,7 @@ public struct b2Mat22 : CustomStringConvertible {
   /**
   Initialize this matrix using columns.
   */
-  public mutating func set(c1: b2Vec2, _ c2: b2Vec2) {
+  public mutating func set(_ c1: b2Vec2, _ c2: b2Vec2) {
     ex = c1
     ey = c2
   }
@@ -349,7 +349,7 @@ public struct b2Mat22 : CustomStringConvertible {
   Solve A * x = b, where b is a column vector. This is more efficient
   than computing the inverse in one-shot cases.
   */
-  public func solve(b: b2Vec2) -> b2Vec2 {
+  public func solve(_ b: b2Vec2) -> b2Vec2 {
     let a11 = ex.x, a12 = ey.x, a21 = ex.y, a22 = ey.y
     var det = a11 * a22 - a12 * a21
     if det != 0.0 {
@@ -404,7 +404,7 @@ public struct b2Mat33 : CustomStringConvertible {
   Solve A * x = b, where b is a column vector. This is more efficient
   than computing the inverse in one-shot cases.
   */
-  public func solve33(b: b2Vec3) -> b2Vec3 {
+  public func solve33(_ b: b2Vec3) -> b2Vec3 {
     var det = b2Dot(ex, b2Cross(ey, ez))
     if det != 0.0 {
       det = 1.0 / det
@@ -420,7 +420,7 @@ public struct b2Mat33 : CustomStringConvertible {
   Solve A * x = b, where b is a column vector. This is more efficient
   than computing the inverse in one-shot cases.
   */
-  public func solve22(b: b2Vec2) -> b2Vec2 {
+  public func solve22(_ b: b2Vec2) -> b2Vec2 {
     let a11 = ex.x, a12 = ey.x, a21 = ex.y, a22 = ey.y
     var det = a11 * a22 - a12 * a21
     if det != 0.0 {
@@ -506,7 +506,7 @@ public struct b2Rot : CustomStringConvertible {
   /**
   Set using an angle in radians.
   */
-  public mutating func set(angle : b2Float) {
+  public mutating func set(_ angle : b2Float) {
     s = sin(angle)
     c = cos(angle)
   }
@@ -576,7 +576,7 @@ public struct b2Transform : CustomStringConvertible {
   /**
   Set this based on the position and angle.
   */
-  public mutating func set(position: b2Vec2, angle: b2Float) {
+  public mutating func set(_ position: b2Vec2, angle: b2Float) {
     p = position
     q.set(angle)
   }
@@ -603,7 +603,7 @@ public struct b2Sweep : CustomStringConvertible {
   
   - parameter beta: is a factor in [0,1], where 0 indicates alpha0.
   */
-  public func getTransform(beta beta: b2Float) -> b2Transform {
+  public func getTransform(beta: b2Float) -> b2Transform {
     var xf = b2Transform()
     xf.p = (1.0 - beta) * c0 + beta * c
     let angle = (1.0 - beta) * a0 + beta * a
@@ -618,7 +618,7 @@ public struct b2Sweep : CustomStringConvertible {
   
   - parameter alpha: the new initial time.
   */
-  public mutating func advance(alpha alpha: b2Float) {
+  public mutating func advance(alpha: b2Float) {
     assert(alpha0 < 1.0)
     let beta = (alpha - alpha0) / (1.0 - alpha0)
     c0 += beta * (c - c0)
@@ -672,41 +672,41 @@ public let b2Vec2_zero = b2Vec2(0.0, 0.0)
 /**
 Perform the dot product on two vectors.
 */
-public func b2Dot(a : b2Vec2, _ b : b2Vec2) -> b2Float {
+public func b2Dot(_ a : b2Vec2, _ b : b2Vec2) -> b2Float {
   return a.x * b.x + a.y * b.y
 }
 /**
 Perform the cross product on two vectors. In 2D this produces a scalar.
 */
-public func b2Cross(a : b2Vec2, _ b : b2Vec2) -> b2Float {
+public func b2Cross(_ a : b2Vec2, _ b : b2Vec2) -> b2Float {
   return a.x * b.y - a.y * b.x
 }
 /**
 Perform the cross product on a vector and a scalar. In 2D this produces
 a vector.
 */
-public func b2Cross(a : b2Vec2, _ s : b2Float) -> b2Vec2 {
+public func b2Cross(_ a : b2Vec2, _ s : b2Float) -> b2Vec2 {
   return b2Vec2(s * a.y, -s * a.x)
 }
 /**
 Perform the cross product on a scalar and a vector. In 2D this produces
 a vector.
 */
-public func b2Cross(s : b2Float, _ a : b2Vec2) -> b2Vec2 {
+public func b2Cross(_ s : b2Float, _ a : b2Vec2) -> b2Vec2 {
   return b2Vec2(-s * a.y, s * a.x)
 }
 /**
 Multiply a matrix times a vector. If a rotation matrix is provided,
 then this transforms the vector from one frame to another.
 */
-public func b2Mul(A : b2Mat22, _ v : b2Vec2) -> b2Vec2 {
+public func b2Mul(_ A : b2Mat22, _ v : b2Vec2) -> b2Vec2 {
   return b2Vec2(b2Dot(v, A.ex), b2Dot(v, A.ey))
 }
 /**
 Multiply a matrix transpose times a vector. If a rotation matrix is provided,
 then this transforms the vector from one frame to another (inverse transform).
 */
-public func b2MulT(A : b2Mat22, _ v : b2Vec2) -> b2Vec2 {
+public func b2MulT(_ A : b2Mat22, _ v : b2Vec2) -> b2Vec2 {
   return b2Vec2(b2Dot(v, A.ex), b2Dot(v, A.ey))
 }
 /**
@@ -730,12 +730,12 @@ public func == (a: b2Vec2, b: b2Vec2) -> Bool {
   return a.x == b.x && a.y == b.y
 }
 
-public func b2Distance(a : b2Vec2, _ b : b2Vec2) -> b2Float {
+public func b2Distance(_ a : b2Vec2, _ b : b2Vec2) -> b2Float {
   let c = a - b
   return c.length()
 }
 
-public func b2DistanceSquared(a : b2Vec2, _ b: b2Vec2) -> b2Float {
+public func b2DistanceSquared(_ a : b2Vec2, _ b: b2Vec2) -> b2Float {
   let c = a - b
   return b2Dot(c, c)
 }
@@ -760,14 +760,14 @@ public func - (a : b2Vec3, b : b2Vec3) -> b2Vec3
 /**
 Perform the dot product on two vectors.
 */
-public func b2Dot(a : b2Vec3, _ b : b2Vec3) -> b2Float
+public func b2Dot(_ a : b2Vec3, _ b : b2Vec3) -> b2Float
 {
   return a.x * b.x + a.y * b.y + a.z * b.z
 }
 /**
 Perform the cross product on two vectors.
 */
-public func b2Cross(a : b2Vec3, _ b : b2Vec3) -> b2Vec3
+public func b2Cross(_ a : b2Vec3, _ b : b2Vec3) -> b2Vec3
 {
   return b2Vec3(a.y * b.z - a.z * b.y, a.z * b.x - a.x * b.z, a.x * b.y - a.y * b.x)
 }
@@ -779,14 +779,14 @@ public func + (A : b2Mat22, B : b2Mat22) -> b2Mat22
 /**
 A * B
 */
-public func b2Mul(A : b2Mat22, _ B : b2Mat22) -> b2Mat22
+public func b2Mul(_ A : b2Mat22, _ B : b2Mat22) -> b2Mat22
 {
   return b2Mat22(b2Mul(A, B.ex), b2Mul(A, B.ey))
 }
 /**
 A^T * B
 */
-public func b2MulT(A : b2Mat22, _ B : b2Mat22) -> b2Mat22
+public func b2MulT(_ A : b2Mat22, _ B : b2Mat22) -> b2Mat22
 {
   let c1 = b2Vec2(b2Dot(A.ex, B.ex), b2Dot(A.ey, B.ex))
   let c2 = b2Vec2(b2Dot(A.ex, B.ey), b2Dot(A.ey, B.ey))
@@ -795,14 +795,14 @@ public func b2MulT(A : b2Mat22, _ B : b2Mat22) -> b2Mat22
 /**
 Multiply a matrix times a vector.
 */
-public func b2Mul(A : b2Mat33, _ v : b2Vec3) -> b2Vec3
+public func b2Mul(_ A : b2Mat33, _ v : b2Vec3) -> b2Vec3
 {
   return v.x * A.ex + v.y * A.ey + v.z * A.ez
 }
 /**
 Multiply a matrix times a vector.
 */
-public func b2Mul22(A : b2Mat33, _ v : b2Vec2) -> b2Vec2
+public func b2Mul22(_ A : b2Mat33, _ v : b2Vec2) -> b2Vec2
 {
   return b2Vec2(A.ex.x * v.x + A.ey.x * v.y, A.ex.y * v.x + A.ey.y * v.y)
 }
@@ -810,7 +810,7 @@ public func b2Mul22(A : b2Mat33, _ v : b2Vec2) -> b2Vec2
 /**
 Multiply two rotations: q * r
 */
-public func b2Mul(q : b2Rot, _ r : b2Rot) -> b2Rot
+public func b2Mul(_ q : b2Rot, _ r : b2Rot) -> b2Rot
 {
   // [qc -qs] * [rc -rs] = [qc*rc-qs*rs -qc*rs-qs*rc]
   // [qs  qc]   [rs  rc]   [qs*rc+qc*rs -qs*rs+qc*rc]
@@ -824,7 +824,7 @@ public func b2Mul(q : b2Rot, _ r : b2Rot) -> b2Rot
 /**
 Transpose multiply two rotations: qT * r
 */
-public func b2MulT(q : b2Rot, _ r : b2Rot) -> b2Rot
+public func b2MulT(_ q : b2Rot, _ r : b2Rot) -> b2Rot
 {
   // [ qc qs] * [rc -rs] = [qc*rc+qs*rs -qc*rs+qs*rc]
   // [-qs qc]   [rs  rc]   [-qs*rc+qc*rs qs*rs+qc*rc]
@@ -838,19 +838,19 @@ public func b2MulT(q : b2Rot, _ r : b2Rot) -> b2Rot
 /**
 Rotate a vector
 */
-public func b2Mul(q : b2Rot, _ v : b2Vec2) -> b2Vec2
+public func b2Mul(_ q : b2Rot, _ v : b2Vec2) -> b2Vec2
 {
   return b2Vec2(q.c * v.x - q.s * v.y, q.s * v.x + q.c * v.y)
 }
 /**
 Inverse rotate a vector
 */
-public func b2MulT(q : b2Rot, _ v : b2Vec2) -> b2Vec2
+public func b2MulT(_ q : b2Rot, _ v : b2Vec2) -> b2Vec2
 {
   return b2Vec2(q.c * v.x + q.s * v.y, -q.s * v.x + q.c * v.y)
 }
 
-public func b2Mul(T : b2Transform, _ v : b2Vec2) -> b2Vec2
+public func b2Mul(_ T : b2Transform, _ v : b2Vec2) -> b2Vec2
 {
   let x = (T.q.c * v.x - T.q.s * v.y) + T.p.x
   let y = (T.q.s * v.x + T.q.c * v.y) + T.p.y
@@ -858,7 +858,7 @@ public func b2Mul(T : b2Transform, _ v : b2Vec2) -> b2Vec2
   return b2Vec2(x, y)
 }
 
-public func b2MulT(T : b2Transform, _ v : b2Vec2) -> b2Vec2
+public func b2MulT(_ T : b2Transform, _ v : b2Vec2) -> b2Vec2
 {
   let px = v.x - T.p.x
   let py = v.y - T.p.y
@@ -871,7 +871,7 @@ public func b2MulT(T : b2Transform, _ v : b2Vec2) -> b2Vec2
 v2 = A.q.Rot(B.q.Rot(v1) + B.p) + A.p
 = (A.q * B.q).Rot(v1) + A.q.Rot(B.p) + A.p
 */
-public func b2Mul(A : b2Transform, _ B : b2Transform) -> b2Transform
+public func b2Mul(_ A : b2Transform, _ B : b2Transform) -> b2Transform
 {
   var C = b2Transform()
   C.q = b2Mul(A.q, B.q)
@@ -882,7 +882,7 @@ public func b2Mul(A : b2Transform, _ B : b2Transform) -> b2Transform
 v2 = A.q' * (B.q * v1 + B.p - A.p)
 = A.q' * B.q * v1 + A.q' * (B.p - A.p)
 */
-public func b2MulT(A : b2Transform, _ B : b2Transform) -> b2Transform
+public func b2MulT(_ A : b2Transform, _ B : b2Transform) -> b2Transform
 {
   var C = b2Transform()
   C.q = b2MulT(A.q, B.q)
@@ -890,27 +890,27 @@ public func b2MulT(A : b2Transform, _ B : b2Transform) -> b2Transform
   return C
 }
 
-public func b2Abs(a : b2Vec2) -> b2Vec2 {
+public func b2Abs(_ a : b2Vec2) -> b2Vec2 {
   return b2Vec2(abs(a.x), abs(a.y))
 }
 
-public func b2Abs(A : b2Mat22) -> b2Mat22 {
+public func b2Abs(_ A : b2Mat22) -> b2Mat22 {
   return b2Mat22(b2Abs(A.ex), b2Abs(A.ey))
 }
 
-public func b2Min(a : b2Vec2, _ b : b2Vec2) -> b2Vec2 {
+public func b2Min(_ a : b2Vec2, _ b : b2Vec2) -> b2Vec2 {
   return b2Vec2(min(a.x, b.x), min(a.y, b.y))
 }
 
-public func b2Max(a : b2Vec2, _ b : b2Vec2) -> b2Vec2 {
+public func b2Max(_ a : b2Vec2, _ b : b2Vec2) -> b2Vec2 {
   return b2Vec2(max(a.x, b.x), max(a.y, b.y))
 }
 
-public func b2Clamp(a : b2Float, _ low : b2Float, _ high : b2Float) -> b2Float {
+public func b2Clamp(_ a : b2Float, _ low : b2Float, _ high : b2Float) -> b2Float {
   return max(low, min(a, high))
 }
 
-public func b2Clamp(a : b2Vec2, _ low : b2Vec2, _ high : b2Vec2) -> b2Vec2
+public func b2Clamp(_ a : b2Vec2, _ low : b2Vec2, _ high : b2Vec2) -> b2Vec2
 {
   return b2Max(low, b2Min(a, high))
 }
@@ -920,7 +920,7 @@ that recursively "folds" the upper bits into the lower bits. This process yields
 the same most significant 1 as x, but all 1's below it. Adding 1 to that value yields the next
 largest power of 2. For a 32-bit value:"
 */
-public func b2NextPowerOfTwo(_x : UInt) -> UInt {
+public func b2NextPowerOfTwo(_ _x : UInt) -> UInt {
   var x = _x
   x |= (x >> 1)
   x |= (x >> 2)
@@ -930,7 +930,7 @@ public func b2NextPowerOfTwo(_x : UInt) -> UInt {
   return x + 1
 }
 
-public func b2IsPowerOfTwo(x : UInt) -> Bool
+public func b2IsPowerOfTwo(_ x : UInt) -> Bool
 {
   let result = x > 0 && (x & (x - 1)) == 0
   return result

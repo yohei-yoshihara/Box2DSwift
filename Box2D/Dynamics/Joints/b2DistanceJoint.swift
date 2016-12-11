@@ -32,7 +32,7 @@ import Foundation
 /// so that the initial configuration can violate the constraint
 /// slightly. This helps when saving and loading a game.
 /// @warning Do not use a zero or short length.
-public class b2DistanceJointDef : b2JointDef {
+open class b2DistanceJointDef : b2JointDef {
   public override init() {
     localAnchorA = b2Vec2(0.0, 0.0)
     localAnchorB = b2Vec2(0.0, 0.0)
@@ -52,7 +52,7 @@ public class b2DistanceJointDef : b2JointDef {
   
   /// Initialize the bodies, anchors, and length using the world
   /// anchors.
-  public func initialize(bodyA bA: b2Body, bodyB bB: b2Body, anchorA: b2Vec2, anchorB: b2Vec2) {
+  open func initialize(bodyA bA: b2Body, bodyB bB: b2Body, anchorA: b2Vec2, anchorB: b2Vec2) {
     bodyA = bA
     bodyB = bB
     localAnchorA = bodyA.getLocalPoint(anchorA)
@@ -62,80 +62,80 @@ public class b2DistanceJointDef : b2JointDef {
   }
   
   /// The local anchor point relative to bodyA's origin.
-  public var localAnchorA = b2Vec2()
+  open var localAnchorA = b2Vec2()
   
   /// The local anchor point relative to bodyB's origin.
-  public var localAnchorB = b2Vec2()
+  open var localAnchorB = b2Vec2()
   
   /// The natural length between the anchor points.
-  public var length: b2Float = 1.0
+  open var length: b2Float = 1.0
   
   /// The mass-spring-damper frequency in Hertz. A value of 0
   /// disables softness.
-  public var frequencyHz: b2Float = 0.0
+  open var frequencyHz: b2Float = 0.0
   
   /// The damping ratio. 0 = no damping, 1 = critical damping.
-  public var dampingRatio: b2Float = 0.0
+  open var dampingRatio: b2Float = 0.0
 }
 
 // MARK: -
 /// A distance joint constrains two points on two bodies
 /// to remain at a fixed distance from each other. You can view
 /// this as a massless, rigid rod.
-public class b2DistanceJoint : b2Joint {
-  public override var anchorA: b2Vec2 {
+open class b2DistanceJoint : b2Joint {
+  open override var anchorA: b2Vec2 {
     return m_bodyA.getWorldPoint(m_localAnchorA)
   }
-  public override var anchorB: b2Vec2 {
+  open override var anchorB: b2Vec2 {
     return m_bodyB.getWorldPoint(m_localAnchorB)
   }
   
   /// Get the reaction force given the inverse time step.
   /// Unitoverride  is N.
-  public override func getReactionForce(inverseTimeStep inv_dt: b2Float) -> b2Vec2 {
+  open override func getReactionForce(inverseTimeStep inv_dt: b2Float) -> b2Vec2 {
     let F = (inv_dt * m_impulse) * m_u
     return F
   }
   
   /// Get the reaction torque given the inverse time step.
   /// Unit is N*m. This is always zero for a distance joint.
-  public override func getReactionTorque(inverseTimeStep inv_dt: b2Float) -> b2Float {
+  open override func getReactionTorque(inverseTimeStep inv_dt: b2Float) -> b2Float {
     return 0.0
   }
   
   /// The local anchor point relative to bodyA's origin.
-  public var localAnchorA: b2Vec2  { return m_localAnchorA }
+  open var localAnchorA: b2Vec2  { return m_localAnchorA }
   
   /// The local anchor point relative to bodyB's origin.
-  public var localAnchorB: b2Vec2  { return m_localAnchorB }
+  open var localAnchorB: b2Vec2  { return m_localAnchorB }
   
   /// Set/get the natural length.
   /// Manipulating the length can lead to non-physical behavior when the frequency is zero.
-  public func setLength(length: b2Float) {
+  open func setLength(_ length: b2Float) {
     m_length = length
   }
-  public var length: b2Float {
+  open var length: b2Float {
     return m_length
   }
   
   /// Set/get frequency in Hz.
-  public func setFrequency(hz: b2Float) {
+  open func setFrequency(_ hz: b2Float) {
     m_frequencyHz = hz
   }
-  public var frequency: b2Float {
+  open var frequency: b2Float {
     return m_frequencyHz
   }
   
   /// Set/get damping ratio.
-  public func setDampingRatio(ratio: b2Float) {
+  open func setDampingRatio(_ ratio: b2Float) {
     m_dampingRatio = ratio
   }
-  public var dampingRatio: b2Float {
+  open var dampingRatio: b2Float {
     return m_dampingRatio
   }
   
   /// Dump joint to dmLog
-  public override func dump() {
+  open override func dump() {
     let indexA = m_bodyA.m_islandIndex
     let indexB = m_bodyB.m_islandIndex
       
@@ -164,7 +164,7 @@ public class b2DistanceJoint : b2Joint {
     super.init(def)
   }
   
-  override func initVelocityConstraints(inout data: b2SolverData) {
+  override func initVelocityConstraints(_ data: inout b2SolverData) {
     m_indexA = m_bodyA.m_islandIndex
     m_indexB = m_bodyB.m_islandIndex
     m_localCenterA = m_bodyA.m_sweep.localCenter
@@ -252,7 +252,7 @@ public class b2DistanceJoint : b2Joint {
     data.velocities[m_indexB].w = wB
   }
   
-  override func solveVelocityConstraints(inout data: b2SolverData) {
+  override func solveVelocityConstraints(_ data: inout b2SolverData) {
     var vA = data.velocities[m_indexA].v
     var wA = data.velocities[m_indexA].w
     var vB = data.velocities[m_indexB].v
@@ -279,7 +279,7 @@ public class b2DistanceJoint : b2Joint {
   }
   
   // This returns true if the position errors are within tolerance.
-  override func solvePositionConstraints(inout data: b2SolverData) -> Bool {
+  override func solvePositionConstraints(_ data: inout b2SolverData) -> Bool {
     if m_frequencyHz > 0.0 {
       // There is no position correction for soft distance constraints.
       return true

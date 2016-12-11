@@ -28,11 +28,11 @@ import Foundation
 
 /// Compute the collision manifold between two circles.
 public func b2CollideCircles(
-  inout manifold manifold: b2Manifold,
+  manifold: inout b2Manifold,
   circleA: b2CircleShape, transformA xfA: b2Transform,
   circleB: b2CircleShape, transformB xfB: b2Transform)
 {
-  manifold.points.removeAll(keepCapacity: true)
+  manifold.points.removeAll(keepingCapacity: true)
   
   let pA = b2Mul(xfA, circleA.m_p)
   let pB = b2Mul(xfB, circleB.m_p)
@@ -57,11 +57,11 @@ public func b2CollideCircles(
 
 /// Compute the collision manifold between a polygon and a circle.
 public func b2CollidePolygonAndCircle(
-  inout manifold manifold: b2Manifold,
+  manifold: inout b2Manifold,
   polygonA: b2PolygonShape, transformA xfA: b2Transform,
   circleB: b2CircleShape, transformB xfB: b2Transform)
 {
-  manifold.points.removeAll(keepCapacity: true)
+  manifold.points.removeAll(keepingCapacity: true)
   
   // Compute circle position in the frame of the polygon.
   let c = b2Mul(xfB, circleB.m_p)

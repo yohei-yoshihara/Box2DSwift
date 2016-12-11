@@ -27,7 +27,7 @@ the original C++ code written by Erin Catto.
 import Foundation
 
 /// Motor joint definition.
-public class b2MotorJointDef : b2JointDef {
+open class b2MotorJointDef : b2JointDef {
   public override init() {
     linearOffset = b2Vec2()
     angularOffset = 0.0
@@ -45,7 +45,7 @@ public class b2MotorJointDef : b2JointDef {
   }
   
   /// Initialize the bodies and offsets using the current transforms.
-  public func initialize(bodyA bodyA: b2Body, bodyB: b2Body) {
+  open func initialize(bodyA: b2Body, bodyB: b2Body) {
     self.bodyA = bodyA
     self.bodyB = bodyB
     let xB = bodyB.position
@@ -57,54 +57,54 @@ public class b2MotorJointDef : b2JointDef {
   }
   
   /// Position of bodyB minus the position of bodyA, in bodyA's frame, in meters.
-  public var linearOffset: b2Vec2
+  open var linearOffset: b2Vec2
   
   /// The bodyB angle minus bodyA angle in radians.
-  public var angularOffset: b2Float
+  open var angularOffset: b2Float
   
   /// The maximum motor force in N.
-  public var maxForce: b2Float
+  open var maxForce: b2Float
   
   /// The maximum motor torque in N-m.
-  public var maxTorque: b2Float
+  open var maxTorque: b2Float
   
   /// Position correction factor in the range [0,1].
-  public var correctionFactor: b2Float
+  open var correctionFactor: b2Float
 }
 
 // MARK: -
 /// A motor joint is used to control the relative motion
 /// between two bodies. A typical usage is to control the movement
 /// of a dynamic body with respect to the ground.
-public class b2MotorJoint : b2Joint {
-  public override var anchorA: b2Vec2 {
+open class b2MotorJoint : b2Joint {
+  open override var anchorA: b2Vec2 {
     return m_bodyA.position
   }
-  public override var anchorB: b2Vec2 {
+  open override var anchorB: b2Vec2 {
     return m_bodyB.position
   }
   
   /// Get the reaction force given the inverse time step.
   /// Unitoverride  is N.
-  public override func getReactionForce(inverseTimeStep inv_dt: b2Float) -> b2Vec2 {
+  open override func getReactionForce(inverseTimeStep inv_dt: b2Float) -> b2Vec2 {
     return inv_dt * m_linearImpulse
   }
   
   /// Get the reaction torque given the inverse time step.
   /// Unit is N*m. This is always zero for a distance joint.
-  public override func getReactionTorque(inverseTimeStep inv_dt: b2Float) -> b2Float {
+  open override func getReactionTorque(inverseTimeStep inv_dt: b2Float) -> b2Float {
     return inv_dt * m_angularImpulse
   }
   
   /// Set/get the target linear offset, in frame A, in meters.
-  public func setLinearOffset(linearOffset: b2Vec2) {
+  open func setLinearOffset(_ linearOffset: b2Vec2) {
     if linearOffset.x != m_linearOffset.x || linearOffset.y != m_linearOffset.y {
       m_bodyA.setAwake(true)
       m_bodyB.setAwake(true)
       m_linearOffset = linearOffset
     }
   }
-  public var linearOffset: b2Vec2 {
+  open var linearOffset: b2Vec2 {
     get {
       return m_linearOffset
     }
@@ -114,14 +114,14 @@ public class b2MotorJoint : b2Joint {
   }
   
   /// Set/get the target angular offset, in radians.
-  public func setAngularOffset(angularOffset: b2Float) {
+  open func setAngularOffset(_ angularOffset: b2Float) {
     if angularOffset != m_angularOffset {
       m_bodyA.setAwake(true)
       m_bodyB.setAwake(true)
       m_angularOffset = angularOffset
     }
   }
-  public var angularOffset: b2Float {
+  open var angularOffset: b2Float {
     get {
       return m_angularOffset
     }
@@ -131,13 +131,13 @@ public class b2MotorJoint : b2Joint {
   }
   
   /// Set the maximum friction force in N.
-  public func setMaxForce(force: b2Float) {
+  open func setMaxForce(_ force: b2Float) {
     assert(b2IsValid(force) && force >= 0.0)
     m_maxForce = force
   }
   
   /// Get the maximum friction force in N.
-  public var maxForce: b2Float {
+  open var maxForce: b2Float {
     get {
       return m_maxForce
     }
@@ -147,13 +147,13 @@ public class b2MotorJoint : b2Joint {
   }
   
   /// Set the maximum friction torque in N*m.
-  public func setMaxTorque(torque: b2Float) {
+  open func setMaxTorque(_ torque: b2Float) {
     assert(b2IsValid(torque) && torque >= 0.0)
     m_maxTorque = torque
   }
   
   /// Get the maximum friction torque in N*m.
-  public var maxTorque: b2Float {
+  open var maxTorque: b2Float {
     get {
       return m_maxTorque
     }
@@ -163,13 +163,13 @@ public class b2MotorJoint : b2Joint {
   }
   
   /// Set the position correction factor in the range [0,1].
-  public func setCorrectionFactor(factor: b2Float) {
+  open func setCorrectionFactor(_ factor: b2Float) {
     assert(b2IsValid(factor) && 0.0 <= factor && factor <= 1.0)
     m_correctionFactor = factor
   }
   
   /// Get the position correction factor in the range [0,1].
-  public var correctionFactor: b2Float {
+  open var correctionFactor: b2Float {
     get {
       return m_correctionFactor
     }
@@ -179,7 +179,7 @@ public class b2MotorJoint : b2Joint {
   }
   
   /// Dump to b2Log
-  public override func dump() {
+  open override func dump() {
     let indexA = m_bodyA.m_islandIndex
     let indexB = m_bodyB.m_islandIndex
       
@@ -209,7 +209,7 @@ public class b2MotorJoint : b2Joint {
     super.init(def)
   }
   
-  override func initVelocityConstraints(inout data: b2SolverData) {
+  override func initVelocityConstraints(_ data: inout b2SolverData) {
     m_indexA = m_bodyA.m_islandIndex
     m_indexB = m_bodyB.m_islandIndex
     m_localCenterA = m_bodyA.m_sweep.localCenter
@@ -284,7 +284,7 @@ public class b2MotorJoint : b2Joint {
     data.velocities[m_indexB].v = vB
     data.velocities[m_indexB].w = wB
   }
-  override func solveVelocityConstraints(inout data: b2SolverData) {
+  override func solveVelocityConstraints(_ data: inout b2SolverData) {
     var vA = data.velocities[m_indexA].v
     var wA = data.velocities[m_indexA].w
     var vB = data.velocities[m_indexB].v
@@ -342,7 +342,7 @@ public class b2MotorJoint : b2Joint {
   }
   
   // This returns true if the position errors are within tolerance.
-  override func solvePositionConstraints(inout data: b2SolverData) -> Bool {
+  override func solvePositionConstraints(_ data: inout b2SolverData) -> Bool {
     return true
   }
   

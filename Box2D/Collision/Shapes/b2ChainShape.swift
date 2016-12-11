@@ -32,7 +32,7 @@ import Foundation
 /// Since there may be many vertices, they are allocated using b2Alloc.
 /// Connectivity information is used to create smooth collisions.
 /// WARNING: The chain will not collide properly if there are self-intersections.
-public class b2ChainShape : b2Shape {
+open class b2ChainShape : b2Shape {
   public override init() {
     m_vertices = b2Array<b2Vec2>()
     m_hasPrevVertex = false
@@ -47,7 +47,7 @@ public class b2ChainShape : b2Shape {
   
   - parameter vertices: an array of vertices, these are copied
   */
-  public func createLoop(vertices vertices: [b2Vec2]) {
+  open func createLoop(vertices: [b2Vec2]) {
     assert(m_vertices.count == 0)
     assert(vertices.count >= 3)
     for i in 1 ..< vertices.count {
@@ -73,7 +73,7 @@ public class b2ChainShape : b2Shape {
   
   - parameter vertices: an array of vertices, these are copied
   */
-  public func createChain(vertices vertices: [b2Vec2]) {
+  open func createChain(vertices: [b2Vec2]) {
     assert(m_vertices.count == 0)
     assert(vertices.count >= 2)
     for i in 1 ..< vertices.count {
@@ -96,20 +96,20 @@ public class b2ChainShape : b2Shape {
   
   /// Establish connectivity to a vertex that precedes the first vertex.
   /// Don't call this for loops.
-  public func setPrevVertex(prevVertex: b2Vec2) {
+  open func setPrevVertex(_ prevVertex: b2Vec2) {
     m_prevVertex = prevVertex
     m_hasPrevVertex = true
   }
   
   /// Establish connectivity to a vertex that follows the last vertex.
   /// Don't call this for loops.
-  public func setNextVertex(nextVertex: b2Vec2) {
+  open func setNextVertex(_ nextVertex: b2Vec2) {
     m_nextVertex = nextVertex
     m_hasNextVertex = true
   }
   
   /// Implement b2Shape. Vertices are cloned using b2Alloc.
-  public override func clone() -> b2Shape {
+  open override func clone() -> b2Shape {
     let clone = b2ChainShape()
     clone.createChain(vertices: m_vertices.array)
     clone.m_prevVertex = m_prevVertex
@@ -120,12 +120,12 @@ public class b2ChainShape : b2Shape {
   }
   
   /// @see b2Shape::GetChildCount
-  public override var childCount: Int {
+  open override var childCount: Int {
     return m_count - 1
   }
   
   /// Get a child edge.
-  public func getChildEdge(index : Int) -> b2EdgeShape {
+  open func getChildEdge(_ index : Int) -> b2EdgeShape {
     assert(0 <= index && index < m_vertices.count - 1)
     let edge = b2EdgeShape()
     edge.m_type = b2ShapeType.edge
@@ -156,12 +156,12 @@ public class b2ChainShape : b2Shape {
   
   /// This always return false.
   /// @see b2Shape::TestPoint
-  public override func testPoint(transform transform: b2Transform, point: b2Vec2) -> Bool {
+  open override func testPoint(transform: b2Transform, point: b2Vec2) -> Bool {
     return false
   }
   
   /// Implement b2Soverride hape.
-  public override func rayCast(inout output: b2RayCastOutput, input : b2RayCastInput, transform xf: b2Transform, childIndex : Int) -> Bool {
+  open override func rayCast(_ output: inout b2RayCastOutput, input : b2RayCastInput, transform xf: b2Transform, childIndex : Int) -> Bool {
     assert(childIndex < m_vertices.count)
     
     let edgeShape = b2EdgeShape()
@@ -179,7 +179,7 @@ public class b2ChainShape : b2Shape {
   }
   
   /// @see b2Shape::ComputeAABB
-  public override func computeAABB(inout aabb: b2AABB, transform: b2Transform, childIndex: Int) {
+  open override func computeAABB(_ aabb: inout b2AABB, transform: b2Transform, childIndex: Int) {
     assert(childIndex < m_vertices.count)
     
     let i1 = childIndex
@@ -197,7 +197,7 @@ public class b2ChainShape : b2Shape {
   
   /// Chains have zero mass.
   /// @see b2Shape::ComputeMass
-  public override func computeMass(density density: b2Float) -> b2MassData {
+  open override func computeMass(density: b2Float) -> b2MassData {
     var massData = b2MassData()
     massData.mass = 0.0
     massData.center.setZero()

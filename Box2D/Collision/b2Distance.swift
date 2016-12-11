@@ -28,7 +28,7 @@ import Foundation
 
 /// A distance proxy is used by the GJK algorithm.
 /// It encapsulates any shape.
-public class b2DistanceProxy: CustomStringConvertible {
+open class b2DistanceProxy: CustomStringConvertible {
   public init() {}
   public init(shape: b2Shape, index: Int) {
     set(shape, index)
@@ -36,7 +36,7 @@ public class b2DistanceProxy: CustomStringConvertible {
   
   /// Initialize the proxy using the given shape. The shape
   /// must remain in scope while the proxy is in use.
-  public func set(shape: b2Shape, _ index: Int) {
+  open func set(_ shape: b2Shape, _ index: Int) {
     switch shape.type {
     case .circle:
       let circle = shape as! b2CircleShape
@@ -78,7 +78,7 @@ public class b2DistanceProxy: CustomStringConvertible {
   }
   
   /// Get the supporting vertex index in the given direction.
-  public func getSupport(d: b2Vec2) -> Int {
+  open func getSupport(_ d: b2Vec2) -> Int {
     var bestIndex = 0
     var bestValue = b2Dot(m_vertices![0], d)
     for i in 1 ..< m_count {
@@ -93,7 +93,7 @@ public class b2DistanceProxy: CustomStringConvertible {
   }
   
   /// Get the supporting vertex in the given direction.
-  public func getSupportVertex(d: b2Vec2) -> b2Vec2 {
+  open func getSupportVertex(_ d: b2Vec2) -> b2Vec2 {
     var bestIndex = 0
     var bestValue = b2Dot(m_vertices![0], d)
     for i in 1 ..< m_count {
@@ -108,24 +108,24 @@ public class b2DistanceProxy: CustomStringConvertible {
   }
   
   /// Get the vertex count.
-  public func getVertexCount() -> Int {
+  open func getVertexCount() -> Int {
     return m_count
   }
   
   /// Get a vertex by index. Used by b2Distance.
-  public func getVertex(index: Int) -> b2Vec2 {
+  open func getVertex(_ index: Int) -> b2Vec2 {
     assert(0 <= index && index < m_count)
     return m_vertices![index]
   }
   
-  public var description: String {
+  open var description: String {
     return "b2DistanceProxy[vertices=\(m_vertices!), count=\(m_count), radius=\(m_radius)]"
   }
   
-  public var m_buffer = b2Array<b2Vec2>(count: 2, repeatedValue: b2Vec2())
-  public var m_vertices: b2Array<b2Vec2>? = nil
-  public var m_count = 0
-  public var m_radius: b2Float = 0
+  open var m_buffer = b2Array<b2Vec2>(count: 2, repeatedValue: b2Vec2())
+  open var m_vertices: b2Array<b2Vec2>? = nil
+  open var m_count = 0
+  open var m_radius: b2Float = 0
 }
 
 class b2SimplexVertex : CustomStringConvertible {
@@ -135,7 +135,7 @@ class b2SimplexVertex : CustomStringConvertible {
   var a: b2Float = 0	// barycentric coordinate for closest point
   var indexA = 0	    // wA index
   var indexB = 0	    // wB index
-  func set(other: b2SimplexVertex) {
+  func set(_ other: b2SimplexVertex) {
     self.wA = other.wA
     self.wB = other.wB
     self.w = other.w
@@ -154,7 +154,7 @@ struct b2Simplex : CustomStringConvertible {
       m_v.append(b2SimplexVertex())
     }
   }
-  mutating func readCache(cache: b2SimplexCache,
+  mutating func readCache(_ cache: b2SimplexCache,
     _ proxyA: b2DistanceProxy, _ transformA: b2Transform,
     _ proxyB: b2DistanceProxy, _ transformB: b2Transform)
   {
@@ -201,7 +201,7 @@ struct b2Simplex : CustomStringConvertible {
     }
   }
   
-  func writeCache(inout cache: b2SimplexCache) {
+  func writeCache(_ cache: inout b2SimplexCache) {
     cache.metric = getMetric()
     cache.count = UInt16(m_count)
     for i in 0 ..< m_count {
@@ -512,8 +512,8 @@ public struct b2SimplexCache : CustomStringConvertible {
   public init() {}
   public var metric: b2Float = 0		///< length or area
   public var count = UInt16(0)
-  public var indexA = [UInt8](count: 3, repeatedValue: 0)	///< vertices on shape A
-  public var indexB = [UInt8](count: 3, repeatedValue: 0)	///< vertices on shape B
+  public var indexA = [UInt8](repeating: 0, count: 3)	///< vertices on shape A
+  public var indexB = [UInt8](repeating: 0, count: 3)	///< vertices on shape B
   public var description: String {
     return "b2SimplexCache[metric=\(metric),count=\(count),indexA=\(indexA[0]),\(indexA[1]),\(indexA[2]),indexB=\(indexB[0]),\(indexB[1]),\(indexB[2])]"
   }
@@ -549,7 +549,7 @@ public struct b2DistanceOutput : CustomStringConvertible {
 /// Compute the closest points between two shapes. Supports any combination of:
 /// b2CircleShape, b2PolygonShape, b2EdgeShape. The simplex cache is input/output.
 /// On the first call set b2SimplexCache.count to zero.
-public func b2Distance(inout output: b2DistanceOutput, inout cache: b2SimplexCache, input: b2DistanceInput) {
+public func b2Distance(_ output: inout b2DistanceOutput, cache: inout b2SimplexCache, input: b2DistanceInput) {
   b2_gjkCalls += 1
   
   let proxyA = input.proxyA
@@ -568,7 +568,7 @@ public func b2Distance(inout output: b2DistanceOutput, inout cache: b2SimplexCac
   
   // These store the vertices of the last simplex so that we
   // can check for duplicates and prevent cycling.
-  var saveA = [Int](count: 3, repeatedValue: 0), saveB = [Int](count: 3, repeatedValue: 0)
+  var saveA = [Int](repeating: 0, count: 3), saveB = [Int](repeating: 0, count: 3)
   var saveCount = 0
   
   var distanceSqr1 = b2_maxFloat

@@ -40,76 +40,76 @@ public enum b2BodyType : Int, CustomStringConvertible {
   
   public var description: String {
     switch self {
-    case staticBody: return "staticBody"
-    case kinematicBody: return "kinematicBody"
-    case dynamicBody: return "dynamicBody"
+    case .staticBody: return "staticBody"
+    case .kinematicBody: return "kinematicBody"
+    case .dynamicBody: return "dynamicBody"
     }
   }
 }
 
 /// A body definition holds all the data needed to construct a rigid body.
 /// You can safely re-use body definitions. Shapes are added to a body after construction.
-public class b2BodyDef {
+open class b2BodyDef {
   /// This constructor sets the body definition default values.
   public init() {
   }
   
   /// The body type: static, kinematic, or dynamic.
   /// Note: if a dynamic body would have zero mass, the mass is set to one.
-  public var type = b2BodyType.staticBody
+  open var type = b2BodyType.staticBody
   
   /// The world position of the body. Avoid creating bodies at the origin
   /// since this can lead to many overlapping shapes.
-  public var position = b2Vec2()
+  open var position = b2Vec2()
   
   /// The world angle of the body in radians.
-  public var angle: b2Float = 0.0
+  open var angle: b2Float = 0.0
   
   /// The linear velocity of the body's origin in world co-ordinates.
-  public var linearVelocity = b2Vec2()
+  open var linearVelocity = b2Vec2()
   
   /// The angular velocity of the body.
-  public var angularVelocity: b2Float = 0.0
+  open var angularVelocity: b2Float = 0.0
   
   /// Linear damping is use to reduce the linear velocity. The damping parameter
   /// can be larger than 1.0f but the damping effect becomes sensitive to the
   /// time step when the damping parameter is large.
-  public var linearDamping: b2Float = 0.0
+  open var linearDamping: b2Float = 0.0
   
   /// Angular damping is use to reduce the angular velocity. The damping parameter
   /// can be larger than 1.0f but the damping effect becomes sensitive to the
   /// time step when the damping parameter is large.
-  public var angularDamping: b2Float = 0.0
+  open var angularDamping: b2Float = 0.0
   
   /// Set this flag to false if this body should never fall asleep. Note that
   /// this increases CPU usage.
-  public var allowSleep = true
+  open var allowSleep = true
   
   /// Is this body initially awake or sleeping?
-  public var awake = true
+  open var awake = true
   
   /// Should this body be prevented from rotating? Useful for characters.
-  public var fixedRotation = false
+  open var fixedRotation = false
   
   /// Is this a fast moving body that should be prevented from tunneling through
   /// other moving bodies? Note that all bodies are prevented from tunneling through
   /// kinematic and static bodies. This setting is only considered on dynamic bodies.
   /// @warning You should use this flag sparingly since it increases processing time.
-  public var bullet = false
+  open var bullet = false
   
   /// Does this body start out active?
-  public var active = true
+  open var active = true
   
   /// Use this to store application specific body data.
-  public var userData : AnyObject? = nil
+  open var userData : AnyObject? = nil
   
   /// Scale the gravity applied to this body.
-  public var gravityScale: b2Float = 1.0
+  open var gravityScale: b2Float = 1.0
 }
 
 // MARK: -
 /// A rigid body. These are created via b2World::createBody.
-public class b2Body : CustomStringConvertible {
+open class b2Body : CustomStringConvertible {
   /**
   Creates a fixture and attach it to this body. Use this function if you need
   to set some fixture parameters, like friction. Otherwise you can create the
@@ -121,7 +121,7 @@ public class b2Body : CustomStringConvertible {
   
   warning) This function is locked during callbacks.
   */
-  public func createFixture(def: b2FixtureDef) -> b2Fixture {
+  @discardableResult open func createFixture(_ def: b2FixtureDef) -> b2Fixture {
     assert(m_world.isLocked == false)
     if m_world.isLocked == true {
       fatalError("world is locked")
@@ -163,7 +163,7 @@ public class b2Body : CustomStringConvertible {
   - parameter density: the shape density (set to zero for static bodies).
   warning) This function is locked during callbacks.
   */
-  public func createFixture(shape shape: b2Shape, density: b2Float) -> b2Fixture {
+  @discardableResult open func createFixture(shape: b2Shape, density: b2Float) -> b2Fixture {
     let def = b2FixtureDef()
     def.shape = shape
     def.density = density
@@ -180,7 +180,7 @@ public class b2Body : CustomStringConvertible {
   - parameter fixture: the fixture to be removed.
   warning) This function is locked during callbacks.
   */
-  public func destroyFixture(fixture: b2Fixture) {
+  open func destroyFixture(_ fixture: b2Fixture) {
     assert(m_world.isLocked == false)
     if m_world.isLocked == true {
       return
@@ -248,7 +248,7 @@ public class b2Body : CustomStringConvertible {
   - parameter position: the world position of the body's local origin.
   - parameter angle: the world rotation in radians.
   */
-  public func setTransform(position position: b2Vec2, angle: b2Float) {
+  open func setTransform(position: b2Vec2, angle: b2Float) {
     assert(m_world.isLocked == false)
     if m_world.isLocked == true {
       return
@@ -272,27 +272,27 @@ public class b2Body : CustomStringConvertible {
   }
   
   /// Get the body world transform for the body's origin.
-  public var transform: b2Transform {
+  open var transform: b2Transform {
     return m_xf
   }
   
   /// Get the world body origin position.
-  public var position: b2Vec2 {
+  open var position: b2Vec2 {
     return m_xf.p
   }
   
   /// Get the current world rotation angle in radians.
-  public var angle: b2Float {
+  open var angle: b2Float {
     return m_sweep.a
   }
   
   /// Get the world position of the center of mass.
-  public var worldCenter: b2Vec2 {
+  open var worldCenter: b2Vec2 {
     return m_sweep.c
   }
   
   /// Get the local position of the center of mass.
-  public var localCenter: b2Vec2 {
+  open var localCenter: b2Vec2 {
     return m_sweep.localCenter
   }
   
@@ -301,7 +301,7 @@ public class b2Body : CustomStringConvertible {
 
   - parameter v: the new linear velocity of the center of mass.
   */
-  public func setLinearVelocity(v: b2Vec2) {
+  open func setLinearVelocity(_ v: b2Vec2) {
     if m_type == b2BodyType.staticBody {
       return
     }
@@ -314,7 +314,7 @@ public class b2Body : CustomStringConvertible {
   }
   
   /// the linear velocity of the center of mass.
-  public var linearVelocity: b2Vec2 {
+  open var linearVelocity: b2Vec2 {
     get {
       return m_linearVelocity
     }
@@ -328,7 +328,7 @@ public class b2Body : CustomStringConvertible {
   
   - parameter omega: the new angular velocity in radians/second.
   */
-  public func setAngularVelocity(omega: b2Float) {
+  open func setAngularVelocity(_ omega: b2Float) {
     if m_type == b2BodyType.staticBody {
       return
     }
@@ -341,7 +341,7 @@ public class b2Body : CustomStringConvertible {
   }
   
   /// Get the angular velocity in radians/second.
-  public var angularVelocity: b2Float {
+  open var angularVelocity: b2Float {
     get {
       return m_angularVelocity
     }
@@ -359,7 +359,7 @@ public class b2Body : CustomStringConvertible {
   - parameter point: the world position of the point of application.
   - parameter wake: also wake up the body
   */
-  public func applyForce(force: b2Vec2, point: b2Vec2, wake: Bool) {
+  open func applyForce(_ force: b2Vec2, point: b2Vec2, wake: Bool) {
     if m_type != b2BodyType.dynamicBody {
       return
     }
@@ -381,7 +381,7 @@ public class b2Body : CustomStringConvertible {
   - parameter force: the world force vector, usually in Newtons (N).
   - parameter wake: also wake up the body
   */
-  public func applyForceToCenter(force: b2Vec2, wake: Bool) {
+  open func applyForceToCenter(_ force: b2Vec2, wake: Bool) {
     if m_type != b2BodyType.dynamicBody {
       return
     }
@@ -404,7 +404,7 @@ public class b2Body : CustomStringConvertible {
   - parameter torque: about the z-axis (out of the screen), usually in N-m.
   - parameter wake: also wake up the body
   */
-  public func applyTorque(torque: b2Float, wake: Bool) {
+  open func applyTorque(_ torque: b2Float, wake: Bool) {
     if m_type != b2BodyType.dynamicBody {
       return
     }
@@ -428,7 +428,7 @@ public class b2Body : CustomStringConvertible {
   - parameter point: the world position of the point of application.
   - parameter wake: also wake up the body
   */
-  public func applyLinearImpulse(impulse: b2Vec2, point: b2Vec2, wake: Bool) {
+  open func applyLinearImpulse(_ impulse: b2Vec2, point: b2Vec2, wake: Bool) {
     if m_type != b2BodyType.dynamicBody {
       return
     }
@@ -450,7 +450,7 @@ public class b2Body : CustomStringConvertible {
   - parameter impulse: the angular impulse in units of kg*m*m/s
   - parameter wake: also wake up the body
   */
-  public func applyAngularImpulse(impulse: b2Float, wake: Bool) {
+  open func applyAngularImpulse(_ impulse: b2Float, wake: Bool) {
     if m_type != b2BodyType.dynamicBody {
       return
     }
@@ -466,17 +466,17 @@ public class b2Body : CustomStringConvertible {
   }
   
   /// Get the total mass of the body, usually in kilograms (kg).
-  public var mass: b2Float {
+  open var mass: b2Float {
     return m_mass
   }
   
   /// Get the rotational inertia of the body about the local origin, usually in kg-m^2.
-  public var inertia: b2Float {
+  open var inertia: b2Float {
     return m_I + m_mass * b2Dot(m_sweep.localCenter, m_sweep.localCenter)
   }
   
   /// the mass data of the body. a struct containing the mass, inertia and center of the body.
-  public var massData: b2MassData {
+  open var massData: b2MassData {
     get {
       var data = b2MassData()
       data.mass = m_mass
@@ -497,7 +497,7 @@ public class b2Body : CustomStringConvertible {
   
   - parameter massData: the mass properties.
   */
-  public func setMassData(massData: b2MassData) {
+  open func setMassData(_ massData: b2MassData) {
     assert(m_world.isLocked == false)
     if m_world.isLocked == true {
       return
@@ -537,7 +537,7 @@ public class b2Body : CustomStringConvertible {
   /// This resets the mass properties to the sum of the mass properties of the fixtures.
   /// This normally does not need to be called unless you called SetMassData to override
   /// the mass and you later want to reset the mass.
-  public func resetMassData() {
+  open func resetMassData() {
     // Compute mass data from shapes. Each shape has its own density.
     m_mass = 0.0
     m_invMass = 0.0
@@ -609,7 +609,7 @@ public class b2Body : CustomStringConvertible {
   - parameter localPoint: a point on the body measured relative the the body's origin.
   - returns: the same point expressed in world coordinates.
   */
-  public func getWorldPoint(localPoint: b2Vec2) -> b2Vec2 {
+  open func getWorldPoint(_ localPoint: b2Vec2) -> b2Vec2 {
     return b2Mul(m_xf, localPoint)
   }
   
@@ -619,7 +619,7 @@ public class b2Body : CustomStringConvertible {
   - parameter localVector: a vector fixed in the body.
   - returns: the same vector expressed in world coordinates.
   */
-  public func getWorldVector(localVector: b2Vec2) -> b2Vec2 {
+  open func getWorldVector(_ localVector: b2Vec2) -> b2Vec2 {
     return b2Mul(m_xf.q, localVector)
   }
   
@@ -629,7 +629,7 @@ public class b2Body : CustomStringConvertible {
   - parameter a: point in world coordinates.
   - returns: the corresponding local point relative to the body's origin.
   */
-  public func getLocalPoint(worldPoint: b2Vec2) -> b2Vec2 {
+  open func getLocalPoint(_ worldPoint: b2Vec2) -> b2Vec2 {
     return b2MulT(m_xf, worldPoint)
   }
   
@@ -639,7 +639,7 @@ public class b2Body : CustomStringConvertible {
   - parameter a: vector in world coordinates.
   - returns: the corresponding local vector.
   */
-  public func getLocalVector(worldVector: b2Vec2) -> b2Vec2 {
+  open func getLocalVector(_ worldVector: b2Vec2) -> b2Vec2 {
     return b2MulT(m_xf.q, worldVector)
   }
   
@@ -649,7 +649,7 @@ public class b2Body : CustomStringConvertible {
   - parameter a: point in world coordinates.
   - returns: the world velocity of a point.
   */
-  public func getLinearVelocityFromWorldPoint(worldPoint: b2Vec2) -> b2Vec2 {
+  open func getLinearVelocityFromWorldPoint(_ worldPoint: b2Vec2) -> b2Vec2 {
     return m_linearVelocity + b2Cross(m_angularVelocity, worldPoint - m_sweep.c)
   }
   
@@ -659,12 +659,12 @@ public class b2Body : CustomStringConvertible {
   - parameter a: point in local coordinates.
   - returns: the world velocity of a point.
   */
-  public func getLinearVelocityFromLocalPoint(localPoint: b2Vec2) -> b2Vec2 {
+  open func getLinearVelocityFromLocalPoint(_ localPoint: b2Vec2) -> b2Vec2 {
       return getLinearVelocityFromWorldPoint(getWorldPoint(localPoint))
   }
   
   /// Get the linear damping of the body.
-  public var linearDamping: b2Float {
+  open var linearDamping: b2Float {
     get {
       return m_linearDamping
     }
@@ -674,12 +674,12 @@ public class b2Body : CustomStringConvertible {
   }
   
   /// Set the linear damping of the body.
-  public func setLinearDamping(linearDamping: b2Float) {
+  open func setLinearDamping(_ linearDamping: b2Float) {
     m_linearDamping = linearDamping
   }
   
   /// Get the angular damping of the body.
-  public var angularDamping: b2Float {
+  open var angularDamping: b2Float {
     get {
       return m_gravityScale
     }
@@ -689,12 +689,12 @@ public class b2Body : CustomStringConvertible {
   }
   
   /// Set the angular damping of the body.
-  public func setAngularDamping(angularDamping: b2Float) {
+  open func setAngularDamping(_ angularDamping: b2Float) {
     m_angularDamping = angularDamping
   }
   
   /// Get the gravity scale of the body.
-  public var gravityScale: b2Float {
+  open var gravityScale: b2Float {
     get {
       return m_gravityScale
     }
@@ -704,12 +704,12 @@ public class b2Body : CustomStringConvertible {
   }
   
   /// Set the gravity scale of the body.
-  public func setGravityScale(scale: b2Float) {
+  open func setGravityScale(_ scale: b2Float) {
     m_gravityScale = scale
   }
   
   /// Set the type of this body. This may alter the mass and velocity.
-  public func setType(type: b2BodyType) {
+  open func setType(_ type: b2BodyType) {
     assert(m_world.isLocked == false)
     if m_world.isLocked == true {
       return
@@ -758,7 +758,7 @@ public class b2Body : CustomStringConvertible {
   }
   
   /// Get the type of this body.
-  public var type: b2BodyType {
+  open var type: b2BodyType {
     get {
       return m_type
     }
@@ -768,7 +768,7 @@ public class b2Body : CustomStringConvertible {
   }
   
   /// Should this body be treated like a bullet for continuous collision detection?
-  public func setBullet(flag: Bool) {
+  open func setBullet(_ flag: Bool) {
     if flag {
       m_flags |= Flags.bulletFlag
     }
@@ -778,7 +778,7 @@ public class b2Body : CustomStringConvertible {
   }
   
   /// Is this body treated like a bullet for continuous collision detection?
-  public var isBullet: Bool {
+  open var isBullet: Bool {
     get {
       return (m_flags & Flags.bulletFlag) == Flags.bulletFlag
     }
@@ -789,7 +789,7 @@ public class b2Body : CustomStringConvertible {
   
   /// You can disable sleeping on this body. If you disable sleeping, the
   /// body will be woken.
-  public func setSleepingAllowed(flag: Bool) {
+  open func setSleepingAllowed(_ flag: Bool) {
     if flag {
       m_flags |= Flags.autoSleepFlag
     }
@@ -800,7 +800,7 @@ public class b2Body : CustomStringConvertible {
   }
   
   /// Is this body allowed to sleep
-  public var isSleepingAllowed: Bool {
+  open var isSleepingAllowed: Bool {
     get {
       return (m_flags & Flags.autoSleepFlag) == Flags.autoSleepFlag
     }
@@ -815,7 +815,7 @@ public class b2Body : CustomStringConvertible {
 
   - parameter flag: set to true to wake the body, false to put it to sleep.
   */
-  public func setAwake(flag: Bool) {
+  open func setAwake(_ flag: Bool) {
     if flag {
       if (m_flags & Flags.awakeFlag) == 0 {
         m_flags |= Flags.awakeFlag
@@ -834,7 +834,7 @@ public class b2Body : CustomStringConvertible {
   
   /// Get the sleeping state of this body.
   /// @return true if the body is awake.
-  public var isAwake: Bool {
+  open var isAwake: Bool {
     return (m_flags & Flags.awakeFlag) == Flags.awakeFlag
   }
   
@@ -851,7 +851,7 @@ public class b2Body : CustomStringConvertible {
   /// Joints connected to an inactive body are implicitly inactive.
   /// An inactive body is still owned by a b2World object and remains
   /// in the body list.
-  public func setActive(flag: Bool) {
+  open func setActive(_ flag: Bool) {
     assert(m_world.isLocked == false)
       
     if flag == isActive {
@@ -894,13 +894,13 @@ public class b2Body : CustomStringConvertible {
   }
   
   /// Get the active state of the body.
-  public var isActive: Bool {
+  open var isActive: Bool {
     return (m_flags & Flags.activeFlag) == Flags.activeFlag
   }
   
   /// Set this body to have fixed rotation. This causes the mass
   /// to be reset.
-  public func setFixedRotation(flag : Bool) {
+  open func setFixedRotation(_ flag : Bool) {
     let status = (m_flags & Flags.fixedRotationFlag) == Flags.fixedRotationFlag
     if status == flag {
       return
@@ -919,34 +919,34 @@ public class b2Body : CustomStringConvertible {
   }
   
   /// Does this body have fixed rotation?
-  public var isFixedRotation: Bool {
+  open var isFixedRotation: Bool {
     return (m_flags & Flags.fixedRotationFlag) == Flags.fixedRotationFlag
   }
   
   /// Get the list of all fixtures attached to this body.
-  public func getFixtureList() -> b2Fixture? {
+  open func getFixtureList() -> b2Fixture? {
     return m_fixtureList
   }
   
   /// Get the list of all joints attached to this body.
-  public func getJointList() -> b2JointEdge? {
+  open func getJointList() -> b2JointEdge? {
     return m_jointList
   }
   
   /// Get the list of all contacts attached to this body.
   /// @warning this list changes during the time step and you may
   /// miss some collisions if you don't use b2ContactListener.
-  public func getContactList() -> b2ContactEdge? {
+  open func getContactList() -> b2ContactEdge? {
     return m_contactList
   }
   
   /// Get the next body in the world's body list.
-  public func getNext() -> b2Body? {
+  open func getNext() -> b2Body? {
     return m_next
   }
   
   /// Get the user data pointer that was provided in the body definition.
-  public var userData: AnyObject? {
+  open var userData: AnyObject? {
     get {
       return m_userData
     }
@@ -956,17 +956,17 @@ public class b2Body : CustomStringConvertible {
   }
   
   /// Set the user data. Use this to store your application specific data.
-  public func setUserData(data: AnyObject?) {
+  open func setUserData(_ data: AnyObject?) {
     m_userData = data
   }
   
   /// Get the parent world of this body.
-  public var world: b2World? {
+  open var world: b2World? {
     return m_world
   }
   
   /// Dump this body to a log file
-  public func dump() {
+  open func dump() {
     let bodyIndex = m_islandIndex
     
     print("{")
@@ -996,7 +996,7 @@ public class b2Body : CustomStringConvertible {
     print("}")
   }
   
-  public var description: String {
+  open var description: String {
     return "b2Body[type=\(m_type), flags=\(m_flags), xf=\(m_xf), linearVelocity=\(m_linearVelocity), angularVelocity=\(m_angularVelocity), force=\(m_force), torque=\(m_torque), mass=\(m_mass), I=\(m_I), linearDamping=\(m_linearDamping), angularDamping=\(m_angularDamping)]"
   }
   
@@ -1107,7 +1107,7 @@ public class b2Body : CustomStringConvertible {
   
   // This is used to prevent connected bodies from colliding.
   // It may lie, depending on the collideConnected flag.
-  func shouldCollide(other: b2Body) -> Bool {
+  func shouldCollide(_ other: b2Body) -> Bool {
     // At least one body should be dynamic.
     if m_type != b2BodyType.dynamicBody && other.m_type != b2BodyType.dynamicBody {
       return false
@@ -1127,7 +1127,7 @@ public class b2Body : CustomStringConvertible {
     return true
   }
   
-  func advance(alpha: b2Float) {
+  func advance(_ alpha: b2Float) {
     // Advance to the new safe time. This doesn't sync the broad-phase.
     m_sweep.advance(alpha: alpha)
     m_sweep.c = m_sweep.c0

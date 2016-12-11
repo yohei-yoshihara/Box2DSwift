@@ -49,7 +49,7 @@ public struct b2Filter {
 
 /// A fixture definition is used to create a fixture. This class defines an
 /// abstract fixture definition. You can reuse fixture definitions safely.
-public class b2FixtureDef {
+open class b2FixtureDef {
   /// The constructor sets the default fixture definition values.
   public init() {
     shape = nil
@@ -63,26 +63,26 @@ public class b2FixtureDef {
   
   /// The shape, this must be set. The shape will be cloned, so you
   /// can create the shape on the stack.
-  public var shape: b2Shape!
+  open var shape: b2Shape!
   
   /// Use this to store application specific fixture data.
-  public var userData: AnyObject?
+  open var userData: AnyObject?
   
   /// The friction coefficient, usually in the range [0,1].
-  public var friction: b2Float
+  open var friction: b2Float
   
   /// The restitution (elasticity) usually in the range [0,1].
-  public var restitution: b2Float
+  open var restitution: b2Float
   
   /// The density, usually in kg/m^2.
-  public var density: b2Float
+  open var density: b2Float
   
   /// A sensor shape collects contact information but never generates a collision
   /// response.
-  public var isSensor: Bool
+  open var isSensor: Bool
   
   /// Contact filtering data.
-  public var filter: b2Filter
+  open var filter: b2Filter
 }
 
 /// This proxy is used internally to connect fixtures to the broad-phase.
@@ -101,23 +101,23 @@ public struct b2FixtureProxy {
 /// such as friction, collision filters, etc.
 /// Fixtures are created via b2Body::CreateFixture.
 /// @warning you cannot reuse fixtures.
-public class b2Fixture : CustomStringConvertible {
+open class b2Fixture : CustomStringConvertible {
   /// Get the type of the child shape. You can use this to down cast to the concrete shape.
   /// @return the shape type.
-  public var type: b2ShapeType {
+  open var type: b2ShapeType {
     return m_shape.type
   }
   
   /// Get the child shape. You can modify the child shape, however you should not change the
   /// number of vertices because this will crash some collision caching mechanisms.
   /// Manipulating the shape may lead to non-physical behavior.
-  public var shape: b2Shape {
+  open var shape: b2Shape {
     return m_shape
   }
   //const b2Shape* GetShape() const
   
   /// Set if this fixture is a sensor.
-  public func setSensor(sensor: Bool) {
+  open func setSensor(_ sensor: Bool) {
     if sensor != m_isSensor {
       m_body.setAwake(true)
       m_isSensor = sensor
@@ -126,7 +126,7 @@ public class b2Fixture : CustomStringConvertible {
   
   /// Is this fixture a sensor (non-solid)?
   /// @return the true if the shape is a sensor.
-  public var isSensor: Bool {
+  open var isSensor: Bool {
     get {
       return m_isSensor
     }
@@ -138,13 +138,13 @@ public class b2Fixture : CustomStringConvertible {
   /// Set the contact filtering data. This will not update contacts until the next time
   /// step when either parent body is active and awake.
   /// This automatically calls Refilter.
-  public func setFilterData(filter: b2Filter) {
+  open func setFilterData(_ filter: b2Filter) {
     m_filter = filter
     refilter()
   }
   
   /// Get the contact filtering data.
-  public var filterData: b2Filter {
+  open var filterData: b2Filter {
     get {
       return m_filter
     }
@@ -154,7 +154,7 @@ public class b2Fixture : CustomStringConvertible {
   }
   
   /// Call this if you want to establish collision that was previously disabled by b2ContactFilter::ShouldCollide.
-  public func refilter() {
+  open func refilter() {
     // Flag associated contacts for filtering.
     var edge = m_body.getContactList()
     while edge != nil {
@@ -182,21 +182,21 @@ public class b2Fixture : CustomStringConvertible {
   
   /// Get the parent body of this fixture. This is NULL if the fixture is not attached.
   /// @return the parent body.
-  public var body: b2Body {
+  open var body: b2Body {
     return m_body
   }
   //const b2Body* GetBody() const
   
   /// Get the next fixture in the parent body's fixture list.
   /// @return the next shape.
-  public func getNext() -> b2Fixture? {
+  open func getNext() -> b2Fixture? {
     return m_next
   }
   //const b2Fixture* getNext() const
   
   /// Get the user data that was assigned in the fixture definition. Use this to
   /// store your application specific data.
-  public var userData: AnyObject? {
+  open var userData: AnyObject? {
     get {
       return m_userData
     }
@@ -206,7 +206,7 @@ public class b2Fixture : CustomStringConvertible {
   }
   
   /// Set the user data. Use this to store your application specific data.
-  public func setUserData(data: AnyObject?) {
+  open func setUserData(_ data: AnyObject?) {
     m_userData = data
   }
   
@@ -215,7 +215,7 @@ public class b2Fixture : CustomStringConvertible {
   
   - parameter p: a point in world coordinates.
   */
-  public func testPoint(p: b2Vec2) -> Bool {
+  open func testPoint(_ p: b2Vec2) -> Bool {
     return m_shape.testPoint(transform: m_body.transform, point: p)
   }
   
@@ -225,26 +225,26 @@ public class b2Fixture : CustomStringConvertible {
   - parameter output: the ray-cast results.
   - parameter input: the ray-cast input parameters.
   */
-  public func rayCast(inout output: b2RayCastOutput,input: b2RayCastInput, childIndex: Int) -> Bool {
+  open func rayCast(_ output: inout b2RayCastOutput,input: b2RayCastInput, childIndex: Int) -> Bool {
     return m_shape.rayCast(&output, input: input, transform: m_body.transform, childIndex: childIndex)
   }
   
   /// Get the mass data for this fixture. The mass data is based on the density and
   /// the shape. The rotational inertia is about the shape's origin. This operation
   /// may be expensive.
-  public var massData: b2MassData {
+  open var massData: b2MassData {
     return m_shape.computeMass(density: m_density)
   }
   
   /// Set the density of this fixture. This will _not_ automatically adjust the mass
   /// of the body. You must call b2Body::ResetMassData to update the body's mass.
-  public func setDensity(density: b2Float) {
+  open func setDensity(_ density: b2Float) {
     assert(b2IsValid(density) && density >= 0.0)
     m_density = density
   }
   
   /// Get the density of this fixture.
-  public var density: b2Float {
+  open var density: b2Float {
     get {
       return m_density
     }
@@ -254,7 +254,7 @@ public class b2Fixture : CustomStringConvertible {
   }
   
   /// Get the coefficient of friction.
-  public var friction: b2Float {
+  open var friction: b2Float {
     get {
       return m_friction
     }
@@ -265,12 +265,12 @@ public class b2Fixture : CustomStringConvertible {
   
   /// Set the coefficient of friction. This will _not_ change the friction of
   /// existing contacts.
-  public func setFriction(friction: b2Float) {
+  open func setFriction(_ friction: b2Float) {
     m_friction = friction
   }
   
   /// Get the coefficient of restitution.
-  public var restitution: b2Float {
+  open var restitution: b2Float {
     get {
       return m_restitution
     }
@@ -281,20 +281,20 @@ public class b2Fixture : CustomStringConvertible {
   
   /// Set the coefficient of restitution. This will _not_ change the restitution of
   /// existing contacts.
-  public func setRestitution(restitution: b2Float) {
+  open func setRestitution(_ restitution: b2Float) {
     m_restitution = restitution
   }
   
   /// Get the fixture's AABB. This AABB may be enlarge and/or stale.
   /// If you need a more accurate AABB, compute it using the shape and
   /// the body transform.
-  public func getAABB(childIndex childIndex: Int) -> b2AABB {
+  open func getAABB(childIndex: Int) -> b2AABB {
     assert(0 <= childIndex && childIndex < m_proxyCount)
     return m_proxies[childIndex].aabb
   }
   
   /// Dump this fixture to the log file.
-  public func dump(bodyIndex: Int) {
+  open func dump(_ bodyIndex: Int) {
     print("    b2FixtureDef fd;")
     print("    fd.friction = \(m_friction);")
     print("    fd.restitution = \(m_restitution);")
@@ -354,7 +354,7 @@ public class b2Fixture : CustomStringConvertible {
     print("    bodies[\(bodyIndex)]->createFixture(&fd)")
   }
   
-  public var description: String {
+  open var description: String {
     var s = String()
     s += "b2Fixture[density=\(m_density), friction=\(m_friction), restitution=\(m_restitution), isSensor=\(m_isSensor), body=\(m_body)]"
     return s
@@ -400,7 +400,7 @@ public class b2Fixture : CustomStringConvertible {
   }
   
   // These support body activation/deactivation.
-  func createProxies(broadPhase: b2BroadPhase, xf: b2Transform) {
+  func createProxies(_ broadPhase: b2BroadPhase, xf: b2Transform) {
     assert(m_proxyCount == 0)
     
     // Create proxies in the broad-phase.
@@ -414,7 +414,7 @@ public class b2Fixture : CustomStringConvertible {
       m_proxies.append(proxy)
     }
   }
-  func destroyProxies(broadPhase: b2BroadPhase) {
+  func destroyProxies(_ broadPhase: b2BroadPhase) {
     // Destroy proxies in the broad-phase.
     for i in 0 ..< m_proxyCount {
       let proxy = m_proxies[i]
@@ -424,7 +424,7 @@ public class b2Fixture : CustomStringConvertible {
     m_proxies.removeAll()
   }
   
-  func synchronize(broadPhase: b2BroadPhase, _ transform1: b2Transform, _ transform2: b2Transform) {
+  func synchronize(_ broadPhase: b2BroadPhase, _ transform1: b2Transform, _ transform2: b2Transform) {
     if m_proxyCount == 0 {
       return
     }

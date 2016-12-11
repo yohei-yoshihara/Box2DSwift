@@ -29,7 +29,7 @@ import Foundation
 /// The world class manages all physics entities, dynamic simulation,
 /// and asynchronous queries. The world also contains efficient memory
 /// management facilities.
-public class b2World {
+open class b2World {
   /**
   Construct a world object.
   
@@ -67,34 +67,34 @@ public class b2World {
   
   /// Register a destruction listener. The listener is owned by you and must
   /// remain in scope.
-  public func setDestructionListener(listener: b2DestructionListener) {
+  open func setDestructionListener(_ listener: b2DestructionListener) {
     m_destructionListener = listener
   }
   
   /// Register a contact filter to provide specific control over collision.
   /// Otherwise the default filter is used (b2_defaultFilter). The listener is
   /// owned by you and must remain in scope.
-  public func setContactFilter(filter: b2ContactFilter) {
+  open func setContactFilter(_ filter: b2ContactFilter) {
     m_contactManager.m_contactFilter = filter
   }
   
   /// Register a contact event listener. The listener is owned by you and must
   /// remain in scope.
-  public func setContactListener(listener: b2ContactListener) {
+  open func setContactListener(_ listener: b2ContactListener) {
     m_contactManager.m_contactListener = listener
   }
   
   /// Register a routine for debug drawing. The debug draw functions are called
   /// inside with b2World::DrawDebugData method. The debug draw object is owned
   /// by you and must remain in scope.
-  public func setDebugDraw(debugDraw: b2Draw) {
+  open func setDebugDraw(_ debugDraw: b2Draw) {
     m_debugDraw = debugDraw
   }
   
   /// Create a rigid body given a definition. No reference to the definition
   /// is retained.
   /// @warning This function is locked during callbacks.
-  public func createBody(def: b2BodyDef) -> b2Body {
+  open func createBody(_ def: b2BodyDef) -> b2Body {
     assert(isLocked == false)
     if isLocked {
       fatalError("world is locked")
@@ -118,7 +118,7 @@ public class b2World {
   /// is retained. This function is locked during callbacks.
   /// @warning This automatically deletes all associated shapes and joints.
   /// @warning This function is locked during callbacks.
-  public func destroyBody(b: b2Body) {
+  open func destroyBody(_ b: b2Body) {
     assert(m_bodyCount > 0)
     assert(isLocked == false)
     if isLocked {
@@ -188,7 +188,7 @@ public class b2World {
   /// Create a joint to constrain bodies together. No reference to the definition
   /// is retained. This may cause the connected bodies to cease colliding.
   /// @warning This function is locked during callbacks.
-  public func createJoint(def: b2JointDef) -> b2Joint {
+  @discardableResult open func createJoint(_ def: b2JointDef) -> b2Joint {
     assert(isLocked == false)
     if isLocked {
       fatalError("world is locked")
@@ -229,7 +229,7 @@ public class b2World {
     
     // If the joint prevents collisions, then flag any contacts for filtering.
     if def.collideConnected == false {
-      var edge = bodyB.getContactList()
+      var edge = bodyB?.getContactList()
       while edge != nil {
         if edge!.other === bodyA {
           // Flag the contact for filtering at the next time step (where either
@@ -247,7 +247,7 @@ public class b2World {
   
   /// Destroy a joint. This may cause the connected bodies to begin colliding.
   /// @warning This function is locked during callbacks.
-  public func destroyJoint(j: b2Joint) {
+  open func destroyJoint(_ j: b2Joint) {
     assert(isLocked == false)
     if isLocked {
       return
@@ -336,7 +336,7 @@ public class b2World {
   - parameter velocityIterations: for the velocity constraint solver.
   - parameter positionIterations: for the position constraint solver.
   */
-  public func step(timeStep dt: b2Float, velocityIterations: Int, positionIterations: Int) {
+  open func step(timeStep dt: b2Float, velocityIterations: Int, positionIterations: Int) {
     let stepTimer = b2Timer()
     
     // If new fixtures were added, we need to find the new contacts.
@@ -403,7 +403,7 @@ public class b2World {
   /// When you perform sub-stepping you will disable auto clearing of forces and instead call
   /// ClearForces after all sub-steps are complete in one pass of your game loop.
   /// @see SetAutoClearForces
-  public func clearForces() {
+  open func clearForces() {
     var body = m_bodyList
     while body != nil
     {
@@ -414,7 +414,7 @@ public class b2World {
   }
   
   /// Call this to draw shapes and other debug draw data. This is intentionally non-const.
-  public func drawDebugData() {
+  open func drawDebugData() {
     if m_debugDraw == nil {
       return
     }
@@ -485,7 +485,7 @@ public class b2World {
           for i in 0 ..< f!.m_proxyCount {
             let proxy = f!.m_proxies[i]
             let aabb = bp.getFatAABB(proxyId: proxy.proxyId)
-            var vs = [b2Vec2](count: 4, repeatedValue: b2Vec2())
+            var vs = [b2Vec2](repeating: b2Vec2(), count: 4)
             vs[0].set(aabb.lowerBound.x, aabb.lowerBound.y)
             vs[1].set(aabb.upperBound.x, aabb.lowerBound.y)
             vs[2].set(aabb.upperBound.x, aabb.upperBound.y)
@@ -517,7 +517,7 @@ public class b2World {
   - parameter callback: a user implemented callback class.
   - parameter aabb: the query box.
   */
-  public func queryAABB(callback callback: b2QueryCallback, aabb: b2AABB) {
+  open func queryAABB(callback: b2QueryCallback, aabb: b2AABB) {
     var wrapper = b2WorldQueryWrapper()
     wrapper.broadPhase = m_contactManager.m_broadPhase
     wrapper.callback = callback
@@ -531,7 +531,7 @@ public class b2World {
   - parameter aabb: the query box.
   - parameter callback: a user implemented callback closure.
   */
-  public func queryAABB(aabb: b2AABB, callback: b2QueryCallbackFunction) {
+  open func queryAABB(_ aabb: b2AABB, callback: @escaping b2QueryCallbackFunction) {
     queryAABB(callback: b2QueryCallbackProxy(callback: callback), aabb: aabb)
   }
 
@@ -544,7 +544,7 @@ public class b2World {
   - parameter point1: the ray starting point
   - parameter point2: the ray ending point
   */
-  public func rayCast(callback callback: b2RayCastCallback, point1: b2Vec2, point2: b2Vec2) {
+  open func rayCast(callback: b2RayCastCallback, point1: b2Vec2, point2: b2Vec2) {
     var wrapper = b2WorldRayCastWrapper()
     wrapper.broadPhase = m_contactManager.m_broadPhase
     wrapper.callback = callback
@@ -564,21 +564,21 @@ public class b2World {
   - parameter point2: the ray ending point
   - parameter callback: a user implemented callback closure.
   */
-  public func rayCast(point1: b2Vec2, point2: b2Vec2, callback: b2RayCastCallbackFunction) {
+  open func rayCast(_ point1: b2Vec2, point2: b2Vec2, callback: @escaping b2RayCastCallbackFunction) {
     rayCast(callback: b2RayCastCallbackProxy(callback: callback), point1: point1, point2: point2)
   }
   
   /// Get the world body list. With the returned body, use b2Body::GetNext to get
   /// the next body in the world list. A NULL body indicates the end of the list.
   /// @return the head of the world body list.
-  public func getBodyList() -> b2Body? {
+  open func getBodyList() -> b2Body? {
     return m_bodyList
   }
   
   /// Get the world joint list. With the returned joint, use b2Joint::GetNext to get
   /// the next joint in the world list. A NULL joint indicates the end of the list.
   /// @return the head of the world joint list.
-  public func getJointList() -> b2Joint? {
+  open func getJointList() -> b2Joint? {
     return m_jointList
   }
   
@@ -587,12 +587,12 @@ public class b2World {
   /// @return the head of the world contact list.
   /// @warning contacts are created and destroyed in the middle of a time step.
   /// Use b2ContactListener to avoid missing contacts.
-  public func getContactList() -> b2Contact? {
+  open func getContactList() -> b2Contact? {
     return m_contactManager.m_contactList
   }
   
   /// Enable/disable sleep.
-  public func setAllowSleeping(flag: Bool) {
+  open func setAllowSleeping(_ flag: Bool) {
     if flag == m_allowSleep {
       return
     }
@@ -606,7 +606,7 @@ public class b2World {
       }
     }
   }
-  public var allowSleeping: Bool {
+  open var allowSleeping: Bool {
     get {
       return m_allowSleep
     }
@@ -616,8 +616,8 @@ public class b2World {
   }
   
   /// Enable/disable warm starting. For testing.
-  public func setWarmStarting(flag: Bool) { m_warmStarting = flag }
-  public var warmStarting: Bool {
+  open func setWarmStarting(_ flag: Bool) { m_warmStarting = flag }
+  open var warmStarting: Bool {
     get {
       return m_warmStarting
     }
@@ -627,8 +627,8 @@ public class b2World {
   }
   
   /// Enable/disable continuous physics. For testing.
-  public func setContinuousPhysics(flag: Bool) { m_continuousPhysics = flag }
-  public var continuousPhysics: Bool {
+  open func setContinuousPhysics(_ flag: Bool) { m_continuousPhysics = flag }
+  open var continuousPhysics: Bool {
     get {
       return m_continuousPhysics
     }
@@ -638,8 +638,8 @@ public class b2World {
   }
   
   /// Enable/disable single stepped continuous physics. For testing.
-  public func setSubStepping(flag: Bool) { m_subStepping = flag }
-  public var subStepping: Bool {
+  open func setSubStepping(_ flag: Bool) { m_subStepping = flag }
+  open var subStepping: Bool {
     get {
       return m_subStepping
     }
@@ -649,48 +649,48 @@ public class b2World {
   }
   
   /// Get the number of broad-phase proxies.
-  public var proxyCount: Int {
+  open var proxyCount: Int {
     return m_contactManager.m_broadPhase.getProxyCount()
   }
   
   /// Get the number of bodies.
-  public var bodyCount: Int {
+  open var bodyCount: Int {
     return m_bodyCount
   }
   
   /// Get the number of joints.
-  public var jointCount: Int {
+  open var jointCount: Int {
     return m_jointCount
   }
   
   /// Get the number of contacts (each may have 0 or more contact points).
-  public var contactCount: Int {
+  open var contactCount: Int {
     return m_contactManager.m_contactCount
   }
   
   /// Get the height of the dynamic tree.
-  public var treeHeight: Int {
+  open var treeHeight: Int {
     return m_contactManager.m_broadPhase.getTreeHeight()
   }
   
   /// Get the balance of the dynamic tree.
-  public var treeBalance: Int {
+  open var treeBalance: Int {
     return m_contactManager.m_broadPhase.getTreeBalance()
   }
   
   /// Get the quality metric of the dynamic tree. The smaller the better.
   /// The minimum is 1.
-  public var treeQuality: b2Float {
+  open var treeQuality: b2Float {
     return m_contactManager.m_broadPhase.getTreeQuality()
   }
   
   /// Change the global gravity vector.
-  public func setGravity(gravity: b2Vec2) {
+  open func setGravity(_ gravity: b2Vec2) {
     m_gravity = gravity
   }
   
   /// Get the global gravity vector.
-  public var gravity: b2Vec2 {
+  open var gravity: b2Vec2 {
     get {
       return m_gravity
     }
@@ -700,12 +700,12 @@ public class b2World {
   }
   
   /// Is the world locked (in the middle of a time step).
-  public var isLocked: Bool {
+  open var isLocked: Bool {
     return (m_flags & Flags.locked) == Flags.locked
   }
   
   /// Set flag to control automatic clearing of forces after each time step.
-  public func setAutoClearForces(flag: Bool) {
+  open func setAutoClearForces(_ flag: Bool) {
     if flag {
       m_flags |= Flags.clearForces
     }
@@ -715,14 +715,14 @@ public class b2World {
   }
   
   /// Get the flag that controls automatic clearing of forces after each time step.
-  public var autoClearForces: Bool {
+  open var autoClearForces: Bool {
     return (m_flags & Flags.clearForces) == Flags.clearForces
   }
   
   /// Shift the world origin. Useful for large worlds.
   /// The body shift formula is: position -= newOrigin
   /// @param newOrigin the new origin with respect to the old origin
-  public func shiftOrigin(newOrigin: b2Vec2) {
+  open func shiftOrigin(_ newOrigin: b2Vec2) {
     assert((m_flags & Flags.locked) == 0)
     if (m_flags & Flags.locked) == Flags.locked {
       return
@@ -745,17 +745,17 @@ public class b2World {
   }
   
   /// Get the contact manager for testing.
-  public var contactManager: b2ContactManager {
+  open var contactManager: b2ContactManager {
     return m_contactManager
   }
   
   /// Get the current profile.
-  public var profile: b2Profile {
+  open var profile: b2Profile {
     return m_profile
   }
   /// Dump the world into the log file.
   /// @warning this should be called outside of a time step.
-  public func dump() {
+  open func dump() {
     if (m_flags & Flags.locked) == Flags.locked {
       return
     }
@@ -826,7 +826,7 @@ public class b2World {
   }
   
   // Find islands, integrate and solve constraints, solve position constraints
-  func solve(step: b2TimeStep) {
+  func solve(_ step: b2TimeStep) {
     m_profile.solveInit = 0.0
     m_profile.solveVelocity = 0.0
     m_profile.solvePosition = 0.0
@@ -844,7 +844,7 @@ public class b2World {
         m_jointCount,
         m_contactManager.m_contactListener)
     }
-    let island = m_island
+    let island = m_island! // never nil
     
     // Clear all the island flags.
     var b = m_bodyList
@@ -937,14 +937,14 @@ public class b2World {
           let other = ce!.other
           
           // Was the other body already added to this island?
-          if (other.m_flags & b2Body.Flags.islandFlag) != 0 {
+          if ((other?.m_flags)! & b2Body.Flags.islandFlag) != 0 {
             ce = ce!.next
             continue
           }
           
           assert(stack.count < stackSize)
-          stack.append(other)
-          other.m_flags |= b2Body.Flags.islandFlag
+          stack.append(other!)
+          other?.m_flags |= b2Body.Flags.islandFlag
           ce = ce!.next
         }
         
@@ -1027,14 +1027,14 @@ public class b2World {
   }
   
   // Find TOI contacts and solve them.
-  func solveTOI(step: b2TimeStep) {
+  func solveTOI(_ step: b2TimeStep) {
     if m_TOIIsland == nil {
       m_TOIIsland = b2Island(2 * b2_maxTOIContacts, b2_maxTOIContacts, 0, m_contactManager.m_contactListener)
     }
     else {
       m_TOIIsland.reset(2 * b2_maxTOIContacts, b2_maxTOIContacts, 0, m_contactManager.m_contactListener)
     }
-    let island = m_TOIIsland
+    let island = m_TOIIsland! // never nil
     
     if m_stepComplete {
       var b = m_bodyList
@@ -1234,7 +1234,7 @@ public class b2World {
             }
             
             // Only add static, kinematic, or bullet bodies.
-            let other = ce!.other
+            let other = ce!.other!
             if other.m_type == b2BodyType.dynamicBody &&
                body.isBullet == false && other.isBullet == false {
               ce = ce!.next
@@ -1336,7 +1336,7 @@ public class b2World {
     }
   }
   
-  func drawJoint(joint: b2Joint) {
+  func drawJoint(_ joint: b2Joint) {
     let bodyA = joint.bodyA
     let bodyB = joint.bodyB
     let xf1 = bodyA.transform
@@ -1371,7 +1371,7 @@ public class b2World {
     }
   }
   
-  func drawShape(fixture: b2Fixture, _ xf: b2Transform, _ color: b2Color) {
+  func drawShape(_ fixture: b2Fixture, _ xf: b2Transform, _ color: b2Color) {
     switch fixture.type {
     case .circle:
       let circle = fixture.shape as! b2CircleShape
@@ -1453,7 +1453,7 @@ public class b2World {
 }
 
 struct b2WorldQueryWrapper : b2QueryWrapper {
-  func queryCallback(proxyId: Int) -> Bool {
+  func queryCallback(_ proxyId: Int) -> Bool {
     let proxy = broadPhase.getUserData(proxyId: proxyId)!
 		return callback.reportFixture(proxy.fixture)
   }
@@ -1463,7 +1463,7 @@ struct b2WorldQueryWrapper : b2QueryWrapper {
 }
 
 struct b2WorldRayCastWrapper : b2RayCastWrapper {
-  func rayCastCallback(input: b2RayCastInput, _ proxyId: Int) -> b2Float {
+  func rayCastCallback(_ input: b2RayCastInput, _ proxyId: Int) -> b2Float {
     let proxy = broadPhase.getUserData(proxyId: proxyId)!
 		let fixture = proxy.fixture
 		let index = proxy.childIndex

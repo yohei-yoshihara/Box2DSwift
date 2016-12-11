@@ -52,7 +52,7 @@ class ChainViewController: BaseViewController {
       jd.collideConnected = false
       
       let y: b2Float = 25.0
-      var prevBody = ground
+      var prevBody = ground!
       for i in 0 ..< 30 {
         let bd = b2BodyDef()
         bd.type = b2BodyType.dynamicBody

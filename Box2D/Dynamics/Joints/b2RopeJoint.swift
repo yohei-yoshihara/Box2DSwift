@@ -30,7 +30,7 @@ import Foundation
 /// a maximum lengths.
 /// Note: by default the connected objects will not collide.
 /// see collideConnected in b2JointDef.
-public class b2RopeJointDef : b2JointDef {
+open class b2RopeJointDef : b2JointDef {
   public override init() {
     localAnchorA = b2Vec2(-1.0, 0.0)
     localAnchorB = b2Vec2(1.0, 0.0)
@@ -40,15 +40,15 @@ public class b2RopeJointDef : b2JointDef {
   }
   
   /// The local anchor point relative to bodyA's origin.
-  public var localAnchorA: b2Vec2
+  open var localAnchorA: b2Vec2
   
   /// The local anchor point relative to bodyB's origin.
-  public var localAnchorB: b2Vec2
+  open var localAnchorB: b2Vec2
   
   /// The maximum length of the rope.
   /// Warning: this must be larger than b2_linearSlop or
   /// the joint will have no effect.
-  public var maxLength: b2Float
+  open var maxLength: b2Float
 }
 
 // MARK: -
@@ -60,33 +60,33 @@ public class b2RopeJointDef : b2JointDef {
 /// would have some sponginess, so I chose not to implement it
 /// that way. See b2DistanceJoint if you want to dynamically
 /// control length.
-public class b2RopeJoint : b2Joint {
-  public override var anchorA: b2Vec2 {
+open class b2RopeJoint : b2Joint {
+  open override var anchorA: b2Vec2 {
     return m_bodyA.getWorldPoint(m_localAnchorA)
   }
-  public override var anchorB: b2Vec2 {
+  open override var anchorB: b2Vec2 {
     return m_bodyB.getWorldPoint(m_localAnchorB)
   }
   
-  public override func getReactionForce(inverseTimeStep inv_dt: b2Float) -> b2Vec2 {
+  open override func getReactionForce(inverseTimeStep inv_dt: b2Float) -> b2Vec2 {
     let F = (inv_dt * m_impulse) * m_u
     return F
   }
-  public override func getReactionTorque(inverseTimeStep inv_dt: b2Float) -> b2Float {
+  open override func getReactionTorque(inverseTimeStep inv_dt: b2Float) -> b2Float {
     return 0.0
   }
   
   /// The local anchor point relative to bodyA's origin.
-  public var localAnchorA: b2Vec2  { return m_localAnchorA }
+  open var localAnchorA: b2Vec2  { return m_localAnchorA }
   
   /// The local anchor point relative to bodyB's origin.
-  public var localAnchorB: b2Vec2  { return m_localAnchorB }
+  open var localAnchorB: b2Vec2  { return m_localAnchorB }
   
   /// Set/Get the maximum length of the rope.
-  public func setMaxLength(length: b2Float) {
+  open func setMaxLength(_ length: b2Float) {
     m_maxLength = length
   }
-  public var maxLength: b2Float {
+  open var maxLength: b2Float {
     get {
       return m_maxLength
     }
@@ -95,12 +95,12 @@ public class b2RopeJoint : b2Joint {
     }
   }
   
-  public var limitState: b2LimitState {
+  open var limitState: b2LimitState {
     return m_state
   }
   
   /// Dump joint to dmLog
-  public override func dump() {
+  open override func dump() {
     let indexA = m_bodyA.m_islandIndex
     let indexB = m_bodyB.m_islandIndex
     
@@ -129,7 +129,7 @@ public class b2RopeJoint : b2Joint {
     super.init(def)
   }
   
-  override func initVelocityConstraints(inout data: b2SolverData) {
+  override func initVelocityConstraints(_ data: inout b2SolverData) {
     m_indexA = m_bodyA.m_islandIndex
     m_indexB = m_bodyB.m_islandIndex
     m_localCenterA = m_bodyA.m_sweep.localCenter
@@ -201,7 +201,7 @@ public class b2RopeJoint : b2Joint {
     data.velocities[m_indexB].v = vB
     data.velocities[m_indexB].w = wB
   }
-  override func solveVelocityConstraints(inout data: b2SolverData) {
+  override func solveVelocityConstraints(_ data: inout b2SolverData) {
     var vA = data.velocities[m_indexA].v
     var wA = data.velocities[m_indexA].w
     var vB = data.velocities[m_indexB].v
@@ -234,7 +234,7 @@ public class b2RopeJoint : b2Joint {
     data.velocities[m_indexB].v = vB
     data.velocities[m_indexB].w = wB
   }
-  override func solvePositionConstraints(inout data: b2SolverData) -> Bool {
+  override func solvePositionConstraints(_ data: inout b2SolverData) -> Bool {
     var cA = data.positions[m_indexA].c
     var aA = data.positions[m_indexA].a
     var cB = data.positions[m_indexB].c

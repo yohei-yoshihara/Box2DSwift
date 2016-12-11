@@ -34,16 +34,16 @@ class WebViewController: BaseViewController {
   override func viewDidLoad() {
     super.viewDidLoad()
     
-    let destroyBody = UIBarButtonItem(title: "Destroy Body", style: UIBarButtonItemStyle.Plain, target: self, action: #selector(WebViewController.onDestroyBody(_:)))
-    let destroyJoint = UIBarButtonItem(title: "Destroy Joint", style: UIBarButtonItemStyle.Plain, target: self, action: #selector(WebViewController.onDestroyJoint(_:)))
-    let flexible = UIBarButtonItem(barButtonSystemItem: UIBarButtonSystemItem.FlexibleSpace, target: nil, action: nil)
+    let destroyBody = UIBarButtonItem(title: "Destroy Body", style: UIBarButtonItemStyle.plain, target: self, action: #selector(WebViewController.onDestroyBody(_:)))
+    let destroyJoint = UIBarButtonItem(title: "Destroy Joint", style: UIBarButtonItemStyle.plain, target: self, action: #selector(WebViewController.onDestroyJoint(_:)))
+    let flexible = UIBarButtonItem(barButtonSystemItem: UIBarButtonSystemItem.flexibleSpace, target: nil, action: nil)
     self.addToolbarItems([
       destroyBody, flexible,
       destroyJoint, flexible,
       ])
   }
 
-  func onDestroyBody(sender: UIBarButtonItem) {
+  func onDestroyBody(_ sender: UIBarButtonItem) {
     for i in 0 ..< 4 {
       if bodies[i] != nil {
         world.destroyBody(bodies[i]!)
@@ -53,7 +53,7 @@ class WebViewController: BaseViewController {
     }
   }
 
-  func onDestroyJoint(sender: UIBarButtonItem) {
+  func onDestroyJoint(_ sender: UIBarButtonItem) {
     for i in 0 ..< 8 {
       if joints[i] != nil {
         world.destroyJoint(joints[i]!)

@@ -39,17 +39,17 @@ class InfoView: UIView {
   
   override init(frame: CGRect) {
     super.init(frame: frame)
-    self.userInteractionEnabled = false
+    self.isUserInteractionEnabled = false
     self.backgroundColor = nil
-    self.opaque = false
+    self.isOpaque = false
     label = UILabel(frame: CGRect(x: 0, y: 0, width: 320, height: 320))
     label.numberOfLines = 0
-    label.lineBreakMode = NSLineBreakMode.ByTruncatingHead
-    label.autoresizingMask = [UIViewAutoresizing.FlexibleRightMargin, UIViewAutoresizing.FlexibleBottomMargin]
+    label.lineBreakMode = NSLineBreakMode.byTruncatingHead
+    label.autoresizingMask = [UIViewAutoresizing.flexibleRightMargin, UIViewAutoresizing.flexibleBottomMargin]
     label.backgroundColor = nil
-    label.opaque = false
-    label.textColor = UIColor.whiteColor()
-    label.font = UIFont.systemFontOfSize(9)
+    label.isOpaque = false
+    label.textColor = UIColor.white
+    label.font = UIFont.systemFont(ofSize: 9)
     addSubview(label)
     lastTimestamp = CACurrentMediaTime()
   }
@@ -58,7 +58,7 @@ class InfoView: UIView {
     super.init(coder: aDecoder)
   }
   
-  func updateProfile(stepCount: Int) {
+  func updateProfile(_ stepCount: Int) {
     if world == nil {
       return
     }
@@ -93,7 +93,7 @@ class InfoView: UIView {
       return
     }
     
-    s.removeAll(keepCapacity: true)
+    s.removeAll(keepingCapacity: true)
     
     if enableStats && world != nil {
       let bodyCount = world!.bodyCount

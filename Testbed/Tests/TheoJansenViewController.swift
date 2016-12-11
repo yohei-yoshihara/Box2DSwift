@@ -38,11 +38,11 @@ class TheoJansenViewController: BaseViewController {
   override func viewDidLoad() {
     super.viewDidLoad()
     
-    let left = UIBarButtonItem(title: "Left", style: UIBarButtonItemStyle.Plain, target: self, action: #selector(TheoJansenViewController.onLeft(_:)))
-    let brake = UIBarButtonItem(title: "Brake", style: UIBarButtonItemStyle.Plain, target: self, action: #selector(TheoJansenViewController.onBrake(_:)))
-    let right = UIBarButtonItem(title: "Right", style: UIBarButtonItemStyle.Plain, target: self, action: #selector(TheoJansenViewController.onRight(_:)))
-    let motor = UIBarButtonItem(title: "Motor", style: UIBarButtonItemStyle.Plain, target: self, action: #selector(TheoJansenViewController.onMotor(_:)))
-    let flexible = UIBarButtonItem(barButtonSystemItem: UIBarButtonSystemItem.FlexibleSpace, target: nil, action: nil)
+    let left = UIBarButtonItem(title: "Left", style: UIBarButtonItemStyle.plain, target: self, action: #selector(TheoJansenViewController.onLeft(_:)))
+    let brake = UIBarButtonItem(title: "Brake", style: UIBarButtonItemStyle.plain, target: self, action: #selector(TheoJansenViewController.onBrake(_:)))
+    let right = UIBarButtonItem(title: "Right", style: UIBarButtonItemStyle.plain, target: self, action: #selector(TheoJansenViewController.onRight(_:)))
+    let motor = UIBarButtonItem(title: "Motor", style: UIBarButtonItemStyle.plain, target: self, action: #selector(TheoJansenViewController.onMotor(_:)))
+    let flexible = UIBarButtonItem(barButtonSystemItem: UIBarButtonSystemItem.flexibleSpace, target: nil, action: nil)
     self.addToolbarItems([
       left, flexible,
       brake, flexible,
@@ -51,23 +51,23 @@ class TheoJansenViewController: BaseViewController {
       ])
   }
   
-  func onLeft(sender: UIBarButtonItem) {
+  func onLeft(_ sender: UIBarButtonItem) {
     motorJoint.setMotorSpeed(-motorSpeed)
   }
 
-  func onBrake(sender: UIBarButtonItem) {
+  func onBrake(_ sender: UIBarButtonItem) {
     motorJoint.setMotorSpeed(0.0)
   }
 
-  func onRight(sender: UIBarButtonItem) {
+  func onRight(_ sender: UIBarButtonItem) {
     motorJoint.setMotorSpeed(motorSpeed)
   }
 
-  func onMotor(sender: UIBarButtonItem) {
+  func onMotor(_ sender: UIBarButtonItem) {
     motorJoint.enableMotor(!motorJoint.isMotorEnabled)
   }
 
-  func createLeg(s: b2Float, wheelAnchor: b2Vec2) {
+  func createLeg(_ s: b2Float, wheelAnchor: b2Vec2) {
 		let p1 = b2Vec2(5.4 * s, -6.1)
 		let p2 = b2Vec2(7.2 * s, -1.2)
 		let p3 = b2Vec2(4.3 * s, -1.9)

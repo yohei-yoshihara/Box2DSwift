@@ -71,7 +71,7 @@ class ConveyorBeltViewController: BaseViewController, b2ContactListener {
     }
   }
 
-  func preSolve(contact: b2Contact, oldManifold: b2Manifold) {
+  func preSolve(_ contact: b2Contact, oldManifold: b2Manifold) {
     contactListener.preSolve(contact, oldManifold: oldManifold)
     
     let fixtureA = contact.fixtureA
@@ -86,7 +86,7 @@ class ConveyorBeltViewController: BaseViewController, b2ContactListener {
     }
   }
   
-  func beginContact(contact : b2Contact) { contactListener.beginContact(contact) }
-  func endContact(contact: b2Contact) { contactListener.endContact(contact) }
-  func postSolve(contact: b2Contact, impulse: b2ContactImpulse) { contactListener.postSolve(contact, impulse: impulse) }
+  func beginContact(_ contact : b2Contact) { contactListener.beginContact(contact) }
+  func endContact(_ contact: b2Contact) { contactListener.endContact(contact) }
+  func postSolve(_ contact: b2Contact, impulse: b2ContactImpulse) { contactListener.postSolve(contact, impulse: impulse) }
 }

@@ -35,10 +35,10 @@ class BodyTypesViewController: BaseViewController {
   override func viewDidLoad() {
     super.viewDidLoad()
     
-    let dynamicButton = UIBarButtonItem(title: "Dynamic", style: UIBarButtonItemStyle.Plain, target: self, action: #selector(BodyTypesViewController.onDynamic(_:)))
-    let staticButton = UIBarButtonItem(title: "Static", style: UIBarButtonItemStyle.Plain, target: self, action: #selector(BodyTypesViewController.onStatic(_:)))
-    let kinematicButton = UIBarButtonItem(title: "Kinematic", style: UIBarButtonItemStyle.Plain, target: self, action: #selector(BodyTypesViewController.onKinematic(_:)))
-    let flexible = UIBarButtonItem(barButtonSystemItem: UIBarButtonSystemItem.FlexibleSpace, target: nil, action: nil)
+    let dynamicButton = UIBarButtonItem(title: "Dynamic", style: UIBarButtonItemStyle.plain, target: self, action: #selector(BodyTypesViewController.onDynamic(_:)))
+    let staticButton = UIBarButtonItem(title: "Static", style: UIBarButtonItemStyle.plain, target: self, action: #selector(BodyTypesViewController.onStatic(_:)))
+    let kinematicButton = UIBarButtonItem(title: "Kinematic", style: UIBarButtonItemStyle.plain, target: self, action: #selector(BodyTypesViewController.onKinematic(_:)))
+    let flexible = UIBarButtonItem(barButtonSystemItem: UIBarButtonSystemItem.flexibleSpace, target: nil, action: nil)
     self.addToolbarItems([
       dynamicButton, flexible,
       staticButton, flexible,
@@ -46,15 +46,15 @@ class BodyTypesViewController: BaseViewController {
       ])
   }
   
-  func onDynamic(sender: UIBarButtonItem) {
+  func onDynamic(_ sender: UIBarButtonItem) {
     platform.setType(b2BodyType.dynamicBody)
   }
 
-  func onStatic(sender: UIBarButtonItem) {
+  func onStatic(_ sender: UIBarButtonItem) {
     platform.setType(b2BodyType.staticBody)
   }
 
-  func onKinematic(sender: UIBarButtonItem) {
+  func onKinematic(_ sender: UIBarButtonItem) {
     platform.setType(b2BodyType.kinematicBody)
     platform.setLinearVelocity(b2Vec2(-speed, 0.0))
     platform.setAngularVelocity(0.0)

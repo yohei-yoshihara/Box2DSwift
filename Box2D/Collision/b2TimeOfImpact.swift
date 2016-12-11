@@ -46,11 +46,11 @@ public struct b2TOIOutput {
     case separated
     public var description: String {
       switch self {
-      case unknown: return "unknown"
-      case failed: return "failed"
-      case overlapped: return "overlapped"
-      case touching: return "touching"
-      case separated: return "separated"
+      case .unknown: return "unknown"
+      case .failed: return "failed"
+      case .overlapped: return "overlapped"
+      case .touching: return "touching"
+      case .separated: return "separated"
       }
     }
   }
@@ -65,7 +65,7 @@ public struct b2TOIOutput {
 /// non-tunneling collision. If you change the time interval, you should call this function
 /// again.
 /// Note: use b2Distance to compute the contact point and normal at the time of impact.
-public func b2TimeOfImpact(inout output: b2TOIOutput, input: b2TOIInput) {
+public func b2TimeOfImpact(_ output: inout b2TOIOutput, input: b2TOIInput) {
   let timer = b2Timer()
   
   b2_toiCalls += 1
@@ -288,15 +288,15 @@ private struct b2SeparationFunction {
     case faceB
     var description: String {
       switch self {
-      case points: return "points"
-      case faceA: return "faceA"
-      case faceB: return "faceB"
+      case .points: return "points"
+      case .faceA: return "faceA"
+      case .faceB: return "faceB"
       }
     }
   }
   
   // TODO_ERIN might not need to return the separation
-  mutating func initialize(cache: b2SimplexCache,
+  @discardableResult mutating func initialize(_ cache: b2SimplexCache,
     _ proxyA: b2DistanceProxy, _ sweepA: b2Sweep,
     _ proxyB: b2DistanceProxy, _ sweepB: b2Sweep,
     _ t1: b2Float) -> b2Float
@@ -370,7 +370,7 @@ private struct b2SeparationFunction {
     }
   }
   
-  func findMinSeparation(t: b2Float) -> (separation: b2Float, indexA: Int, indexB: Int) {
+  func findMinSeparation(_ t: b2Float) -> (separation: b2Float, indexA: Int, indexB: Int) {
     var indexA: Int
     var indexB: Int
     
@@ -432,7 +432,7 @@ private struct b2SeparationFunction {
     }
   }
   
-  func evaluate(indexA: Int, _ indexB: Int, _ t: b2Float) -> b2Float {
+  func evaluate(_ indexA: Int, _ indexB: Int, _ t: b2Float) -> b2Float {
     let xfA = m_sweepA.getTransform(beta: t)
     let xfB = m_sweepB.getTransform(beta: t)
     

@@ -27,14 +27,14 @@ the original C++ code written by Erin Catto.
 import Foundation
 
 public protocol b2QueryWrapper {
-  func queryCallback(proxyId: Int) -> Bool
+  func queryCallback(_ proxyId: Int) -> Bool
 }
 
 public protocol b2RayCastWrapper {
-  func rayCastCallback(input: b2RayCastInput, _ proxyId: Int) -> b2Float
+  func rayCastCallback(_ input: b2RayCastInput, _ proxyId: Int) -> b2Float
 }
 
 public protocol b2BroadPhaseWrapper {
-  func addPair(inout proxyUserDataA: b2FixtureProxy, inout _ proxyUserDataB: b2FixtureProxy)
+  func addPair(_ proxyUserDataA: inout b2FixtureProxy, _ proxyUserDataB: inout b2FixtureProxy)
 }
 

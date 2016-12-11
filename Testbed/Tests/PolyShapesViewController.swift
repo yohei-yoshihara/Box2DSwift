@@ -41,7 +41,7 @@ class PolyShapesCallback: b2QueryCallback {
   var debugDraw: b2Draw!
   var count = 0
 
-  func DrawFixture(fixture: b2Fixture) {
+  func DrawFixture(_ fixture: b2Fixture) {
 		let color = b2Color(0.95, 0.95, 0.6)
 		let xf = fixture.body.transform
   
@@ -73,7 +73,7 @@ class PolyShapesCallback: b2QueryCallback {
   
   /// Called for each fixture found in the query AABB.
   /// @return false to terminate the query.
-  func reportFixture(fixture: b2Fixture) -> Bool {
+  func reportFixture(_ fixture: b2Fixture) -> Bool {
     if count == self.maxCount {
       return false
     }
@@ -100,7 +100,7 @@ class PolyShapesViewController: BaseViewController, TextListViewControllerDelega
   }
   var dropVC = TextListViewController()
   var bodyIndex = 0
-  var bodies = [b2Body?](count: Const.maxBodies, repeatedValue: nil)
+  var bodies = [b2Body?](repeating: nil, count: Const.maxBodies)
   var polygons = [b2PolygonShape]()
   var circle: b2CircleShape!
 
@@ -112,10 +112,10 @@ class PolyShapesViewController: BaseViewController, TextListViewControllerDelega
     dropVC.textList = ["1 (filtered)", "2", "3", "4", "5", "6"]
     dropVC.textListDelegate = self
 
-    let dropStuffButton = UIBarButtonItem(title: "Drop", style: UIBarButtonItemStyle.Plain, target: self, action: #selector(PolyShapesViewController.onDropStuff(_:)))
-    let modeChangeButton = UIBarButtonItem(title: "Activate", style: UIBarButtonItemStyle.Plain, target: self, action: #selector(PolyShapesViewController.onActivate(_:)))
-    let deleteStuffButton = UIBarButtonItem(barButtonSystemItem: UIBarButtonSystemItem.Trash, target: self, action: #selector(PolyShapesViewController.onDeleteStuff(_:)))
-    let flexibleButton = UIBarButtonItem(barButtonSystemItem: UIBarButtonSystemItem.FlexibleSpace, target: nil, action: nil)
+    let dropStuffButton = UIBarButtonItem(title: "Drop", style: UIBarButtonItemStyle.plain, target: self, action: #selector(PolyShapesViewController.onDropStuff(_:)))
+    let modeChangeButton = UIBarButtonItem(title: "Activate", style: UIBarButtonItemStyle.plain, target: self, action: #selector(PolyShapesViewController.onActivate(_:)))
+    let deleteStuffButton = UIBarButtonItem(barButtonSystemItem: UIBarButtonSystemItem.trash, target: self, action: #selector(PolyShapesViewController.onDeleteStuff(_:)))
+    let flexibleButton = UIBarButtonItem(barButtonSystemItem: UIBarButtonSystemItem.flexibleSpace, target: nil, action: nil)
     addToolbarItems([
       dropStuffButton, flexibleButton,
       modeChangeButton, flexibleButton,
@@ -123,15 +123,15 @@ class PolyShapesViewController: BaseViewController, TextListViewControllerDelega
       ]);
   }
   
-  func onDropStuff(sender: UIBarButtonItem) {
-    dropVC.modalPresentationStyle = UIModalPresentationStyle.Popover
+  func onDropStuff(_ sender: UIBarButtonItem) {
+    dropVC.modalPresentationStyle = UIModalPresentationStyle.popover
     let popPC = dropVC.popoverPresentationController
     popPC?.barButtonItem = sender
-    popPC?.permittedArrowDirections = UIPopoverArrowDirection.Any
-    self.presentViewController(dropVC, animated: true, completion: nil)
+    popPC?.permittedArrowDirections = UIPopoverArrowDirection.any
+    self.present(dropVC, animated: true, completion: nil)
   }
 
-  func onActivate(sender: UIBarButtonItem) {
+  func onActivate(_ sender: UIBarButtonItem) {
     var i = 0
     while i < Const.maxBodies
     {
@@ -144,7 +144,7 @@ class PolyShapesViewController: BaseViewController, TextListViewControllerDelega
     }
   }
   
-  func onDeleteStuff(sender: UIBarButtonItem) {
+  func onDeleteStuff(_ sender: UIBarButtonItem) {
     destroyBody()
   }
   
@@ -213,7 +213,7 @@ class PolyShapesViewController: BaseViewController, TextListViewControllerDelega
 		bodyIndex = 0
   }
   
-  func create(index: Int) {
+  func create(_ index: Int) {
 		if bodies[bodyIndex] != nil {
       world.destroyBody(bodies[bodyIndex]!)
       bodies[bodyIndex] = nil
@@ -277,8 +277,8 @@ class PolyShapesViewController: BaseViewController, TextListViewControllerDelega
     debugDraw.drawCircle(callback.circle.p, callback.circle.radius, color)
   }
  
-  func textListDidSelect(name name: String, index: Int) {
-    self.dismissViewControllerAnimated(true, completion: nil)
+  func textListDidSelect(name: String, index: Int) {
+    self.dismiss(animated: true, completion: nil)
     if name == "Drop" {
       create(index)
     }

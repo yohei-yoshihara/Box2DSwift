@@ -35,10 +35,10 @@ class ShapeEditingViewController: BaseViewController {
 
   override func viewDidLoad() {
     super.viewDidLoad()
-    let createButton = UIBarButtonItem(title: "Create", style: UIBarButtonItemStyle.Plain, target: self, action: #selector(ShapeEditingViewController.onCreate(_:)))
-    let destroyButton = UIBarButtonItem(title: "Destroy", style: UIBarButtonItemStyle.Plain, target: self, action: #selector(ShapeEditingViewController.onDestroy(_:)))
-    let sensorButton = UIBarButtonItem(title: "Sensor", style: UIBarButtonItemStyle.Plain, target: self, action: #selector(ShapeEditingViewController.onSensor(_:)))
-    let flexible = UIBarButtonItem(barButtonSystemItem: UIBarButtonSystemItem.FlexibleSpace, target: nil, action: nil)
+    let createButton = UIBarButtonItem(title: "Create", style: UIBarButtonItemStyle.plain, target: self, action: #selector(ShapeEditingViewController.onCreate(_:)))
+    let destroyButton = UIBarButtonItem(title: "Destroy", style: UIBarButtonItemStyle.plain, target: self, action: #selector(ShapeEditingViewController.onDestroy(_:)))
+    let sensorButton = UIBarButtonItem(title: "Sensor", style: UIBarButtonItemStyle.plain, target: self, action: #selector(ShapeEditingViewController.onSensor(_:)))
+    let flexible = UIBarButtonItem(barButtonSystemItem: UIBarButtonSystemItem.flexibleSpace, target: nil, action: nil)
     self.addToolbarItems([
       createButton, flexible,
       destroyButton, flexible,
@@ -70,7 +70,7 @@ class ShapeEditingViewController: BaseViewController {
     sensor = false
   }
   
-  func onCreate(sender: UIBarButtonItem) {
+  func onCreate(_ sender: UIBarButtonItem) {
     if fixture2 == nil {
       let shape = b2CircleShape()
       shape.radius = 3.0
@@ -80,7 +80,7 @@ class ShapeEditingViewController: BaseViewController {
     }
   }
 
-  func onDestroy(sender: UIBarButtonItem) {
+  func onDestroy(_ sender: UIBarButtonItem) {
     if fixture2 != nil {
       body.destroyFixture(fixture2!)
       fixture2 = nil
@@ -88,7 +88,7 @@ class ShapeEditingViewController: BaseViewController {
     }
   }
 
-  func onSensor(sender: UIBarButtonItem) {
+  func onSensor(_ sender: UIBarButtonItem) {
     if fixture2 != nil {
       sensor = !sensor
       fixture2!.setSensor(sensor)

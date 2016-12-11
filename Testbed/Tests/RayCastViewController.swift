@@ -33,11 +33,11 @@ import Box2D
 
 // This callback finds the closest hit. Polygon 0 is filtered.
 class RayCastClosestCallback : b2RayCastCallback {
-  func reportFixture(fixture: b2Fixture, point: b2Vec2, normal: b2Vec2, fraction: b2Float) -> b2Float {
+  func reportFixture(_ fixture: b2Fixture, point: b2Vec2, normal: b2Vec2, fraction: b2Float) -> b2Float {
     let body = fixture.body
     let userData: AnyObject? = body.userData
     if userData != nil {
-      let index: Int = (userData! as! NSNumber).integerValue
+      let index: Int = (userData! as! NSNumber).intValue
       if index == 0 {
         // By returning -1, we instruct the calling code to ignore this fixture and
         // continue the ray-cast to the next fixture.
@@ -63,11 +63,11 @@ class RayCastClosestCallback : b2RayCastCallback {
 // This callback finds any hit. Polygon 0 is filtered. For this type of query we are usually
 // just checking for obstruction, so the actual fixture and hit point are irrelevant.
 class RayCastAnyCallback : b2RayCastCallback {
-  func reportFixture(fixture: b2Fixture, point: b2Vec2, normal: b2Vec2, fraction: b2Float) -> b2Float {
+  func reportFixture(_ fixture: b2Fixture, point: b2Vec2, normal: b2Vec2, fraction: b2Float) -> b2Float {
     let body = fixture.body
     let userData: AnyObject? = body.userData
     if userData != nil {
-      let index: Int = (userData as! NSNumber).integerValue
+      let index: Int = (userData as! NSNumber).intValue
       if index == 0 {
         // By returning -1, we instruct the calling code to ignore this fixture
         // and continue the ray-cast to the next fixture.
@@ -95,11 +95,11 @@ class RayCastAnyCallback : b2RayCastCallback {
 class RayCastMultipleCallback : b2RayCastCallback {
   let maxCount = 3
   
-  func reportFixture(fixture: b2Fixture, point: b2Vec2, normal: b2Vec2, fraction: b2Float) -> b2Float {
+  func reportFixture(_ fixture: b2Fixture, point: b2Vec2, normal: b2Vec2, fraction: b2Float) -> b2Float {
     let body = fixture.body
     let userData: AnyObject? = body.userData
     if userData != nil {
-      let index: Int = (userData as! NSNumber).integerValue
+      let index: Int = (userData as! NSNumber).intValue
       if index == 0 {
         // By returning -1, we instruct the calling code to ignore this fixture
         // and continue the ray-cast to the next fixture.
@@ -156,10 +156,10 @@ class RayCastViewController: BaseViewController, TextListViewControllerDelegate 
     modeVC.textList = ["Closest", "Any", "Multiple"]
     modeVC.textListDelegate = self
     
-    let dropStuffButton = UIBarButtonItem(title: "Drop", style: UIBarButtonItemStyle.Plain, target: self, action: #selector(RayCastViewController.onDropStuff(_:)))
-    let modeChangeButton = UIBarButtonItem(title: "Mode", style: UIBarButtonItemStyle.Plain, target: self, action: #selector(RayCastViewController.onChangeMode(_:)))
-    let deleteStuffButton = UIBarButtonItem(barButtonSystemItem: UIBarButtonSystemItem.Trash, target: self, action: #selector(RayCastViewController.onDeleteStuff(_:)))
-    let flexibleButton = UIBarButtonItem(barButtonSystemItem: UIBarButtonSystemItem.FlexibleSpace, target: nil, action: nil)
+    let dropStuffButton = UIBarButtonItem(title: "Drop", style: UIBarButtonItemStyle.plain, target: self, action: #selector(RayCastViewController.onDropStuff(_:)))
+    let modeChangeButton = UIBarButtonItem(title: "Mode", style: UIBarButtonItemStyle.plain, target: self, action: #selector(RayCastViewController.onChangeMode(_:)))
+    let deleteStuffButton = UIBarButtonItem(barButtonSystemItem: UIBarButtonSystemItem.trash, target: self, action: #selector(RayCastViewController.onDeleteStuff(_:)))
+    let flexibleButton = UIBarButtonItem(barButtonSystemItem: UIBarButtonSystemItem.flexibleSpace, target: nil, action: nil)
     addToolbarItems([
       dropStuffButton, flexibleButton,
       modeChangeButton, flexibleButton,
@@ -200,7 +200,7 @@ class RayCastViewController: BaseViewController, TextListViewControllerDelegate 
     let b: b2Float = w / (2.0 + sqrt(2.0))
     let s: b2Float = sqrt(2.0) * b
     
-    var vertices2 = [b2Vec2](count: 8, repeatedValue: b2Vec2())
+    var vertices2 = [b2Vec2](repeating: b2Vec2(), count: 8)
     vertices2[0].set(0.5 * s, 0.0)
     vertices2[1].set(0.5 * w, b)
     vertices2[2].set(0.5 * w, b + s)
@@ -285,14 +285,14 @@ class RayCastViewController: BaseViewController, TextListViewControllerDelegate 
     }
   }
   
-  func create(index: Int) {
+  func create(_ index: Int) {
     let bd = b2BodyDef()
     let x = RandomFloat(-10.0, 10.0)
     assert(x >= -10.0 && x <= 10.0)
     let y = RandomFloat(0.0, 20.0)
     bd.position.set(x, y)
     bd.angle = RandomFloat(-b2_pi, b2_pi)
-    bd.userData = NSNumber(integer: index)
+    bd.userData = NSNumber(value: index as Int)
     
     if index == 4 {
       bd.angularDamping = 0.02
@@ -320,33 +320,33 @@ class RayCastViewController: BaseViewController, TextListViewControllerDelegate 
     bodies.append((body, index))
   }
   
-  func onDropStuff(sender: UIBarButtonItem) {
-    dropVC.modalPresentationStyle = UIModalPresentationStyle.Popover
+  func onDropStuff(_ sender: UIBarButtonItem) {
+    dropVC.modalPresentationStyle = UIModalPresentationStyle.popover
     let popPC = dropVC.popoverPresentationController
     popPC?.barButtonItem = sender
-    popPC?.permittedArrowDirections = UIPopoverArrowDirection.Any
-    self.presentViewController(dropVC, animated: true, completion: nil)
+    popPC?.permittedArrowDirections = UIPopoverArrowDirection.any
+    self.present(dropVC, animated: true, completion: nil)
   }
   
-  func onChangeMode(sender: UIBarButtonItem) {
-    modeVC.modalPresentationStyle = UIModalPresentationStyle.Popover
+  func onChangeMode(_ sender: UIBarButtonItem) {
+    modeVC.modalPresentationStyle = UIModalPresentationStyle.popover
     let popPC = modeVC.popoverPresentationController
     popPC?.barButtonItem = sender
-    popPC?.permittedArrowDirections = UIPopoverArrowDirection.Any
-    self.presentViewController(modeVC, animated: true, completion: nil)
+    popPC?.permittedArrowDirections = UIPopoverArrowDirection.any
+    self.present(modeVC, animated: true, completion: nil)
   }
   
-  func onDeleteStuff(sender: UIBarButtonItem) {
+  func onDeleteStuff(_ sender: UIBarButtonItem) {
     if bodies.count == 0 {
       return
     }
     let body = bodies.first!.0
     world.destroyBody(body)
-    bodies.removeAtIndex(0)
+    bodies.remove(at: 0)
   }
   
-  func textListDidSelect(name name: String, index: Int) {
-    self.dismissViewControllerAnimated(true, completion: nil)
+  func textListDidSelect(name: String, index: Int) {
+    self.dismiss(animated: true, completion: nil)
     if name == "Drop" {
       create(index)
     }

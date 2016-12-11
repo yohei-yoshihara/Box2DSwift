@@ -28,11 +28,11 @@ import Foundation
 
 // Compute contact points for edge versus circle.
 // This accounts for edge connectivity.
-public func b2CollideEdgeAndCircle(inout manifold manifold: b2Manifold,
+public func b2CollideEdgeAndCircle(manifold: inout b2Manifold,
   edgeA: b2EdgeShape, transformA xfA: b2Transform,
   circleB: b2CircleShape, transformB xfB: b2Transform)
 {
-  manifold.points.removeAll(keepCapacity: true)
+  manifold.points.removeAll(keepingCapacity: true)
   
   // Compute circle in frame of edge
   let Q = b2MulT(xfA, b2Mul(xfB, circleB.m_p))
@@ -175,8 +175,8 @@ struct b2EPAxis : CustomStringConvertible {
 
 // This holds polygon B expressed in frame A.
 struct b2TempPolygon {
-  var vertices = [b2Vec2](count: b2_maxPolygonVertices, repeatedValue: b2Vec2())
-  var normals = [b2Vec2](count: b2_maxPolygonVertices, repeatedValue: b2Vec2())
+  var vertices = [b2Vec2](repeating: b2Vec2(), count: b2_maxPolygonVertices)
+  var normals = [b2Vec2](repeating: b2Vec2(), count: b2_maxPolygonVertices)
   var count = 0
 }
 
@@ -206,7 +206,7 @@ class b2EPCollider {
   // 6. Visit each separating axes, only accept axes within the range
   // 7. Return if _any_ axis indicates separation
   // 8. Clip
-  func Collide(edgeA: b2EdgeShape, _ xfA: b2Transform, _ polygonB: b2PolygonShape, _ xfB: b2Transform) -> b2Manifold {
+  func Collide(_ edgeA: b2EdgeShape, _ xfA: b2Transform, _ polygonB: b2PolygonShape, _ xfB: b2Transform) -> b2Manifold {
     let manifold = b2Manifold()
     m_xf = b2MulT(xfA, xfB)
     
@@ -380,7 +380,7 @@ class b2EPCollider {
     m_radius = 2.0 * b2_polygonRadius
     
     //manifold.pointCount = 0
-    manifold.points.removeAll(keepCapacity: true)
+    manifold.points.removeAll(keepingCapacity: true)
     
     let edgeAxis = ComputeEdgeSeparation()
     
@@ -413,7 +413,7 @@ class b2EPCollider {
       primaryAxis = edgeAxis
     }
     
-    var ie = [b2ClipVertex](count: 2, repeatedValue: b2ClipVertex())
+    var ie = [b2ClipVertex](repeating: b2ClipVertex(), count: 2)
     var rf = b2ReferenceFace()
     if primaryAxis.type == b2EPAxisType.edgeA {
       manifold.type = b2ManifoldType.faceA
@@ -603,9 +603,9 @@ class b2EPCollider {
     case convex
     var description: String {
       switch self {
-      case isolated: return "isolated"
-      case concave: return "concave"
-      case convex: return "convex"
+      case .isolated: return "isolated"
+      case .concave: return "concave"
+      case .convex: return "convex"
       }
     }
   }
@@ -625,7 +625,7 @@ class b2EPCollider {
 
 /// Compute the collision manifold between an edge and a circle.
 public func b2CollideEdgeAndPolygon(
-  inout manifold manifold: b2Manifold,
+  manifold: inout b2Manifold,
   edgeA: b2EdgeShape, transformA xfA: b2Transform,
   polygonB: b2PolygonShape, transformB xfB: b2Transform)
 {

@@ -32,7 +32,7 @@ class EdgeShapesCallback : b2RayCastCallback {
   var point = b2Vec2()
   var normal = b2Vec2()
   
-  func reportFixture(fixture: b2Fixture, point: b2Vec2, normal: b2Vec2, fraction: b2Float) -> b2Float {
+  func reportFixture(_ fixture: b2Fixture, point: b2Vec2, normal: b2Vec2, fraction: b2Float) -> b2Float {
     self.fixture = fixture
     self.point = point
     self.normal = normal
@@ -46,7 +46,7 @@ class EdgeShapesViewController: BaseViewController, TextListViewControllerDelega
   }
   var dropVC = TextListViewController()
   var bodyIndex = 0
-  var bodies = [b2Body?](count: Const.maxBodies, repeatedValue: nil)
+  var bodies = [b2Body?](repeating: nil, count: Const.maxBodies)
   var polygons = [b2PolygonShape]()
   var circle: b2CircleShape!
   var angle: b2Float = 0
@@ -59,9 +59,9 @@ class EdgeShapesViewController: BaseViewController, TextListViewControllerDelega
     dropVC.textList = ["1", "2", "3", "4", "5", "6"]
     dropVC.textListDelegate = self
     
-    let dropStuffButton = UIBarButtonItem(title: "Drop", style: UIBarButtonItemStyle.Plain, target: self, action: #selector(EdgeShapesViewController.onDropStuff(_:)))
-    let deleteStuffButton = UIBarButtonItem(barButtonSystemItem: UIBarButtonSystemItem.Trash, target: self, action: #selector(EdgeShapesViewController.onDeleteStuff(_:)))
-    let flexibleButton = UIBarButtonItem(barButtonSystemItem: UIBarButtonSystemItem.FlexibleSpace, target: nil, action: nil)
+    let dropStuffButton = UIBarButtonItem(title: "Drop", style: UIBarButtonItemStyle.plain, target: self, action: #selector(EdgeShapesViewController.onDropStuff(_:)))
+    let deleteStuffButton = UIBarButtonItem(barButtonSystemItem: UIBarButtonSystemItem.trash, target: self, action: #selector(EdgeShapesViewController.onDeleteStuff(_:)))
+    let flexibleButton = UIBarButtonItem(barButtonSystemItem: UIBarButtonSystemItem.flexibleSpace, target: nil, action: nil)
     addToolbarItems([
       dropStuffButton, flexibleButton,
       deleteStuffButton, flexibleButton
@@ -144,7 +144,7 @@ class EdgeShapesViewController: BaseViewController, TextListViewControllerDelega
     angle = 0.0
   }
   
-  func create(index: Int) {
+  func create(_ index: Int) {
 		if bodies[bodyIndex] != nil {
       world.destroyBody(bodies[bodyIndex]!)
       bodies[bodyIndex] = nil
@@ -217,20 +217,20 @@ class EdgeShapesViewController: BaseViewController, TextListViewControllerDelega
 		}
   }
 
-  func onDropStuff(sender: UIBarButtonItem) {
-    dropVC.modalPresentationStyle = UIModalPresentationStyle.Popover
+  func onDropStuff(_ sender: UIBarButtonItem) {
+    dropVC.modalPresentationStyle = UIModalPresentationStyle.popover
     let popPC = dropVC.popoverPresentationController
     popPC?.barButtonItem = sender
-    popPC?.permittedArrowDirections = UIPopoverArrowDirection.Any
-    self.presentViewController(dropVC, animated: true, completion: nil)
+    popPC?.permittedArrowDirections = UIPopoverArrowDirection.any
+    self.present(dropVC, animated: true, completion: nil)
   }
   
-  func onDeleteStuff(sender: UIBarButtonItem) {
+  func onDeleteStuff(_ sender: UIBarButtonItem) {
     destroyBody()
   }
 
-  func textListDidSelect(name name: String, index: Int) {
-    self.dismissViewControllerAnimated(true, completion: nil)
+  func textListDidSelect(name: String, index: Int) {
+    self.dismiss(animated: true, completion: nil)
     if name == "Drop" {
       create(index)
     }
