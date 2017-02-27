@@ -704,10 +704,11 @@
 				TargetAttributes = {
 					47F39B131A8E0D500011E2CB = {
 						CreatedOnToolsVersion = 6.3;
-						LastSwiftMigration = 0810;
+						LastSwiftMigration = 0820;
 					};
 					47F39B1E1A8E0D500011E2CB = {
 						CreatedOnToolsVersion = 6.3;
+						LastSwiftMigration = 0820;
 					};
 					47F39B331A8E0D7B0011E2CB = {
 						CreatedOnToolsVersion = 6.3;
@@ -1089,6 +1090,7 @@
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = "com.cx5software.$(PRODUCT_NAME:rfc1034identifier)";
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = 3.0;
 			};
 			name = Debug;
 		};
@@ -1104,6 +1106,7 @@
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = "com.cx5software.$(PRODUCT_NAME:rfc1034identifier)";
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = 3.0;
 			};
 			name = Release;
 		};
