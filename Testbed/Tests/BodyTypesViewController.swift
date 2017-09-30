@@ -46,15 +46,15 @@ class BodyTypesViewController: BaseViewController {
       ])
   }
   
-  func onDynamic(_ sender: UIBarButtonItem) {
+  @objc func onDynamic(_ sender: UIBarButtonItem) {
     platform.setType(b2BodyType.dynamicBody)
   }
 
-  func onStatic(_ sender: UIBarButtonItem) {
+  @objc func onStatic(_ sender: UIBarButtonItem) {
     platform.setType(b2BodyType.staticBody)
   }
 
-  func onKinematic(_ sender: UIBarButtonItem) {
+  @objc func onKinematic(_ sender: UIBarButtonItem) {
     platform.setType(b2BodyType.kinematicBody)
     platform.setLinearVelocity(b2Vec2(-speed, 0.0))
     platform.setAngularVelocity(0.0)

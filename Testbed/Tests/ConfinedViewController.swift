@@ -39,7 +39,7 @@ class ConfinedViewController: BaseViewController {
     self.addToolbarItems([createButton, flexible])
   }
   
-  func onCreate(_ sender: UIBarButtonItem) {
+  @objc func onCreate(_ sender: UIBarButtonItem) {
     createCircle()
   }
   

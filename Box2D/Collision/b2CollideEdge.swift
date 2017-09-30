@@ -540,7 +540,7 @@ class b2EPCollider {
     var axis = b2EPAxis()
     axis.type = b2EPAxisType.edgeA
     axis.index = m_front ? 0 : 1
-    axis.separation = FLT_MAX
+    axis.separation = Float.greatestFiniteMagnitude
     
     for i in 0 ..< m_polygonB.count {
       let s = b2Dot(m_normal, m_polygonB.vertices[i] - m_v1)
@@ -556,7 +556,7 @@ class b2EPCollider {
     var axis = b2EPAxis()
     axis.type = b2EPAxisType.unknown
     axis.index = -1
-    axis.separation = -FLT_MAX
+    axis.separation = -Float.greatestFiniteMagnitude
     
     let perp = b2Vec2(-m_normal.y, m_normal.x)
     

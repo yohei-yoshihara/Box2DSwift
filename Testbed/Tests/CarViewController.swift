@@ -56,25 +56,25 @@ class CarViewController: BaseViewController {
       ])
   }
   
-  func onLeft(_ sender: UIBarButtonItem) {
+  @objc func onLeft(_ sender: UIBarButtonItem) {
     spring1.setMotorSpeed(speed)
   }
 
-  func onBrake(_ sender: UIBarButtonItem) {
+  @objc func onBrake(_ sender: UIBarButtonItem) {
     spring1.setMotorSpeed(0.0)
   }
 
-  func onRight(_ sender: UIBarButtonItem) {
+  @objc func onRight(_ sender: UIBarButtonItem) {
     spring1.setMotorSpeed(-speed)
   }
   
-  func onHzDown(_ sender: UIBarButtonItem) {
+  @objc func onHzDown(_ sender: UIBarButtonItem) {
     hz = max(0.0, hz - 1.0)
     spring1.setSpringFrequencyHz(hz)
     spring2.setSpringFrequencyHz(hz)
   }
 
-  func onHzUp(_ sender: UIBarButtonItem) {
+  @objc func onHzUp(_ sender: UIBarButtonItem) {
     hz += 1.0
     spring1.setSpringFrequencyHz(hz)
     spring2.setSpringFrequencyHz(hz)

@@ -123,7 +123,7 @@ class PolyShapesViewController: BaseViewController, TextListViewControllerDelega
       ]);
   }
   
-  func onDropStuff(_ sender: UIBarButtonItem) {
+  @objc func onDropStuff(_ sender: UIBarButtonItem) {
     dropVC.modalPresentationStyle = UIModalPresentationStyle.popover
     let popPC = dropVC.popoverPresentationController
     popPC?.barButtonItem = sender
@@ -131,7 +131,7 @@ class PolyShapesViewController: BaseViewController, TextListViewControllerDelega
     self.present(dropVC, animated: true, completion: nil)
   }
 
-  func onActivate(_ sender: UIBarButtonItem) {
+  @objc func onActivate(_ sender: UIBarButtonItem) {
     var i = 0
     while i < Const.maxBodies
     {
@@ -144,7 +144,7 @@ class PolyShapesViewController: BaseViewController, TextListViewControllerDelega
     }
   }
   
-  func onDeleteStuff(_ sender: UIBarButtonItem) {
+  @objc func onDeleteStuff(_ sender: UIBarButtonItem) {
     destroyBody()
   }
   

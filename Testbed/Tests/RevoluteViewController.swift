@@ -145,11 +145,11 @@ class RevoluteViewController: BaseViewController {
   override func step() {
   }
   
-  func onLimits(_ sender: UIBarButtonItem) {
+  @objc func onLimits(_ sender: UIBarButtonItem) {
     joint.enableLimit(!joint.isLimitEnabled)
   }
   
-  func onMotor(_ sender: UIBarButtonItem) {
+  @objc func onMotor(_ sender: UIBarButtonItem) {
     joint.enableMotor(!joint.isMotorEnabled)
   }
 }

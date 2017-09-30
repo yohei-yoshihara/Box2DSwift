@@ -91,7 +91,7 @@ class VerticalStackViewController: BaseViewController {
     bullet = nil
   }
   
-  func onShoot(_ sender: UIBarButtonItem) {
+  @objc func onShoot(_ sender: UIBarButtonItem) {
     if bullet != nil {
       world.destroyBody(bullet!)
       bullet = nil

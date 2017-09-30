@@ -43,7 +43,7 @@ class WebViewController: BaseViewController {
       ])
   }
 
-  func onDestroyBody(_ sender: UIBarButtonItem) {
+  @objc func onDestroyBody(_ sender: UIBarButtonItem) {
     for i in 0 ..< 4 {
       if bodies[i] != nil {
         world.destroyBody(bodies[i]!)
@@ -53,7 +53,7 @@ class WebViewController: BaseViewController {
     }
   }
 
-  func onDestroyJoint(_ sender: UIBarButtonItem) {
+  @objc func onDestroyJoint(_ sender: UIBarButtonItem) {
     for i in 0 ..< 8 {
       if joints[i] != nil {
         world.destroyJoint(joints[i]!)

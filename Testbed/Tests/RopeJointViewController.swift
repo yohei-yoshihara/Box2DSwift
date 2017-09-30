@@ -39,7 +39,7 @@ class RopeJointViewController: BaseViewController {
     self.addToolbarItems([jointButton, flexible])
   }
   
-  func onJoint(_ sender: UIBarButtonItem) {
+  @objc func onJoint(_ sender: UIBarButtonItem) {
     if rope != nil {
       world.destroyJoint(rope!)
       rope = nil

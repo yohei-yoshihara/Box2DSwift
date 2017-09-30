@@ -82,7 +82,7 @@ class MotorJointViewController: BaseViewController {
   }
   
 
-  func onStart(_ sender: UIBarButtonItem) {
+  @objc func onStart(_ sender: UIBarButtonItem) {
     go = !go
   }
   

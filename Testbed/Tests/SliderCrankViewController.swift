@@ -44,12 +44,12 @@ class SliderCrankViewController: BaseViewController {
       ])
   }
   
-  func onFriction(_ sender: UIBarButtonItem) {
+  @objc func onFriction(_ sender: UIBarButtonItem) {
     joint2.enableMotor(!joint2.isMotorEnabled)
     joint2.bodyB.setAwake(true)
   }
   
-  func onMotor(_ sender: UIBarButtonItem) {
+  @objc func onMotor(_ sender: UIBarButtonItem) {
     joint1.enableMotor(!joint1.isMotorEnabled)
     joint1.bodyB.setAwake(true)
   }

@@ -152,7 +152,7 @@ class SensorTestViewController: BaseViewController, b2ContactListener {
       let position = body.position
       
       var d = center - position
-      if d.lengthSquared() < FLT_EPSILON * FLT_EPSILON {
+      if d.lengthSquared() < Float.ulpOfOne * Float.ulpOfOne {
         continue
       }
       

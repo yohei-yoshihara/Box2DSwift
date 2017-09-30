@@ -26,10 +26,10 @@ the original C++ code written by Erin Catto.
 
 import Foundation
 
-public let b2_minFloat = FLT_MIN
-public let b2_maxFloat = FLT_MAX
-public let b2_epsilon = FLT_EPSILON;
-public let b2_pi: b2Float = Float(M_PI)
+public let b2_minFloat = Float.leastNormalMagnitude
+public let b2_maxFloat = Float.greatestFiniteMagnitude
+public let b2_epsilon = Float.ulpOfOne
+public let b2_pi: b2Float = Float.pi
 
 /// @file
 /// Global tuning constants based on meters-kilograms-seconds (MKS) units.

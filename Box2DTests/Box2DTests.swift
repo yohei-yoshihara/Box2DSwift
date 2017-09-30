@@ -184,13 +184,13 @@ class Box2DTests: XCTestCase {
       let expectedX: b2Float = expected[i * 3 + 0]
       let expectedY: b2Float = expected[i * 3 + 1]
       let expectedAngle: b2Float = expected[i * 3 + 2]
-      XCTAssertEqualWithAccuracy(body.position.x, expectedX, accuracy: 1e-5);
-      XCTAssertEqualWithAccuracy(body.position.y, expectedY, accuracy: 1e-5);
-      XCTAssertEqualWithAccuracy(body.angle, expectedAngle, accuracy: 1e-5);
+      XCTAssertEqual(body.position.x, expectedX, accuracy: 1e-5);
+      XCTAssertEqual(body.position.y, expectedY, accuracy: 1e-5);
+      XCTAssertEqual(body.angle, expectedAngle, accuracy: 1e-5);
     }
-    XCTAssertEqualWithAccuracy(body.position.x, b2Float(0.0), accuracy: 1e-4);
-    XCTAssertEqualWithAccuracy(body.position.y, b2Float(1.014966), accuracy: 1e-4);
-    XCTAssertEqualWithAccuracy(body.angle, b2Float(0.0), accuracy: 1e-4);
+    XCTAssertEqual(body.position.x, b2Float(0.0), accuracy: 1e-4);
+    XCTAssertEqual(body.position.y, b2Float(1.014966), accuracy: 1e-4);
+    XCTAssertEqual(body.angle, b2Float(0.0), accuracy: 1e-4);
     // When the world destructor is called, all bodies and joints are freed. This can
     // When the world destructor is called, all bodies and joints are freed. This can
     // create orphaned pointers, so be careful about your world management.

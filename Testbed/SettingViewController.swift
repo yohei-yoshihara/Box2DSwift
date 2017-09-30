@@ -107,7 +107,7 @@ class SettingTableViewController: UITableViewController {
     self.navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: UIBarButtonSystemItem.done, target: self, action: #selector(SettingTableViewController.onDone(_:)))
   }
   
-  func onDone(_ sender: UIBarButtonItem) {
+  @objc func onDone(_ sender: UIBarButtonItem) {
     self.dismiss(animated: true, completion: nil)
   }
   
@@ -282,7 +282,7 @@ class SettingTableViewController: UITableViewController {
     return 44
   }
   
-  func onValueChanged(_ sender: UIControl) {
+  @objc func onValueChanged(_ sender: UIControl) {
     if sender.tag == 0 {
       let stepper = sender as! UIStepper
       let value = Int(stepper.value)

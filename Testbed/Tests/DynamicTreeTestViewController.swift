@@ -68,19 +68,19 @@ class DynamicTreeTestViewController: BaseViewController, b2QueryWrapper, b2RayCa
     self.view.addSubview(additionalInfoView)
   }
   
-  func onAuto(_ sender: UIBarButtonItem) {
+  @objc func onAuto(_ sender: UIBarButtonItem) {
     automated = !automated
   }
   
-  func onCreate(_ sender: UIBarButtonItem) {
+  @objc func onCreate(_ sender: UIBarButtonItem) {
     CreateProxy()
   }
 
-  func onDestroy(_ sender: UIBarButtonItem) {
+  @objc func onDestroy(_ sender: UIBarButtonItem) {
     DestroyProxy()
   }
 
-  func onMove(_ sender: UIBarButtonItem) {
+  @objc func onMove(_ sender: UIBarButtonItem) {
     MoveProxy()
   }
   

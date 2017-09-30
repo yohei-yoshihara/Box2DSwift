@@ -41,7 +41,7 @@ class PinballViewController: BaseViewController {
     self.addToolbarItems([switchButton, flexible])
   }
   
-  func onSwitch(_ sender: UIBarButtonItem) {
+  @objc func onSwitch(_ sender: UIBarButtonItem) {
     button = !button
   }
   

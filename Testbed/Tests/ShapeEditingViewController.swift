@@ -70,7 +70,7 @@ class ShapeEditingViewController: BaseViewController {
     sensor = false
   }
   
-  func onCreate(_ sender: UIBarButtonItem) {
+  @objc func onCreate(_ sender: UIBarButtonItem) {
     if fixture2 == nil {
       let shape = b2CircleShape()
       shape.radius = 3.0
@@ -80,7 +80,7 @@ class ShapeEditingViewController: BaseViewController {
     }
   }
 
-  func onDestroy(_ sender: UIBarButtonItem) {
+  @objc func onDestroy(_ sender: UIBarButtonItem) {
     if fixture2 != nil {
       body.destroyFixture(fixture2!)
       fixture2 = nil
@@ -88,7 +88,7 @@ class ShapeEditingViewController: BaseViewController {
     }
   }
 
-  func onSensor(_ sender: UIBarButtonItem) {
+  @objc func onSensor(_ sender: UIBarButtonItem) {
     if fixture2 != nil {
       sensor = !sensor
       fixture2!.setSensor(sensor)

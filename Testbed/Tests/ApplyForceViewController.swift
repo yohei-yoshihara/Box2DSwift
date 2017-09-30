@@ -166,17 +166,17 @@ class ApplyForceViewController: BaseViewController {
   override func step() {
   }
   
-  func onLeft(_ sender: UIBarButtonItem) {
+  @objc func onLeft(_ sender: UIBarButtonItem) {
     body.applyTorque(50.0, wake: true)
   }
   
-  func onUp(_ sender: UIBarButtonItem) {
+  @objc func onUp(_ sender: UIBarButtonItem) {
     let f = body.getWorldVector(b2Vec2(0.0, -200.0))
     let p = body.getWorldPoint(b2Vec2(0.0, 2.0))
     body.applyForce(f, point: p, wake: true)
   }
 
-  func onRight(_ sender: UIBarButtonItem) {
+  @objc func onRight(_ sender: UIBarButtonItem) {
     body.applyTorque(-50.0, wake: true)
   }
 }

@@ -320,7 +320,7 @@ class RayCastViewController: BaseViewController, TextListViewControllerDelegate 
     bodies.append((body, index))
   }
   
-  func onDropStuff(_ sender: UIBarButtonItem) {
+  @objc func onDropStuff(_ sender: UIBarButtonItem) {
     dropVC.modalPresentationStyle = UIModalPresentationStyle.popover
     let popPC = dropVC.popoverPresentationController
     popPC?.barButtonItem = sender
@@ -328,7 +328,7 @@ class RayCastViewController: BaseViewController, TextListViewControllerDelegate 
     self.present(dropVC, animated: true, completion: nil)
   }
   
-  func onChangeMode(_ sender: UIBarButtonItem) {
+  @objc func onChangeMode(_ sender: UIBarButtonItem) {
     modeVC.modalPresentationStyle = UIModalPresentationStyle.popover
     let popPC = modeVC.popoverPresentationController
     popPC?.barButtonItem = sender
@@ -336,7 +336,7 @@ class RayCastViewController: BaseViewController, TextListViewControllerDelegate 
     self.present(modeVC, animated: true, completion: nil)
   }
   
-  func onDeleteStuff(_ sender: UIBarButtonItem) {
+  @objc func onDeleteStuff(_ sender: UIBarButtonItem) {
     if bodies.count == 0 {
       return
     }

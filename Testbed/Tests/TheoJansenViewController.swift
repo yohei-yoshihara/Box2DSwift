@@ -51,19 +51,19 @@ class TheoJansenViewController: BaseViewController {
       ])
   }
   
-  func onLeft(_ sender: UIBarButtonItem) {
+  @objc func onLeft(_ sender: UIBarButtonItem) {
     motorJoint.setMotorSpeed(-motorSpeed)
   }
 
-  func onBrake(_ sender: UIBarButtonItem) {
+  @objc func onBrake(_ sender: UIBarButtonItem) {
     motorJoint.setMotorSpeed(0.0)
   }
 
-  func onRight(_ sender: UIBarButtonItem) {
+  @objc func onRight(_ sender: UIBarButtonItem) {
     motorJoint.setMotorSpeed(motorSpeed)
   }
 
-  func onMotor(_ sender: UIBarButtonItem) {
+  @objc func onMotor(_ sender: UIBarButtonItem) {
     motorJoint.enableMotor(!motorJoint.isMotorEnabled)
   }
 

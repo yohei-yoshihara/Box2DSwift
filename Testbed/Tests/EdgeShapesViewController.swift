@@ -217,7 +217,7 @@ class EdgeShapesViewController: BaseViewController, TextListViewControllerDelega
 		}
   }
 
-  func onDropStuff(_ sender: UIBarButtonItem) {
+  @objc func onDropStuff(_ sender: UIBarButtonItem) {
     dropVC.modalPresentationStyle = UIModalPresentationStyle.popover
     let popPC = dropVC.popoverPresentationController
     popPC?.barButtonItem = sender
@@ -225,7 +225,7 @@ class EdgeShapesViewController: BaseViewController, TextListViewControllerDelega
     self.present(dropVC, animated: true, completion: nil)
   }
   
-  func onDeleteStuff(_ sender: UIBarButtonItem) {
+  @objc func onDeleteStuff(_ sender: UIBarButtonItem) {
     destroyBody()
   }
 
