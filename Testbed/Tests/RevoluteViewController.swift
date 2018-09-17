@@ -84,7 +84,7 @@ class RevoluteViewController: BaseViewController {
       rjd.enableLimit = true
       rjd.collideConnected = true
       
-      self.joint = self.world.createJoint(rjd) as! b2RevoluteJoint
+      self.joint = self.world.createJoint(rjd)
     }
     
     b2Locally {

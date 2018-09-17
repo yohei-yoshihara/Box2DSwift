@@ -244,7 +244,41 @@ open class b2World {
     // Note: creating a joint doesn't wake the bodies.
     return j
   }
-  
+
+  @discardableResult open func createJoint(_ def: b2DistanceJointDef) -> b2DistanceJoint {
+    return createJoint(def as b2JointDef) as! b2DistanceJoint
+  }
+  @discardableResult open func createJoint(_ def: b2MouseJointDef) -> b2MouseJoint {
+    return createJoint(def as b2JointDef) as! b2MouseJoint
+  }
+  @discardableResult open func createJoint(_ def: b2PrismaticJointDef) -> b2PrismaticJoint {
+    return createJoint(def as b2JointDef) as! b2PrismaticJoint
+  }
+  @discardableResult open func createJoint(_ def: b2RevoluteJointDef) -> b2RevoluteJoint {
+    return createJoint(def as b2JointDef) as! b2RevoluteJoint
+  }
+  @discardableResult open func createJoint(_ def: b2PulleyJointDef) -> b2PulleyJoint {
+    return createJoint(def as b2JointDef) as! b2PulleyJoint
+  }
+  @discardableResult open func createJoint(_ def: b2GearJointDef) -> b2GearJoint {
+    return createJoint(def as b2JointDef) as! b2GearJoint
+  }
+  @discardableResult open func createJoint(_ def: b2WheelJointDef) -> b2WheelJoint {
+    return createJoint(def as b2JointDef) as! b2WheelJoint
+  }
+  @discardableResult open func createJoint(_ def: b2WeldJointDef) -> b2WeldJoint {
+    return createJoint(def as b2JointDef) as! b2WeldJoint
+  }
+  @discardableResult open func createJoint(_ def: b2FrictionJointDef) -> b2FrictionJoint {
+    return createJoint(def as b2JointDef) as! b2FrictionJoint
+  }
+  @discardableResult open func createJoint(_ def: b2RopeJointDef) -> b2RopeJoint {
+    return createJoint(def as b2JointDef) as! b2RopeJoint
+  }
+  @discardableResult open func createJoint(_ def: b2MotorJointDef) -> b2MotorJoint {
+    return createJoint(def as b2JointDef) as! b2MotorJoint
+  }
+
   /// Destroy a joint. This may cause the connected bodies to begin colliding.
   /// @warning This function is locked during callbacks.
   open func destroyJoint(_ j: b2Joint) {

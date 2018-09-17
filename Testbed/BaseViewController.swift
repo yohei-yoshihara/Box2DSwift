@@ -115,7 +115,7 @@ class BaseViewController: UIViewController, SettingViewControllerDelegate {
   override func viewDidAppear(_ animated: Bool) {
     super.viewDidAppear(animated)
     displayLink = CADisplayLink(target: self, selector: #selector(BaseViewController.simulationLoop))
-    displayLink.frameInterval = 60 / Int(settings.hz)
+    displayLink.preferredFramesPerSecond = Int(settings.hz)
     displayLink.add(to: RunLoop.current, forMode: RunLoopMode.commonModes)
   }
   
@@ -186,7 +186,7 @@ class BaseViewController: UIViewController, SettingViewControllerDelegate {
     self.settings = settings
     infoView.enableProfile = settings.drawProfile
     infoView.enableStats = settings.drawStats
-    displayLink.frameInterval = 60 / Int(settings.hz)
+    displayLink.preferredFramesPerSecond = Int(settings.hz)
     debugDraw.SetFlags(settings.debugDrawFlag)
   }
 
@@ -209,7 +209,7 @@ class BaseViewController: UIViewController, SettingViewControllerDelegate {
         md.bodyB = body
         md.target = wp
         md.maxForce = 1000.0 * body.mass
-        mouseJoint = world.createJoint(md) as? b2MouseJoint
+        mouseJoint = world.createJoint(md)
         body.setAwake(true)
       }
       else {

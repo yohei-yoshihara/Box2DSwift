@@ -83,7 +83,7 @@ class SliderCrankViewController: BaseViewController {
       rjd.motorSpeed = 1.0 * b2_pi
       rjd.maxMotorTorque = 10000.0
       rjd.enableMotor = true
-      self.joint1 = self.world.createJoint(rjd) as! b2RevoluteJoint
+      self.joint1 = self.world.createJoint(rjd)
       
       self.prevBody = body
     }
@@ -129,7 +129,7 @@ class SliderCrankViewController: BaseViewController {
       pjd.maxMotorForce = 1000.0
       pjd.enableMotor = true
         
-      self.joint2 = self.world.createJoint(pjd) as! b2PrismaticJoint
+      self.joint2 = self.world.createJoint(pjd)
     }
     
       // Create a payload

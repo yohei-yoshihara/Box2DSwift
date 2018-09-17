@@ -102,14 +102,14 @@ class PinballViewController: BaseViewController {
       jd.bodyB = leftFlipper
       jd.lowerAngle = -30.0 * b2_pi / 180.0
       jd.upperAngle = 5.0 * b2_pi / 180.0
-      self.leftJoint = self.world.createJoint(jd) as! b2RevoluteJoint
+      self.leftJoint = self.world.createJoint(jd)
       
       jd.motorSpeed = 0.0
       jd.localAnchorA = p2
       jd.bodyB = rightFlipper
       jd.lowerAngle = -5.0 * b2_pi / 180.0
       jd.upperAngle = 30.0 * b2_pi / 180.0
-      self.rightJoint = self.world.createJoint(jd) as! b2RevoluteJoint
+      self.rightJoint = self.world.createJoint(jd)
     }
     
     // Circle character

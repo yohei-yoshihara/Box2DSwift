@@ -65,7 +65,7 @@ class TumblerViewController: BaseViewController {
       jd.motorSpeed = 0.05 * b2_pi
       jd.maxMotorTorque = 1e8
       jd.enableMotor = true
-      self.joint = self.world.createJoint(jd) as! b2RevoluteJoint
+      self.joint = self.world.createJoint(jd)
     }
     
     count = 0

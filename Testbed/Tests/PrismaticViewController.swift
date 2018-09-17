@@ -77,7 +77,7 @@ class PrismaticViewController: BaseViewController {
       pjd.upperTranslation = 20.0
       pjd.enableLimit = true
       
-      self.joint = self.world.createJoint(pjd) as! b2PrismaticJoint
+      self.joint = self.world.createJoint(pjd)
     }
   }
   

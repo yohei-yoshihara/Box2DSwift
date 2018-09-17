@@ -264,7 +264,7 @@ class CarViewController: BaseViewController {
       jd.enableMotor = true
       jd.frequencyHz = self.hz
       jd.dampingRatio = self.zeta
-      self.spring1 = self.world.createJoint(jd) as! b2WheelJoint
+      self.spring1 = self.world.createJoint(jd)
       
       jd.initialize(bodyA: self.car, bodyB: self.wheel2, anchor: self.wheel2.position, axis: axis)
       jd.motorSpeed = 0.0
@@ -272,7 +272,7 @@ class CarViewController: BaseViewController {
       jd.enableMotor = false
       jd.frequencyHz = self.hz
       jd.dampingRatio = self.zeta
-      self.spring2 = self.world.createJoint(jd) as! b2WheelJoint
+      self.spring2 = self.world.createJoint(jd)
     }
   }
   

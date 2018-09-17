@@ -120,7 +120,7 @@ class GearViewController: BaseViewController {
       jd1.localAnchorA = ground.getLocalPoint(bd1.position)
       jd1.localAnchorB = body1.getLocalPoint(bd1.position)
       jd1.referenceAngle = body1.angle - ground.angle
-      self.joint1 = self.world.createJoint(jd1) as! b2RevoluteJoint
+      self.joint1 = self.world.createJoint(jd1)
       
       let bd2 = b2BodyDef()
       bd2.type = b2BodyType.dynamicBody
@@ -130,7 +130,7 @@ class GearViewController: BaseViewController {
       
       let jd2 = b2RevoluteJointDef()
       jd2.initialize(ground, bodyB: body2, anchor: bd2.position)
-      self.joint2 = self.world.createJoint(jd2) as! b2RevoluteJoint
+      self.joint2 = self.world.createJoint(jd2)
       
       let bd3 = b2BodyDef()
       bd3.type = b2BodyType.dynamicBody
@@ -144,7 +144,7 @@ class GearViewController: BaseViewController {
       jd3.upperTranslation = 5.0
       jd3.enableLimit = true
       
-      self.joint3 = self.world.createJoint(jd3) as! b2PrismaticJoint
+      self.joint3 = self.world.createJoint(jd3)
       
       let jd4 = b2GearJointDef()
       jd4.bodyA = body1
@@ -152,7 +152,7 @@ class GearViewController: BaseViewController {
       jd4.joint1 = self.joint1
       jd4.joint2 = self.joint2
       jd4.ratio = circle2.radius / circle1.radius
-      self.joint4 = self.world.createJoint(jd4) as! b2GearJoint
+      self.joint4 = self.world.createJoint(jd4)
       
       let jd5 = b2GearJointDef()
       jd5.bodyA = body2
@@ -160,7 +160,7 @@ class GearViewController: BaseViewController {
       jd5.joint1 = self.joint2
       jd5.joint2 = self.joint3
       jd5.ratio = -1.0 / circle2.radius
-      self.joint5 = self.world.createJoint(jd5) as! b2GearJoint
+      self.joint5 = self.world.createJoint(jd5)
     }
   }
   

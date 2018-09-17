@@ -74,7 +74,7 @@ class MotorJointViewController: BaseViewController {
       mjd.initialize(bodyA: ground, bodyB: body)
       mjd.maxForce = 1000.0
       mjd.maxTorque = 1000.0
-      self.joint = self.world.createJoint(mjd) as! b2MotorJoint
+      self.joint = self.world.createJoint(mjd)
     }
     
     go = false

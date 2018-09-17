@@ -226,7 +226,7 @@ class TheoJansenViewController: BaseViewController {
       jd.motorSpeed = self.motorSpeed
       jd.maxMotorTorque = 400.0
       jd.enableMotor = self.motorOn
-      self.motorJoint = self.world.createJoint(jd) as! b2RevoluteJoint
+      self.motorJoint = self.world.createJoint(jd)
     }
     
     var wheelAnchor = b2Vec2()

@@ -87,7 +87,7 @@ class PulleysViewController: BaseViewController {
         groundAnchorA: groundAnchor1, groundAnchorB: groundAnchor2,
         anchorA: anchor1, anchorB: anchor2, ratio: 1.5)
       
-      self.joint1 = self.world.createJoint(pulleyDef) as! b2PulleyJoint
+      self.joint1 = self.world.createJoint(pulleyDef)
     }
   }
   
