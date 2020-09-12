@@ -45,7 +45,7 @@ class InfoView: UIView {
     label = UILabel(frame: CGRect(x: 0, y: 0, width: 320, height: 320))
     label.numberOfLines = 0
     label.lineBreakMode = NSLineBreakMode.byTruncatingHead
-    label.autoresizingMask = [UIViewAutoresizing.flexibleRightMargin, UIViewAutoresizing.flexibleBottomMargin]
+    label.autoresizingMask = [UIView.AutoresizingMask.flexibleRightMargin, UIView.AutoresizingMask.flexibleBottomMargin]
     label.backgroundColor = nil
     label.isOpaque = false
     label.textColor = UIColor.white

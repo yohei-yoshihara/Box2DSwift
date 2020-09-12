@@ -1245,7 +1245,7 @@ open class b2World {
       minContact!.m_flags |= b2Contact.Flags.islandFlag
       
       // Get contacts on bodyA and bodyB.
-      var bodies = [bA, bB]
+      let bodies = [bA, bB]
       for i in 0 ..< 2 {
         let body = bodies[i]
         if body.m_type == b2BodyType.dynamicBody {

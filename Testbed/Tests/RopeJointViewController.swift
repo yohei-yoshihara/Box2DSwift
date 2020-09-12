@@ -34,8 +34,8 @@ class RopeJointViewController: BaseViewController {
   override func viewDidLoad() {
     super.viewDidLoad()
     
-    let jointButton = UIBarButtonItem(title: "Joint", style: UIBarButtonItemStyle.plain, target: self, action: #selector(RopeJointViewController.onJoint(_:)))
-    let flexible = UIBarButtonItem(barButtonSystemItem: UIBarButtonSystemItem.flexibleSpace, target: nil, action: nil)
+    let jointButton = UIBarButtonItem(title: "Joint", style: UIBarButtonItem.Style.plain, target: self, action: #selector(RopeJointViewController.onJoint(_:)))
+    let flexible = UIBarButtonItem(barButtonSystemItem: UIBarButtonItem.SystemItem.flexibleSpace, target: nil, action: nil)
     self.addToolbarItems([jointButton, flexible])
   }
   

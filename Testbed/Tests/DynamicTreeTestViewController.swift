@@ -52,11 +52,11 @@ class DynamicTreeTestViewController: BaseViewController, b2QueryWrapper, b2RayCa
   override func viewDidLoad() {
     super.viewDidLoad()
     
-    let autoButton = UIBarButtonItem(title: "Auto", style: UIBarButtonItemStyle.plain, target: self, action: #selector(DynamicTreeTestViewController.onAuto(_:)))
-    let createButton = UIBarButtonItem(title: "Create", style: UIBarButtonItemStyle.plain, target: self, action: #selector(DynamicTreeTestViewController.onCreate(_:)))
-    let destroyButton = UIBarButtonItem(title: "Destroy", style: UIBarButtonItemStyle.plain, target: self, action: #selector(DynamicTreeTestViewController.onDestroy(_:)))
-    let moveButton = UIBarButtonItem(title: "Move", style: UIBarButtonItemStyle.plain, target: self, action: #selector(DynamicTreeTestViewController.onMove(_:)))
-    let flexible = UIBarButtonItem(barButtonSystemItem: UIBarButtonSystemItem.flexibleSpace, target: nil, action: nil)
+    let autoButton = UIBarButtonItem(title: "Auto", style: UIBarButtonItem.Style.plain, target: self, action: #selector(DynamicTreeTestViewController.onAuto(_:)))
+    let createButton = UIBarButtonItem(title: "Create", style: UIBarButtonItem.Style.plain, target: self, action: #selector(DynamicTreeTestViewController.onCreate(_:)))
+    let destroyButton = UIBarButtonItem(title: "Destroy", style: UIBarButtonItem.Style.plain, target: self, action: #selector(DynamicTreeTestViewController.onDestroy(_:)))
+    let moveButton = UIBarButtonItem(title: "Move", style: UIBarButtonItem.Style.plain, target: self, action: #selector(DynamicTreeTestViewController.onMove(_:)))
+    let flexible = UIBarButtonItem(barButtonSystemItem: UIBarButtonItem.SystemItem.flexibleSpace, target: nil, action: nil)
     self.addToolbarItems([
       autoButton, flexible,
       createButton, flexible,

@@ -39,7 +39,7 @@ class ContinuousTestViewController: BaseViewController {
     
 //    let size = self.view.bounds.size
     label = UILabel(frame: CGRect(x: 0, y: 0, width: 1, height: 1))
-    label.autoresizingMask = [UIViewAutoresizing.flexibleBottomMargin, UIViewAutoresizing.flexibleRightMargin]
+    label.autoresizingMask = [UIView.AutoresizingMask.flexibleBottomMargin, UIView.AutoresizingMask.flexibleRightMargin]
     label.numberOfLines = 0
     label.backgroundColor = UIColor.black
     label.textColor = UIColor.white

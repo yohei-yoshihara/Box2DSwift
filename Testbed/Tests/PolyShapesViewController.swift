@@ -112,10 +112,10 @@ class PolyShapesViewController: BaseViewController, TextListViewControllerDelega
     dropVC.textList = ["1 (filtered)", "2", "3", "4", "5", "6"]
     dropVC.textListDelegate = self
 
-    let dropStuffButton = UIBarButtonItem(title: "Drop", style: UIBarButtonItemStyle.plain, target: self, action: #selector(PolyShapesViewController.onDropStuff(_:)))
-    let modeChangeButton = UIBarButtonItem(title: "Activate", style: UIBarButtonItemStyle.plain, target: self, action: #selector(PolyShapesViewController.onActivate(_:)))
-    let deleteStuffButton = UIBarButtonItem(barButtonSystemItem: UIBarButtonSystemItem.trash, target: self, action: #selector(PolyShapesViewController.onDeleteStuff(_:)))
-    let flexibleButton = UIBarButtonItem(barButtonSystemItem: UIBarButtonSystemItem.flexibleSpace, target: nil, action: nil)
+    let dropStuffButton = UIBarButtonItem(title: "Drop", style: UIBarButtonItem.Style.plain, target: self, action: #selector(PolyShapesViewController.onDropStuff(_:)))
+    let modeChangeButton = UIBarButtonItem(title: "Activate", style: UIBarButtonItem.Style.plain, target: self, action: #selector(PolyShapesViewController.onActivate(_:)))
+    let deleteStuffButton = UIBarButtonItem(barButtonSystemItem: UIBarButtonItem.SystemItem.trash, target: self, action: #selector(PolyShapesViewController.onDeleteStuff(_:)))
+    let flexibleButton = UIBarButtonItem(barButtonSystemItem: UIBarButtonItem.SystemItem.flexibleSpace, target: nil, action: nil)
     addToolbarItems([
       dropStuffButton, flexibleButton,
       modeChangeButton, flexibleButton,

@@ -38,8 +38,8 @@ class VerticalStackViewController: BaseViewController {
   override func viewDidLoad() {
     super.viewDidLoad()
     
-    let shootButton = UIBarButtonItem(title: "Shoot", style: UIBarButtonItemStyle.plain, target: self, action: #selector(VerticalStackViewController.onShoot(_:)))
-    let flexible = UIBarButtonItem(barButtonSystemItem: UIBarButtonSystemItem.flexibleSpace, target: nil, action: nil)
+    let shootButton = UIBarButtonItem(title: "Shoot", style: UIBarButtonItem.Style.plain, target: self, action: #selector(VerticalStackViewController.onShoot(_:)))
+    let flexible = UIBarButtonItem(barButtonSystemItem: UIBarButtonItem.SystemItem.flexibleSpace, target: nil, action: nil)
     self.addToolbarItems([shootButton, flexible])
   }
 

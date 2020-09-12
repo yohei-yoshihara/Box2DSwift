@@ -455,9 +455,9 @@ public struct b2AABB : CustomStringConvertible {
     var tmin = b2_minFloat
     var tmax = b2_maxFloat
     
-    var p = input.p1
-    var d = input.p2 - input.p1
-    var absD = b2Abs(d)
+    let p = input.p1
+    let d = input.p2 - input.p1
+    let absD = b2Abs(d)
     
     var normal = b2Vec2()
     

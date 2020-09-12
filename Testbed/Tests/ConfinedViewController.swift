@@ -34,8 +34,8 @@ class ConfinedViewController: BaseViewController {
   override func viewDidLoad() {
     super.viewDidLoad()
     
-    let createButton = UIBarButtonItem(title: "Create", style: UIBarButtonItemStyle.plain, target: self, action: #selector(ConfinedViewController.onCreate(_:)))
-    let flexible = UIBarButtonItem(barButtonSystemItem: UIBarButtonSystemItem.flexibleSpace, target: nil, action: nil)
+    let createButton = UIBarButtonItem(title: "Create", style: UIBarButtonItem.Style.plain, target: self, action: #selector(ConfinedViewController.onCreate(_:)))
+    let flexible = UIBarButtonItem(barButtonSystemItem: UIBarButtonItem.SystemItem.flexibleSpace, target: nil, action: nil)
     self.addToolbarItems([createButton, flexible])
   }
   

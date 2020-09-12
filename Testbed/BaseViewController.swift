@@ -60,26 +60,26 @@ class BaseViewController: UIViewController, SettingViewControllerDelegate {
     settingsVC = SettingViewController()
     
     debugDraw = RenderView(frame: CalculateRenderViewFrame(self.view))
-    debugDraw.autoresizingMask = UIViewAutoresizing()
+    debugDraw.autoresizingMask = UIView.AutoresizingMask()
     debugDraw.SetFlags(settings.debugDrawFlag)
     self.view.addSubview(debugDraw)
     
     infoView = InfoView(frame: CGRect(x: 0, y: 0, width: self.view.bounds.size.width, height: self.view.bounds.size.height))
-    infoView.autoresizingMask = [UIViewAutoresizing.flexibleWidth, UIViewAutoresizing.flexibleHeight]
+    infoView.autoresizingMask = [UIView.AutoresizingMask.flexibleWidth, UIView.AutoresizingMask.flexibleHeight]
     self.view.addSubview(infoView)
 
-    let pauseButton = UIBarButtonItem(barButtonSystemItem: UIBarButtonSystemItem.pause,
+    let pauseButton = UIBarButtonItem(barButtonSystemItem: UIBarButtonItem.SystemItem.pause,
       target: self, action: #selector(BaseViewController.onPause(_:)))
-    let singleStepButton = UIBarButtonItem(barButtonSystemItem: UIBarButtonSystemItem.play,
+    let singleStepButton = UIBarButtonItem(barButtonSystemItem: UIBarButtonItem.SystemItem.play,
       target: self, action: #selector(BaseViewController.onSingleStep(_:)))
-    let flexibleButton = UIBarButtonItem(barButtonSystemItem: UIBarButtonSystemItem.flexibleSpace, target: nil, action: nil)
+    let flexibleButton = UIBarButtonItem(barButtonSystemItem: UIBarButtonItem.SystemItem.flexibleSpace, target: nil, action: nil)
     self.toolbarItems = [
       flexibleButton, pauseButton,
       flexibleButton, singleStepButton,
       flexibleButton
     ]
     
-    self.navigationItem.rightBarButtonItem = UIBarButtonItem(title: "Settings", style: UIBarButtonItemStyle.plain, target: self, action: #selector(BaseViewController.onSettings(_:)))
+    self.navigationItem.rightBarButtonItem = UIBarButtonItem(title: "Settings", style: UIBarButtonItem.Style.plain, target: self, action: #selector(BaseViewController.onSettings(_:)))
     
     panGestureRecognizer = UIPanGestureRecognizer(target: self, action: #selector(BaseViewController.onPan(_:)))
     debugDraw.addGestureRecognizer(panGestureRecognizer)
@@ -116,7 +116,7 @@ class BaseViewController: UIViewController, SettingViewControllerDelegate {
     super.viewDidAppear(animated)
     displayLink = CADisplayLink(target: self, selector: #selector(BaseViewController.simulationLoop))
     displayLink.preferredFramesPerSecond = Int(settings.hz)
-    displayLink.add(to: RunLoop.current, forMode: RunLoopMode.commonModes)
+    displayLink.add(to: RunLoop.current, forMode: RunLoop.Mode.common)
   }
   
   override func viewWillDisappear(_ animated: Bool) {

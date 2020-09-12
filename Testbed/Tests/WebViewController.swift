@@ -34,9 +34,9 @@ class WebViewController: BaseViewController {
   override func viewDidLoad() {
     super.viewDidLoad()
     
-    let destroyBody = UIBarButtonItem(title: "Destroy Body", style: UIBarButtonItemStyle.plain, target: self, action: #selector(WebViewController.onDestroyBody(_:)))
-    let destroyJoint = UIBarButtonItem(title: "Destroy Joint", style: UIBarButtonItemStyle.plain, target: self, action: #selector(WebViewController.onDestroyJoint(_:)))
-    let flexible = UIBarButtonItem(barButtonSystemItem: UIBarButtonSystemItem.flexibleSpace, target: nil, action: nil)
+    let destroyBody = UIBarButtonItem(title: "Destroy Body", style: UIBarButtonItem.Style.plain, target: self, action: #selector(WebViewController.onDestroyBody(_:)))
+    let destroyJoint = UIBarButtonItem(title: "Destroy Joint", style: UIBarButtonItem.Style.plain, target: self, action: #selector(WebViewController.onDestroyJoint(_:)))
+    let flexible = UIBarButtonItem(barButtonSystemItem: UIBarButtonItem.SystemItem.flexibleSpace, target: nil, action: nil)
     self.addToolbarItems([
       destroyBody, flexible,
       destroyJoint, flexible,

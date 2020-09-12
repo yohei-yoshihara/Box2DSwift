@@ -156,10 +156,10 @@ class RayCastViewController: BaseViewController, TextListViewControllerDelegate 
     modeVC.textList = ["Closest", "Any", "Multiple"]
     modeVC.textListDelegate = self
     
-    let dropStuffButton = UIBarButtonItem(title: "Drop", style: UIBarButtonItemStyle.plain, target: self, action: #selector(RayCastViewController.onDropStuff(_:)))
-    let modeChangeButton = UIBarButtonItem(title: "Mode", style: UIBarButtonItemStyle.plain, target: self, action: #selector(RayCastViewController.onChangeMode(_:)))
-    let deleteStuffButton = UIBarButtonItem(barButtonSystemItem: UIBarButtonSystemItem.trash, target: self, action: #selector(RayCastViewController.onDeleteStuff(_:)))
-    let flexibleButton = UIBarButtonItem(barButtonSystemItem: UIBarButtonSystemItem.flexibleSpace, target: nil, action: nil)
+    let dropStuffButton = UIBarButtonItem(title: "Drop", style: UIBarButtonItem.Style.plain, target: self, action: #selector(RayCastViewController.onDropStuff(_:)))
+    let modeChangeButton = UIBarButtonItem(title: "Mode", style: UIBarButtonItem.Style.plain, target: self, action: #selector(RayCastViewController.onChangeMode(_:)))
+    let deleteStuffButton = UIBarButtonItem(barButtonSystemItem: UIBarButtonItem.SystemItem.trash, target: self, action: #selector(RayCastViewController.onDeleteStuff(_:)))
+    let flexibleButton = UIBarButtonItem(barButtonSystemItem: UIBarButtonItem.SystemItem.flexibleSpace, target: nil, action: nil)
     addToolbarItems([
       dropStuffButton, flexibleButton,
       modeChangeButton, flexibleButton,

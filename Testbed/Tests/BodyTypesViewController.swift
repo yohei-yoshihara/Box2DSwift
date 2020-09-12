@@ -35,10 +35,10 @@ class BodyTypesViewController: BaseViewController {
   override func viewDidLoad() {
     super.viewDidLoad()
     
-    let dynamicButton = UIBarButtonItem(title: "Dynamic", style: UIBarButtonItemStyle.plain, target: self, action: #selector(BodyTypesViewController.onDynamic(_:)))
-    let staticButton = UIBarButtonItem(title: "Static", style: UIBarButtonItemStyle.plain, target: self, action: #selector(BodyTypesViewController.onStatic(_:)))
-    let kinematicButton = UIBarButtonItem(title: "Kinematic", style: UIBarButtonItemStyle.plain, target: self, action: #selector(BodyTypesViewController.onKinematic(_:)))
-    let flexible = UIBarButtonItem(barButtonSystemItem: UIBarButtonSystemItem.flexibleSpace, target: nil, action: nil)
+    let dynamicButton = UIBarButtonItem(title: "Dynamic", style: UIBarButtonItem.Style.plain, target: self, action: #selector(BodyTypesViewController.onDynamic(_:)))
+    let staticButton = UIBarButtonItem(title: "Static", style: UIBarButtonItem.Style.plain, target: self, action: #selector(BodyTypesViewController.onStatic(_:)))
+    let kinematicButton = UIBarButtonItem(title: "Kinematic", style: UIBarButtonItem.Style.plain, target: self, action: #selector(BodyTypesViewController.onKinematic(_:)))
+    let flexible = UIBarButtonItem(barButtonSystemItem: UIBarButtonItem.SystemItem.flexibleSpace, target: nil, action: nil)
     self.addToolbarItems([
       dynamicButton, flexible,
       staticButton, flexible,

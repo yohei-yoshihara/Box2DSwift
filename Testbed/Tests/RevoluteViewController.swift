@@ -33,9 +33,9 @@ class RevoluteViewController: BaseViewController {
 
   override func viewDidLoad() {
     super.viewDidLoad()
-    let limitButton = UIBarButtonItem(title: "Limits", style: UIBarButtonItemStyle.plain, target: self, action: #selector(RevoluteViewController.onLimits(_:)))
-    let motorButton = UIBarButtonItem(title: "Motor", style: UIBarButtonItemStyle.plain, target: self, action: #selector(RevoluteViewController.onMotor(_:)))
-    let flexible = UIBarButtonItem(barButtonSystemItem: UIBarButtonSystemItem.flexibleSpace, target: nil, action: nil)
+    let limitButton = UIBarButtonItem(title: "Limits", style: UIBarButtonItem.Style.plain, target: self, action: #selector(RevoluteViewController.onLimits(_:)))
+    let motorButton = UIBarButtonItem(title: "Motor", style: UIBarButtonItem.Style.plain, target: self, action: #selector(RevoluteViewController.onMotor(_:)))
+    let flexible = UIBarButtonItem(barButtonSystemItem: UIBarButtonItem.SystemItem.flexibleSpace, target: nil, action: nil)
     self.addToolbarItems([
       limitButton, flexible,
       motorButton, flexible

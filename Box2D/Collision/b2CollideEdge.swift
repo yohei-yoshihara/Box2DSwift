@@ -495,7 +495,7 @@ class b2EPCollider {
     }
     
     // Clip to negative box side 1
-    var clipPoints2 = b2ClipSegmentToLine(inputVertices: clipPoints1, normal: rf.sideNormal2, offset: rf.sideOffset2, vertexIndexA: rf.i2)
+    let clipPoints2 = b2ClipSegmentToLine(inputVertices: clipPoints1, normal: rf.sideNormal2, offset: rf.sideOffset2, vertexIndexA: rf.i2)
     
     if clipPoints2.count < b2_maxManifoldPoints {
       return manifold

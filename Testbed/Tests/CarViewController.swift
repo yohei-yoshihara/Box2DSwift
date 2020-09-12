@@ -41,12 +41,12 @@ class CarViewController: BaseViewController {
   override func viewDidLoad() {
     super.viewDidLoad()
     
-    let leftButton = UIBarButtonItem(title: "Left", style: UIBarButtonItemStyle.plain, target: self, action: #selector(CarViewController.onLeft(_:)))
-    let brakeButton = UIBarButtonItem(title: "Brake", style: UIBarButtonItemStyle.plain, target: self, action: #selector(CarViewController.onBrake(_:)))
-    let rightButton = UIBarButtonItem(title: "Right", style: UIBarButtonItemStyle.plain, target: self, action: #selector(CarViewController.onRight(_:)))
-    let hzDownButton = UIBarButtonItem(title: "Hz Down", style: UIBarButtonItemStyle.plain, target: self, action: #selector(CarViewController.onHzDown(_:)))
-    let hzUpButton = UIBarButtonItem(title: "Hz Up", style: UIBarButtonItemStyle.plain, target: self, action: #selector(CarViewController.onHzUp(_:)))
-    let flexible = UIBarButtonItem(barButtonSystemItem: UIBarButtonSystemItem.flexibleSpace, target: nil, action: nil)
+    let leftButton = UIBarButtonItem(title: "Left", style: UIBarButtonItem.Style.plain, target: self, action: #selector(CarViewController.onLeft(_:)))
+    let brakeButton = UIBarButtonItem(title: "Brake", style: UIBarButtonItem.Style.plain, target: self, action: #selector(CarViewController.onBrake(_:)))
+    let rightButton = UIBarButtonItem(title: "Right", style: UIBarButtonItem.Style.plain, target: self, action: #selector(CarViewController.onRight(_:)))
+    let hzDownButton = UIBarButtonItem(title: "Hz Down", style: UIBarButtonItem.Style.plain, target: self, action: #selector(CarViewController.onHzDown(_:)))
+    let hzUpButton = UIBarButtonItem(title: "Hz Up", style: UIBarButtonItem.Style.plain, target: self, action: #selector(CarViewController.onHzUp(_:)))
+    let flexible = UIBarButtonItem(barButtonSystemItem: UIBarButtonItem.SystemItem.flexibleSpace, target: nil, action: nil)
     self.addToolbarItems([
       leftButton, flexible,
       brakeButton, flexible,
