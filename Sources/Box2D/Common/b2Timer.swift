@@ -25,7 +25,7 @@ the original C++ code written by Erin Catto.
 */
 
 import Foundation
-import Quartz
+import QuartzCore
 
 /// Timer for profiling. This has platform specific code and may
 /// not work on every platform.
