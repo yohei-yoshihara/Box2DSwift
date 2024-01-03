@@ -24,39 +24,26 @@ This version of box2d was developed by Yohei Yoshihara. It is based upon
 the original C++ code written by Erin Catto.
 */
 
-import UIKit
-import Box2D
+import Foundation
+import Quartz
 
-class SphereStackViewController: BaseViewController {
-  let count = 10
-  var bodies = [b2Body]()
-
-  override func prepare() {
-    b2Locally {
-      let bd = b2BodyDef()
-      let ground = self.world.createBody(bd)
-      
-      let shape = b2EdgeShape()
-      shape.set(vertex1: b2Vec2(-40.0, 0.0), vertex2: b2Vec2(40.0, 0.0))
-      ground.createFixture(shape: shape, density: 0.0)
-    }
-    
-    b2Locally {
-      let shape = b2CircleShape()
-      shape.radius = 1.0
-      
-      for i in 0 ..< self.count {
-        let bd = b2BodyDef()
-        bd.type = b2BodyType.dynamicBody
-        bd.position.set(0.0, 4.0 + 3.0 * b2Float(i))
-        
-        self.bodies.append(self.world.createBody(bd))
-        
-        self.bodies.last!.createFixture(shape: shape, density: 1.0)
-        
-        self.bodies.last!.setLinearVelocity(b2Vec2(0.0, -50.0))
-      }
-    }
+/// Timer for profiling. This has platform specific code and may
+/// not work on every platform.
+open class b2Timer {
+  /// Constructor
+  public init() {
+    m_start = CACurrentMediaTime()
   }
   
+  /// Reset the timer.
+  open func reset() {
+    m_start = CACurrentMediaTime()
+  }
+  
+  /// Get the time since construction or the last reset.
+  open var milliseconds: b2Float {
+    return b2Float(CACurrentMediaTime() - m_start) * b2Float(1000.0)
+  }
+  
+  var m_start: CFTimeInterval
 }

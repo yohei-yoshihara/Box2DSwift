@@ -190,7 +190,7 @@ open class b2DynamicTree<T> : CustomStringConvertible {
   
   /// Query an AABB for overlapping proxies. The callback class
   /// is called for each proxy that overlaps the supplied AABB.
-  open func query<T: b2QueryWrapper>(callback: T, aabb: b2AABB) {
+  open func query<T1: b2QueryWrapper>(callback: T1, aabb: b2AABB) {
     var stack = b2GrowableStack<Int>(capacity: 256)
     stack.push(m_root)
     
@@ -224,7 +224,7 @@ open class b2DynamicTree<T> : CustomStringConvertible {
   /// number of proxies in the tree.
   /// @param input the ray-cast input data. The ray extends from p1 to p1 + maxFraction * (p2 - p1).
   /// @param callback a callback class that is called for each proxy that is hit by the ray.
-  open func rayCast<T: b2RayCastWrapper>(callback: T, input: b2RayCastInput) {
+  open func rayCast<T1: b2RayCastWrapper>(callback: T1, input: b2RayCastInput) {
     let p1 = input.p1
     let p2 = input.p2
     var r = p2 - p1

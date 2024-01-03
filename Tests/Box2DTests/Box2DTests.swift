@@ -24,7 +24,6 @@ This version of box2d was developed by Yohei Yoshihara. It is based upon
 the original C++ code written by Erin Catto.
 */
 
-import UIKit
 import XCTest
 import Box2D
 
